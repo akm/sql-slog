@@ -3,42 +3,52 @@ package sqlslog
 import (
 	"context"
 	"database/sql/driver"
+	"fmt"
 	"log/slog"
 )
+
+func wrapConn(original driver.Conn, logger *slog.Logger) driver.Conn {
+	if original == nil {
+		return nil
+	}
+	if cwc, ok := original.(connWithContext); ok {
+		return &connWithContextWrapper{connWrapper{original: original, logger: logger}, cwc}
+	}
+
+	if _, ok := original.(driver.ExecerContext); !ok {
+		logger.Warn(fmt.Sprintf("driver.Conn %T does not implement driver.ExecerContext", original))
+	}
+	if _, ok := original.(driver.QueryerContext); !ok {
+		logger.Warn(fmt.Sprintf("driver.Conn %T does not implement driver.QueryerContext", original))
+	}
+	if _, ok := original.(driver.ConnPrepareContext); !ok {
+		logger.Warn(fmt.Sprintf("driver.Conn %T does not implement driver.ConnPrepareContext", original))
+	}
+	if _, ok := original.(driver.ConnBeginTx); !ok {
+		logger.Warn(fmt.Sprintf("driver.Conn %T does not implement driver.ConnBeginTx", original))
+	}
+
+	return &connWrapper{original: original, logger: logger}
+}
+
+// See https://pkg.go.dev/database/sql/driver#pkg-overview
 
 type connWrapper struct {
 	original driver.Conn
 	logger   *slog.Logger
 }
 
-var _ driver.Conn = (*connWrapper)(nil)
-
 // Deprecated interfaces, not implemented.
 // var _ driver.Execer = (*conn)(nil)
 // var _ driver.Queryer = (*conn)(nil)
 
-// // All Conn implementations should implement the following
-// interfaces: Pinger, SessionResetter, and Validator.
-var _ driver.Pinger = (*connWrapper)(nil)
-var _ driver.SessionResetter = (*connWrapper)(nil)
+var _ driver.Conn = (*connWrapper)(nil)
 var _ driver.Validator = (*connWrapper)(nil)
-
-// If named parameters or context are supported, the driver's
-// Conn should implement: ExecerContext, QueryerContext,
-// ConnPrepareContext, and ConnBeginTx.
-var _ driver.ExecerContext = (*connWrapper)(nil)
-var _ driver.QueryerContext = (*connWrapper)(nil)
-var _ driver.ConnPrepareContext = (*connWrapper)(nil)
-var _ driver.ConnBeginTx = (*connWrapper)(nil)
 
 // To support custom data types, implement NamedValueChecker.
 // NamedValueChecker also allows queries to accept per-query
 // options as a parameter by returning ErrRemoveArgument from CheckNamedValue.
 var _ driver.NamedValueChecker = (*connWrapper)(nil)
-
-func wrapConn(original driver.Conn, logger *slog.Logger) *connWrapper {
-	return &connWrapper{original: original, logger: logger}
-}
 
 // Begin implements driver.Conn.
 func (c *connWrapper) Begin() (driver.Tx, error) {
@@ -83,8 +93,42 @@ func (c *connWrapper) IsValid() bool {
 	return true
 }
 
+// CheckNamedValue implements driver.NamedValueChecker.
+func (c *connWrapper) CheckNamedValue(namedValue *driver.NamedValue) error {
+	if v, ok := c.original.(driver.NamedValueChecker); ok {
+		return v.CheckNamedValue(namedValue)
+	}
+	return nil
+}
+
+type connWithContext interface {
+	driver.Conn
+	driver.ExecerContext
+	driver.QueryerContext
+	driver.ConnPrepareContext
+	driver.ConnBeginTx
+}
+
+type connWithContextWrapper struct {
+	connWrapper
+	originalConn connWithContext
+}
+
+// // All Conn implementations should implement the following
+// interfaces: Pinger, SessionResetter, and Validator.
+var _ driver.Pinger = (*connWithContextWrapper)(nil)
+var _ driver.SessionResetter = (*connWithContextWrapper)(nil)
+
+// If named parameters or context are supported, the driver's
+// Conn should implement: ExecerContext, QueryerContext,
+// ConnPrepareContext, and ConnBeginTx.
+var _ driver.ExecerContext = (*connWithContextWrapper)(nil)
+var _ driver.QueryerContext = (*connWithContextWrapper)(nil)
+var _ driver.ConnPrepareContext = (*connWithContextWrapper)(nil)
+var _ driver.ConnBeginTx = (*connWithContextWrapper)(nil)
+
 // ResetSession implements driver.SessionResetter.
-func (c *connWrapper) ResetSession(ctx context.Context) error {
+func (c *connWithContextWrapper) ResetSession(ctx context.Context) error {
 	return logActionContext(ctx, c.logger, "ResetSession", func() error {
 		// https://cs.opensource.google/go/go/+/master:src/database/sql/sql.go;l=603-606
 		if v, ok := c.original.(driver.SessionResetter); ok {
@@ -95,7 +139,7 @@ func (c *connWrapper) ResetSession(ctx context.Context) error {
 }
 
 // Ping implements driver.Pinger.
-func (c *connWrapper) Ping(ctx context.Context) error {
+func (c *connWithContextWrapper) Ping(ctx context.Context) error {
 	return logActionContext(ctx, c.logger, "Ping", func() error {
 		// https://cs.opensource.google/go/go/+/master:src/database/sql/sql.go;l=882-891
 		if p, ok := c.original.(driver.Pinger); ok {
@@ -106,26 +150,57 @@ func (c *connWrapper) Ping(ctx context.Context) error {
 }
 
 // ExecContext implements driver.ExecerContext.
-func (c *connWrapper) ExecContext(ctx context.Context, query string, args []driver.NamedValue) (driver.Result, error) {
-	panic("unimplemented")
+func (c *connWithContextWrapper) ExecContext(ctx context.Context, query string, args []driver.NamedValue) (driver.Result, error) {
+	var result driver.Result
+	err := logActionContext(ctx, c.logger, "ExecContext", func() error {
+		var err error
+		result, err = c.originalConn.ExecContext(ctx, query, args)
+		return err
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
 }
 
 // QueryContext implements driver.QueryerContext.
-func (c *connWrapper) QueryContext(ctx context.Context, query string, args []driver.NamedValue) (driver.Rows, error) {
-	panic("unimplemented")
+func (c *connWithContextWrapper) QueryContext(ctx context.Context, query string, args []driver.NamedValue) (driver.Rows, error) {
+	var rows driver.Rows
+	err := logActionContext(ctx, c.logger, "QueryContext", func() error {
+		var err error
+		rows, err = c.originalConn.QueryContext(ctx, query, args)
+		return err
+	})
+	if err != nil {
+		return nil, err
+	}
+	return wrapRows(rows, c.logger), nil
 }
 
 // PrepareContext implements driver.ConnPrepareContext.
-func (c *connWrapper) PrepareContext(ctx context.Context, query string) (driver.Stmt, error) {
-	panic("unimplemented")
+func (c *connWithContextWrapper) PrepareContext(ctx context.Context, query string) (driver.Stmt, error) {
+	var stmt driver.Stmt
+	err := logActionContext(ctx, c.logger, "PrepareContext", func() error {
+		var err error
+		stmt, err = c.originalConn.PrepareContext(ctx, query)
+		return err
+	})
+	if err != nil {
+		return nil, err
+	}
+	return wrapStmt(stmt, c.logger), nil
 }
 
 // BeginTx implements driver.ConnBeginTx.
-func (c *connWrapper) BeginTx(ctx context.Context, opts driver.TxOptions) (driver.Tx, error) {
-	panic("unimplemented")
-}
-
-// CheckNamedValue implements driver.NamedValueChecker.
-func (c *connWrapper) CheckNamedValue(*driver.NamedValue) error {
-	panic("unimplemented")
+func (c *connWithContextWrapper) BeginTx(ctx context.Context, opts driver.TxOptions) (driver.Tx, error) {
+	var tx driver.Tx
+	err := logActionContext(ctx, c.logger, "BeginTx", func() error {
+		var err error
+		tx, err = c.originalConn.BeginTx(ctx, opts)
+		return err
+	})
+	if err != nil {
+		return nil, err
+	}
+	return wrapTx(tx, c.logger), nil
 }
