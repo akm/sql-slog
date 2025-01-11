@@ -56,7 +56,7 @@ func (c *conn) Begin() (driver.Tx, error) {
 
 // Close implements driver.Conn.
 func (c *conn) Close() error {
-	panic("unimplemented")
+	return logAction(c.logger, "Close", c.original.Close)
 }
 
 // Prepare implements driver.Conn.
