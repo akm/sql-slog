@@ -52,12 +52,14 @@ var _ driver.DriverContext = (*driverContextWrapper)(nil)
 // OpenConnector implements driver.DriverContext.
 func (w *driverContextWrapper) OpenConnector(dsn string) (driver.Connector, error) {
 	lg := w.logger.With(slog.String("dsn", dsn))
-	lg.Debug("OpenConnector Start")
-	origConnector, err := w.original.OpenConnector(dsn)
+	var origConnector driver.Connector
+	err := logAction(lg, "OpenConnector", func() error {
+		var err error
+		origConnector, err = w.original.OpenConnector(dsn)
+		return err
+	})
 	if err != nil {
-		w.logger.Error("OpenConnector Error", "error", err)
 		return nil, err
 	}
-	lg.Info("OpenConnector Complete")
 	return wrapConnector(origConnector, w.logger), nil
 }
