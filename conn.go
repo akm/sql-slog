@@ -61,7 +61,17 @@ func (c *conn) Close() error {
 
 // Prepare implements driver.Conn.
 func (c *conn) Prepare(query string) (driver.Stmt, error) {
-	panic("unimplemented")
+	lg := c.logger.With(slog.String("query", query))
+	var origStmt driver.Stmt
+	err := logAction(lg, "Prepare", func() error {
+		var err error
+		origStmt, err = c.original.Prepare(query)
+		return err
+	})
+	if err != nil {
+		return nil, err
+	}
+	return wrapStmt(origStmt, lg), nil
 }
 
 // IsValid implements driver.Validator.
