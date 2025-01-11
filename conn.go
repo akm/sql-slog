@@ -3,9 +3,12 @@ package sqlslog
 import (
 	"context"
 	"database/sql/driver"
+	"log/slog"
 )
 
 type conn struct {
+	original driver.Conn
+	logger   *slog.Logger
 }
 
 var _ driver.Conn = (*conn)(nil)
@@ -32,6 +35,10 @@ var _ driver.ConnBeginTx = (*conn)(nil)
 // NamedValueChecker also allows queries to accept per-query
 // options as a parameter by returning ErrRemoveArgument from CheckNamedValue.
 var _ driver.NamedValueChecker = (*conn)(nil)
+
+func wrapConn(original driver.Conn, logger *slog.Logger) *conn {
+	return &conn{original: original, logger: logger}
+}
 
 // Begin implements driver.Conn.
 func (c *conn) Begin() (driver.Tx, error) {
