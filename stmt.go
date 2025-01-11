@@ -51,7 +51,7 @@ func (s *stmtWrapper) Query(args []driver.Value) (driver.Rows, error) {
 	if err != nil {
 		return nil, err
 	}
-	return rows, nil
+	return wrapRows(rows, s.logger), nil
 }
 
 type stmtExecContextWrapperImpl struct {
@@ -95,7 +95,7 @@ func (s *stmtQueryContextWrapperImpl) QueryContext(ctx context.Context, args []d
 	if err != nil {
 		return nil, err
 	}
-	return rows, nil
+	return wrapRows(rows, s.logger), nil
 }
 
 type stmtExecContextWrapper struct {

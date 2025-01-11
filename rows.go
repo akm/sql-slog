@@ -2,75 +2,123 @@ package sqlslog
 
 import (
 	"database/sql/driver"
+	"log/slog"
 	"reflect"
 )
 
-type rows struct {
+func wrapRows(original driver.Rows, logger *slog.Logger) driver.Rows {
+	if original == nil {
+		return nil
+	}
+	rw := rowsWrapper{original, logger}
+	if rnrs, ok := original.(driver.RowsNextResultSet); ok {
+		return &rowsNextResultSetWrapper{rw, rnrs}
+	} else {
+		return &rw
+	}
 }
 
-var _ driver.Rows = (*rows)(nil)
+type rowsWrapper struct {
+	original driver.Rows
+	logger   *slog.Logger
+}
 
-// If multiple result sets are supported, Rows should implement
-// RowsNextResultSet. If the driver knows how to describe the types
+var _ driver.Rows = (*rowsWrapper)(nil)
+
+// Close implements driver.Rows.
+func (r *rowsWrapper) Close() error {
+	return logAction(r.logger, "Rows.Close", r.original.Close)
+}
+
+// Columns implements driver.Rows.
+func (r *rowsWrapper) Columns() []string {
+	return r.original.Columns()
+}
+
+// Next implements driver.Rows.
+func (r *rowsWrapper) Next(dest []driver.Value) error {
+	return logAction(r.logger, "Rows.Next", func() error {
+		return r.original.Next(dest)
+	})
+}
+
+// If the driver knows how to describe the types
 // present in the returned result it should implement the following
 // interfaces: RowsColumnTypeScanType, RowsColumnTypeDatabaseTypeName,
 // RowsColumnTypeLength, RowsColumnTypeNullable, and
 // RowsColumnTypePrecisionScale. A given row value may also return a
 // Rows type, which may represent a database cursor value.
+//
+// These are used in database/sql/sql.go
+// https://cs.opensource.google/go/go/+/master:src/database/sql/sql.go;l=3284-3300
 
-var _ driver.RowsNextResultSet = (*rows)(nil)
-var _ driver.RowsColumnTypeScanType = (*rows)(nil)
-var _ driver.RowsColumnTypeDatabaseTypeName = (*rows)(nil)
-var _ driver.RowsColumnTypeLength = (*rows)(nil)
-var _ driver.RowsColumnTypeNullable = (*rows)(nil)
-var _ driver.RowsColumnTypePrecisionScale = (*rows)(nil)
+var _ driver.RowsColumnTypeScanType = (*rowsWrapper)(nil)
+var _ driver.RowsColumnTypeDatabaseTypeName = (*rowsWrapper)(nil)
+var _ driver.RowsColumnTypeLength = (*rowsWrapper)(nil)
+var _ driver.RowsColumnTypeNullable = (*rowsWrapper)(nil)
+var _ driver.RowsColumnTypePrecisionScale = (*rowsWrapper)(nil)
 
-// ColumnTypePrecisionScale implements driver.RowsColumnTypePrecisionScale.
-func (r *rows) ColumnTypePrecisionScale(index int) (precision int64, scale int64, ok bool) {
-	panic("unimplemented")
-}
-
-// ColumnTypeNullable implements driver.RowsColumnTypeNullable.
-func (r *rows) ColumnTypeNullable(index int) (nullable bool, ok bool) {
-	panic("unimplemented")
-}
-
-// ColumnTypeLength implements driver.RowsColumnTypeLength.
-func (r *rows) ColumnTypeLength(index int) (length int64, ok bool) {
-	panic("unimplemented")
+// ColumnTypeScanType implements driver.RowsColumnTypeScanType.
+func (r *rowsWrapper) ColumnTypeScanType(index int) reflect.Type {
+	// https://cs.opensource.google/go/go/+/master:src/database/sql/sql.go;l=3284-3288
+	if c, ok := r.original.(driver.RowsColumnTypeScanType); ok {
+		return c.ColumnTypeScanType(index)
+	} else {
+		return reflect.TypeFor[any]()
+	}
 }
 
 // ColumnTypeDatabaseTypeName implements driver.RowsColumnTypeDatabaseTypeName.
-func (r *rows) ColumnTypeDatabaseTypeName(index int) string {
-	panic("unimplemented")
+func (r *rowsWrapper) ColumnTypeDatabaseTypeName(index int) string {
+	if c, ok := r.original.(driver.RowsColumnTypeDatabaseTypeName); ok {
+		return c.ColumnTypeDatabaseTypeName(index)
+	} else {
+		return ""
+	}
 }
 
-// ColumnTypeScanType implements driver.RowsColumnTypeScanType.
-func (r *rows) ColumnTypeScanType(index int) reflect.Type {
-	panic("unimplemented")
+// ColumnTypeLength implements driver.RowsColumnTypeLength.
+func (r *rowsWrapper) ColumnTypeLength(index int) (length int64, ok bool) {
+	if c, ok := r.original.(driver.RowsColumnTypeLength); ok {
+		return c.ColumnTypeLength(index)
+	} else {
+		return 0, false
+	}
 }
 
-// Close implements driver.RowsNextResultSet.
-func (r *rows) Close() error {
-	panic("unimplemented")
+// ColumnTypeNullable implements driver.RowsColumnTypeNullable.
+func (r *rowsWrapper) ColumnTypeNullable(index int) (nullable bool, ok bool) {
+	if c, ok := r.original.(driver.RowsColumnTypeNullable); ok {
+		return c.ColumnTypeNullable(index)
+	} else {
+		return false, false
+	}
 }
 
-// Columns implements driver.RowsNextResultSet.
-func (r *rows) Columns() []string {
-	panic("unimplemented")
+// ColumnTypePrecisionScale implements driver.RowsColumnTypePrecisionScale.
+func (r *rowsWrapper) ColumnTypePrecisionScale(index int) (precision int64, scale int64, ok bool) {
+	if c, ok := r.original.(driver.RowsColumnTypePrecisionScale); ok {
+		return c.ColumnTypePrecisionScale(index)
+	} else {
+		return 0, 0, false
+	}
 }
+
+type rowsNextResultSetWrapper struct {
+	rowsWrapper
+	original driver.RowsNextResultSet
+}
+
+// If multiple result sets are supported, Rows should implement
+// RowsNextResultSet.
+var _ driver.RowsNextResultSet = (*rowsNextResultSetWrapper)(nil)
 
 // HasNextResultSet implements driver.RowsNextResultSet.
-func (r *rows) HasNextResultSet() bool {
-	panic("unimplemented")
-}
-
-// Next implements driver.RowsNextResultSet.
-func (r *rows) Next(dest []driver.Value) error {
-	panic("unimplemented")
+func (r *rowsNextResultSetWrapper) HasNextResultSet() bool {
+	return r.original.HasNextResultSet()
 }
 
 // NextResultSet implements driver.RowsNextResultSet.
-func (r *rows) NextResultSet() error {
-	panic("unimplemented")
+func (r *rowsNextResultSetWrapper) NextResultSet() error {
+	return logAction(r.logger, "Rows.NextResultSet", r.original.NextResultSet)
 }
