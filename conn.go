@@ -76,17 +76,33 @@ func (c *conn) Prepare(query string) (driver.Stmt, error) {
 
 // IsValid implements driver.Validator.
 func (c *conn) IsValid() bool {
-	panic("unimplemented")
+	// https://cs.opensource.google/go/go/+/master:src/database/sql/sql.go;l=618-621
+	if v, ok := c.original.(driver.Validator); ok {
+		return v.IsValid()
+	}
+	return true
 }
 
 // ResetSession implements driver.SessionResetter.
 func (c *conn) ResetSession(ctx context.Context) error {
-	panic("unimplemented")
+	return logActionContext(ctx, c.logger, "ResetSession", func() error {
+		// https://cs.opensource.google/go/go/+/master:src/database/sql/sql.go;l=603-606
+		if v, ok := c.original.(driver.SessionResetter); ok {
+			return v.ResetSession(ctx)
+		}
+		return nil
+	})
 }
 
 // Ping implements driver.Pinger.
 func (c *conn) Ping(ctx context.Context) error {
-	panic("unimplemented")
+	return logActionContext(ctx, c.logger, "Ping", func() error {
+		// https://cs.opensource.google/go/go/+/master:src/database/sql/sql.go;l=882-891
+		if p, ok := c.original.(driver.Pinger); ok {
+			return p.Ping(ctx)
+		}
+		return nil
+	})
 }
 
 // ExecContext implements driver.ExecerContext.
