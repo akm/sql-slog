@@ -42,7 +42,15 @@ func wrapConn(original driver.Conn, logger *slog.Logger) *conn {
 
 // Begin implements driver.Conn.
 func (c *conn) Begin() (driver.Tx, error) {
-	panic("unimplemented")
+	lg := c.logger
+	lg.Debug("Begin Start")
+	origTx, err := c.original.Begin()
+	if err != nil {
+		lg.Error("Begin Error", "error", err)
+		return nil, err
+	}
+	lg.Info("Begin Complete")
+	return wrapTx(origTx, lg), nil
 }
 
 // Close implements driver.Conn.
