@@ -62,7 +62,7 @@ func (c *connWrapper) Begin() (driver.Tx, error) {
 	var origTx driver.Tx
 	err := logAction(c.logger, "Begin", func() error {
 		var err error
-		origTx, err = c.original.Begin()
+		origTx, err = c.original.Begin() //nolint:staticcheck
 		return err
 	})
 	if err != nil {

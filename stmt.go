@@ -25,7 +25,7 @@ func (s *stmtWrapper) Exec(args []driver.Value) (driver.Result, error) {
 	var result driver.Result
 	err := logAction(lg, "Stmt.Exec", func() error {
 		var err error
-		result, err = s.original.Exec(args)
+		result, err = s.original.Exec(args) //nolint:staticcheck
 		return err
 	})
 	if err != nil {
@@ -45,7 +45,7 @@ func (s *stmtWrapper) Query(args []driver.Value) (driver.Rows, error) {
 	var rows driver.Rows
 	err := logAction(lg, "Stmt.Query", func() error {
 		var err error
-		rows, err = s.original.Query(args)
+		rows, err = s.original.Query(args) //nolint:staticcheck
 		return err
 	})
 	if err != nil {
