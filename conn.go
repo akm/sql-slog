@@ -187,7 +187,8 @@ func (c *connWithContextWrapper) QueryContext(ctx context.Context, query string,
 // PrepareContext implements driver.ConnPrepareContext.
 func (c *connWithContextWrapper) PrepareContext(ctx context.Context, query string) (driver.Stmt, error) {
 	var stmt driver.Stmt
-	err := logActionContext(ctx, c.logger, "PrepareContext", func() error {
+	lg := c.logger.With(slog.String("query", query))
+	err := logActionContext(ctx, lg, "PrepareContext", func() error {
 		var err error
 		stmt, err = c.originalConn.PrepareContext(ctx, query)
 		return err
