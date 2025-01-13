@@ -52,17 +52,12 @@ func TestBasic(t *testing.T) {
 		assert.NoError(t, err)
 		actualEntries := parseJsonLines(t, buf.Bytes())
 		exptectedEntries := []map[string]interface{}{
-			{"level": "DEBUG", "msg": "ResetSession Start", "driver": "mysql", "dsn": dsn},
-			{"level": "INFO", "msg": "ResetSession Complete", "driver": "mysql", "dsn": dsn},
-			{"level": "DEBUG", "msg": "Ping Start", "driver": "mysql", "dsn": dsn},
-			{"level": "INFO", "msg": "Ping Complete", "driver": "mysql", "dsn": dsn},
+			{"level": "DEBUG", "msg": "ResetSession Start"},
+			{"level": "INFO", "msg": "ResetSession Complete"},
+			{"level": "DEBUG", "msg": "Ping Start"},
+			{"level": "INFO", "msg": "Ping Complete"},
 		}
-		assert.Len(t, actualEntries, len(exptectedEntries))
-		for i, expected := range exptectedEntries {
-			for k, v := range expected {
-				assert.Equal(t, v, actualEntries[i][k])
-			}
-		}
+		assertMapSlice(t, exptectedEntries, actualEntries, "time")
 	})
 
 	t.Run("create table", func(t *testing.T) {
@@ -72,10 +67,10 @@ func TestBasic(t *testing.T) {
 		t.Logf("buf.String(): %s\n", buf.String())
 		actualEntries := parseJsonLines(t, buf.Bytes())
 		exptectedEntries := []map[string]interface{}{
-			{"level": "DEBUG", "msg": "ResetSession Start", "driver": "mysql", "dsn": dsn},
-			{"level": "INFO", "msg": "ResetSession Complete", "driver": "mysql", "dsn": dsn},
-			{"level": "DEBUG", "msg": "ExecContext Start", "driver": "", "dsn": ""},
-			{"level": "INFO", "msg": "ExecContext Complete", "driver": "", "dsn": ""},
+			{"level": "DEBUG", "msg": "ResetSession Start"},
+			{"level": "INFO", "msg": "ResetSession Complete"},
+			{"level": "DEBUG", "msg": "ExecContext Start"},
+			{"level": "INFO", "msg": "ExecContext Complete"},
 		}
 		assert.Len(t, actualEntries, len(exptectedEntries))
 		for i, expected := range exptectedEntries {
@@ -253,4 +248,29 @@ func parseJsonLines(t *testing.T, b []byte) []map[string]interface{} {
 		results = append(results, result)
 	}
 	return results
+}
+
+func assertMapSlice(t *testing.T, expected, actual []map[string]interface{}, ignoredFields ...string) {
+	t.Helper()
+	wellFormedActual := []map[string]interface{}{}
+	for _, a := range actual {
+		wellFormed := map[string]interface{}{}
+		for k, v := range a {
+			if contains(ignoredFields, k) {
+				continue
+			}
+			wellFormed[k] = v
+		}
+		wellFormedActual = append(wellFormedActual, wellFormed)
+	}
+	assert.Equal(t, expected, wellFormedActual)
+}
+
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
 }
