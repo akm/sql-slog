@@ -11,6 +11,13 @@ func wrapConn(original driver.Conn, logger *slog.Logger) driver.Conn {
 	if original == nil {
 		return nil
 	}
+	switch original.(type) {
+	case *connWithContextWrapper:
+		return original
+	case *connWrapper:
+		return original
+	}
+
 	if cwc, ok := original.(connWithContext); ok {
 		return &connWithContextWrapper{connWrapper{original: original, logger: logger}, cwc}
 	}
@@ -180,7 +187,8 @@ func (c *connWithContextWrapper) QueryContext(ctx context.Context, query string,
 // PrepareContext implements driver.ConnPrepareContext.
 func (c *connWithContextWrapper) PrepareContext(ctx context.Context, query string) (driver.Stmt, error) {
 	var stmt driver.Stmt
-	err := logActionContext(ctx, c.logger, "PrepareContext", func() error {
+	lg := c.logger.With(slog.String("query", query))
+	err := logActionContext(ctx, lg, "PrepareContext", func() error {
 		var err error
 		stmt, err = c.originalConn.PrepareContext(ctx, query)
 		return err
