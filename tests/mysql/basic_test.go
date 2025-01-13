@@ -81,8 +81,9 @@ func TestBasic(t *testing.T) {
 		}
 
 		t.Run("select", func(t *testing.T) {
-			rows, err := db.QueryContext(ctx, "SELECT id, name FROM test1 WHERE name LIKE ? ORDER BY id", "b%")
+			rows, err := db.QueryContext(ctx, "SELECT id, name FROM test1 WHERE name LIKE ?", "ba%")
 			assert.NoError(t, err)
+			defer rows.Close()
 
 			actualResults := []map[string]interface{}{}
 			for rows.Next() {
@@ -101,6 +102,24 @@ func TestBasic(t *testing.T) {
 				{"id": 3, "name": "baz"},
 			}
 			assert.Equal(t, expectedResults, actualResults)
+		})
+
+		type test1Record struct {
+			ID   int
+			Name string
+		}
+
+		t.Run("prepare", func(t *testing.T) {
+			stmt, err := db.PrepareContext(ctx, "SELECT id, name FROM test1 WHERE id = ?")
+			assert.NoError(t, err)
+			defer stmt.Close()
+
+			t.Run("QueryRowContext", func(t *testing.T) {
+				foo := test1Record{}
+				err := stmt.QueryRowContext(ctx, 1).Scan(&foo.ID, &foo.Name)
+				assert.NoError(t, err)
+				assert.Equal(t, test1Record{ID: 1, Name: "foo"}, foo)
+			})
 		})
 	})
 
