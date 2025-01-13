@@ -37,6 +37,7 @@ func TestBasic(t *testing.T) {
 	logger := slog.New(slog.NewJSONHandler(buf, &slog.HandlerOptions{Level: slog.LevelDebug}))
 	db, err := sqlslog.Open(ctx, "mysql", "root@tcp(localhost:3306)/"+dbName, logger)
 	require.NoError(t, err)
+	defer db.Close()
 
 	t.Run("sqlslog.Open log", func(t *testing.T) {
 		actualEntries := parseJsonLines(t, buf.Bytes())
@@ -76,29 +77,55 @@ func TestBasic(t *testing.T) {
 		result, err := db.ExecContext(ctx, "CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))")
 		assert.NoError(t, err)
 		t.Logf("buf.String(): %s\n", buf.String())
-		actualEntries := parseJsonLines(t, buf.Bytes())
-		exptectedEntries := []map[string]interface{}{
+		assertMapSlice(t, []map[string]interface{}{
 			{"level": "DEBUG", "msg": "ResetSession Start"},
 			{"level": "INFO", "msg": "ResetSession Complete"},
 			{"level": "DEBUG", "msg": "ExecContext Start"},
 			{"level": "INFO", "msg": "ExecContext Complete"},
-		}
-		assertMapSlice(t, exptectedEntries, actualEntries, "time")
+		}, parseJsonLines(t, buf.Bytes()), "time")
 
+		buf.Reset()
 		rowsAffected, err := result.RowsAffected()
 		assert.NoError(t, err)
 		assert.Equal(t, int64(0), rowsAffected)
+		assertMapSlice(t, []map[string]interface{}{}, parseJsonLines(t, buf.Bytes()), "time")
 	})
 
 	t.Run("delete", func(t *testing.T) {
+		buf.Reset()
 		stmt, err := db.Prepare("DELETE FROM test1")
 		assert.NoError(t, err)
-		defer stmt.Close()
+
+		assertMapSlice(t, []map[string]interface{}{
+			{"level": "DEBUG", "msg": "ResetSession Start"},
+			{"level": "INFO", "msg": "ResetSession Complete"},
+			{"level": "DEBUG", "msg": "PrepareContext Start", "query": "DELETE FROM test1"},
+			{"level": "INFO", "msg": "PrepareContext Complete", "query": "DELETE FROM test1"},
+		}, parseJsonLines(t, buf.Bytes()), "time")
+
+		buf.Reset()
 		result, err := stmt.Exec()
 		assert.NoError(t, err)
+		assertMapSlice(t, []map[string]interface{}{
+			{"level": "DEBUG", "msg": "ResetSession Start"},
+			{"level": "INFO", "msg": "ResetSession Complete"},
+			{"level": "DEBUG", "msg": "Stmt.ExecContext Start", "args": "[]"},
+			{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": "[]"},
+		}, parseJsonLines(t, buf.Bytes()), "time")
+
+		buf.Reset()
 		rowsAffected, err := result.RowsAffected()
 		assert.NoError(t, err)
 		assert.GreaterOrEqual(t, rowsAffected, int64(0))
+		assertMapSlice(t, []map[string]interface{}{}, parseJsonLines(t, buf.Bytes()), "time")
+
+		buf.Reset()
+		stmt.Close()
+		assertMapSlice(t, []map[string]interface{}{
+			{"level": "DEBUG", "msg": "Stmt.Close Start"},
+			{"level": "INFO", "msg": "Stmt.Close Complete"},
+		}, parseJsonLines(t, buf.Bytes()), "time")
+
 	})
 
 	t.Run("without tx", func(t *testing.T) {
