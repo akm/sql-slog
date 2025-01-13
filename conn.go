@@ -11,6 +11,13 @@ func wrapConn(original driver.Conn, logger *slog.Logger) driver.Conn {
 	if original == nil {
 		return nil
 	}
+	switch original.(type) {
+	case *connWithContextWrapper:
+		return original
+	case *connWrapper:
+		return original
+	}
+
 	if cwc, ok := original.(connWithContext); ok {
 		return &connWithContextWrapper{connWrapper{original: original, logger: logger}, cwc}
 	}
