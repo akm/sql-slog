@@ -1,6 +1,6 @@
 module mysql-test
 
-go 1.23.2
+go 1.21.13
 
 require (
 	github.com/akm/sql-slog v0.0.0-20250111025848-713ab89fa0bf
