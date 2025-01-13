@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - "**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go: ["1.21", "1.22", "1.23"]
+    name: Test on Go ${{ matrix.go }}
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # https://github.com/actions/setup-go
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go }}
+
+      - name: Check golang version/env
+        run: |
+          set -x
+          go version
+          go env
+
+      - name: build
+        run: make build
+
+      - name: lint
+        run: make lint
+
+      - name: test
+        run: make test-with-coverage
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
