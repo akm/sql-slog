@@ -17,7 +17,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestBasic(t *testing.T) {
+func TestLowLevelWithContext(t *testing.T) {
 	dbName := "app1"
 	dbPort := 3306
 	dsn := fmt.Sprintf("root@tcp(localhost:%d)/%s", dbPort, dbName)
