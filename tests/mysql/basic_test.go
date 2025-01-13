@@ -85,6 +85,51 @@ func TestBasic(t *testing.T) {
 			assert.NoError(t, err)
 			defer rows.Close()
 
+			t.Run("rows.Columns", func(t *testing.T) {
+				columns, err := rows.Columns()
+				assert.NoError(t, err)
+				assert.Equal(t, []string{"id", "name"}, columns)
+			})
+			t.Run("rows", func(t *testing.T) {
+				columnTypes, err := rows.ColumnTypes()
+				assert.NoError(t, err)
+				assert.Len(t, columnTypes, 2)
+				t.Run("ColumnTypes[0]", func(t *testing.T) {
+					ct := columnTypes[0]
+					assert.Equal(t, "id", ct.Name())
+					lengthValue, lengthOK := ct.Length()
+					assert.Equal(t, int64(0), lengthValue)
+					assert.False(t, lengthOK)
+					assert.Equal(t, "INT", ct.DatabaseTypeName())
+					dsPrecision, dsScale, dsOK := ct.DecimalSize()
+					assert.Equal(t, int64(0), dsPrecision)
+					assert.Equal(t, int64(0), dsScale)
+					assert.False(t, dsOK)
+					nullableValue, nullableOK := ct.Nullable()
+					assert.False(t, nullableValue)
+					assert.True(t, nullableOK)
+					scanType := ct.ScanType()
+					assert.Equal(t, "int32", scanType.Name())
+				})
+				t.Run("ColumnTypes[1]", func(t *testing.T) {
+					ct := columnTypes[1]
+					assert.Equal(t, "name", ct.Name())
+					lengthValue, lengthOK := ct.Length()
+					assert.Equal(t, int64(0), lengthValue)
+					assert.False(t, lengthOK)
+					assert.Equal(t, "VARCHAR", ct.DatabaseTypeName())
+					dsPrecision, dsScale, dsOK := ct.DecimalSize()
+					assert.Equal(t, int64(0), dsPrecision)
+					assert.Equal(t, int64(0), dsScale)
+					assert.False(t, dsOK)
+					nullableValue, nullableOK := ct.Nullable()
+					assert.True(t, nullableValue)
+					assert.True(t, nullableOK)
+					scanType := ct.ScanType()
+					assert.Equal(t, "NullString", scanType.Name())
+				})
+			})
+
 			actualResults := []map[string]interface{}{}
 			for rows.Next() {
 				result := map[string]interface{}{}
