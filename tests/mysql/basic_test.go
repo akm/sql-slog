@@ -38,6 +38,17 @@ func TestBasic(t *testing.T) {
 	db, err := sqlslog.Open(ctx, "mysql", "root@tcp(localhost:3306)/"+dbName, logger)
 	require.NoError(t, err)
 
+	t.Run("sqlslog.Open log", func(t *testing.T) {
+		actualEntries := parseJsonLines(t, buf.Bytes())
+		exptectedEntries := []map[string]interface{}{
+			{"level": "DEBUG", "msg": "sqlslog.Open Start", "driver": "mysql", "dsn": dsn},
+			{"level": "DEBUG", "msg": "OpenConnector Start", "dsn": dsn},
+			{"level": "INFO", "msg": "OpenConnector Complete", "dsn": dsn},
+			{"level": "DEBUG", "msg": "sqlslog.Open Complete", "driver": "mysql", "dsn": dsn},
+		}
+		assertMapSlice(t, exptectedEntries, actualEntries, "time")
+	})
+
 	for i := 0; i < 10; i++ {
 		if err := db.PingContext(ctx); err == nil {
 			break
