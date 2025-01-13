@@ -66,8 +66,28 @@ func TestBasic(t *testing.T) {
 	})
 
 	t.Run("create table", func(t *testing.T) {
+		buf.Reset()
 		result, err := db.ExecContext(ctx, "CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))")
 		assert.NoError(t, err)
+		t.Logf("buf.String(): %s\n", buf.String())
+		actualEntries := parseJsonLines(t, buf.Bytes())
+		exptectedEntries := []map[string]interface{}{
+			{"level": "DEBUG", "msg": "ResetSession Start", "driver": "mysql", "dsn": dsn},
+			{"level": "INFO", "msg": "ResetSession Complete", "driver": "mysql", "dsn": dsn},
+			{"level": "DEBUG", "msg": "ExecContext Start", "driver": "", "dsn": ""},
+			{"level": "INFO", "msg": "ExecContext Complete", "driver": "", "dsn": ""},
+		}
+		assert.Len(t, actualEntries, len(exptectedEntries))
+		for i, expected := range exptectedEntries {
+			for k, v := range expected {
+				if v == "" {
+					assert.NotContains(t, actualEntries[i], k)
+				} else {
+					assert.Equal(t, v, actualEntries[i][k])
+				}
+			}
+		}
+
 		rowsAffected, err := result.RowsAffected()
 		assert.NoError(t, err)
 		assert.Equal(t, int64(0), rowsAffected)
