@@ -2,12 +2,12 @@ package mysqltest
 
 import (
 	"context"
-	"database/sql"
 	"os"
 	"os/exec"
 	"testing"
 	"time"
 
+	sqlslog "github.com/akm/sql-slog"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -21,7 +21,7 @@ func TestBasic(t *testing.T) {
 	}
 	defer exec.Command("docker", "compose", "-f", "docker-compose.yml", "down").Run()
 
-	db, err := sql.Open("mysql", "root@tcp(localhost:3306)/"+dbName)
+	db, err := sqlslog.Open("mysql", "root@tcp(localhost:3306)/"+dbName)
 	if err != nil {
 		t.Fatal(err)
 	}
