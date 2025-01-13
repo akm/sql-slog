@@ -83,16 +83,7 @@ func TestBasic(t *testing.T) {
 			{"level": "DEBUG", "msg": "ExecContext Start"},
 			{"level": "INFO", "msg": "ExecContext Complete"},
 		}
-		assert.Len(t, actualEntries, len(exptectedEntries))
-		for i, expected := range exptectedEntries {
-			for k, v := range expected {
-				if v == "" {
-					assert.NotContains(t, actualEntries[i], k)
-				} else {
-					assert.Equal(t, v, actualEntries[i][k])
-				}
-			}
-		}
+		assertMapSlice(t, exptectedEntries, actualEntries, "time")
 
 		rowsAffected, err := result.RowsAffected()
 		assert.NoError(t, err)
