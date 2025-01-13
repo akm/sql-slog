@@ -12,7 +12,7 @@ func Open(ctx context.Context, driverName, dsn string, logger *slog.Logger) (*sq
 		slog.String("driver", driverName),
 		slog.String("dsn", dsn),
 	)
-	lg.Debug("sqlslog.Open Start")
+	lg.DebugContext(ctx, "sqlslog.Open Start")
 
 	db, err := sql.Open(driverName, dsn)
 	if err != nil {
@@ -36,6 +36,6 @@ func Open(ctx context.Context, driverName, dsn string, logger *slog.Logger) (*sq
 		origConnector = &dsnConnector{dsn: dsn, driver: drv}
 	}
 
-	lg.Debug("sqlslog.Open Complete")
+	lg.InfoContext(ctx, "sqlslog.Open Complete")
 	return sql.OpenDB(wrapConnector(origConnector, logger)), nil
 }

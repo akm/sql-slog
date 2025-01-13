@@ -44,7 +44,7 @@ func TestBasic(t *testing.T) {
 			{"level": "DEBUG", "msg": "sqlslog.Open Start", "driver": "mysql", "dsn": dsn},
 			{"level": "DEBUG", "msg": "OpenConnector Start", "dsn": dsn},
 			{"level": "INFO", "msg": "OpenConnector Complete", "dsn": dsn},
-			{"level": "DEBUG", "msg": "sqlslog.Open Complete", "driver": "mysql", "dsn": dsn},
+			{"level": "INFO", "msg": "sqlslog.Open Complete", "driver": "mysql", "dsn": dsn},
 		}
 		assertMapSlice(t, exptectedEntries, actualEntries, "time")
 	})
