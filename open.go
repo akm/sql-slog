@@ -21,7 +21,7 @@ func Open(ctx context.Context, driverName, dsn string, logger *slog.Logger) (*sq
 	}
 	// This db is not used directly, but it is used to get the driver.
 
-	drv := wrapDriver(db.Driver(), lg)
+	drv := wrapDriver(db.Driver(), logger)
 
 	var origConnector driver.Connector
 
