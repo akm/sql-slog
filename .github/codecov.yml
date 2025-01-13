@@ -1,0 +1,9 @@
+# https://docs.codecov.com/docs/codecovyml-reference#ignore
+# https://zenn.dev/ncdc/articles/codecov_yml_settings
+
+# https://docs.codecov.com/docs/commit-status
+coverage:
+  status:
+    project:
+      default:   # default is the status check's name, not default settings
+        target: 100%
