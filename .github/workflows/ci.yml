@@ -38,6 +38,9 @@ jobs:
       - name: test
         run: make test-with-coverage
 
+      - name: test-coverage-profile
+        run: make test-coverage-profile
+
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:
