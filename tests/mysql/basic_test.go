@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"log/slog"
 	"os"
 	"os/exec"
@@ -18,13 +19,17 @@ import (
 
 func TestBasic(t *testing.T) {
 	dbName := "app1"
+	dbPort := 3306
+	dsn := fmt.Sprintf("root@tcp(localhost:%d)/%s", dbPort, dbName)
 
 	os.Setenv("MYSQL_PORT", "3306")
 	os.Setenv("MYSQL_DATABASE", dbName)
 	if err := exec.Command("docker", "compose", "-f", "docker-compose.yml", "up", "-d").Run(); err != nil {
 		t.Fatal(err)
 	}
-	defer exec.Command("docker", "compose", "-f", "docker-compose.yml", "down").Run()
+	if os.Getenv("DEBUG") == "" {
+		defer exec.Command("docker", "compose", "-f", "docker-compose.yml", "down").Run()
+	}
 
 	ctx := context.TODO()
 
@@ -47,10 +52,10 @@ func TestBasic(t *testing.T) {
 		assert.NoError(t, err)
 		actualEntries := parseJsonLines(t, buf.Bytes())
 		exptectedEntries := []map[string]interface{}{
-			{"level": "DEBUG", "msg": "ResetSession Start", "driver": "mysql", "dsn": "root@tcp(localhost:3306)/app1"},
-			{"level": "INFO", "msg": "ResetSession Complete", "driver": "mysql", "dsn": "root@tcp(localhost:3306)/app1"},
-			{"level": "DEBUG", "msg": "Ping Start", "driver": "mysql", "dsn": "root@tcp(localhost:3306)/app1"},
-			{"level": "INFO", "msg": "Ping Complete", "driver": "mysql", "dsn": "root@tcp(localhost:3306)/app1"},
+			{"level": "DEBUG", "msg": "ResetSession Start", "driver": "mysql", "dsn": dsn},
+			{"level": "INFO", "msg": "ResetSession Complete", "driver": "mysql", "dsn": dsn},
+			{"level": "DEBUG", "msg": "Ping Start", "driver": "mysql", "dsn": dsn},
+			{"level": "INFO", "msg": "Ping Complete", "driver": "mysql", "dsn": dsn},
 		}
 		assert.Len(t, actualEntries, len(exptectedEntries))
 		for i, expected := range exptectedEntries {
@@ -66,6 +71,17 @@ func TestBasic(t *testing.T) {
 		rowsAffected, err := result.RowsAffected()
 		assert.NoError(t, err)
 		assert.Equal(t, int64(0), rowsAffected)
+	})
+
+	t.Run("delete", func(t *testing.T) {
+		stmt, err := db.Prepare("DELETE FROM test1")
+		assert.NoError(t, err)
+		defer stmt.Close()
+		result, err := stmt.Exec()
+		assert.NoError(t, err)
+		rowsAffected, err := result.RowsAffected()
+		assert.NoError(t, err)
+		assert.GreaterOrEqual(t, rowsAffected, int64(0))
 	})
 
 	t.Run("without tx", func(t *testing.T) {
