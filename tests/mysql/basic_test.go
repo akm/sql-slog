@@ -35,7 +35,89 @@ func TestBasic(t *testing.T) {
 		time.Sleep(2 * time.Second)
 	}
 
-	if _, err := db.ExecContext(ctx, "CREATE TABLE IF NOT EXISTS test (id INT PRIMARY KEY, name VARCHAR(255))"); err != nil {
+	if _, err := db.ExecContext(ctx, "CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))"); err != nil {
 		t.Fatal(err)
 	}
+
+	t.Run("without tx", func(t *testing.T) {
+		testData := []string{"foo", "bar", "baz"}
+		for i, name := range testData {
+			if _, err := db.ExecContext(ctx, "INSERT INTO test1 (id, name) VALUES (?, ?)", i+1, name); err != nil {
+				t.Fatal(err)
+			}
+		}
+
+		rows, err := db.QueryContext(ctx, "SELECT id, name FROM test1 WHERE name LIKE ? ORDER BY id", "b%")
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		results := []map[string]interface{}{}
+		for rows.Next() {
+			result := map[string]interface{}{}
+			var id int
+			var name string
+			if err := rows.Scan(&id, &name); err != nil {
+				t.Fatal(err)
+			}
+			result["id"] = id
+			result["name"] = name
+			results = append(results, result)
+		}
+
+		if len(results) != 2 {
+			t.Fatalf("Expected 2 results, got %d", len(results))
+		}
+
+		if results[0]["id"] != 2 || results[0]["name"] != "bar" {
+			t.Fatalf("Unexpected result: %v", results[0])
+		}
+		if results[1]["id"] != 3 || results[1]["name"] != "baz" {
+			t.Fatalf("Unexpected result: %v", results[1])
+		}
+	})
+
+	t.Run("with tx", func(t *testing.T) {
+		t.Run("rollback", func(t *testing.T) {
+			tx, err := db.BeginTx(ctx, nil)
+			if err != nil {
+				t.Fatal(err)
+			}
+			r, err := tx.ExecContext(ctx, "UPDATE test1 SET name = ? WHERE id = ?", "quux", 3)
+			if err != nil {
+				t.Fatal(err)
+			}
+			rowsAffected, err := r.RowsAffected()
+			if err != nil {
+				t.Fatal(err)
+			}
+			if rowsAffected != 1 {
+				t.Fatalf("Expected 1 row affected, got %d", rowsAffected)
+			}
+			if err := tx.Rollback(); err != nil {
+				t.Fatal(err)
+			}
+		})
+		t.Run("commit", func(t *testing.T) {
+			tx, err := db.BeginTx(ctx, nil)
+			if err != nil {
+				t.Fatal(err)
+			}
+			r, err := tx.ExecContext(ctx, "UPDATE test1 SET name = ? WHERE id = ?", "qux", 3)
+			if err != nil {
+				t.Fatal(err)
+			}
+			rowsAffected, err := r.RowsAffected()
+			if err != nil {
+				t.Fatal(err)
+			}
+			if rowsAffected != 1 {
+				t.Fatalf("Expected 1 row affected, got %d", rowsAffected)
+			}
+			if err := tx.Commit(); err != nil {
+				t.Fatal(err)
+			}
+		})
+
+	})
 }
