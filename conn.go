@@ -159,7 +159,11 @@ func (c *connWithContextWrapper) Ping(ctx context.Context) error {
 // ExecContext implements driver.ExecerContext.
 func (c *connWithContextWrapper) ExecContext(ctx context.Context, query string, args []driver.NamedValue) (driver.Result, error) {
 	var result driver.Result
-	err := logActionContext(ctx, c.logger, "ExecContext", func() error {
+	lg := c.logger.With(
+		slog.String("query", query),
+		slog.String("args", fmt.Sprintf("%+v", args)),
+	)
+	err := logActionContext(ctx, lg, "ExecContext", func() error {
 		var err error
 		result, err = c.originalConn.ExecContext(ctx, query, args)
 		return err
@@ -173,7 +177,11 @@ func (c *connWithContextWrapper) ExecContext(ctx context.Context, query string, 
 // QueryContext implements driver.QueryerContext.
 func (c *connWithContextWrapper) QueryContext(ctx context.Context, query string, args []driver.NamedValue) (driver.Rows, error) {
 	var rows driver.Rows
-	err := logActionContext(ctx, c.logger, "QueryContext", func() error {
+	lg := c.logger.With(
+		slog.String("query", query),
+		slog.String("args", fmt.Sprintf("%+v", args)),
+	)
+	err := logActionContext(ctx, lg, "QueryContext", func() error {
 		var err error
 		rows, err = c.originalConn.QueryContext(ctx, query, args)
 		return err
