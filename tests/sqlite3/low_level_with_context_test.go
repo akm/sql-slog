@@ -30,10 +30,8 @@ func TestLowLevelWithContext(t *testing.T) {
 	t.Run("sqlslog.Open log", func(t *testing.T) {
 		actualEntries := parseJsonLines(t, buf.Bytes())
 		exptectedEntries := []map[string]interface{}{
-			{"level": "DEBUG", "msg": "sqlslog.Open Start", "driver": "mysql", "dsn": dsn},
-			{"level": "DEBUG", "msg": "OpenConnector Start", "dsn": dsn},
-			{"level": "INFO", "msg": "OpenConnector Complete", "dsn": dsn},
-			{"level": "INFO", "msg": "sqlslog.Open Complete", "driver": "mysql", "dsn": dsn},
+			{"level": "DEBUG", "msg": "sqlslog.Open Start", "driver": "sqlite3", "dsn": dsn},
+			{"level": "INFO", "msg": "sqlslog.Open Complete", "driver": "sqlite3", "dsn": dsn},
 		}
 		assertMapSlice(t, exptectedEntries, actualEntries, "time")
 	})
@@ -61,7 +59,7 @@ func TestLowLevelWithContext(t *testing.T) {
 	})
 
 	t.Run("create table", func(t *testing.T) {
-		query := "CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))"
+		query := "CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))"
 		buf.Reset()
 		result, err := db.ExecContext(ctx, query)
 		assert.NoError(t, err)
@@ -131,13 +129,7 @@ func TestLowLevelWithContext(t *testing.T) {
 					{"level": "DEBUG", "msg": "ResetSession Start"},
 					{"level": "INFO", "msg": "ResetSession Complete"},
 					{"level": "DEBUG", "msg": "ExecContext Start", "query": query, "args": args},
-					{"level": "ERROR", "msg": "ExecContext Error", "query": query, "args": args, "error": "driver: skip fast-path; continue as if unimplemented"},
-					{"level": "DEBUG", "msg": "PrepareContext Start", "query": "INSERT INTO test1 (id, name) VALUES (?, ?)"},
-					{"level": "INFO", "msg": "PrepareContext Complete", "query": "INSERT INTO test1 (id, name) VALUES (?, ?)"},
-					{"level": "DEBUG", "msg": "Stmt.ExecContext Start", "args": args},
-					{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": args},
-					{"level": "DEBUG", "msg": "Stmt.Close Start"},
-					{"level": "INFO", "msg": "Stmt.Close Complete"},
+					{"level": "INFO", "msg": "ExecContext Complete", "query": query, "args": args},
 				}, parseJsonLines(t, buf.Bytes()), "time")
 
 				buf.Reset()
@@ -148,6 +140,48 @@ func TestLowLevelWithContext(t *testing.T) {
 			})
 		}
 
+		t.Run("select count", func(t *testing.T) {
+			t.Run("without condition", func(t *testing.T) {
+				query := "SELECT count(*) FROM test1"
+				var cnt int
+				err := db.QueryRowContext(ctx, query).Scan(&cnt)
+				assert.NoError(t, err)
+				assert.Equal(t, 3, cnt)
+			})
+			t.Run("with condition", func(t *testing.T) {
+				query := "SELECT count(*) FROM test1 WHERE name LIKE ?"
+				var cnt int
+				err := db.QueryRowContext(ctx, query, "ba%").Scan(&cnt)
+				assert.NoError(t, err)
+				assert.Equal(t, 2, cnt)
+			})
+
+		})
+
+		t.Run("select all", func(t *testing.T) {
+			query := "SELECT id, name FROM test1"
+			buf.Reset()
+			rows, err := db.QueryContext(ctx, query)
+			assert.NoError(t, err)
+			defer rows.Close()
+
+			actualResults := []map[string]interface{}{}
+			for rows.Next() {
+				result := map[string]interface{}{}
+				var id int
+				var name string
+				require.NoError(t, rows.Scan(&id, &name))
+				result["id"] = id
+				result["name"] = name
+				actualResults = append(actualResults, result)
+			}
+			assert.Equal(t, []map[string]interface{}{
+				{"id": 1, "name": "foo"},
+				{"id": 2, "name": "bar"},
+				{"id": 3, "name": "baz"},
+			}, actualResults)
+		})
+
 		t.Run("select", func(t *testing.T) {
 			query := "SELECT id, name FROM test1 WHERE name LIKE ?"
 			buf.Reset()
@@ -157,7 +191,8 @@ func TestLowLevelWithContext(t *testing.T) {
 				buf.Reset()
 				assert.NoError(t, rows.Close())
 				assertMapSlice(t, []map[string]interface{}{
-					// Rows.Close and Stmt.Close are called from rows.Next when EOF
+					// {"level": "DEBUG", "msg": "Rows.Close Start"},
+					// {"level": "INFO", "msg": "Rows.Close Complete"},
 				}, parseJsonLines(t, buf.Bytes()), "time")
 			}()
 			args := "[{Name: Ordinal:1 Value:ba%}]"
@@ -165,11 +200,7 @@ func TestLowLevelWithContext(t *testing.T) {
 				{"level": "DEBUG", "msg": "ResetSession Start"},
 				{"level": "INFO", "msg": "ResetSession Complete"},
 				{"level": "DEBUG", "msg": "QueryContext Start", "query": query, "args": args},
-				{"level": "ERROR", "msg": "QueryContext Error", "query": query, "args": args, "error": "driver: skip fast-path; continue as if unimplemented"},
-				{"level": "DEBUG", "msg": "PrepareContext Start", "query": "SELECT id, name FROM test1 WHERE name LIKE ?"},
-				{"level": "INFO", "msg": "PrepareContext Complete", "query": "SELECT id, name FROM test1 WHERE name LIKE ?"},
-				{"level": "DEBUG", "msg": "Stmt.QueryContext Start", "args": args},
-				{"level": "INFO", "msg": "Stmt.QueryContext Complete", "args": args},
+				{"level": "INFO", "msg": "QueryContext Complete", "query": query, "args": args},
 			}, parseJsonLines(t, buf.Bytes()), "time")
 
 			t.Run("rows.Columns", func(t *testing.T) {
@@ -192,16 +223,16 @@ func TestLowLevelWithContext(t *testing.T) {
 					lengthValue, lengthOK := ct.Length()
 					assert.Equal(t, int64(0), lengthValue)
 					assert.False(t, lengthOK)
-					assert.Equal(t, "INT", ct.DatabaseTypeName())
+					assert.Equal(t, "INTEGER", ct.DatabaseTypeName())
 					dsPrecision, dsScale, dsOK := ct.DecimalSize()
 					assert.Equal(t, int64(0), dsPrecision)
 					assert.Equal(t, int64(0), dsScale)
 					assert.False(t, dsOK)
 					nullableValue, nullableOK := ct.Nullable()
-					assert.False(t, nullableValue)
+					assert.True(t, nullableValue)
 					assert.True(t, nullableOK)
 					scanType := ct.ScanType()
-					assert.Equal(t, "int32", scanType.Name())
+					assert.Equal(t, "NullInt64", scanType.Name())
 					assertMapSlice(t, []map[string]interface{}{}, parseJsonLines(t, buf.Bytes()), "time")
 				})
 				t.Run("ColumnTypes[1]", func(t *testing.T) {
@@ -211,7 +242,7 @@ func TestLowLevelWithContext(t *testing.T) {
 					lengthValue, lengthOK := ct.Length()
 					assert.Equal(t, int64(0), lengthValue)
 					assert.False(t, lengthOK)
-					assert.Equal(t, "VARCHAR", ct.DatabaseTypeName())
+					assert.Equal(t, "VARCHAR(255)", ct.DatabaseTypeName())
 					dsPrecision, dsScale, dsOK := ct.DecimalSize()
 					assert.Equal(t, int64(0), dsPrecision)
 					assert.Equal(t, int64(0), dsScale)
@@ -237,9 +268,7 @@ func TestLowLevelWithContext(t *testing.T) {
 				result := map[string]interface{}{}
 				var id int
 				var name string
-				if err := rows.Scan(&id, &name); err != nil {
-					t.Fatal(err)
-				}
+				require.NoError(t, rows.Scan(&id, &name))
 				result["id"] = id
 				result["name"] = name
 				actualResults = append(actualResults, result)
@@ -250,8 +279,6 @@ func TestLowLevelWithContext(t *testing.T) {
 				{"level": "ERROR", "msg": "Rows.Next Error", "error": "EOF"},
 				{"level": "DEBUG", "msg": "Rows.Close Start"},
 				{"level": "INFO", "msg": "Rows.Close Complete"},
-				{"level": "DEBUG", "msg": "Stmt.Close Start"},
-				{"level": "INFO", "msg": "Stmt.Close Complete"},
 			}, parseJsonLines(t, buf.Bytes()), "time")
 
 			expectedResults := []map[string]interface{}{
@@ -290,7 +317,7 @@ func TestLowLevelWithContext(t *testing.T) {
 			t.Run("QueryRowContext", func(t *testing.T) {
 				buf.Reset()
 				foo := test1Record{}
-				err := stmt.QueryRowContext(ctx, 1).Scan(&foo.ID, &foo.Name)
+				err := stmt.QueryRowContext(ctx, int64(1)).Scan(&foo.ID, &foo.Name)
 				assert.NoError(t, err)
 				assertMapSlice(t, []map[string]interface{}{
 					{"level": "DEBUG", "msg": "ResetSession Start"},
@@ -360,18 +387,12 @@ func TestLowLevelWithContext(t *testing.T) {
 			t.Run("update", func(t *testing.T) {
 				query := "UPDATE test1 SET name = ? WHERE id = ?"
 				buf.Reset()
-				r, err := tx.ExecContext(ctx, query, "qux", 3)
+				r, err := tx.ExecContext(ctx, query, "qux", int64(3))
 				args := "[{Name: Ordinal:1 Value:qux} {Name: Ordinal:2 Value:3}]"
 				assert.NoError(t, err)
 				assertMapSlice(t, []map[string]interface{}{
 					{"level": "DEBUG", "msg": "ExecContext Start", "query": query, "args": args},
-					{"level": "ERROR", "msg": "ExecContext Error", "query": query, "args": args, "error": "driver: skip fast-path; continue as if unimplemented"},
-					{"level": "DEBUG", "msg": "PrepareContext Start", "query": query},
-					{"level": "INFO", "msg": "PrepareContext Complete", "query": query},
-					{"level": "DEBUG", "msg": "Stmt.ExecContext Start", "args": args},
-					{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": args},
-					{"level": "DEBUG", "msg": "Stmt.Close Start"},
-					{"level": "INFO", "msg": "Stmt.Close Complete"},
+					{"level": "INFO", "msg": "ExecContext Complete", "query": query, "args": args},
 				}, parseJsonLines(t, buf.Bytes()), "time")
 
 				rowsAffected, err := r.RowsAffected()
@@ -402,18 +423,12 @@ func TestLowLevelWithContext(t *testing.T) {
 			t.Run("update", func(t *testing.T) {
 				query := "UPDATE test1 SET name = ? WHERE id = ?"
 				buf.Reset()
-				r, err := tx.ExecContext(ctx, query, "quux", 3)
+				r, err := tx.ExecContext(ctx, query, "quux", int64(3))
 				args := "[{Name: Ordinal:1 Value:quux} {Name: Ordinal:2 Value:3}]"
 				assert.NoError(t, err)
 				assertMapSlice(t, []map[string]interface{}{
 					{"level": "DEBUG", "msg": "ExecContext Start", "query": query, "args": args},
-					{"level": "ERROR", "msg": "ExecContext Error", "query": query, "args": args, "error": "driver: skip fast-path; continue as if unimplemented"},
-					{"level": "DEBUG", "msg": "PrepareContext Start", "query": query},
-					{"level": "INFO", "msg": "PrepareContext Complete", "query": query},
-					{"level": "DEBUG", "msg": "Stmt.ExecContext Start", "args": args},
-					{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": args},
-					{"level": "DEBUG", "msg": "Stmt.Close Start"},
-					{"level": "INFO", "msg": "Stmt.Close Complete"},
+					{"level": "INFO", "msg": "ExecContext Complete", "query": query, "args": args},
 				}, parseJsonLines(t, buf.Bytes()), "time")
 
 				rowsAffected, err := r.RowsAffected()
