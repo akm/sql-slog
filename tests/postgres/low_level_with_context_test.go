@@ -42,8 +42,6 @@ func TestLowLevelWithContext(t *testing.T) {
 		actualEntries := parseJsonLines(t, buf.Bytes())
 		exptectedEntries := []map[string]interface{}{
 			{"level": "DEBUG", "msg": "sqlslog.Open Start", "driver": "postgres", "dsn": dsn},
-			// {"level": "DEBUG", "msg": "OpenConnector Start", "dsn": dsn},
-			// {"level": "INFO", "msg": "OpenConnector Complete", "dsn": dsn},
 			{"level": "INFO", "msg": "sqlslog.Open Complete", "driver": "postgres", "dsn": dsn},
 		}
 		assertMapSlice(t, exptectedEntries, actualEntries, "time")
@@ -72,15 +70,16 @@ func TestLowLevelWithContext(t *testing.T) {
 	})
 
 	t.Run("create table", func(t *testing.T) {
+		query := "CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))"
 		buf.Reset()
-		result, err := db.ExecContext(ctx, "CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))")
+		result, err := db.ExecContext(ctx, query)
 		assert.NoError(t, err)
 		t.Logf("buf.String(): %s\n", buf.String())
 		assertMapSlice(t, []map[string]interface{}{
 			{"level": "DEBUG", "msg": "ResetSession Start"},
 			{"level": "INFO", "msg": "ResetSession Complete"},
-			{"level": "DEBUG", "msg": "ExecContext Start"},
-			{"level": "INFO", "msg": "ExecContext Complete"},
+			{"level": "DEBUG", "msg": "ExecContext Start", "query": query, "args": "[]"},
+			{"level": "INFO", "msg": "ExecContext Complete", "query": query, "args": "[]"},
 		}, parseJsonLines(t, buf.Bytes()), "time")
 
 		buf.Reset()
@@ -91,15 +90,16 @@ func TestLowLevelWithContext(t *testing.T) {
 	})
 
 	t.Run("delete", func(t *testing.T) {
+		query := "DELETE FROM test1"
 		buf.Reset()
-		stmt, err := db.PrepareContext(ctx, "DELETE FROM test1")
+		stmt, err := db.PrepareContext(ctx, query)
 		assert.NoError(t, err)
 
 		assertMapSlice(t, []map[string]interface{}{
 			{"level": "DEBUG", "msg": "ResetSession Start"},
 			{"level": "INFO", "msg": "ResetSession Complete"},
-			{"level": "DEBUG", "msg": "PrepareContext Start", "query": "DELETE FROM test1"},
-			{"level": "INFO", "msg": "PrepareContext Complete", "query": "DELETE FROM test1"},
+			{"level": "DEBUG", "msg": "PrepareContext Start", "query": query},
+			{"level": "INFO", "msg": "PrepareContext Complete", "query": query},
 		}, parseJsonLines(t, buf.Bytes()), "time")
 
 		buf.Reset()
@@ -131,14 +131,15 @@ func TestLowLevelWithContext(t *testing.T) {
 		testData := []string{"foo", "bar", "baz"}
 		for i, name := range testData {
 			t.Run("insert "+name, func(t *testing.T) {
+				query := "INSERT INTO test1 (id, name) VALUES ($1,$2);"
 				buf.Reset()
-				result, err := db.ExecContext(ctx, "INSERT INTO test1 (id, name) VALUES ($1,$2);", int64(i+1), name)
+				result, err := db.ExecContext(ctx, query, int64(i+1), name)
 				assert.NoError(t, err)
 				assertMapSlice(t, []map[string]interface{}{
 					{"level": "DEBUG", "msg": "ResetSession Start"},
 					{"level": "INFO", "msg": "ResetSession Complete"},
-					{"level": "DEBUG", "msg": "ExecContext Start"},
-					{"level": "INFO", "msg": "ExecContext Complete"},
+					{"level": "DEBUG", "msg": "ExecContext Start", "query": query, "args": fmt.Sprintf("[{Name: Ordinal:1 Value:%d} {Name: Ordinal:2 Value:%s}]", i+1, name)},
+					{"level": "INFO", "msg": "ExecContext Complete", "query": query, "args": fmt.Sprintf("[{Name: Ordinal:1 Value:%d} {Name: Ordinal:2 Value:%s}]", i+1, name)},
 				}, parseJsonLines(t, buf.Bytes()), "time")
 
 				buf.Reset()
@@ -150,8 +151,9 @@ func TestLowLevelWithContext(t *testing.T) {
 		}
 
 		t.Run("select", func(t *testing.T) {
+			query := "SELECT id, name FROM test1 WHERE name LIKE $1"
 			buf.Reset()
-			rows, err := db.QueryContext(ctx, "SELECT id, name FROM test1 WHERE name LIKE $1", "ba%")
+			rows, err := db.QueryContext(ctx, query, "ba%")
 			assert.NoError(t, err)
 			defer func() {
 				buf.Reset()
@@ -163,8 +165,8 @@ func TestLowLevelWithContext(t *testing.T) {
 			assertMapSlice(t, []map[string]interface{}{
 				{"level": "DEBUG", "msg": "ResetSession Start"},
 				{"level": "INFO", "msg": "ResetSession Complete"},
-				{"level": "DEBUG", "msg": "QueryContext Start"},
-				{"level": "INFO", "msg": "QueryContext Complete"},
+				{"level": "DEBUG", "msg": "QueryContext Start", "query": query, "args": "[{Name: Ordinal:1 Value:ba%}]"},
+				{"level": "INFO", "msg": "QueryContext Complete", "query": query, "args": "[{Name: Ordinal:1 Value:ba%}]"},
 			}, parseJsonLines(t, buf.Bytes()), "time")
 
 			t.Run("rows.Columns", func(t *testing.T) {
@@ -260,14 +262,15 @@ func TestLowLevelWithContext(t *testing.T) {
 		}
 
 		t.Run("prepare", func(t *testing.T) {
+			query := "SELECT id, name FROM test1 WHERE id = $1"
 			buf.Reset()
-			stmt, err := db.PrepareContext(ctx, "SELECT id, name FROM test1 WHERE id = $1")
+			stmt, err := db.PrepareContext(ctx, query)
 			assert.NoError(t, err)
 			assertMapSlice(t, []map[string]interface{}{
 				{"level": "DEBUG", "msg": "ResetSession Start"},
 				{"level": "INFO", "msg": "ResetSession Complete"},
-				{"level": "DEBUG", "msg": "PrepareContext Start", "query": "SELECT id, name FROM test1 WHERE id = $1"},
-				{"level": "INFO", "msg": "PrepareContext Complete", "query": "SELECT id, name FROM test1 WHERE id = $1"},
+				{"level": "DEBUG", "msg": "PrepareContext Start", "query": query},
+				{"level": "INFO", "msg": "PrepareContext Complete", "query": query},
 			}, parseJsonLines(t, buf.Bytes()), "time")
 
 			defer func() {
@@ -299,14 +302,15 @@ func TestLowLevelWithContext(t *testing.T) {
 		})
 
 		t.Run("prepare + ExecContext", func(t *testing.T) {
+			query := "INSERT INTO test1 (id, name) VALUES ($1, $2)"
 			buf.Reset()
-			stmt, err := db.PrepareContext(ctx, "INSERT INTO test1 (id, name) VALUES ($1, $2)")
+			stmt, err := db.PrepareContext(ctx, query)
 			assert.NoError(t, err)
 			assertMapSlice(t, []map[string]interface{}{
 				{"level": "DEBUG", "msg": "ResetSession Start"},
 				{"level": "INFO", "msg": "ResetSession Complete"},
-				{"level": "DEBUG", "msg": "PrepareContext Start", "query": "INSERT INTO test1 (id, name) VALUES ($1, $2)"},
-				{"level": "INFO", "msg": "PrepareContext Complete", "query": "INSERT INTO test1 (id, name) VALUES ($1, $2)"},
+				{"level": "DEBUG", "msg": "PrepareContext Start", "query": query},
+				{"level": "INFO", "msg": "PrepareContext Complete", "query": query},
 			}, parseJsonLines(t, buf.Bytes()), "time")
 
 			defer func() {
@@ -349,12 +353,13 @@ func TestLowLevelWithContext(t *testing.T) {
 			}, parseJsonLines(t, buf.Bytes()), "time")
 
 			t.Run("update", func(t *testing.T) {
+				query := "UPDATE test1 SET name = $1 WHERE id = $2"
 				buf.Reset()
-				r, err := tx.ExecContext(ctx, "UPDATE test1 SET name = $1 WHERE id = $2", "qux", int64(3))
+				r, err := tx.ExecContext(ctx, query, "qux", int64(3))
 				assert.NoError(t, err)
 				assertMapSlice(t, []map[string]interface{}{
-					{"level": "DEBUG", "msg": "ExecContext Start"},
-					{"level": "INFO", "msg": "ExecContext Complete"},
+					{"level": "DEBUG", "msg": "ExecContext Start", "query": query, "args": "[{Name: Ordinal:1 Value:qux} {Name: Ordinal:2 Value:3}]"},
+					{"level": "INFO", "msg": "ExecContext Complete", "query": query, "args": "[{Name: Ordinal:1 Value:qux} {Name: Ordinal:2 Value:3}]"},
 				}, parseJsonLines(t, buf.Bytes()), "time")
 
 				rowsAffected, err := r.RowsAffected()
@@ -383,12 +388,13 @@ func TestLowLevelWithContext(t *testing.T) {
 			}, parseJsonLines(t, buf.Bytes()), "time")
 
 			t.Run("update", func(t *testing.T) {
+				query := "UPDATE test1 SET name = $1 WHERE id = $2"
 				buf.Reset()
-				r, err := tx.ExecContext(ctx, "UPDATE test1 SET name = $1 WHERE id = $2", "quux", int64(3))
+				r, err := tx.ExecContext(ctx, query, "quux", int64(3))
 				assert.NoError(t, err)
 				assertMapSlice(t, []map[string]interface{}{
-					{"level": "DEBUG", "msg": "ExecContext Start"},
-					{"level": "INFO", "msg": "ExecContext Complete"},
+					{"level": "DEBUG", "msg": "ExecContext Start", "query": query, "args": "[{Name: Ordinal:1 Value:quux} {Name: Ordinal:2 Value:3}]"},
+					{"level": "INFO", "msg": "ExecContext Complete", "query": query, "args": "[{Name: Ordinal:1 Value:quux} {Name: Ordinal:2 Value:3}]"},
 				}, parseJsonLines(t, buf.Bytes()), "time")
 
 				rowsAffected, err := r.RowsAffected()
