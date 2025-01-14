@@ -20,10 +20,14 @@ lint: $(GOLANGCI_LINT_CLI)
 mysql-%:
 	$(MAKE) -C tests/mysql $*
 
+postgres-%:
+	$(MAKE) -C tests/postgres $*
+
+
 GO_TEST_OPTIONS?=
 
 .PHONY: test
-test: test-unit mysql-test
+test: test-unit mysql-test postgres-test
 
 .PHONY: test-unit
 test-unit:
@@ -42,7 +46,7 @@ GO_COVERAGE_PROFILE?=coverage.txt
 $(GO_COVERAGE_PROFILE):
 	$(MAKE) test-coverage-profile
 
-test-with-coverage: test-with-coverage-unit mysql-test-with-coverage
+test-with-coverage: test-with-coverage-unit mysql-test-with-coverage postgres-test-with-coverage
 
 # See https://app.codecov.io/github/akm/go-requestid/new
 .PHONY: test-with-coverage-unit
@@ -51,7 +55,7 @@ test-with-coverage-unit: $(GO_COVERAGE_DIR)
 
 .PHONY: test-coverage-profile
 test-coverage-profile: $(GO_COVERAGE_DIR) $(GO_COVERAGE_MERGED_DIR)
-	go tool covdata merge -i $(GO_COVERAGE_DIR),tests/mysql/coverage/unit -o $(GO_COVERAGE_MERGED_DIR)
+	go tool covdata merge -i $(GO_COVERAGE_DIR),tests/mysql/coverage/unit,tests/postgres/coverage/unit -o $(GO_COVERAGE_MERGED_DIR)
 	go tool covdata percent -i=$(GO_COVERAGE_MERGED_DIR) -o $(GO_COVERAGE_PROFILE)
 
 .PHONY: test-coverage
