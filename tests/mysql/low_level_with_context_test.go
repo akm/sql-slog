@@ -72,15 +72,16 @@ func TestLowLevelWithContext(t *testing.T) {
 	})
 
 	t.Run("create table", func(t *testing.T) {
+		query := "CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))"
 		buf.Reset()
-		result, err := db.ExecContext(ctx, "CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))")
+		result, err := db.ExecContext(ctx, query)
 		assert.NoError(t, err)
 		t.Logf("buf.String(): %s\n", buf.String())
 		assertMapSlice(t, []map[string]interface{}{
 			{"level": "DEBUG", "msg": "ResetSession Start"},
 			{"level": "INFO", "msg": "ResetSession Complete"},
-			{"level": "DEBUG", "msg": "ExecContext Start"},
-			{"level": "INFO", "msg": "ExecContext Complete"},
+			{"level": "DEBUG", "msg": "ExecContext Start", "query": query, "args": "[]"},
+			{"level": "INFO", "msg": "ExecContext Complete", "query": query, "args": "[]"},
 		}, parseJsonLines(t, buf.Bytes()), "time")
 
 		buf.Reset()
@@ -91,15 +92,16 @@ func TestLowLevelWithContext(t *testing.T) {
 	})
 
 	t.Run("delete", func(t *testing.T) {
+		query := "DELETE FROM test1"
 		buf.Reset()
-		stmt, err := db.PrepareContext(ctx, "DELETE FROM test1")
+		stmt, err := db.PrepareContext(ctx, query)
 		assert.NoError(t, err)
 
 		assertMapSlice(t, []map[string]interface{}{
 			{"level": "DEBUG", "msg": "ResetSession Start"},
 			{"level": "INFO", "msg": "ResetSession Complete"},
-			{"level": "DEBUG", "msg": "PrepareContext Start", "query": "DELETE FROM test1"},
-			{"level": "INFO", "msg": "PrepareContext Complete", "query": "DELETE FROM test1"},
+			{"level": "DEBUG", "msg": "PrepareContext Start", "query": query},
+			{"level": "INFO", "msg": "PrepareContext Complete", "query": query},
 		}, parseJsonLines(t, buf.Bytes()), "time")
 
 		buf.Reset()
@@ -131,18 +133,20 @@ func TestLowLevelWithContext(t *testing.T) {
 		testData := []string{"foo", "bar", "baz"}
 		for i, name := range testData {
 			t.Run("insert "+name, func(t *testing.T) {
+				query := "INSERT INTO test1 (id, name) VALUES (?, ?)"
+				args := fmt.Sprintf("[{Name: Ordinal:1 Value:%d} {Name: Ordinal:2 Value:%s}]", i+1, name)
 				buf.Reset()
-				result, err := db.ExecContext(ctx, "INSERT INTO test1 (id, name) VALUES (?, ?)", i+1, name)
+				result, err := db.ExecContext(ctx, query, i+1, name)
 				assert.NoError(t, err)
 				assertMapSlice(t, []map[string]interface{}{
 					{"level": "DEBUG", "msg": "ResetSession Start"},
 					{"level": "INFO", "msg": "ResetSession Complete"},
-					{"level": "DEBUG", "msg": "ExecContext Start"},
-					{"level": "ERROR", "msg": "ExecContext Error", "error": "driver: skip fast-path; continue as if unimplemented"},
+					{"level": "DEBUG", "msg": "ExecContext Start", "query": query, "args": args},
+					{"level": "ERROR", "msg": "ExecContext Error", "query": query, "args": args, "error": "driver: skip fast-path; continue as if unimplemented"},
 					{"level": "DEBUG", "msg": "PrepareContext Start", "query": "INSERT INTO test1 (id, name) VALUES (?, ?)"},
 					{"level": "INFO", "msg": "PrepareContext Complete", "query": "INSERT INTO test1 (id, name) VALUES (?, ?)"},
-					{"level": "DEBUG", "msg": "Stmt.ExecContext Start", "args": fmt.Sprintf("[{Name: Ordinal:1 Value:%d} {Name: Ordinal:2 Value:%s}]", i+1, name)},
-					{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": fmt.Sprintf("[{Name: Ordinal:1 Value:%d} {Name: Ordinal:2 Value:%s}]", i+1, name)},
+					{"level": "DEBUG", "msg": "Stmt.ExecContext Start", "args": args},
+					{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": args},
 					{"level": "DEBUG", "msg": "Stmt.Close Start"},
 					{"level": "INFO", "msg": "Stmt.Close Complete"},
 				}, parseJsonLines(t, buf.Bytes()), "time")
@@ -156,8 +160,9 @@ func TestLowLevelWithContext(t *testing.T) {
 		}
 
 		t.Run("select", func(t *testing.T) {
+			query := "SELECT id, name FROM test1 WHERE name LIKE ?"
 			buf.Reset()
-			rows, err := db.QueryContext(ctx, "SELECT id, name FROM test1 WHERE name LIKE ?", "ba%")
+			rows, err := db.QueryContext(ctx, query, "ba%")
 			assert.NoError(t, err)
 			defer func() {
 				buf.Reset()
@@ -166,15 +171,16 @@ func TestLowLevelWithContext(t *testing.T) {
 					// Rows.Close and Stmt.Close are called from rows.Next when EOF
 				}, parseJsonLines(t, buf.Bytes()), "time")
 			}()
+			args := "[{Name: Ordinal:1 Value:ba%}]"
 			assertMapSlice(t, []map[string]interface{}{
 				{"level": "DEBUG", "msg": "ResetSession Start"},
 				{"level": "INFO", "msg": "ResetSession Complete"},
-				{"level": "DEBUG", "msg": "QueryContext Start"},
-				{"level": "ERROR", "msg": "QueryContext Error", "error": "driver: skip fast-path; continue as if unimplemented"},
+				{"level": "DEBUG", "msg": "QueryContext Start", "query": query, "args": args},
+				{"level": "ERROR", "msg": "QueryContext Error", "query": query, "args": args, "error": "driver: skip fast-path; continue as if unimplemented"},
 				{"level": "DEBUG", "msg": "PrepareContext Start", "query": "SELECT id, name FROM test1 WHERE name LIKE ?"},
 				{"level": "INFO", "msg": "PrepareContext Complete", "query": "SELECT id, name FROM test1 WHERE name LIKE ?"},
-				{"level": "DEBUG", "msg": "Stmt.QueryContext Start", "args": "[{Name: Ordinal:1 Value:ba%}]"},
-				{"level": "INFO", "msg": "Stmt.QueryContext Complete", "args": "[{Name: Ordinal:1 Value:ba%}]"},
+				{"level": "DEBUG", "msg": "Stmt.QueryContext Start", "args": args},
+				{"level": "INFO", "msg": "Stmt.QueryContext Complete", "args": args},
 			}, parseJsonLines(t, buf.Bytes()), "time")
 
 			t.Run("rows.Columns", func(t *testing.T) {
@@ -272,14 +278,15 @@ func TestLowLevelWithContext(t *testing.T) {
 		}
 
 		t.Run("prepare", func(t *testing.T) {
+			query := "SELECT id, name FROM test1 WHERE id = ?"
 			buf.Reset()
-			stmt, err := db.PrepareContext(ctx, "SELECT id, name FROM test1 WHERE id = ?")
+			stmt, err := db.PrepareContext(ctx, query)
 			assert.NoError(t, err)
 			assertMapSlice(t, []map[string]interface{}{
 				{"level": "DEBUG", "msg": "ResetSession Start"},
 				{"level": "INFO", "msg": "ResetSession Complete"},
-				{"level": "DEBUG", "msg": "PrepareContext Start", "query": "SELECT id, name FROM test1 WHERE id = ?"},
-				{"level": "INFO", "msg": "PrepareContext Complete", "query": "SELECT id, name FROM test1 WHERE id = ?"},
+				{"level": "DEBUG", "msg": "PrepareContext Start", "query": query},
+				{"level": "INFO", "msg": "PrepareContext Complete", "query": query},
 			}, parseJsonLines(t, buf.Bytes()), "time")
 
 			defer func() {
@@ -311,14 +318,15 @@ func TestLowLevelWithContext(t *testing.T) {
 		})
 
 		t.Run("prepare + ExecContext", func(t *testing.T) {
+			query := "INSERT INTO test1 (id, name) VALUES (?, ?)"
 			buf.Reset()
-			stmt, err := db.PrepareContext(ctx, "INSERT INTO test1 (id, name) VALUES (?, ?)")
+			stmt, err := db.PrepareContext(ctx, query)
 			assert.NoError(t, err)
 			assertMapSlice(t, []map[string]interface{}{
 				{"level": "DEBUG", "msg": "ResetSession Start"},
 				{"level": "INFO", "msg": "ResetSession Complete"},
-				{"level": "DEBUG", "msg": "PrepareContext Start", "query": "INSERT INTO test1 (id, name) VALUES (?, ?)"},
-				{"level": "INFO", "msg": "PrepareContext Complete", "query": "INSERT INTO test1 (id, name) VALUES (?, ?)"},
+				{"level": "DEBUG", "msg": "PrepareContext Start", "query": query},
+				{"level": "INFO", "msg": "PrepareContext Complete", "query": query},
 			}, parseJsonLines(t, buf.Bytes()), "time")
 
 			defer func() {
@@ -361,16 +369,18 @@ func TestLowLevelWithContext(t *testing.T) {
 			}, parseJsonLines(t, buf.Bytes()), "time")
 
 			t.Run("update", func(t *testing.T) {
+				query := "UPDATE test1 SET name = ? WHERE id = ?"
 				buf.Reset()
-				r, err := tx.ExecContext(ctx, "UPDATE test1 SET name = ? WHERE id = ?", "qux", 3)
+				r, err := tx.ExecContext(ctx, query, "qux", 3)
+				args := "[{Name: Ordinal:1 Value:qux} {Name: Ordinal:2 Value:3}]"
 				assert.NoError(t, err)
 				assertMapSlice(t, []map[string]interface{}{
-					{"level": "DEBUG", "msg": "ExecContext Start"},
-					{"level": "ERROR", "msg": "ExecContext Error", "error": "driver: skip fast-path; continue as if unimplemented"},
-					{"level": "DEBUG", "msg": "PrepareContext Start", "query": "UPDATE test1 SET name = ? WHERE id = ?"},
-					{"level": "INFO", "msg": "PrepareContext Complete", "query": "UPDATE test1 SET name = ? WHERE id = ?"},
-					{"level": "DEBUG", "msg": "Stmt.ExecContext Start", "args": "[{Name: Ordinal:1 Value:qux} {Name: Ordinal:2 Value:3}]"},
-					{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": "[{Name: Ordinal:1 Value:qux} {Name: Ordinal:2 Value:3}]"},
+					{"level": "DEBUG", "msg": "ExecContext Start", "query": query, "args": args},
+					{"level": "ERROR", "msg": "ExecContext Error", "query": query, "args": args, "error": "driver: skip fast-path; continue as if unimplemented"},
+					{"level": "DEBUG", "msg": "PrepareContext Start", "query": query},
+					{"level": "INFO", "msg": "PrepareContext Complete", "query": query},
+					{"level": "DEBUG", "msg": "Stmt.ExecContext Start", "args": args},
+					{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": args},
 					{"level": "DEBUG", "msg": "Stmt.Close Start"},
 					{"level": "INFO", "msg": "Stmt.Close Complete"},
 				}, parseJsonLines(t, buf.Bytes()), "time")
@@ -401,16 +411,18 @@ func TestLowLevelWithContext(t *testing.T) {
 			}, parseJsonLines(t, buf.Bytes()), "time")
 
 			t.Run("update", func(t *testing.T) {
+				query := "UPDATE test1 SET name = ? WHERE id = ?"
 				buf.Reset()
-				r, err := tx.ExecContext(ctx, "UPDATE test1 SET name = ? WHERE id = ?", "quux", 3)
+				r, err := tx.ExecContext(ctx, query, "quux", 3)
+				args := "[{Name: Ordinal:1 Value:quux} {Name: Ordinal:2 Value:3}]"
 				assert.NoError(t, err)
 				assertMapSlice(t, []map[string]interface{}{
-					{"level": "DEBUG", "msg": "ExecContext Start"},
-					{"level": "ERROR", "msg": "ExecContext Error", "error": "driver: skip fast-path; continue as if unimplemented"},
-					{"level": "DEBUG", "msg": "PrepareContext Start", "query": "UPDATE test1 SET name = ? WHERE id = ?"},
-					{"level": "INFO", "msg": "PrepareContext Complete", "query": "UPDATE test1 SET name = ? WHERE id = ?"},
-					{"level": "DEBUG", "msg": "Stmt.ExecContext Start", "args": "[{Name: Ordinal:1 Value:quux} {Name: Ordinal:2 Value:3}]"},
-					{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": "[{Name: Ordinal:1 Value:quux} {Name: Ordinal:2 Value:3}]"},
+					{"level": "DEBUG", "msg": "ExecContext Start", "query": query, "args": args},
+					{"level": "ERROR", "msg": "ExecContext Error", "query": query, "args": args, "error": "driver: skip fast-path; continue as if unimplemented"},
+					{"level": "DEBUG", "msg": "PrepareContext Start", "query": query},
+					{"level": "INFO", "msg": "PrepareContext Complete", "query": query},
+					{"level": "DEBUG", "msg": "Stmt.ExecContext Start", "args": args},
+					{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": args},
 					{"level": "DEBUG", "msg": "Stmt.Close Start"},
 					{"level": "INFO", "msg": "Stmt.Close Complete"},
 				}, parseJsonLines(t, buf.Bytes()), "time")
