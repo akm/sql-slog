@@ -3,6 +3,7 @@ package mysqltest
 import (
 	"bytes"
 	"context"
+	"database/sql/driver"
 	"fmt"
 	"log/slog"
 	"os"
@@ -446,4 +447,84 @@ func TestLowLevelWithContext(t *testing.T) {
 			})
 		})
 	})
+
+	t.Run("Conn", func(t *testing.T) {
+		buf.Reset()
+		conn, err := db.Conn(ctx)
+		require.NoError(t, err)
+		assertMapSlice(t, []map[string]interface{}{
+			{"level": "DEBUG", "msg": "ResetSession Start"},
+			{"level": "INFO", "msg": "ResetSession Complete"},
+		}, parseJsonLines(t, buf.Bytes()), "time")
+
+		defer func() {
+			buf.Reset()
+			err := conn.Close()
+			assert.NoError(t, err)
+			assertMapSlice(t, []map[string]interface{}{}, parseJsonLines(t, buf.Bytes()), "time")
+		}()
+
+		t.Run("Raw", func(t *testing.T) {
+			buf.Reset()
+			err := conn.Raw(func(driverConn interface{}) error {
+				assertMapSlice(t, []map[string]interface{}{}, parseJsonLines(t, buf.Bytes()), "time")
+				assert.Equal(t, "*sqlslog.connWithContextWrapper", fmt.Sprintf("%T", driverConn))
+				if assert.Implements(t, (*driver.Conn)(nil), driverConn) {
+					dConn := driverConn.(driver.Conn)
+
+					var tx driver.Tx
+					t.Run("Begin", func(t *testing.T) {
+						buf.Reset()
+						var err error
+						tx, err = dConn.Begin()
+						require.NoError(t, err)
+						assertMapSlice(t, []map[string]interface{}{
+							{"level": "DEBUG", "msg": "Begin Start"},
+							{"level": "INFO", "msg": "Begin Complete"},
+						}, parseJsonLines(t, buf.Bytes()), "time")
+					})
+
+					t.Run("Prepare", func(t *testing.T) {
+						query := "SELECT id, name FROM test1 WHERE id = ?"
+						buf.Reset()
+						stmt, err := dConn.Prepare(query)
+						require.NoError(t, err)
+						assertMapSlice(t, []map[string]interface{}{
+							{"level": "DEBUG", "msg": "Prepare Start", "query": query},
+							{"level": "INFO", "msg": "Prepare Complete", "query": query},
+						}, parseJsonLines(t, buf.Bytes()), "time")
+
+						defer func() {
+							buf.Reset()
+							stmt.Close()
+							assertMapSlice(t, []map[string]interface{}{
+								{"level": "DEBUG", "msg": "Stmt.Close Start", "query": query},
+								{"level": "INFO", "msg": "Stmt.Close Complete", "query": query},
+							}, parseJsonLines(t, buf.Bytes()), "time")
+						}()
+
+						t.Run("Query", func(t *testing.T) {
+							rows, err := stmt.Query([]driver.Value{int64(1)})
+							require.NoError(t, err)
+							defer rows.Close()
+						})
+					})
+
+					t.Run("Rollback", func(t *testing.T) {
+						buf.Reset()
+						err := tx.Rollback()
+						require.NoError(t, err)
+						assertMapSlice(t, []map[string]interface{}{
+							{"level": "DEBUG", "msg": "Rollback Start"},
+							{"level": "INFO", "msg": "Rollback Complete"},
+						}, parseJsonLines(t, buf.Bytes()), "time")
+					})
+				}
+
+				return nil
+			})
+			assert.NoError(t, err)
+		})
+	})
+
 }
