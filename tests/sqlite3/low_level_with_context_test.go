@@ -6,35 +6,24 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
-	"os/exec"
 	"testing"
 	"time"
 
 	sqlslog "github.com/akm/sql-slog"
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestLowLevelWithContext(t *testing.T) {
-	dbName := "app1"
-	dbPort := 3306
-	dsn := fmt.Sprintf("root@tcp(localhost:%d)/%s", dbPort, dbName)
-
-	os.Setenv("MYSQL_PORT", "3306")
-	os.Setenv("MYSQL_DATABASE", dbName)
-	if err := exec.Command("docker", "compose", "-f", "docker-compose.yml", "up", "-d").Run(); err != nil {
-		t.Fatal(err)
-	}
-	if os.Getenv("DEBUG") == "" {
-		defer exec.Command("docker", "compose", "-f", "docker-compose.yml", "down").Run()
-	}
+	dsn := "./sqlite3_test.db"
+	defer os.Remove(dsn)
 
 	ctx := context.TODO()
 
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(slog.NewJSONHandler(buf, &slog.HandlerOptions{Level: slog.LevelDebug}))
-	db, err := sqlslog.Open(ctx, "mysql", "root@tcp(localhost:3306)/"+dbName, logger)
+	db, err := sqlslog.Open(ctx, "sqlite3", dsn, logger)
 	require.NoError(t, err)
 	defer db.Close()
 
