@@ -1,0 +1,50 @@
+package mysqltest
+
+import (
+	"bytes"
+	"encoding/json"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
+func parseJsonLines(t *testing.T, b []byte) []map[string]interface{} {
+	lines := bytes.Split(b, []byte("\n"))
+	results := []map[string]interface{}{}
+	for _, line := range lines {
+		if len(line) == 0 {
+			continue
+		}
+		result := map[string]interface{}{}
+		if err := json.Unmarshal(line, &result); err != nil {
+			t.Fatalf("Failed to unmarshal JSON: %v", err)
+		}
+		results = append(results, result)
+	}
+	return results
+}
+
+func assertMapSlice(t *testing.T, expected, actual []map[string]interface{}, ignoredFields ...string) {
+	t.Helper()
+	wellFormedActual := []map[string]interface{}{}
+	for _, a := range actual {
+		wellFormed := map[string]interface{}{}
+		for k, v := range a {
+			if contains(ignoredFields, k) {
+				continue
+			}
+			wellFormed[k] = v
+		}
+		wellFormedActual = append(wellFormedActual, wellFormed)
+	}
+	assert.Equal(t, expected, wellFormedActual)
+}
+
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
+}
