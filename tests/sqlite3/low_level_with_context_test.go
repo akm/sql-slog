@@ -334,6 +334,20 @@ func TestLowLevelWithContext(t *testing.T) {
 			})
 		})
 
+		t.Run("PrepareContext invalid query", func(t *testing.T) {
+			query := "invalid select query"
+			buf.Reset()
+			_, err := db.PrepareContext(ctx, query)
+			assert.Error(t, err)
+			assertMapSlice(t, []map[string]interface{}{
+				{"level": "DEBUG", "msg": "ResetSession Start"},
+				{"level": "INFO", "msg": "ResetSession Complete"},
+				{"level": "DEBUG", "msg": "PrepareContext Start", "query": query},
+				{"level": "ERROR", "msg": "PrepareContext Error", "query": query, "error": "near \"invalid\": syntax error"},
+			}, parseJsonLines(t, buf.Bytes()), "time")
+
+		})
+
 		t.Run("prepare + ExecContext", func(t *testing.T) {
 			query := "INSERT INTO test1 (id, name) VALUES (?, ?)"
 			buf.Reset()
