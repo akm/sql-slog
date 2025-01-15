@@ -23,18 +23,20 @@ func wrapConn(original driver.Conn, logger *slog.Logger) driver.Conn {
 		return &connWithContextWrapper{connWrapper{original: original, logger: logger}, cwc}
 	}
 
-	if _, ok := original.(driver.ExecerContext); !ok {
-		logger.Warn(fmt.Sprintf("driver.Conn %T does not implement driver.ExecerContext", original))
-	}
-	if _, ok := original.(driver.QueryerContext); !ok {
-		logger.Warn(fmt.Sprintf("driver.Conn %T does not implement driver.QueryerContext", original))
-	}
-	if _, ok := original.(driver.ConnPrepareContext); !ok {
-		logger.Warn(fmt.Sprintf("driver.Conn %T does not implement driver.ConnPrepareContext", original))
-	}
-	if _, ok := original.(driver.ConnBeginTx); !ok {
-		logger.Warn(fmt.Sprintf("driver.Conn %T does not implement driver.ConnBeginTx", original))
-	}
+	// Commented out because it's not used.
+	//
+	// if _, ok := original.(driver.ExecerContext); !ok {
+	// 	logger.Warn(fmt.Sprintf("driver.Conn %T does not implement driver.ExecerContext", original))
+	// }
+	// if _, ok := original.(driver.QueryerContext); !ok {
+	// 	logger.Warn(fmt.Sprintf("driver.Conn %T does not implement driver.QueryerContext", original))
+	// }
+	// if _, ok := original.(driver.ConnPrepareContext); !ok {
+	// 	logger.Warn(fmt.Sprintf("driver.Conn %T does not implement driver.ConnPrepareContext", original))
+	// }
+	// if _, ok := original.(driver.ConnBeginTx); !ok {
+	// 	logger.Warn(fmt.Sprintf("driver.Conn %T does not implement driver.ConnBeginTx", original))
+	// }
 
 	return &connWrapper{original: original, logger: logger}
 }
