@@ -538,6 +538,40 @@ func TestLowLevelWithContext(t *testing.T) {
 						})
 					})
 
+					t.Run("prepare + Exec", func(t *testing.T) {
+						query := "INSERT INTO test1 (id, name) VALUES (?, ?)"
+						stmt, err := dConn.Prepare(query)
+						assert.NoError(t, err)
+
+						defer func() { assert.NoError(t, stmt.Close()) }()
+
+						t.Run("Exec", func(t *testing.T) {
+							t.Run("success", func(t *testing.T) {
+								buf.Reset()
+								result, err := stmt.Exec([]driver.Value{4, "qux"})
+								assert.NoError(t, err)
+								args := "[4 qux]"
+								assertMapSlice(t, []map[string]interface{}{
+									{"level": "DEBUG", "msg": "Stmt.Exec Start", "query": query, "args": args},
+									{"level": "INFO", "msg": "Stmt.Exec Complete", "query": query, "args": args},
+								}, parseJsonLines(t, buf.Bytes()), "time")
+								rowsAffected, err := result.RowsAffected()
+								assert.NoError(t, err)
+								assert.Equal(t, int64(1), rowsAffected)
+							})
+							t.Run("error", func(t *testing.T) {
+								buf.Reset()
+								_, err := stmt.Exec([]driver.Value{"abc", "qux"})
+								assert.Error(t, err)
+								args := "[abc qux]"
+								assertMapSlice(t, []map[string]interface{}{
+									{"level": "DEBUG", "msg": "Stmt.Exec Start", "query": query, "args": args},
+									{"level": "ERROR", "msg": "Stmt.Exec Error", "query": query, "args": args, "error": "datatype mismatch"},
+								}, parseJsonLines(t, buf.Bytes()), "time")
+							})
+						})
+					})
+
 					t.Run("Rollback", func(t *testing.T) {
 						buf.Reset()
 						err := tx.Rollback()
