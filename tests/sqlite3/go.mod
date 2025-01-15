@@ -1,10 +1,10 @@
-module postgres-test
+module sqlite3-test
 
 go 1.22.10
 
 require (
 	github.com/akm/sql-slog v0.0.0-20250111025848-713ab89fa0bf
-	github.com/lib/pq v1.10.9
+	github.com/mattn/go-sqlite3 v1.14.24
 	github.com/stretchr/testify v1.10.0
 )
 
