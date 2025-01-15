@@ -1,7 +1,7 @@
 # Variable substitution
 # https://docs.docker.com/compose/compose-file/compose-file-v3/#variable-substitution
 # 環境変数は backends/test/containers/Makefile で設定されています。
-name: "sql-slog-mysql-test"
+name: "sql-slog-postgres-test"
 services:
   mysql:
     image: postgres:17.2-bookworm
