@@ -1,4 +1,4 @@
-module mysql-test
+module sqlite3-test
 
 go 1.22.10
 
