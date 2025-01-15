@@ -14,9 +14,19 @@ func Open(ctx context.Context, driverName, dsn string, logger *slog.Logger) (*sq
 	)
 	lg.DebugContext(ctx, "sqlslog.Open Start")
 
-	db, err := sql.Open(driverName, dsn)
+	db, err := open(driverName, dsn, logger)
 	if err != nil {
 		lg.ErrorContext(ctx, "sqlslog.Open Error", "error", err)
+		return nil, err
+	}
+
+	lg.InfoContext(ctx, "sqlslog.Open Complete")
+	return db, nil
+}
+
+func open(driverName, dsn string, logger *slog.Logger) (*sql.DB, error) {
+	db, err := sql.Open(driverName, dsn)
+	if err != nil {
 		return nil, err
 	}
 	// This db is not used directly, but it is used to get the driver.
@@ -28,7 +38,6 @@ func Open(ctx context.Context, driverName, dsn string, logger *slog.Logger) (*sq
 	if dc, ok := drv.(driver.DriverContext); ok {
 		connector, err := dc.OpenConnector(dsn)
 		if err != nil {
-			lg.ErrorContext(ctx, "sqlslog.Open OpenConnector Error", "error", err)
 			return nil, err
 		}
 		origConnector = connector
@@ -36,6 +45,5 @@ func Open(ctx context.Context, driverName, dsn string, logger *slog.Logger) (*sq
 		origConnector = &dsnConnector{dsn: dsn, driver: drv}
 	}
 
-	lg.InfoContext(ctx, "sqlslog.Open Complete")
 	return sql.OpenDB(wrapConnector(origConnector, logger)), nil
 }

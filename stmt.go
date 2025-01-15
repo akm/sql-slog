@@ -139,17 +139,19 @@ func wrapStmt(original driver.Stmt, logger *slog.Logger) driver.Stmt {
 			stmtQueryContextWrapperImpl: stmtQueryContextWrapperImpl{original: stmtQuery, logger: logger},
 		}
 	}
-	if withExecContext {
-		return &stmtExecContextWrapper{
-			stmtWrapper:                stmtWrapper,
-			stmtExecContextWrapperImpl: stmtExecContextWrapperImpl{original: stmtExec, logger: logger},
-		}
-	}
-	if withQueryContext {
-		return &stmtQueryContextWrapper{
-			stmtWrapper:                 stmtWrapper,
-			stmtQueryContextWrapperImpl: stmtQueryContextWrapperImpl{original: stmtQuery, logger: logger},
-		}
-	}
+	// Commented out because the original implementation does not have this check.
+	//
+	// if withExecContext {
+	// 	return &stmtExecContextWrapper{
+	// 		stmtWrapper:                stmtWrapper,
+	// 		stmtExecContextWrapperImpl: stmtExecContextWrapperImpl{original: stmtExec, logger: logger},
+	// 	}
+	// }
+	// if withQueryContext {
+	// 	return &stmtQueryContextWrapper{
+	// 		stmtWrapper:                 stmtWrapper,
+	// 		stmtQueryContextWrapperImpl: stmtQueryContextWrapperImpl{original: stmtQuery, logger: logger},
+	// 	}
+	// }
 	return &stmtWrapper
 }
