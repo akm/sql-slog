@@ -1,4 +1,4 @@
-module mysql-test
+module postgres-test
 
 go 1.22.10
 
