@@ -294,7 +294,7 @@ func TestLowLevelWithContext(t *testing.T) {
 			Name string
 		}
 
-		t.Run("prepare", func(t *testing.T) {
+		t.Run("PrepareContext", func(t *testing.T) {
 			query := "SELECT id, name FROM test1 WHERE id = ?"
 			buf.Reset()
 			stmt, err := db.PrepareContext(ctx, query)
