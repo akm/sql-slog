@@ -356,18 +356,32 @@ func TestLowLevelWithContext(t *testing.T) {
 			}()
 
 			t.Run("ExecContext", func(t *testing.T) {
-				buf.Reset()
-				result, err := stmt.ExecContext(ctx, 4, "qux")
-				assert.NoError(t, err)
-				assertMapSlice(t, []map[string]interface{}{
-					{"level": "DEBUG", "msg": "ResetSession Start"},
-					{"level": "INFO", "msg": "ResetSession Complete"},
-					{"level": "DEBUG", "msg": "Stmt.ExecContext Start", "args": "[{Name: Ordinal:1 Value:4} {Name: Ordinal:2 Value:qux}]"},
-					{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": "[{Name: Ordinal:1 Value:4} {Name: Ordinal:2 Value:qux}]"},
-				}, parseJsonLines(t, buf.Bytes()), "time")
-				rowsAffected, err := result.RowsAffected()
-				assert.NoError(t, err)
-				assert.Equal(t, int64(1), rowsAffected)
+				t.Run("success", func(t *testing.T) {
+					buf.Reset()
+					result, err := stmt.ExecContext(ctx, 4, "qux")
+					assert.NoError(t, err)
+					assertMapSlice(t, []map[string]interface{}{
+						{"level": "DEBUG", "msg": "ResetSession Start"},
+						{"level": "INFO", "msg": "ResetSession Complete"},
+						{"level": "DEBUG", "msg": "Stmt.ExecContext Start", "args": "[{Name: Ordinal:1 Value:4} {Name: Ordinal:2 Value:qux}]"},
+						{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": "[{Name: Ordinal:1 Value:4} {Name: Ordinal:2 Value:qux}]"},
+					}, parseJsonLines(t, buf.Bytes()), "time")
+					rowsAffected, err := result.RowsAffected()
+					assert.NoError(t, err)
+					assert.Equal(t, int64(1), rowsAffected)
+				})
+				t.Run("error", func(t *testing.T) {
+					buf.Reset()
+					_, err := stmt.ExecContext(ctx, "abc", "qux")
+					assert.Error(t, err)
+					args := "[{Name: Ordinal:1 Value:abc} {Name: Ordinal:2 Value:qux}]"
+					assertMapSlice(t, []map[string]interface{}{
+						{"level": "DEBUG", "msg": "ResetSession Start"},
+						{"level": "INFO", "msg": "ResetSession Complete"},
+						{"level": "DEBUG", "msg": "Stmt.ExecContext Start", "args": args},
+						{"level": "ERROR", "msg": "Stmt.ExecContext Error", "args": args, "error": "datatype mismatch"},
+					}, parseJsonLines(t, buf.Bytes()), "time")
+				})
 			})
 		})
 
