@@ -29,13 +29,15 @@ var _ driver.Driver = (*driverWrapper)(nil)
 // Open implements driver.Driver.
 func (w *driverWrapper) Open(dsn string) (driver.Conn, error) {
 	lg := w.logger.With(slog.String("dsn", dsn))
-	lg.Debug("Open Start")
-	origConn, err := w.original.Open(dsn)
+	var origConn driver.Conn
+	err := logAction(lg, "driver.Open", func() error {
+		var err error
+		origConn, err = w.original.Open(dsn)
+		return err
+	})
 	if err != nil {
-		w.logger.Error("Open Error", "error", err)
 		return nil, err
 	}
-	w.logger.Info("Open Complete")
 	return wrapConn(origConn, w.logger), nil
 }
 
