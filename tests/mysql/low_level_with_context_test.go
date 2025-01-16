@@ -44,8 +44,8 @@ func TestLowLevelWithContext(t *testing.T) {
 	t.Run("sqlslog.Open log", func(t *testing.T) {
 		logs.Assert(t, []map[string]interface{}{
 			{"level": "DEBUG", "msg": "sqlslog.Open Start", "driver": "mysql", "dsn": dsn},
-			{"level": "DEBUG", "msg": "OpenConnector Start", "dsn": dsn},
-			{"level": "INFO", "msg": "OpenConnector Complete", "dsn": dsn},
+			{"level": "DEBUG", "msg": "Driver.OpenConnector Start", "dsn": dsn},
+			{"level": "INFO", "msg": "Driver.OpenConnector Complete", "dsn": dsn},
 			{"level": "INFO", "msg": "sqlslog.Open Complete", "driver": "mysql", "dsn": dsn},
 		})
 	})
