@@ -1,4 +1,4 @@
-package mysqltest
+package testhelper
 
 import (
 	"bytes"
