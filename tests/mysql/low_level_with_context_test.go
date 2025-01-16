@@ -11,6 +11,7 @@ import (
 	"time"
 
 	sqlslog "github.com/akm/sql-slog"
+	"github.com/akm/sql-slog/tests/testhelper"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -33,7 +34,7 @@ func TestLowLevelWithContext(t *testing.T) {
 	ctx := context.TODO()
 
 	buf := bytes.NewBuffer(nil)
-	logs := NewLogAssertion(buf)
+	logs := testhelper.NewLogAssertion(buf)
 	logs.Start()
 	logger := slog.New(slog.NewJSONHandler(buf, &slog.HandlerOptions{Level: slog.LevelDebug}))
 	db, err := sqlslog.Open(ctx, "mysql", "root@tcp(localhost:3306)/"+dbName, logger)
