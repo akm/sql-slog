@@ -14,15 +14,16 @@ func Open(ctx context.Context, driverName, dsn string, logger *slog.Logger) (*sq
 		slog.String("driver", driverName),
 		slog.String("dsn", dsn),
 	)
-	lg.DebugContext(ctx, "sqlslog.Open Start")
 
-	db, err := open(driverName, dsn, logger)
+	var db *sql.DB
+	err := logActionContext(ctx, lg, "sqlslog.Open", func() error {
+		var err error
+		db, err = open(driverName, dsn, logger)
+		return err
+	})
 	if err != nil {
-		lg.ErrorContext(ctx, "sqlslog.Open Error", "error", err)
 		return nil, err
 	}
-
-	lg.InfoContext(ctx, "sqlslog.Open Complete")
 	return db, nil
 }
 
