@@ -15,3 +15,5 @@ require (
 )
 
 replace github.com/akm/sql-slog => ../..
+
+replace github.com/akm/sql-slog/tests/testhelper => ../testhelper
