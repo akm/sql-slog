@@ -48,18 +48,18 @@ func parseJsonLines(t *testing.T, b []byte) []map[string]interface{} {
 
 func assertMapSlice(t *testing.T, expected, actual []map[string]interface{}, ignoredFields ...string) {
 	t.Helper()
-	wellFormedActual := []map[string]interface{}{}
+	comparedSlice := []map[string]interface{}{}
 	for _, a := range actual {
-		wellFormed := map[string]interface{}{}
+		compared := map[string]interface{}{}
 		for k, v := range a {
 			if contains(ignoredFields, k) {
 				continue
 			}
-			wellFormed[k] = v
+			compared[k] = v
 		}
-		wellFormedActual = append(wellFormedActual, wellFormed)
+		comparedSlice = append(comparedSlice, compared)
 	}
-	assert.Equal(t, expected, wellFormedActual)
+	assert.Equal(t, expected, comparedSlice)
 }
 
 func contains(s []string, e string) bool {
