@@ -3,26 +3,31 @@ package sqlslog
 import (
 	"context"
 	"log/slog"
+	"time"
 )
 
 func logAction(logger *slog.Logger, action string, fn func() error) error {
 	logger.Debug(action + " Start")
+	t0 := time.Now()
 	err := fn()
+	lg := logger.With(slog.Int64("duration", time.Since(t0).Nanoseconds()))
 	if err != nil {
-		logger.Error(action+" Error", "error", err)
+		lg.Error(action+" Error", "error", err)
 		return err
 	}
-	logger.Info(action + " Complete")
+	lg.Info(action + " Complete")
 	return nil
 }
 
 func logActionContext(ctx context.Context, logger *slog.Logger, action string, fn func() error) error {
 	logger.DebugContext(ctx, action+" Start")
+	t0 := time.Now()
 	err := fn()
+	lg := logger.With(slog.Int64("duration", time.Since(t0).Nanoseconds()))
 	if err != nil {
-		logger.ErrorContext(ctx, action+" Error", "error", err)
+		lg.ErrorContext(ctx, action+" Error", "error", err)
 		return err
 	}
-	logger.InfoContext(ctx, action+" Complete")
+	lg.InfoContext(ctx, action+" Complete")
 	return nil
 }

@@ -1,4 +1,4 @@
-package mysqltest
+package main_test
 
 import (
 	"bytes"
@@ -11,6 +11,7 @@ import (
 	"time"
 
 	sqlslog "github.com/akm/sql-slog"
+	"github.com/akm/sql-slog/tests/testhelper"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -23,18 +24,17 @@ func TestLowLevelWithoutContext(t *testing.T) {
 	ctx := context.TODO()
 
 	buf := bytes.NewBuffer(nil)
+	logs := testhelper.NewLogAssertion(buf)
 	logger := slog.New(slog.NewJSONHandler(buf, &slog.HandlerOptions{Level: slog.LevelDebug}))
 	db, err := sqlslog.Open(ctx, "sqlite3", dsn, logger)
 	require.NoError(t, err)
 	defer db.Close()
 
 	t.Run("sqlslog.Open log", func(t *testing.T) {
-		actualEntries := parseJsonLines(t, buf.Bytes())
-		exptectedEntries := []map[string]interface{}{
+		logs.Assert(t, []map[string]interface{}{
 			{"level": "DEBUG", "msg": "sqlslog.Open Start", "driver": "sqlite3", "dsn": dsn},
 			{"level": "INFO", "msg": "sqlslog.Open Complete", "driver": "sqlite3", "dsn": dsn},
-		}
-		assertMapSlice(t, exptectedEntries, actualEntries, "time")
+		})
 	})
 
 	for i := 0; i < 10; i++ {
@@ -49,14 +49,12 @@ func TestLowLevelWithoutContext(t *testing.T) {
 		buf.Reset()
 		err := db.Ping()
 		assert.NoError(t, err)
-		actualEntries := parseJsonLines(t, buf.Bytes())
-		exptectedEntries := []map[string]interface{}{
-			{"level": "DEBUG", "msg": "ResetSession Start"},
-			{"level": "INFO", "msg": "ResetSession Complete"},
-			{"level": "DEBUG", "msg": "Ping Start"},
-			{"level": "INFO", "msg": "Ping Complete"},
-		}
-		assertMapSlice(t, exptectedEntries, actualEntries, "time")
+		logs.Assert(t, []map[string]interface{}{
+			{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
+			{"level": "INFO", "msg": "Conn.ResetSession Complete"},
+			{"level": "DEBUG", "msg": "Conn.Ping Start"},
+			{"level": "INFO", "msg": "Conn.Ping Complete"},
+		})
 	})
 
 	t.Run("create table", func(t *testing.T) {
@@ -65,18 +63,18 @@ func TestLowLevelWithoutContext(t *testing.T) {
 		result, err := db.Exec(query)
 		assert.NoError(t, err)
 		t.Logf("buf.String(): %s\n", buf.String())
-		assertMapSlice(t, []map[string]interface{}{
-			{"level": "DEBUG", "msg": "ResetSession Start"},
-			{"level": "INFO", "msg": "ResetSession Complete"},
-			{"level": "DEBUG", "msg": "ExecContext Start", "query": query, "args": "[]"},
-			{"level": "INFO", "msg": "ExecContext Complete", "query": query, "args": "[]"},
-		}, parseJsonLines(t, buf.Bytes()), "time")
+		logs.Assert(t, []map[string]interface{}{
+			{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
+			{"level": "INFO", "msg": "Conn.ResetSession Complete"},
+			{"level": "DEBUG", "msg": "Conn.ExecContext Start", "query": query, "args": "[]"},
+			{"level": "INFO", "msg": "Conn.ExecContext Complete", "query": query, "args": "[]"},
+		})
 
 		buf.Reset()
 		rowsAffected, err := result.RowsAffected()
 		assert.NoError(t, err)
 		assert.Equal(t, int64(0), rowsAffected)
-		assertMapSlice(t, []map[string]interface{}{}, parseJsonLines(t, buf.Bytes()), "time")
+		logs.Assert(t, []map[string]interface{}{})
 	})
 
 	t.Run("delete", func(t *testing.T) {
@@ -85,35 +83,35 @@ func TestLowLevelWithoutContext(t *testing.T) {
 		stmt, err := db.Prepare(query)
 		assert.NoError(t, err)
 
-		assertMapSlice(t, []map[string]interface{}{
-			{"level": "DEBUG", "msg": "ResetSession Start"},
-			{"level": "INFO", "msg": "ResetSession Complete"},
-			{"level": "DEBUG", "msg": "PrepareContext Start", "query": query},
-			{"level": "INFO", "msg": "PrepareContext Complete", "query": query},
-		}, parseJsonLines(t, buf.Bytes()), "time")
+		logs.Assert(t, []map[string]interface{}{
+			{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
+			{"level": "INFO", "msg": "Conn.ResetSession Complete"},
+			{"level": "DEBUG", "msg": "Conn.PrepareContext Start", "query": query},
+			{"level": "INFO", "msg": "Conn.PrepareContext Complete", "query": query},
+		})
 
 		buf.Reset()
 		result, err := stmt.Exec()
 		assert.NoError(t, err)
-		assertMapSlice(t, []map[string]interface{}{
-			{"level": "DEBUG", "msg": "ResetSession Start"},
-			{"level": "INFO", "msg": "ResetSession Complete"},
+		logs.Assert(t, []map[string]interface{}{
+			{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
+			{"level": "INFO", "msg": "Conn.ResetSession Complete"},
 			{"level": "DEBUG", "msg": "Stmt.ExecContext Start", "args": "[]"},
 			{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": "[]"},
-		}, parseJsonLines(t, buf.Bytes()), "time")
+		})
 
 		buf.Reset()
 		rowsAffected, err := result.RowsAffected()
 		assert.NoError(t, err)
 		assert.GreaterOrEqual(t, rowsAffected, int64(0))
-		assertMapSlice(t, []map[string]interface{}{}, parseJsonLines(t, buf.Bytes()), "time")
+		logs.Assert(t, []map[string]interface{}{})
 
 		buf.Reset()
 		stmt.Close()
-		assertMapSlice(t, []map[string]interface{}{
+		logs.Assert(t, []map[string]interface{}{
 			{"level": "DEBUG", "msg": "Stmt.Close Start"},
 			{"level": "INFO", "msg": "Stmt.Close Complete"},
-		}, parseJsonLines(t, buf.Bytes()), "time")
+		})
 
 	})
 
@@ -126,17 +124,17 @@ func TestLowLevelWithoutContext(t *testing.T) {
 				buf.Reset()
 				result, err := db.Exec(query, i+1, name)
 				assert.NoError(t, err)
-				assertMapSlice(t, []map[string]interface{}{
-					{"level": "DEBUG", "msg": "ResetSession Start"},
-					{"level": "INFO", "msg": "ResetSession Complete"},
-					{"level": "DEBUG", "msg": "ExecContext Start", "query": query, "args": args},
-					{"level": "INFO", "msg": "ExecContext Complete", "query": query, "args": args},
-				}, parseJsonLines(t, buf.Bytes()), "time")
+				logs.Assert(t, []map[string]interface{}{
+					{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
+					{"level": "INFO", "msg": "Conn.ResetSession Complete"},
+					{"level": "DEBUG", "msg": "Conn.ExecContext Start", "query": query, "args": args},
+					{"level": "INFO", "msg": "Conn.ExecContext Complete", "query": query, "args": args},
+				})
 
 				buf.Reset()
 				rowsAffected, err := result.RowsAffected()
 				assert.NoError(t, err)
-				assertMapSlice(t, []map[string]interface{}{}, parseJsonLines(t, buf.Bytes()), "time")
+				logs.Assert(t, []map[string]interface{}{})
 				assert.Equal(t, int64(1), rowsAffected)
 			})
 		}
@@ -191,31 +189,31 @@ func TestLowLevelWithoutContext(t *testing.T) {
 			defer func() {
 				buf.Reset()
 				assert.NoError(t, rows.Close())
-				assertMapSlice(t, []map[string]interface{}{
+				logs.Assert(t, []map[string]interface{}{
 					// {"level": "DEBUG", "msg": "Rows.Close Start"},
 					// {"level": "INFO", "msg": "Rows.Close Complete"},
-				}, parseJsonLines(t, buf.Bytes()), "time")
+				})
 			}()
 			args := "[{Name: Ordinal:1 Value:ba%}]"
-			assertMapSlice(t, []map[string]interface{}{
-				{"level": "DEBUG", "msg": "ResetSession Start"},
-				{"level": "INFO", "msg": "ResetSession Complete"},
-				{"level": "DEBUG", "msg": "QueryContext Start", "query": query, "args": args},
-				{"level": "INFO", "msg": "QueryContext Complete", "query": query, "args": args},
-			}, parseJsonLines(t, buf.Bytes()), "time")
+			logs.Assert(t, []map[string]interface{}{
+				{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
+				{"level": "INFO", "msg": "Conn.ResetSession Complete"},
+				{"level": "DEBUG", "msg": "Conn.QueryContext Start", "query": query, "args": args},
+				{"level": "INFO", "msg": "Conn.QueryContext Complete", "query": query, "args": args},
+			})
 
 			t.Run("rows.Columns", func(t *testing.T) {
 				buf.Reset()
 				columns, err := rows.Columns()
 				assert.NoError(t, err)
-				assertMapSlice(t, []map[string]interface{}{}, parseJsonLines(t, buf.Bytes()), "time")
+				logs.Assert(t, []map[string]interface{}{})
 				assert.Equal(t, []string{"id", "name"}, columns)
 			})
 			t.Run("rows", func(t *testing.T) {
 				buf.Reset()
 				columnTypes, err := rows.ColumnTypes()
 				assert.NoError(t, err)
-				assertMapSlice(t, []map[string]interface{}{}, parseJsonLines(t, buf.Bytes()), "time")
+				logs.Assert(t, []map[string]interface{}{})
 				assert.Len(t, columnTypes, 2)
 				t.Run("ColumnTypes[0]", func(t *testing.T) {
 					buf.Reset()
@@ -234,7 +232,7 @@ func TestLowLevelWithoutContext(t *testing.T) {
 					assert.True(t, nullableOK)
 					scanType := ct.ScanType()
 					assert.Equal(t, "NullInt64", scanType.Name())
-					assertMapSlice(t, []map[string]interface{}{}, parseJsonLines(t, buf.Bytes()), "time")
+					logs.Assert(t, []map[string]interface{}{})
 				})
 				t.Run("ColumnTypes[1]", func(t *testing.T) {
 					buf.Reset()
@@ -253,17 +251,17 @@ func TestLowLevelWithoutContext(t *testing.T) {
 					assert.True(t, nullableOK)
 					scanType := ct.ScanType()
 					assert.Equal(t, "NullString", scanType.Name())
-					assertMapSlice(t, []map[string]interface{}{}, parseJsonLines(t, buf.Bytes()), "time")
+					logs.Assert(t, []map[string]interface{}{})
 				})
 			})
 
 			buf.Reset()
 			actualResults := []map[string]interface{}{}
 			for rows.Next() {
-				assertMapSlice(t, []map[string]interface{}{
+				logs.Assert(t, []map[string]interface{}{
 					{"level": "DEBUG", "msg": "Rows.Next Start"},
 					{"level": "INFO", "msg": "Rows.Next Complete"},
-				}, parseJsonLines(t, buf.Bytes()), "time")
+				})
 				buf.Reset()
 
 				result := map[string]interface{}{}
@@ -275,12 +273,12 @@ func TestLowLevelWithoutContext(t *testing.T) {
 				actualResults = append(actualResults, result)
 			}
 
-			assertMapSlice(t, []map[string]interface{}{
+			logs.Assert(t, []map[string]interface{}{
 				{"level": "DEBUG", "msg": "Rows.Next Start"},
 				{"level": "ERROR", "msg": "Rows.Next Error", "error": "EOF"},
 				{"level": "DEBUG", "msg": "Rows.Close Start"},
 				{"level": "INFO", "msg": "Rows.Close Complete"},
-			}, parseJsonLines(t, buf.Bytes()), "time")
+			})
 
 			expectedResults := []map[string]interface{}{
 				{"id": 2, "name": "bar"},
@@ -299,20 +297,20 @@ func TestLowLevelWithoutContext(t *testing.T) {
 			buf.Reset()
 			stmt, err := db.Prepare(query)
 			assert.NoError(t, err)
-			assertMapSlice(t, []map[string]interface{}{
-				{"level": "DEBUG", "msg": "ResetSession Start"},
-				{"level": "INFO", "msg": "ResetSession Complete"},
-				{"level": "DEBUG", "msg": "PrepareContext Start", "query": query},
-				{"level": "INFO", "msg": "PrepareContext Complete", "query": query},
-			}, parseJsonLines(t, buf.Bytes()), "time")
+			logs.Assert(t, []map[string]interface{}{
+				{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
+				{"level": "INFO", "msg": "Conn.ResetSession Complete"},
+				{"level": "DEBUG", "msg": "Conn.PrepareContext Start", "query": query},
+				{"level": "INFO", "msg": "Conn.PrepareContext Complete", "query": query},
+			})
 
 			defer func() {
 				buf.Reset()
 				assert.NoError(t, stmt.Close())
-				assertMapSlice(t, []map[string]interface{}{
+				logs.Assert(t, []map[string]interface{}{
 					{"level": "DEBUG", "msg": "Stmt.Close Start"},
 					{"level": "INFO", "msg": "Stmt.Close Complete"},
-				}, parseJsonLines(t, buf.Bytes()), "time")
+				})
 			}()
 
 			t.Run("QueryRowContext", func(t *testing.T) {
@@ -320,16 +318,16 @@ func TestLowLevelWithoutContext(t *testing.T) {
 				foo := test1Record{}
 				err := stmt.QueryRow(int64(1)).Scan(&foo.ID, &foo.Name)
 				assert.NoError(t, err)
-				assertMapSlice(t, []map[string]interface{}{
-					{"level": "DEBUG", "msg": "ResetSession Start"},
-					{"level": "INFO", "msg": "ResetSession Complete"},
+				logs.Assert(t, []map[string]interface{}{
+					{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
+					{"level": "INFO", "msg": "Conn.ResetSession Complete"},
 					{"level": "DEBUG", "msg": "Stmt.QueryContext Start", "args": "[{Name: Ordinal:1 Value:1}]"},
 					{"level": "INFO", "msg": "Stmt.QueryContext Complete", "args": "[{Name: Ordinal:1 Value:1}]"},
 					{"level": "DEBUG", "msg": "Rows.Next Start"},
 					{"level": "INFO", "msg": "Rows.Next Complete"},
 					{"level": "DEBUG", "msg": "Rows.Close Start"},
 					{"level": "INFO", "msg": "Rows.Close Complete"},
-				}, parseJsonLines(t, buf.Bytes()), "time")
+				})
 				assert.Equal(t, test1Record{ID: 1, Name: "foo"}, foo)
 			})
 		})
@@ -339,32 +337,32 @@ func TestLowLevelWithoutContext(t *testing.T) {
 			buf.Reset()
 			stmt, err := db.Prepare(query)
 			assert.NoError(t, err)
-			assertMapSlice(t, []map[string]interface{}{
-				{"level": "DEBUG", "msg": "ResetSession Start"},
-				{"level": "INFO", "msg": "ResetSession Complete"},
-				{"level": "DEBUG", "msg": "PrepareContext Start", "query": query},
-				{"level": "INFO", "msg": "PrepareContext Complete", "query": query},
-			}, parseJsonLines(t, buf.Bytes()), "time")
+			logs.Assert(t, []map[string]interface{}{
+				{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
+				{"level": "INFO", "msg": "Conn.ResetSession Complete"},
+				{"level": "DEBUG", "msg": "Conn.PrepareContext Start", "query": query},
+				{"level": "INFO", "msg": "Conn.PrepareContext Complete", "query": query},
+			})
 
 			defer func() {
 				buf.Reset()
 				assert.NoError(t, stmt.Close())
-				assertMapSlice(t, []map[string]interface{}{
+				logs.Assert(t, []map[string]interface{}{
 					{"level": "DEBUG", "msg": "Stmt.Close Start"},
 					{"level": "INFO", "msg": "Stmt.Close Complete"},
-				}, parseJsonLines(t, buf.Bytes()), "time")
+				})
 			}()
 
 			t.Run("ExecContext", func(t *testing.T) {
 				buf.Reset()
 				result, err := stmt.Exec(4, "qux")
 				assert.NoError(t, err)
-				assertMapSlice(t, []map[string]interface{}{
-					{"level": "DEBUG", "msg": "ResetSession Start"},
-					{"level": "INFO", "msg": "ResetSession Complete"},
+				logs.Assert(t, []map[string]interface{}{
+					{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
+					{"level": "INFO", "msg": "Conn.ResetSession Complete"},
 					{"level": "DEBUG", "msg": "Stmt.ExecContext Start", "args": "[{Name: Ordinal:1 Value:4} {Name: Ordinal:2 Value:qux}]"},
 					{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": "[{Name: Ordinal:1 Value:4} {Name: Ordinal:2 Value:qux}]"},
-				}, parseJsonLines(t, buf.Bytes()), "time")
+				})
 				rowsAffected, err := result.RowsAffected()
 				assert.NoError(t, err)
 				assert.Equal(t, int64(1), rowsAffected)
@@ -378,12 +376,12 @@ func TestLowLevelWithoutContext(t *testing.T) {
 			buf.Reset()
 			tx, err := db.Begin()
 			assert.NoError(t, err)
-			assertMapSlice(t, []map[string]interface{}{
-				{"level": "DEBUG", "msg": "ResetSession Start"},
-				{"level": "INFO", "msg": "ResetSession Complete"},
+			logs.Assert(t, []map[string]interface{}{
+				{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
+				{"level": "INFO", "msg": "Conn.ResetSession Complete"},
 				{"level": "DEBUG", "msg": "BeginTx Start"},
 				{"level": "INFO", "msg": "BeginTx Complete"},
-			}, parseJsonLines(t, buf.Bytes()), "time")
+			})
 
 			t.Run("update", func(t *testing.T) {
 				query := "UPDATE test1 SET name = ? WHERE id = ?"
@@ -391,10 +389,10 @@ func TestLowLevelWithoutContext(t *testing.T) {
 				r, err := tx.Exec(query, "qux", int64(3))
 				args := "[{Name: Ordinal:1 Value:qux} {Name: Ordinal:2 Value:3}]"
 				assert.NoError(t, err)
-				assertMapSlice(t, []map[string]interface{}{
-					{"level": "DEBUG", "msg": "ExecContext Start", "query": query, "args": args},
-					{"level": "INFO", "msg": "ExecContext Complete", "query": query, "args": args},
-				}, parseJsonLines(t, buf.Bytes()), "time")
+				logs.Assert(t, []map[string]interface{}{
+					{"level": "DEBUG", "msg": "Conn.ExecContext Start", "query": query, "args": args},
+					{"level": "INFO", "msg": "Conn.ExecContext Complete", "query": query, "args": args},
+				})
 
 				rowsAffected, err := r.RowsAffected()
 				assert.NoError(t, err)
@@ -404,22 +402,22 @@ func TestLowLevelWithoutContext(t *testing.T) {
 				buf.Reset()
 				err := tx.Rollback()
 				assert.NoError(t, err)
-				assertMapSlice(t, []map[string]interface{}{
-					{"level": "DEBUG", "msg": "Rollback Start"},
-					{"level": "INFO", "msg": "Rollback Complete"},
-				}, parseJsonLines(t, buf.Bytes()), "time")
+				logs.Assert(t, []map[string]interface{}{
+					{"level": "DEBUG", "msg": "Tx.Rollback Start"},
+					{"level": "INFO", "msg": "Tx.Rollback Complete"},
+				})
 			})
 		})
 		t.Run("commit", func(t *testing.T) {
 			buf.Reset()
 			tx, err := db.Begin()
 			assert.NoError(t, err)
-			assertMapSlice(t, []map[string]interface{}{
-				{"level": "DEBUG", "msg": "ResetSession Start"},
-				{"level": "INFO", "msg": "ResetSession Complete"},
+			logs.Assert(t, []map[string]interface{}{
+				{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
+				{"level": "INFO", "msg": "Conn.ResetSession Complete"},
 				{"level": "DEBUG", "msg": "BeginTx Start"},
 				{"level": "INFO", "msg": "BeginTx Complete"},
-			}, parseJsonLines(t, buf.Bytes()), "time")
+			})
 
 			t.Run("update", func(t *testing.T) {
 				query := "UPDATE test1 SET name = ? WHERE id = ?"
@@ -427,10 +425,10 @@ func TestLowLevelWithoutContext(t *testing.T) {
 				r, err := tx.Exec(query, "quux", int64(3))
 				args := "[{Name: Ordinal:1 Value:quux} {Name: Ordinal:2 Value:3}]"
 				assert.NoError(t, err)
-				assertMapSlice(t, []map[string]interface{}{
-					{"level": "DEBUG", "msg": "ExecContext Start", "query": query, "args": args},
-					{"level": "INFO", "msg": "ExecContext Complete", "query": query, "args": args},
-				}, parseJsonLines(t, buf.Bytes()), "time")
+				logs.Assert(t, []map[string]interface{}{
+					{"level": "DEBUG", "msg": "Conn.ExecContext Start", "query": query, "args": args},
+					{"level": "INFO", "msg": "Conn.ExecContext Complete", "query": query, "args": args},
+				})
 
 				rowsAffected, err := r.RowsAffected()
 				assert.NoError(t, err)
@@ -440,10 +438,10 @@ func TestLowLevelWithoutContext(t *testing.T) {
 				buf.Reset()
 				err := tx.Commit()
 				assert.NoError(t, err)
-				assertMapSlice(t, []map[string]interface{}{
-					{"level": "DEBUG", "msg": "Commit Start"},
-					{"level": "INFO", "msg": "Commit Complete"},
-				}, parseJsonLines(t, buf.Bytes()), "time")
+				logs.Assert(t, []map[string]interface{}{
+					{"level": "DEBUG", "msg": "Tx.Commit Start"},
+					{"level": "INFO", "msg": "Tx.Commit Complete"},
+				})
 			})
 		})
 	})
@@ -452,22 +450,22 @@ func TestLowLevelWithoutContext(t *testing.T) {
 		buf.Reset()
 		conn, err := db.Conn(ctx)
 		require.NoError(t, err)
-		assertMapSlice(t, []map[string]interface{}{
-			{"level": "DEBUG", "msg": "ResetSession Start"},
-			{"level": "INFO", "msg": "ResetSession Complete"},
-		}, parseJsonLines(t, buf.Bytes()), "time")
+		logs.Assert(t, []map[string]interface{}{
+			{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
+			{"level": "INFO", "msg": "Conn.ResetSession Complete"},
+		})
 
 		defer func() {
 			buf.Reset()
 			err := conn.Close()
 			assert.NoError(t, err)
-			assertMapSlice(t, []map[string]interface{}{}, parseJsonLines(t, buf.Bytes()), "time")
+			logs.Assert(t, []map[string]interface{}{})
 		}()
 
 		t.Run("Raw", func(t *testing.T) {
 			buf.Reset()
 			err := conn.Raw(func(driverConn interface{}) error {
-				assertMapSlice(t, []map[string]interface{}{}, parseJsonLines(t, buf.Bytes()), "time")
+				logs.Assert(t, []map[string]interface{}{})
 				assert.Equal(t, "*sqlslog.connWithContextWrapper", fmt.Sprintf("%T", driverConn))
 				if assert.Implements(t, (*driver.Conn)(nil), driverConn) {
 					dConn := driverConn.(driver.Conn)
@@ -478,10 +476,10 @@ func TestLowLevelWithoutContext(t *testing.T) {
 						var err error
 						tx, err = dConn.Begin()
 						require.NoError(t, err)
-						assertMapSlice(t, []map[string]interface{}{
-							{"level": "DEBUG", "msg": "Begin Start"},
-							{"level": "INFO", "msg": "Begin Complete"},
-						}, parseJsonLines(t, buf.Bytes()), "time")
+						logs.Assert(t, []map[string]interface{}{
+							{"level": "DEBUG", "msg": "Conn.Begin Start"},
+							{"level": "INFO", "msg": "Conn.Begin Complete"},
+						})
 					})
 
 					t.Run("Prepare and Query", func(t *testing.T) {
@@ -489,18 +487,18 @@ func TestLowLevelWithoutContext(t *testing.T) {
 						buf.Reset()
 						stmt, err := dConn.Prepare(query)
 						require.NoError(t, err)
-						assertMapSlice(t, []map[string]interface{}{
-							{"level": "DEBUG", "msg": "Prepare Start", "query": query},
-							{"level": "INFO", "msg": "Prepare Complete", "query": query},
-						}, parseJsonLines(t, buf.Bytes()), "time")
+						logs.Assert(t, []map[string]interface{}{
+							{"level": "DEBUG", "msg": "Conn.Prepare Start", "query": query},
+							{"level": "INFO", "msg": "Conn.Prepare Complete", "query": query},
+						})
 
 						defer func() {
 							buf.Reset()
 							stmt.Close()
-							assertMapSlice(t, []map[string]interface{}{
+							logs.Assert(t, []map[string]interface{}{
 								{"level": "DEBUG", "msg": "Stmt.Close Start", "query": query},
 								{"level": "INFO", "msg": "Stmt.Close Complete", "query": query},
-							}, parseJsonLines(t, buf.Bytes()), "time")
+							})
 						}()
 
 						t.Run("Query", func(t *testing.T) {
@@ -515,18 +513,18 @@ func TestLowLevelWithoutContext(t *testing.T) {
 						buf.Reset()
 						stmt, err := dConn.Prepare(query)
 						require.NoError(t, err)
-						assertMapSlice(t, []map[string]interface{}{
-							{"level": "DEBUG", "msg": "Prepare Start", "query": query},
-							{"level": "INFO", "msg": "Prepare Complete", "query": query},
-						}, parseJsonLines(t, buf.Bytes()), "time")
+						logs.Assert(t, []map[string]interface{}{
+							{"level": "DEBUG", "msg": "Conn.Prepare Start", "query": query},
+							{"level": "INFO", "msg": "Conn.Prepare Complete", "query": query},
+						})
 
 						defer func() {
 							buf.Reset()
 							stmt.Close()
-							assertMapSlice(t, []map[string]interface{}{
+							logs.Assert(t, []map[string]interface{}{
 								{"level": "DEBUG", "msg": "Stmt.Close Start", "query": query},
 								{"level": "INFO", "msg": "Stmt.Close Complete", "query": query},
-							}, parseJsonLines(t, buf.Bytes()), "time")
+							})
 						}()
 
 						t.Run("Exec", func(t *testing.T) {
@@ -542,10 +540,10 @@ func TestLowLevelWithoutContext(t *testing.T) {
 						buf.Reset()
 						err := tx.Rollback()
 						require.NoError(t, err)
-						assertMapSlice(t, []map[string]interface{}{
-							{"level": "DEBUG", "msg": "Rollback Start"},
-							{"level": "INFO", "msg": "Rollback Complete"},
-						}, parseJsonLines(t, buf.Bytes()), "time")
+						logs.Assert(t, []map[string]interface{}{
+							{"level": "DEBUG", "msg": "Tx.Rollback Start"},
+							{"level": "INFO", "msg": "Tx.Rollback Complete"},
+						})
 					})
 
 				}
@@ -565,18 +563,18 @@ func TestLowLevelWithoutContext(t *testing.T) {
 		defer func() {
 			buf.Reset()
 			assert.NoError(t, stmt.Close())
-			assertMapSlice(t, []map[string]interface{}{
+			logs.Assert(t, []map[string]interface{}{
 				{"level": "DEBUG", "msg": "Stmt.Close Start"},
 				{"level": "INFO", "msg": "Stmt.Close Complete"},
-			}, parseJsonLines(t, buf.Bytes()), "time")
+			})
 		}()
 
-		assertMapSlice(t, []map[string]interface{}{
-			{"level": "DEBUG", "msg": "ResetSession Start"},
-			{"level": "INFO", "msg": "ResetSession Complete"},
-			{"level": "DEBUG", "msg": "PrepareContext Start", "query": query},
-			{"level": "INFO", "msg": "PrepareContext Complete", "query": query},
-		}, parseJsonLines(t, buf.Bytes()), "time")
+		logs.Assert(t, []map[string]interface{}{
+			{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
+			{"level": "INFO", "msg": "Conn.ResetSession Complete"},
+			{"level": "DEBUG", "msg": "Conn.PrepareContext Start", "query": query},
+			{"level": "INFO", "msg": "Conn.PrepareContext Complete", "query": query},
+		})
 
 		t.Run("Stmt.ExecContext", func(t *testing.T) {
 			buf.Reset()
