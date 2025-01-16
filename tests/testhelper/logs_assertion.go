@@ -22,7 +22,11 @@ func (a *LogsAssertion) Start() {
 
 func (a *LogsAssertion) Assert(t *testing.T, expected []map[string]interface{}) {
 	actual := parseJsonLines(t, a.buf.Bytes())
-	assertMapSlice(t, expected, actual, "time")
+	assertMapSlice(t, expected, actual,
+		ignore("time"),
+		when(msgEndsWith(" Complete"), deleteIfFloat64("duration")),
+		when(msgEndsWith(" Error"), deleteIfFloat64("duration")),
+	)
 }
 
 func (a *LogsAssertion) AssertEmpty(t *testing.T) {
@@ -46,27 +50,54 @@ func parseJsonLines(t *testing.T, b []byte) []map[string]interface{} {
 	return results
 }
 
-func assertMapSlice(t *testing.T, expected, actual []map[string]interface{}, ignoredFields ...string) {
+type processor = func(t *testing.T, m map[string]interface{})
+
+func ignore(fields ...string) processor {
+	return func(_ *testing.T, m map[string]interface{}) {
+		for _, f := range fields {
+			delete(m, f)
+		}
+	}
+}
+
+func when(predicate func(map[string]interface{}) bool, processors ...processor) processor {
+	return func(t *testing.T, m map[string]interface{}) {
+		if predicate(m) {
+			for _, p := range processors {
+				p(t, m)
+			}
+		}
+	}
+}
+
+func msgEndsWith(suffix string) func(map[string]interface{}) bool {
+	return func(m map[string]interface{}) bool {
+		msg, ok := m["msg"].(string)
+		return ok && msg[len(msg)-len(suffix):] == suffix
+	}
+}
+
+// Parsed value from JSON is float64
+func deleteIfFloat64(key string) processor {
+	return func(t *testing.T, m map[string]interface{}) {
+		if _, ok := m[key].(float64); ok {
+			delete(m, key)
+		}
+	}
+}
+
+func assertMapSlice(t *testing.T, expected, actual []map[string]interface{}, processors ...processor) {
 	t.Helper()
 	comparedSlice := []map[string]interface{}{}
 	for _, a := range actual {
 		compared := map[string]interface{}{}
 		for k, v := range a {
-			if contains(ignoredFields, k) {
-				continue
-			}
 			compared[k] = v
+		}
+		for _, p := range processors {
+			p(t, compared)
 		}
 		comparedSlice = append(comparedSlice, compared)
 	}
 	assert.Equal(t, expected, comparedSlice)
-}
-
-func contains(s []string, e string) bool {
-	for _, a := range s {
-		if a == e {
-			return true
-		}
-	}
-	return false
 }
