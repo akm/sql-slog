@@ -17,6 +17,7 @@ const (
 )
 
 // var _ slog.Level = slog.Level(LevelVerbose)
+var _ slog.Leveler = LevelVerbose
 
 func (l Level) String() string {
 	str := func(base string, val Level) string {
@@ -40,6 +41,10 @@ func (l Level) String() string {
 	default:
 		return str("ERROR", l-LevelError)
 	}
+}
+
+func (l Level) Level() slog.Level {
+	return slog.Level(l)
 }
 
 func ReplaceLevelAttr(_ []string, a slog.Attr) slog.Attr {
