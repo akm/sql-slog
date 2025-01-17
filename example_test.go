@@ -2,8 +2,6 @@ package sqlslog_test
 
 import (
 	"context"
-	"log/slog"
-	"os"
 
 	sqlslog "github.com/akm/sql-slog"
 	// _ "github.com/mattn/go-sqlite3"
@@ -12,8 +10,7 @@ import (
 func ExampleOpen() {
 	dsn := "file::memory:?cache=shared"
 	ctx := context.TODO()
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	db, err := sqlslog.Open(ctx, "sqlite3", dsn, logger)
+	db, err := sqlslog.Open(ctx, "sqlite3", dsn)
 	if err != nil {
 		// Handle error
 	}
