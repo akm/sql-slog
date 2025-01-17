@@ -9,7 +9,10 @@ import (
 
 // Open opens a database specified by its database driver name and a driver-specific data source name.
 // And returns a new database handle with logger.
-func Open(ctx context.Context, driverName, dsn string, logger *slog.Logger) (*sql.DB, error) {
+func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB, error) {
+	options := newOptions(opts...)
+	logger := options.logger
+
 	lg := logger.With(
 		slog.String("driver", driverName),
 		slog.String("dsn", dsn),
