@@ -7,7 +7,7 @@ import (
 )
 
 func TestWrapRows(t *testing.T) {
-	if wrapRows(nil, slog.Default()) != nil {
+	if wrapRows(nil, nil) != nil {
 		t.Fatal("Expected nil")
 	}
 }
@@ -32,7 +32,7 @@ func (m *mockRows) Next(dest []driver.Value) error {
 }
 
 func TestWithMockRows(t *testing.T) {
-	wrapped := &rowsWrapper{original: &mockRows{}, logger: slog.Default()}
+	wrapped := &rowsWrapper{original: &mockRows{}, logger: newLogger(slog.Default(), nil)}
 	t.Run("ColumnTypeScanType", func(t *testing.T) {
 		res := wrapped.ColumnTypeScanType(0)
 		if res == nil {

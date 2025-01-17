@@ -7,7 +7,7 @@ import (
 	"log/slog"
 )
 
-func wrapConn(original driver.Conn, logger *slog.Logger) driver.Conn {
+func wrapConn(original driver.Conn, logger *logger) driver.Conn {
 	if original == nil {
 		return nil
 	}
@@ -45,7 +45,7 @@ func wrapConn(original driver.Conn, logger *slog.Logger) driver.Conn {
 
 type connWrapper struct {
 	original driver.Conn
-	logger   *slog.Logger
+	logger   *logger
 }
 
 // Deprecated interfaces, not implemented.
@@ -63,7 +63,7 @@ var _ driver.NamedValueChecker = (*connWrapper)(nil)
 // Begin implements driver.Conn.
 func (c *connWrapper) Begin() (driver.Tx, error) {
 	var origTx driver.Tx
-	err := logAction(c.logger, "Conn.Begin", func() error {
+	err := c.logger.logAction("Conn.Begin", func() error {
 		var err error
 		origTx, err = c.original.Begin() //nolint:staticcheck
 		return err
@@ -76,14 +76,14 @@ func (c *connWrapper) Begin() (driver.Tx, error) {
 
 // Close implements driver.Conn.
 func (c *connWrapper) Close() error {
-	return logAction(c.logger, "Conn.Close", c.original.Close)
+	return c.logger.logAction("Conn.Close", c.original.Close)
 }
 
 // Prepare implements driver.Conn.
 func (c *connWrapper) Prepare(query string) (driver.Stmt, error) {
 	lg := c.logger.With(slog.String("query", query))
 	var origStmt driver.Stmt
-	err := logAction(lg, "Conn.Prepare", func() error {
+	err := lg.logAction("Conn.Prepare", func() error {
 		var err error
 		origStmt, err = c.original.Prepare(query)
 		return err
@@ -139,7 +139,7 @@ var _ driver.ConnBeginTx = (*connWithContextWrapper)(nil)
 
 // ResetSession implements driver.SessionResetter.
 func (c *connWithContextWrapper) ResetSession(ctx context.Context) error {
-	return logActionContext(ctx, c.logger, "Conn.ResetSession", func() error {
+	return c.logger.logActionContext(ctx, "Conn.ResetSession", func() error {
 		// https://cs.opensource.google/go/go/+/master:src/database/sql/sql.go;l=603-606
 		if v, ok := c.original.(driver.SessionResetter); ok {
 			return v.ResetSession(ctx)
@@ -150,7 +150,7 @@ func (c *connWithContextWrapper) ResetSession(ctx context.Context) error {
 
 // Ping implements driver.Pinger.
 func (c *connWithContextWrapper) Ping(ctx context.Context) error {
-	return logActionContext(ctx, c.logger, "Conn.Ping", func() error {
+	return c.logger.logActionContext(ctx, "Conn.Ping", func() error {
 		// https://cs.opensource.google/go/go/+/master:src/database/sql/sql.go;l=882-891
 		if p, ok := c.original.(driver.Pinger); ok {
 			return p.Ping(ctx)
@@ -166,7 +166,7 @@ func (c *connWithContextWrapper) ExecContext(ctx context.Context, query string, 
 		slog.String("query", query),
 		slog.String("args", fmt.Sprintf("%+v", args)),
 	)
-	err := logActionContext(ctx, lg, "Conn.ExecContext", func() error {
+	err := lg.logActionContext(ctx, "Conn.ExecContext", func() error {
 		var err error
 		result, err = c.originalConn.ExecContext(ctx, query, args)
 		return err
@@ -184,7 +184,7 @@ func (c *connWithContextWrapper) QueryContext(ctx context.Context, query string,
 		slog.String("query", query),
 		slog.String("args", fmt.Sprintf("%+v", args)),
 	)
-	err := logActionContext(ctx, lg, "Conn.QueryContext", func() error {
+	err := lg.logActionContext(ctx, "Conn.QueryContext", func() error {
 		var err error
 		rows, err = c.originalConn.QueryContext(ctx, query, args)
 		return err
@@ -199,7 +199,7 @@ func (c *connWithContextWrapper) QueryContext(ctx context.Context, query string,
 func (c *connWithContextWrapper) PrepareContext(ctx context.Context, query string) (driver.Stmt, error) {
 	var stmt driver.Stmt
 	lg := c.logger.With(slog.String("query", query))
-	err := logActionContext(ctx, lg, "Conn.PrepareContext", func() error {
+	err := lg.logActionContext(ctx, "Conn.PrepareContext", func() error {
 		var err error
 		stmt, err = c.originalConn.PrepareContext(ctx, query)
 		return err
@@ -213,7 +213,7 @@ func (c *connWithContextWrapper) PrepareContext(ctx context.Context, query strin
 // BeginTx implements driver.ConnBeginTx.
 func (c *connWithContextWrapper) BeginTx(ctx context.Context, opts driver.TxOptions) (driver.Tx, error) {
 	var tx driver.Tx
-	err := logActionContext(ctx, c.logger, "BeginTx", func() error {
+	err := c.logger.logActionContext(ctx, "BeginTx", func() error {
 		var err error
 		tx, err = c.originalConn.BeginTx(ctx, opts)
 		return err

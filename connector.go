@@ -3,24 +3,23 @@ package sqlslog
 import (
 	"context"
 	"database/sql/driver"
-	"log/slog"
 )
 
 type connector struct {
 	original driver.Connector
-	logger   *slog.Logger
+	logger   *logger
 }
 
 var _ driver.Connector = (*connector)(nil)
 
-func wrapConnector(original driver.Connector, logger *slog.Logger) driver.Connector {
+func wrapConnector(original driver.Connector, logger *logger) driver.Connector {
 	return &connector{original: original, logger: logger}
 }
 
 // Connect implements driver.Connector.
 func (c *connector) Connect(ctx context.Context) (driver.Conn, error) {
 	var origConn driver.Conn
-	err := logActionContext(ctx, c.logger, "Connector.Connect", func() error {
+	err := c.logger.logActionContext(ctx, "Connector.Connect", func() error {
 		var err error
 		origConn, err = c.original.Connect(ctx)
 		return err
