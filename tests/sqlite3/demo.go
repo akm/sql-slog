@@ -20,9 +20,9 @@ func main() {
 	var handler slog.Handler
 	switch format {
 	case "json":
-		handler = slog.NewJSONHandler(os.Stdout, opts)
+		handler = sqlslog.NewJSONHandler(os.Stdout, opts)
 	default:
-		handler = slog.NewTextHandler(os.Stdout, opts)
+		handler = sqlslog.NewTextHandler(os.Stdout, opts)
 	}
 	logger := slog.New(handler)
 

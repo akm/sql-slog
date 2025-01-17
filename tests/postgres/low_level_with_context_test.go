@@ -35,7 +35,7 @@ func TestLowLevelWithContext(t *testing.T) {
 
 	buf := bytes.NewBuffer(nil)
 	logs := testhelper.NewLogAssertion(buf)
-	logger := slog.New(slog.NewJSONHandler(buf, &slog.HandlerOptions{Level: slog.LevelDebug}))
+	logger := slog.New(sqlslog.NewJSONHandler(buf, &slog.HandlerOptions{Level: sqlslog.LevelVerbose}))
 	db, err := sqlslog.Open(ctx, "postgres", dsn, sqlslog.Logger(logger))
 	require.NoError(t, err)
 	defer db.Close()
