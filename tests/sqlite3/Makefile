@@ -27,3 +27,7 @@ test-coverage: $(GO_COVERAGE_PROFILE)
 clean:
 	rm -rf coverage
 	rm -f $(GO_COVERAGE_HTML) $(GO_COVERAGE_PROFILE)
+
+.PHONY: demo
+demo:
+	go run ./demo.go
