@@ -26,7 +26,7 @@ func TestLowLevelWithContext(t *testing.T) {
 	buf := bytes.NewBuffer(nil)
 	logs := testhelper.NewLogAssertion(buf)
 	logger := slog.New(slog.NewJSONHandler(buf, &slog.HandlerOptions{Level: slog.LevelDebug}))
-	db, err := sqlslog.Open(ctx, "sqlite3", dsn, logger)
+	db, err := sqlslog.Open(ctx, "sqlite3", dsn, sqlslog.Logger(logger))
 	require.NoError(t, err)
 	defer db.Close()
 

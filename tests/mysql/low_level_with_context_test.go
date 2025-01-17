@@ -37,7 +37,7 @@ func TestLowLevelWithContext(t *testing.T) {
 	logs := testhelper.NewLogAssertion(buf)
 	logs.Start()
 	logger := slog.New(slog.NewJSONHandler(buf, &slog.HandlerOptions{Level: slog.LevelDebug}))
-	db, err := sqlslog.Open(ctx, "mysql", "root@tcp(localhost:3306)/"+dbName, logger)
+	db, err := sqlslog.Open(ctx, "mysql", "root@tcp(localhost:3306)/"+dbName, sqlslog.Logger(logger))
 	require.NoError(t, err)
 	defer db.Close()
 
