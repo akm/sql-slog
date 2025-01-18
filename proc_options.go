@@ -5,13 +5,13 @@ type LogAction struct {
 	Level Level
 }
 
-// StepEvent is the event type of the process.
+// StepEvent is the event type of the step.
 type StepEvent int
 
 const (
-	StepEventStart    StepEvent = iota + 1 // is the event when the process starts.
-	StepEventError                         // is the event when the process ends with an error.
-	StepEventComplete                      // is the event when the process completes successfully.
+	StepEventStart    StepEvent = iota + 1 // is the event when the step starts.
+	StepEventError                         // is the event when the step ends with an error.
+	StepEventComplete                      // is the event when the step completes successfully.
 )
 
 // String returns the string representation of the event.
@@ -28,15 +28,15 @@ func (pe *StepEvent) String() string {
 	}
 }
 
-// StepLogMsgFormatter is the function type to format the process name.
+// StepLogMsgFormatter is the function type to format the step log message
 type StepLogMsgFormatter func(name string, event StepEvent) string
 
-// StepLogMsgWithEventName returns the formatted process name with the event name.
+// StepLogMsgWithEventName returns the formatted step log message with the event name.
 func StepLogMsgWithEventName(name string, event StepEvent) string {
 	return name + " " + event.String()
 }
 
-// StepOptions is the options for the process.
+// StepOptions is the options for the step.
 type StepOptions struct {
 	Start    LogAction
 	Error    LogAction
