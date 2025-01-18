@@ -31,8 +31,8 @@ func (pe *StepEvent) String() string {
 // StepLogMsgFormatter is the function type to format the process name.
 type StepLogMsgFormatter func(name string, event StepEvent) string
 
-// ProcNameWithEventName returns the formatted process name with the event name.
-func ProcNameWithEventName(name string, event StepEvent) string {
+// StepLogMsgWithEventName returns the formatted process name with the event name.
+func StepLogMsgWithEventName(name string, event StepEvent) string {
 	return name + " " + event.String()
 }
 
