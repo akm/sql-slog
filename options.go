@@ -74,10 +74,13 @@ func newDefaultOptions(formatter ProcNameFormatter) *options {
 	}
 }
 
+// Option is a function that sets some option on the options struct.
 type Option func(*options)
 
 var procNameFormatter = ProcNameWithEventName
 
+// SetProcNameFormatter sets the formatter for the process name used in logs.
+// If not set, the default is ProcNameWithEventName.
 func SetProcNameFormatter(f ProcNameFormatter) { procNameFormatter = f }
 
 func newOptions(opts ...Option) *options {
@@ -88,62 +91,94 @@ func newOptions(opts ...Option) *options {
 	return o
 }
 
+// Logger sets the slog.Logger to be used.
+// If not set, the default is slog.Default().
 func Logger(logger *slog.Logger) Option {
 	return func(o *options) {
 		o.logger = logger
 	}
 }
 
-// options for Conn
-func ConnBegin(opts *ProcOptions) Option   { return func(o *options) { o.connBegin = *opts } }
+// Set the options for Conn.Begin
+func ConnBegin(opts *ProcOptions) Option { return func(o *options) { o.connBegin = *opts } }
+
+// Set the options for Conn.Prepare
 func ConnPrepare(opts *ProcOptions) Option { return func(o *options) { o.connPrepare = *opts } }
+
+// Set the options for Conn.ResetSession
 func ConnResetSession(opts *ProcOptions) Option {
 	return func(o *options) { o.connResetSession = *opts }
 }
+
+// Set the options for Conn.Ping
 func ConnPing(opts *ProcOptions) Option { return func(o *options) { o.connPing = *opts } }
+
+// Set the options for Conn.ExecContext
 func ConnExecContext(opts *ProcOptions) Option {
 	return func(o *options) { o.connExecContext = *opts }
 }
+
+// Set the options for Conn.QueryContext
 func ConnQueryContext(opts *ProcOptions) Option {
 	return func(o *options) { o.connQueryContext = *opts }
 }
+
+// Set the options for Conn.PrepareContext
 func ConnPrepareContext(opts *ProcOptions) Option {
 	return func(o *options) { o.connPrepareContext = *opts }
 }
+
+// Set the options for Conn.BeginTx
 func ConnBeginTx(opts *ProcOptions) Option { return func(o *options) { o.connBeginTx = *opts } }
 
-// options for Connector
+// Set the options for Connector.Connect
 func ConnectorConnect(opts *ProcOptions) Option {
 	return func(o *options) { o.connectorConnect = *opts }
 }
 
-// options for Driver
+// Set the options for Driver.Open
 func DriverOpen(opts *ProcOptions) Option { return func(o *options) { o.driverOpen = *opts } }
+
+// Set the options for Driver.OpenConnector
 func DriverOpenConnector(opts *ProcOptions) Option {
 	return func(o *options) { o.driverOpenConnector = *opts }
 }
 
-// options for sqlslog
+// Set the options for sqlslog.Open
 func SqlslogOpen(opts *ProcOptions) Option { return func(o *options) { o.sqlslogOpen = *opts } }
 
-// options for Rows
+// Set the options for Rows.Close
 func RowsClose(opts *ProcOptions) Option { return func(o *options) { o.rowsClose = *opts } }
-func RowsNext(opts *ProcOptions) Option  { return func(o *options) { o.rowsNext = *opts } }
+
+// Set the options for Rows.Next
+func RowsNext(opts *ProcOptions) Option { return func(o *options) { o.rowsNext = *opts } }
+
+// Set the options for Rows.NextResultSet
 func RowsNextResultSet(opts *ProcOptions) Option {
 	return func(o *options) { o.rowsNextResultSet = *opts }
 }
 
-// options for Stmt
+// Set the options for Stmt.Close
 func StmtClose(opts *ProcOptions) Option { return func(o *options) { o.stmtClose = *opts } }
-func StmtExec(opts *ProcOptions) Option  { return func(o *options) { o.stmtExec = *opts } }
+
+// Set the options for Stmt.Exec
+func StmtExec(opts *ProcOptions) Option { return func(o *options) { o.stmtExec = *opts } }
+
+// Set the options for Stmt.Query
 func StmtQuery(opts *ProcOptions) Option { return func(o *options) { o.stmtQuery = *opts } }
+
+// Set the options for Stmt.ExecContext
 func StmtExecContext(opts *ProcOptions) Option {
 	return func(o *options) { o.stmtExecContext = *opts }
 }
+
+// Set the options for Stmt.QueryContext
 func StmtQueryContext(opts *ProcOptions) Option {
 	return func(o *options) { o.stmtQueryContext = *opts }
 }
 
-// options for Tx
-func TxCommit(opts *ProcOptions) Option   { return func(o *options) { o.txCommit = *opts } }
+// Set the options for Tx.Commit
+func TxCommit(opts *ProcOptions) Option { return func(o *options) { o.txCommit = *opts } }
+
+// Set the options for Tx.Rollback
 func TxRollback(opts *ProcOptions) Option { return func(o *options) { o.txRollback = *opts } }

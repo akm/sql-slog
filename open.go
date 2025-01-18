@@ -7,8 +7,19 @@ import (
 	"log/slog"
 )
 
-// Open opens a database specified by its database driver name and a driver-specific data source name.
-// And returns a new database handle with logger.
+/*
+Open opens a database specified by its database driver name and a driver-specific data source name.
+And returns a new database handle with logger.
+
+ctx is the context for the open operation.
+driverName is the name of the database driver as same as driverName of [sql.Open].
+dsn is the data source name as same as dataSourceName of [sql.Open].
+opts are the options for the logging behavior. See [Option] for the details.
+
+The returned DB can be used as same as *sql.DB from [sql.Open].
+
+[sql.Open]: https://pkg.go.dev/database/sql#Open
+*/
 func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB, error) {
 	options := newOptions(opts...)
 	logger := newLogger(options.logger, options)
