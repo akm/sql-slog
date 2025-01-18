@@ -25,38 +25,27 @@ go get -u github.com/akm/sql-slog
 
 ## USAGE
 
-### MySQL
+This is a simple example of how to use `sql.Open`.
 
 ```golang
-ctx := context.TODO()
-logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-db, err := sqlslog.Open(ctx, "mysql", dsn, logger)
-// handle err
+db, err := sql.Open("mysql", dsn)
 ```
 
-See [test for mysql](https://github.com/akm/sql-slog/blob/3f72cc68aefa9ac05b031d865dbdaec8a361c2c9/tests/mysql/low_level_with_context_test.go) for more details.
-
-### PostgreSQL
+When use sqlslog, you can use it like this.
 
 ```golang
-ctx := context.TODO()
-logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-db, err := sqlslog.Open(ctx, "postgres", dsn, logger)
-// handle err
+ctx := context.TODO() // or a context.Context
+db, err := sqlslog.Open(ctx, "mysql", dsn)
 ```
 
-See [test for postgres](https://github.com/akm/sql-slog/blob/3f72cc68aefa9ac05b031d865dbdaec8a361c2c9/tests/postgres/low_level_with_context_test.go) for more details.
+1. Replace `sql.Open` with `sqlslog.Open`.
+2. Insert a context.Context to the start of arguments.
 
-### SQLite3
+### tests
 
-```golang
-ctx := context.TODO()
-logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-db, err := sqlslog.Open(ctx, "sqlite3", dsn, logger)
-// handle err
-```
-
-See [test for sqlite3](https://github.com/akm/sql-slog/blob/3f72cc68aefa9ac05b031d865dbdaec8a361c2c9/tests/sqlite3/low_level_without_context_test.go) for more details.
+- [test for mysql](https://github.com/akm/sql-slog/blob/3f72cc68aefa9ac05b031d865dbdaec8a361c2c9/tests/mysql/low_level_with_context_test.go) for more details.
+- [test for postgres](https://github.com/akm/sql-slog/blob/3f72cc68aefa9ac05b031d865dbdaec8a361c2c9/tests/postgres/low_level_with_context_test.go) for more details.
+- [test for sqlite3](https://github.com/akm/sql-slog/blob/3f72cc68aefa9ac05b031d865dbdaec8a361c2c9/tests/sqlite3/low_level_without_context_test.go) for more details.
 
 ## MOTIVATION
 
