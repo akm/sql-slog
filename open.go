@@ -18,6 +18,14 @@ opts are the options for the logging behavior. See [Option] for the details.
 
 The returned DB can be used as same as *sql.DB from [sql.Open].
 
+See the following example for the usage:
+
+[Logger]: sets the slog.Logger to be used. If not set, the default is slog.Default().
+
+[ProcOptions]: sets the options for the logging behavior.
+
+[SetProcNameFormatter]: sets the function to format the procedure name.
+
 [sql.Open]: https://pkg.go.dev/database/sql#Open
 */
 func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB, error) {
