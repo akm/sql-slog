@@ -50,7 +50,6 @@ func (l Level) Level() slog.Level {
 func ReplaceLevelAttr(_ []string, a slog.Attr) slog.Attr {
 	// https://go.dev/src/log/slog/example_custom_levels_test.go
 	if a.Key == slog.LevelKey {
-		fmt.Printf("ReplaceLevelAttr: %+v\n", a)
 		level := Level(a.Value.Any().(slog.Level))
 		a.Value = slog.StringValue(level.String())
 	}
