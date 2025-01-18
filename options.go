@@ -100,85 +100,85 @@ func Logger(logger *slog.Logger) Option {
 }
 
 // Set the options for Conn.Begin
-func ConnBegin(opts *ProcOptions) Option { return func(o *options) { o.connBegin = *opts } }
+func ConnBegin(f func(*ProcOptions)) Option { return func(o *options) { f(&o.connBegin) } }
 
 // Set the options for Conn.Prepare
-func ConnPrepare(opts *ProcOptions) Option { return func(o *options) { o.connPrepare = *opts } }
+func ConnPrepare(f func(*ProcOptions)) Option { return func(o *options) { f(&o.connPrepare) } }
 
 // Set the options for Conn.ResetSession
-func ConnResetSession(opts *ProcOptions) Option {
-	return func(o *options) { o.connResetSession = *opts }
+func ConnResetSession(f func(*ProcOptions)) Option {
+	return func(o *options) { f(&o.connResetSession) }
 }
 
 // Set the options for Conn.Ping
-func ConnPing(opts *ProcOptions) Option { return func(o *options) { o.connPing = *opts } }
+func ConnPing(f func(*ProcOptions)) Option { return func(o *options) { f(&o.connPing) } }
 
 // Set the options for Conn.ExecContext
-func ConnExecContext(opts *ProcOptions) Option {
-	return func(o *options) { o.connExecContext = *opts }
+func ConnExecContext(f func(*ProcOptions)) Option {
+	return func(o *options) { f(&o.connExecContext) }
 }
 
 // Set the options for Conn.QueryContext
-func ConnQueryContext(opts *ProcOptions) Option {
-	return func(o *options) { o.connQueryContext = *opts }
+func ConnQueryContext(f func(*ProcOptions)) Option {
+	return func(o *options) { f(&o.connQueryContext) }
 }
 
 // Set the options for Conn.PrepareContext
-func ConnPrepareContext(opts *ProcOptions) Option {
-	return func(o *options) { o.connPrepareContext = *opts }
+func ConnPrepareContext(f func(*ProcOptions)) Option {
+	return func(o *options) { f(&o.connPrepareContext) }
 }
 
 // Set the options for Conn.BeginTx
-func ConnBeginTx(opts *ProcOptions) Option { return func(o *options) { o.connBeginTx = *opts } }
+func ConnBeginTx(f func(*ProcOptions)) Option { return func(o *options) { f(&o.connBeginTx) } }
 
 // Set the options for Connector.Connect
-func ConnectorConnect(opts *ProcOptions) Option {
-	return func(o *options) { o.connectorConnect = *opts }
+func ConnectorConnect(f func(*ProcOptions)) Option {
+	return func(o *options) { f(&o.connectorConnect) }
 }
 
 // Set the options for Driver.Open
-func DriverOpen(opts *ProcOptions) Option { return func(o *options) { o.driverOpen = *opts } }
+func DriverOpen(f func(*ProcOptions)) Option { return func(o *options) { f(&o.driverOpen) } }
 
 // Set the options for Driver.OpenConnector
-func DriverOpenConnector(opts *ProcOptions) Option {
-	return func(o *options) { o.driverOpenConnector = *opts }
+func DriverOpenConnector(f func(*ProcOptions)) Option {
+	return func(o *options) { f(&o.driverOpenConnector) }
 }
 
 // Set the options for sqlslog.Open
-func SqlslogOpen(opts *ProcOptions) Option { return func(o *options) { o.sqlslogOpen = *opts } }
+func SqlslogOpen(f func(*ProcOptions)) Option { return func(o *options) { f(&o.sqlslogOpen) } }
 
 // Set the options for Rows.Close
-func RowsClose(opts *ProcOptions) Option { return func(o *options) { o.rowsClose = *opts } }
+func RowsClose(f func(*ProcOptions)) Option { return func(o *options) { f(&o.rowsClose) } }
 
 // Set the options for Rows.Next
-func RowsNext(opts *ProcOptions) Option { return func(o *options) { o.rowsNext = *opts } }
+func RowsNext(f func(*ProcOptions)) Option { return func(o *options) { f(&o.rowsNext) } }
 
 // Set the options for Rows.NextResultSet
-func RowsNextResultSet(opts *ProcOptions) Option {
-	return func(o *options) { o.rowsNextResultSet = *opts }
+func RowsNextResultSet(f func(*ProcOptions)) Option {
+	return func(o *options) { f(&o.rowsNextResultSet) }
 }
 
 // Set the options for Stmt.Close
-func StmtClose(opts *ProcOptions) Option { return func(o *options) { o.stmtClose = *opts } }
+func StmtClose(f func(*ProcOptions)) Option { return func(o *options) { f(&o.stmtClose) } }
 
 // Set the options for Stmt.Exec
-func StmtExec(opts *ProcOptions) Option { return func(o *options) { o.stmtExec = *opts } }
+func StmtExec(f func(*ProcOptions)) Option { return func(o *options) { f(&o.stmtExec) } }
 
 // Set the options for Stmt.Query
-func StmtQuery(opts *ProcOptions) Option { return func(o *options) { o.stmtQuery = *opts } }
+func StmtQuery(f func(*ProcOptions)) Option { return func(o *options) { f(&o.stmtQuery) } }
 
 // Set the options for Stmt.ExecContext
-func StmtExecContext(opts *ProcOptions) Option {
-	return func(o *options) { o.stmtExecContext = *opts }
+func StmtExecContext(f func(*ProcOptions)) Option {
+	return func(o *options) { f(&o.stmtExecContext) }
 }
 
 // Set the options for Stmt.QueryContext
-func StmtQueryContext(opts *ProcOptions) Option {
-	return func(o *options) { o.stmtQueryContext = *opts }
+func StmtQueryContext(f func(*ProcOptions)) Option {
+	return func(o *options) { f(&o.stmtQueryContext) }
 }
 
 // Set the options for Tx.Commit
-func TxCommit(opts *ProcOptions) Option { return func(o *options) { o.txCommit = *opts } }
+func TxCommit(f func(*ProcOptions)) Option { return func(o *options) { f(&o.txCommit) } }
 
 // Set the options for Tx.Rollback
-func TxRollback(opts *ProcOptions) Option { return func(o *options) { o.txRollback = *opts } }
+func TxRollback(f func(*ProcOptions)) Option { return func(o *options) { f(&o.txRollback) } }
