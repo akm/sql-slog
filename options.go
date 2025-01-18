@@ -31,7 +31,7 @@ type options struct {
 }
 
 func newDefaultOptions(formatter StepLogMsgFormatter) *options {
-	procOpts := func(name string, completeLevel Level) StepOptions {
+	stepOpts := func(name string, completeLevel Level) StepOptions {
 		var startLevel Level
 		switch completeLevel {
 		case LevelError:
@@ -48,29 +48,29 @@ func newDefaultOptions(formatter StepLogMsgFormatter) *options {
 
 	return &options{
 		logger:              slog.Default(),
-		connBegin:           procOpts("Conn.Begin", LevelInfo),
-		connClose:           procOpts("Conn.Close", LevelInfo),
-		connPrepare:         procOpts("Conn.Prepare", LevelInfo),
-		connResetSession:    procOpts("Conn.ResetSession", LevelTrace),
-		connPing:            procOpts("Conn.Ping", LevelTrace),
-		connExecContext:     procOpts("Conn.ExecContext", LevelInfo),
-		connQueryContext:    procOpts("Conn.QueryContext", LevelInfo),
-		connPrepareContext:  procOpts("Conn.PrepareContext", LevelInfo),
-		connBeginTx:         procOpts("Conn.BeginTx", LevelInfo),
-		connectorConnect:    procOpts("Connector.Connect", LevelInfo),
-		driverOpen:          procOpts("Driver.Open", LevelInfo),
-		driverOpenConnector: procOpts("Driver.OpenConnector", LevelInfo),
-		sqlslogOpen:         procOpts("sqlslog.Open", LevelInfo),
-		rowsClose:           procOpts("Rows.Close", LevelDebug),
-		rowsNext:            procOpts("Rows.Next", LevelDebug),
-		rowsNextResultSet:   procOpts("Rows.NextResultSet", LevelDebug),
-		stmtClose:           procOpts("Stmt.Close", LevelInfo),
-		stmtExec:            procOpts("Stmt.Exec", LevelInfo),
-		stmtQuery:           procOpts("Stmt.Query", LevelInfo),
-		stmtExecContext:     procOpts("Stmt.ExecContext", LevelInfo),
-		stmtQueryContext:    procOpts("Stmt.QueryContext", LevelInfo),
-		txCommit:            procOpts("Tx.Commit", LevelInfo),
-		txRollback:          procOpts("Tx.Rollback", LevelInfo),
+		connBegin:           stepOpts("Conn.Begin", LevelInfo),
+		connClose:           stepOpts("Conn.Close", LevelInfo),
+		connPrepare:         stepOpts("Conn.Prepare", LevelInfo),
+		connResetSession:    stepOpts("Conn.ResetSession", LevelTrace),
+		connPing:            stepOpts("Conn.Ping", LevelTrace),
+		connExecContext:     stepOpts("Conn.ExecContext", LevelInfo),
+		connQueryContext:    stepOpts("Conn.QueryContext", LevelInfo),
+		connPrepareContext:  stepOpts("Conn.PrepareContext", LevelInfo),
+		connBeginTx:         stepOpts("Conn.BeginTx", LevelInfo),
+		connectorConnect:    stepOpts("Connector.Connect", LevelInfo),
+		driverOpen:          stepOpts("Driver.Open", LevelInfo),
+		driverOpenConnector: stepOpts("Driver.OpenConnector", LevelInfo),
+		sqlslogOpen:         stepOpts("sqlslog.Open", LevelInfo),
+		rowsClose:           stepOpts("Rows.Close", LevelDebug),
+		rowsNext:            stepOpts("Rows.Next", LevelDebug),
+		rowsNextResultSet:   stepOpts("Rows.NextResultSet", LevelDebug),
+		stmtClose:           stepOpts("Stmt.Close", LevelInfo),
+		stmtExec:            stepOpts("Stmt.Exec", LevelInfo),
+		stmtQuery:           stepOpts("Stmt.Query", LevelInfo),
+		stmtExecContext:     stepOpts("Stmt.ExecContext", LevelInfo),
+		stmtQueryContext:    stepOpts("Stmt.QueryContext", LevelInfo),
+		txCommit:            stepOpts("Tx.Commit", LevelInfo),
+		txRollback:          stepOpts("Tx.Rollback", LevelInfo),
 	}
 }
 
