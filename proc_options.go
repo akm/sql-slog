@@ -5,23 +5,23 @@ type LogAction struct {
 	Level Level
 }
 
-// ProcEvent is the event type of the process.
-type ProcEvent int
+// StepEvent is the event type of the process.
+type StepEvent int
 
 const (
-	ProcEventStart    ProcEvent = iota + 1 // is the event when the process starts.
-	ProcEventError                         // is the event when the process ends with an error.
-	ProcEventComplete                      // is the event when the process completes successfully.
+	StepEventStart    StepEvent = iota + 1 // is the event when the process starts.
+	StepEventError                         // is the event when the process ends with an error.
+	StepEventComplete                      // is the event when the process completes successfully.
 )
 
 // String returns the string representation of the event.
-func (pe *ProcEvent) String() string {
+func (pe *StepEvent) String() string {
 	switch *pe {
-	case ProcEventStart:
+	case StepEventStart:
 		return "Start"
-	case ProcEventError:
+	case StepEventError:
 		return "Error"
-	case ProcEventComplete:
+	case StepEventComplete:
 		return "Complete"
 	default:
 		return "Unknown"
@@ -29,10 +29,10 @@ func (pe *ProcEvent) String() string {
 }
 
 // ProcNameFormatter is the function type to format the process name.
-type ProcNameFormatter func(name string, event ProcEvent) string
+type ProcNameFormatter func(name string, event StepEvent) string
 
 // ProcNameWithEventName returns the formatted process name with the event name.
-func ProcNameWithEventName(name string, event ProcEvent) string {
+func ProcNameWithEventName(name string, event StepEvent) string {
 	return name + " " + event.String()
 }
 
@@ -50,8 +50,8 @@ func (po *ProcOptions) SetLevel(lv Level) {
 
 func newProcOptions(f ProcNameFormatter, name string, startLevel, errorLevel, completeLevel Level) *ProcOptions {
 	return &ProcOptions{
-		Start:    LogAction{Name: f(name, ProcEventStart), Level: startLevel},
-		Error:    LogAction{Name: f(name, ProcEventError), Level: errorLevel},
-		Complete: LogAction{Name: f(name, ProcEventComplete), Level: completeLevel},
+		Start:    LogAction{Name: f(name, StepEventStart), Level: startLevel},
+		Error:    LogAction{Name: f(name, StepEventError), Level: errorLevel},
+		Complete: LogAction{Name: f(name, StepEventComplete), Level: completeLevel},
 	}
 }

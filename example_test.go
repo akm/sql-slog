@@ -72,7 +72,7 @@ func ExampleNewTextHandler() {
 }
 
 func ExampleSetProcNameFormatter() {
-	sqlslog.SetProcNameFormatter(func(name string, event sqlslog.ProcEvent) string {
+	sqlslog.SetProcNameFormatter(func(name string, event sqlslog.StepEvent) string {
 		return name + "/" + event.String()
 	})
 	dsn := "file::memory:?cache=shared"
