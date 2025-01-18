@@ -79,9 +79,9 @@ type Option func(*options)
 
 var stepLogMsgFormatter = StepLogMsgWithEventName
 
-// SetProcNameFormatter sets the formatter for the process name used in logs.
-// If not set, the default is ProcNameWithEventName.
-func SetProcNameFormatter(f StepLogMsgFormatter) { stepLogMsgFormatter = f }
+// SetStepLogMsgFormatter sets the formatter for the step name used in logs.
+// If not set, the default is StepLogMsgWithEventName.
+func SetStepLogMsgFormatter(f StepLogMsgFormatter) { stepLogMsgFormatter = f }
 
 func newOptions(opts ...Option) *options {
 	o := newDefaultOptions(stepLogMsgFormatter)

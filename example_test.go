@@ -71,8 +71,8 @@ func ExampleNewTextHandler() {
 	defer db.Close()
 }
 
-func ExampleSetProcNameFormatter() {
-	sqlslog.SetProcNameFormatter(func(name string, event sqlslog.StepEvent) string {
+func ExampleSetStepLogMsgFormatter() {
+	sqlslog.SetStepLogMsgFormatter(func(name string, event sqlslog.StepEvent) string {
 		return name + "/" + event.String()
 	})
 	dsn := "file::memory:?cache=shared"
