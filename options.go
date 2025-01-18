@@ -77,14 +77,14 @@ func newDefaultOptions(formatter StepLogMsgFormatter) *options {
 // Option is a function that sets some option on the options struct.
 type Option func(*options)
 
-var procNameFormatter = StepLogMsgWithEventName
+var stepLogMsgFormatter = StepLogMsgWithEventName
 
 // SetProcNameFormatter sets the formatter for the process name used in logs.
 // If not set, the default is ProcNameWithEventName.
-func SetProcNameFormatter(f StepLogMsgFormatter) { procNameFormatter = f }
+func SetProcNameFormatter(f StepLogMsgFormatter) { stepLogMsgFormatter = f }
 
 func newOptions(opts ...Option) *options {
-	o := newDefaultOptions(procNameFormatter)
+	o := newDefaultOptions(stepLogMsgFormatter)
 	for _, opt := range opts {
 		opt(o)
 	}
