@@ -15,7 +15,7 @@ You can also use options to customize the logger behavior.
 
 [ProcOptions]: sets the options for the logging behavior.
 
-[SetProcNameFormatter]: sets the function to format the procedure name.
+[SetProcNameFormatter]: sets the function to format the step name.
 
 [*sql.DB]: https://pkg.go.dev/database/sql#DB
 [*slog.Logger]: https://pkg.go.dev/log/slog#Logger

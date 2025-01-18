@@ -24,7 +24,7 @@ See the following example for the usage:
 
 [ProcOptions]: sets the options for the logging behavior.
 
-[SetProcNameFormatter]: sets the function to format the procedure name.
+[SetProcNameFormatter]: sets the function to format the step name.
 
 [sql.Open]: https://pkg.go.dev/database/sql#Open
 */
