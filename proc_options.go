@@ -36,20 +36,20 @@ func StepLogMsgWithEventName(name string, event StepEvent) string {
 	return name + " " + event.String()
 }
 
-// ProcOptions is the options for the process.
-type ProcOptions struct {
+// StepOptions is the options for the process.
+type StepOptions struct {
 	Start    LogAction
 	Error    LogAction
 	Complete LogAction
 }
 
-func (po *ProcOptions) SetLevel(lv Level) {
+func (po *StepOptions) SetLevel(lv Level) {
 	po.Start.Level = lv - 4
 	po.Complete.Level = lv
 }
 
-func newProcOptions(f StepLogMsgFormatter, name string, startLevel, errorLevel, completeLevel Level) *ProcOptions {
-	return &ProcOptions{
+func newProcOptions(f StepLogMsgFormatter, name string, startLevel, errorLevel, completeLevel Level) *StepOptions {
+	return &StepOptions{
 		Start:    LogAction{Msg: f(name, StepEventStart), Level: startLevel},
 		Error:    LogAction{Msg: f(name, StepEventError), Level: errorLevel},
 		Complete: LogAction{Msg: f(name, StepEventComplete), Level: completeLevel},

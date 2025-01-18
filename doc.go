@@ -13,7 +13,7 @@ You can also use options to customize the logger behavior.
 
 [Logger]: sets the slog.Logger to be used. If not set, the default is slog.Default().
 
-[ProcOptions]: sets the options for the logging behavior.
+[StepOptions]: sets the options for the logging behavior.
 
 [SetProcNameFormatter]: sets the function to format the step name.
 

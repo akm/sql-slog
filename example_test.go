@@ -38,7 +38,7 @@ func ExampleOpen_withStmtQueryContext() {
 	}))
 	db, _ := sqlslog.Open(ctx, "sqlite3", dsn,
 		sqlslog.Logger(logger),
-		sqlslog.StmtQueryContext(func(o *sqlslog.ProcOptions) {
+		sqlslog.StmtQueryContext(func(o *sqlslog.StepOptions) {
 			o.SetLevel(sqlslog.LevelDebug)
 		}),
 	)

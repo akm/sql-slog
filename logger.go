@@ -22,7 +22,7 @@ func (x *logger) With(kv ...interface{}) *logger {
 	return newLogger(x.Logger.With(kv...), x.options)
 }
 
-func (x *logger) logAction(proc *ProcOptions, fn func() error) error {
+func (x *logger) logAction(proc *StepOptions, fn func() error) error {
 	ctx := context.Background()
 	x.Log(ctx, slog.Level(proc.Start.Level), proc.Start.Msg)
 	t0 := time.Now()
@@ -36,7 +36,7 @@ func (x *logger) logAction(proc *ProcOptions, fn func() error) error {
 	return nil
 }
 
-func (x *logger) logActionContext(ctx context.Context, proc *ProcOptions, fn func() error) error {
+func (x *logger) logActionContext(ctx context.Context, proc *StepOptions, fn func() error) error {
 	x.Log(ctx, slog.Level(proc.Start.Level), proc.Start.Msg)
 	t0 := time.Now()
 	err := fn()
