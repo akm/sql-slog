@@ -1,8 +1,8 @@
 package sqlslog
 
-type logAction struct {
-	name  string
-	level Level
+type LogAction struct {
+	Name  string
+	Level Level
 }
 
 // ProcEvent is the event type of the process.
@@ -38,20 +38,20 @@ func ProcNameWithEventName(name string, event ProcEvent) string {
 
 // ProcOptions is the options for the process.
 type ProcOptions struct {
-	Start    logAction
-	Error    logAction
-	Complete logAction
+	Start    LogAction
+	Error    LogAction
+	Complete LogAction
 }
 
 func (po *ProcOptions) SetLevel(lv Level) {
-	po.Start.level = lv - 4
-	po.Complete.level = lv
+	po.Start.Level = lv - 4
+	po.Complete.Level = lv
 }
 
 func newProcOptions(f ProcNameFormatter, name string, startLevel, errorLevel, completeLevel Level) *ProcOptions {
 	return &ProcOptions{
-		Start:    logAction{name: f(name, ProcEventStart), level: startLevel},
-		Error:    logAction{name: f(name, ProcEventError), level: errorLevel},
-		Complete: logAction{name: f(name, ProcEventComplete), level: completeLevel},
+		Start:    LogAction{Name: f(name, ProcEventStart), Level: startLevel},
+		Error:    LogAction{Name: f(name, ProcEventError), Level: errorLevel},
+		Complete: LogAction{Name: f(name, ProcEventComplete), Level: completeLevel},
 	}
 }

@@ -24,27 +24,27 @@ func (x *logger) With(kv ...interface{}) *logger {
 
 func (x *logger) logAction(proc *ProcOptions, fn func() error) error {
 	ctx := context.Background()
-	x.Log(ctx, slog.Level(proc.Start.level), proc.Start.name)
+	x.Log(ctx, slog.Level(proc.Start.Level), proc.Start.Name)
 	t0 := time.Now()
 	err := fn()
 	lg := x.With(slog.Int64("duration", time.Since(t0).Nanoseconds()))
 	if err != nil {
-		lg.Log(ctx, slog.Level(proc.Error.level), proc.Error.name, "error", err)
+		lg.Log(ctx, slog.Level(proc.Error.Level), proc.Error.Name, "error", err)
 		return err
 	}
-	lg.Log(ctx, slog.Level(proc.Complete.level), proc.Complete.name)
+	lg.Log(ctx, slog.Level(proc.Complete.Level), proc.Complete.Name)
 	return nil
 }
 
 func (x *logger) logActionContext(ctx context.Context, proc *ProcOptions, fn func() error) error {
-	x.Log(ctx, slog.Level(proc.Start.level), proc.Start.name)
+	x.Log(ctx, slog.Level(proc.Start.Level), proc.Start.Name)
 	t0 := time.Now()
 	err := fn()
 	lg := x.With(slog.Int64("duration", time.Since(t0).Nanoseconds()))
 	if err != nil {
-		lg.Log(ctx, slog.Level(proc.Error.level), proc.Error.name, "error", err)
+		lg.Log(ctx, slog.Level(proc.Error.Level), proc.Error.Name, "error", err)
 		return err
 	}
-	lg.Log(ctx, slog.Level(proc.Complete.level), proc.Complete.name)
+	lg.Log(ctx, slog.Level(proc.Complete.Level), proc.Complete.Name)
 	return nil
 }
