@@ -17,10 +17,10 @@ var _ driver.Tx = (*txWrapper)(nil)
 
 // Commit implements driver.Tx.
 func (t *txWrapper) Commit() error {
-	return t.logger.logAction("Tx.Commit", t.original.Commit)
+	return t.logger.logAction(&t.logger.options.txCommit, t.original.Commit)
 }
 
 // Rollback implements driver.Tx.
 func (t *txWrapper) Rollback() error {
-	return t.logger.logAction("Tx.Rollback", t.original.Rollback)
+	return t.logger.logAction(&t.logger.options.txRollback, t.original.Rollback)
 }

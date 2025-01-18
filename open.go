@@ -19,7 +19,7 @@ func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB,
 	)
 
 	var db *sql.DB
-	err := lg.logActionContext(ctx, "sqlslog.Open", func() error {
+	err := lg.logActionContext(ctx, &logger.options.sqlslogOpen, func() error {
 		var err error
 		db, err = open(driverName, dsn, logger)
 		return err

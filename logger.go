@@ -22,28 +22,29 @@ func (x *logger) With(kv ...interface{}) *logger {
 	return newLogger(x.Logger.With(kv...), x.options)
 }
 
-func (x *logger) logAction(action string, fn func() error) error {
-	x.Debug(action + " Start")
+func (x *logger) logAction(proc *ProcOptions, fn func() error) error {
+	ctx := context.Background()
+	x.Log(ctx, slog.Level(proc.Start.level), proc.Start.name)
 	t0 := time.Now()
 	err := fn()
 	lg := x.With(slog.Int64("duration", time.Since(t0).Nanoseconds()))
 	if err != nil {
-		lg.Error(action+" Error", "error", err)
+		lg.Log(ctx, slog.Level(proc.Error.level), proc.Error.name, "error", err)
 		return err
 	}
-	lg.Info(action + " Complete")
+	lg.Log(ctx, slog.Level(proc.Complete.level), proc.Complete.name)
 	return nil
 }
 
-func (x *logger) logActionContext(ctx context.Context, action string, fn func() error) error {
-	x.DebugContext(ctx, action+" Start")
+func (x *logger) logActionContext(ctx context.Context, proc *ProcOptions, fn func() error) error {
+	x.Log(ctx, slog.Level(proc.Start.level), proc.Start.name)
 	t0 := time.Now()
 	err := fn()
 	lg := x.With(slog.Int64("duration", time.Since(t0).Nanoseconds()))
 	if err != nil {
-		lg.ErrorContext(ctx, action+" Error", "error", err)
+		lg.Log(ctx, slog.Level(proc.Error.level), proc.Error.name, "error", err)
 		return err
 	}
-	lg.InfoContext(ctx, action+" Complete")
+	lg.Log(ctx, slog.Level(proc.Complete.level), proc.Complete.name)
 	return nil
 }
