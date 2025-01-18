@@ -43,6 +43,11 @@ type ProcOptions struct {
 	Complete logAction
 }
 
+func (po *ProcOptions) SetLevel(lv Level) {
+	po.Start.level = lv - 4
+	po.Complete.level = lv
+}
+
 func newProcOptions(f ProcNameFormatter, name string, startLevel, errorLevel, completeLevel Level) *ProcOptions {
 	return &ProcOptions{
 		Start:    logAction{name: f(name, ProcEventStart), level: startLevel},
