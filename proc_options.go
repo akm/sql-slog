@@ -28,8 +28,8 @@ func (pe *StepEvent) String() string {
 	}
 }
 
-// ProcNameFormatter is the function type to format the process name.
-type ProcNameFormatter func(name string, event StepEvent) string
+// StepLogMsgFormatter is the function type to format the process name.
+type StepLogMsgFormatter func(name string, event StepEvent) string
 
 // ProcNameWithEventName returns the formatted process name with the event name.
 func ProcNameWithEventName(name string, event StepEvent) string {
@@ -48,7 +48,7 @@ func (po *ProcOptions) SetLevel(lv Level) {
 	po.Complete.Level = lv
 }
 
-func newProcOptions(f ProcNameFormatter, name string, startLevel, errorLevel, completeLevel Level) *ProcOptions {
+func newProcOptions(f StepLogMsgFormatter, name string, startLevel, errorLevel, completeLevel Level) *ProcOptions {
 	return &ProcOptions{
 		Start:    LogAction{Msg: f(name, StepEventStart), Level: startLevel},
 		Error:    LogAction{Msg: f(name, StepEventError), Level: errorLevel},

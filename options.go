@@ -30,7 +30,7 @@ type options struct {
 	txRollback          ProcOptions
 }
 
-func newDefaultOptions(formatter ProcNameFormatter) *options {
+func newDefaultOptions(formatter StepLogMsgFormatter) *options {
 	procOpts := func(name string, completeLevel Level) ProcOptions {
 		var startLevel Level
 		switch completeLevel {
@@ -81,7 +81,7 @@ var procNameFormatter = ProcNameWithEventName
 
 // SetProcNameFormatter sets the formatter for the process name used in logs.
 // If not set, the default is ProcNameWithEventName.
-func SetProcNameFormatter(f ProcNameFormatter) { procNameFormatter = f }
+func SetProcNameFormatter(f StepLogMsgFormatter) { procNameFormatter = f }
 
 func newOptions(opts ...Option) *options {
 	o := newDefaultOptions(procNameFormatter)
