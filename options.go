@@ -43,7 +43,7 @@ func newDefaultOptions(formatter StepLogMsgFormatter) *options {
 		default:
 			startLevel = LevelVerbose
 		}
-		return *newProcOptions(formatter, name, startLevel, LevelError, completeLevel)
+		return *newStepOptions(formatter, name, startLevel, LevelError, completeLevel)
 	}
 
 	return &options{

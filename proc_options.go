@@ -48,7 +48,7 @@ func (po *StepOptions) SetLevel(lv Level) {
 	po.Complete.Level = lv
 }
 
-func newProcOptions(f StepLogMsgFormatter, name string, startLevel, errorLevel, completeLevel Level) *StepOptions {
+func newStepOptions(f StepLogMsgFormatter, name string, startLevel, errorLevel, completeLevel Level) *StepOptions {
 	return &StepOptions{
 		Start:    LogAction{Msg: f(name, StepEventStart), Level: startLevel},
 		Error:    LogAction{Msg: f(name, StepEventError), Level: errorLevel},
