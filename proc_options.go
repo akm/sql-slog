@@ -1,7 +1,7 @@
 package sqlslog
 
 type LogAction struct {
-	Name  string
+	Msg   string
 	Level Level
 }
 
@@ -50,8 +50,8 @@ func (po *ProcOptions) SetLevel(lv Level) {
 
 func newProcOptions(f ProcNameFormatter, name string, startLevel, errorLevel, completeLevel Level) *ProcOptions {
 	return &ProcOptions{
-		Start:    LogAction{Name: f(name, StepEventStart), Level: startLevel},
-		Error:    LogAction{Name: f(name, StepEventError), Level: errorLevel},
-		Complete: LogAction{Name: f(name, StepEventComplete), Level: completeLevel},
+		Start:    LogAction{Msg: f(name, StepEventStart), Level: startLevel},
+		Error:    LogAction{Msg: f(name, StepEventError), Level: errorLevel},
+		Complete: LogAction{Msg: f(name, StepEventComplete), Level: completeLevel},
 	}
 }
