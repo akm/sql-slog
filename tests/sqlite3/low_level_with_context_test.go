@@ -50,10 +50,10 @@ func TestLowLevelWithContext(t *testing.T) {
 		err := db.PingContext(ctx)
 		assert.NoError(t, err)
 		logs.Assert(t, []map[string]interface{}{
-			{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
-			{"level": "INFO", "msg": "Conn.ResetSession Complete"},
-			{"level": "DEBUG", "msg": "Conn.Ping Start"},
-			{"level": "INFO", "msg": "Conn.Ping Complete"},
+			{"level": "VERBOSE", "msg": "Conn.ResetSession Start"},
+			{"level": "TRACE", "msg": "Conn.ResetSession Complete"},
+			{"level": "VERBOSE", "msg": "Conn.Ping Start"},
+			{"level": "TRACE", "msg": "Conn.Ping Complete"},
 		})
 	})
 
@@ -64,8 +64,8 @@ func TestLowLevelWithContext(t *testing.T) {
 		assert.NoError(t, err)
 		t.Logf("buf.String(): %s\n", buf.String())
 		logs.Assert(t, []map[string]interface{}{
-			{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
-			{"level": "INFO", "msg": "Conn.ResetSession Complete"},
+			{"level": "VERBOSE", "msg": "Conn.ResetSession Start"},
+			{"level": "TRACE", "msg": "Conn.ResetSession Complete"},
 			{"level": "DEBUG", "msg": "Conn.ExecContext Start", "query": query, "args": "[]"},
 			{"level": "INFO", "msg": "Conn.ExecContext Complete", "query": query, "args": "[]"},
 		})
@@ -84,8 +84,8 @@ func TestLowLevelWithContext(t *testing.T) {
 		assert.NoError(t, err)
 
 		logs.Assert(t, []map[string]interface{}{
-			{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
-			{"level": "INFO", "msg": "Conn.ResetSession Complete"},
+			{"level": "VERBOSE", "msg": "Conn.ResetSession Start"},
+			{"level": "TRACE", "msg": "Conn.ResetSession Complete"},
 			{"level": "DEBUG", "msg": "Conn.PrepareContext Start", "query": query},
 			{"level": "INFO", "msg": "Conn.PrepareContext Complete", "query": query},
 		})
@@ -94,8 +94,8 @@ func TestLowLevelWithContext(t *testing.T) {
 		result, err := stmt.Exec()
 		assert.NoError(t, err)
 		logs.Assert(t, []map[string]interface{}{
-			{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
-			{"level": "INFO", "msg": "Conn.ResetSession Complete"},
+			{"level": "VERBOSE", "msg": "Conn.ResetSession Start"},
+			{"level": "TRACE", "msg": "Conn.ResetSession Complete"},
 			{"level": "DEBUG", "msg": "Stmt.ExecContext Start", "args": "[]"},
 			{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": "[]"},
 		})
@@ -125,8 +125,8 @@ func TestLowLevelWithContext(t *testing.T) {
 				result, err := db.ExecContext(ctx, query, i+1, name)
 				assert.NoError(t, err)
 				logs.Assert(t, []map[string]interface{}{
-					{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
-					{"level": "INFO", "msg": "Conn.ResetSession Complete"},
+					{"level": "VERBOSE", "msg": "Conn.ResetSession Start"},
+					{"level": "TRACE", "msg": "Conn.ResetSession Complete"},
 					{"level": "DEBUG", "msg": "Conn.ExecContext Start", "query": query, "args": args},
 					{"level": "INFO", "msg": "Conn.ExecContext Complete", "query": query, "args": args},
 				})
@@ -190,14 +190,14 @@ func TestLowLevelWithContext(t *testing.T) {
 				logs.Start()
 				assert.NoError(t, rows.Close())
 				logs.Assert(t, []map[string]interface{}{
-					// {"level": "DEBUG", "msg": "Rows.Close Start"},
-					// {"level": "INFO", "msg": "Rows.Close Complete"},
+					// {"level": "TRACE", "msg": "Rows.Close Start"},
+					// {"level": "DEBUG", "msg": "Rows.Close Complete"},
 				})
 			}()
 			args := "[{Name: Ordinal:1 Value:ba%}]"
 			logs.Assert(t, []map[string]interface{}{
-				{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
-				{"level": "INFO", "msg": "Conn.ResetSession Complete"},
+				{"level": "VERBOSE", "msg": "Conn.ResetSession Start"},
+				{"level": "TRACE", "msg": "Conn.ResetSession Complete"},
 				{"level": "DEBUG", "msg": "Conn.QueryContext Start", "query": query, "args": args},
 				{"level": "INFO", "msg": "Conn.QueryContext Complete", "query": query, "args": args},
 			})
@@ -259,8 +259,8 @@ func TestLowLevelWithContext(t *testing.T) {
 			actualResults := []map[string]interface{}{}
 			for rows.Next() {
 				logs.Assert(t, []map[string]interface{}{
-					{"level": "DEBUG", "msg": "Rows.Next Start"},
-					{"level": "INFO", "msg": "Rows.Next Complete"},
+					{"level": "TRACE", "msg": "Rows.Next Start"},
+					{"level": "DEBUG", "msg": "Rows.Next Complete"},
 				})
 				logs.Start()
 
@@ -274,10 +274,10 @@ func TestLowLevelWithContext(t *testing.T) {
 			}
 
 			logs.Assert(t, []map[string]interface{}{
-				{"level": "DEBUG", "msg": "Rows.Next Start"},
+				{"level": "TRACE", "msg": "Rows.Next Start"},
 				{"level": "ERROR", "msg": "Rows.Next Error", "error": "EOF"},
-				{"level": "DEBUG", "msg": "Rows.Close Start"},
-				{"level": "INFO", "msg": "Rows.Close Complete"},
+				{"level": "TRACE", "msg": "Rows.Close Start"},
+				{"level": "DEBUG", "msg": "Rows.Close Complete"},
 			})
 
 			expectedResults := []map[string]interface{}{
@@ -298,8 +298,8 @@ func TestLowLevelWithContext(t *testing.T) {
 			stmt, err := db.PrepareContext(ctx, query)
 			assert.NoError(t, err)
 			logs.Assert(t, []map[string]interface{}{
-				{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
-				{"level": "INFO", "msg": "Conn.ResetSession Complete"},
+				{"level": "VERBOSE", "msg": "Conn.ResetSession Start"},
+				{"level": "TRACE", "msg": "Conn.ResetSession Complete"},
 				{"level": "DEBUG", "msg": "Conn.PrepareContext Start", "query": query},
 				{"level": "INFO", "msg": "Conn.PrepareContext Complete", "query": query},
 			})
@@ -319,14 +319,14 @@ func TestLowLevelWithContext(t *testing.T) {
 				err := stmt.QueryRowContext(ctx, int64(1)).Scan(&foo.ID, &foo.Name)
 				assert.NoError(t, err)
 				logs.Assert(t, []map[string]interface{}{
-					{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
-					{"level": "INFO", "msg": "Conn.ResetSession Complete"},
+					{"level": "VERBOSE", "msg": "Conn.ResetSession Start"},
+					{"level": "TRACE", "msg": "Conn.ResetSession Complete"},
 					{"level": "DEBUG", "msg": "Stmt.QueryContext Start", "args": "[{Name: Ordinal:1 Value:1}]"},
 					{"level": "INFO", "msg": "Stmt.QueryContext Complete", "args": "[{Name: Ordinal:1 Value:1}]"},
-					{"level": "DEBUG", "msg": "Rows.Next Start"},
-					{"level": "INFO", "msg": "Rows.Next Complete"},
-					{"level": "DEBUG", "msg": "Rows.Close Start"},
-					{"level": "INFO", "msg": "Rows.Close Complete"},
+					{"level": "TRACE", "msg": "Rows.Next Start"},
+					{"level": "DEBUG", "msg": "Rows.Next Complete"},
+					{"level": "TRACE", "msg": "Rows.Close Start"},
+					{"level": "DEBUG", "msg": "Rows.Close Complete"},
 				})
 				assert.Equal(t, test1Record{ID: 1, Name: "foo"}, foo)
 			})
@@ -338,8 +338,8 @@ func TestLowLevelWithContext(t *testing.T) {
 			_, err := db.PrepareContext(ctx, query)
 			assert.Error(t, err)
 			logs.Assert(t, []map[string]interface{}{
-				{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
-				{"level": "INFO", "msg": "Conn.ResetSession Complete"},
+				{"level": "VERBOSE", "msg": "Conn.ResetSession Start"},
+				{"level": "TRACE", "msg": "Conn.ResetSession Complete"},
 				{"level": "DEBUG", "msg": "Conn.PrepareContext Start", "query": query},
 				{"level": "ERROR", "msg": "Conn.PrepareContext Error", "query": query, "error": "near \"invalid\": syntax error"},
 			})
@@ -352,8 +352,8 @@ func TestLowLevelWithContext(t *testing.T) {
 			stmt, err := db.PrepareContext(ctx, query)
 			assert.NoError(t, err)
 			logs.Assert(t, []map[string]interface{}{
-				{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
-				{"level": "INFO", "msg": "Conn.ResetSession Complete"},
+				{"level": "VERBOSE", "msg": "Conn.ResetSession Start"},
+				{"level": "TRACE", "msg": "Conn.ResetSession Complete"},
 				{"level": "DEBUG", "msg": "Conn.PrepareContext Start", "query": query},
 				{"level": "INFO", "msg": "Conn.PrepareContext Complete", "query": query},
 			})
@@ -373,8 +373,8 @@ func TestLowLevelWithContext(t *testing.T) {
 					result, err := stmt.ExecContext(ctx, 4, "qux")
 					assert.NoError(t, err)
 					logs.Assert(t, []map[string]interface{}{
-						{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
-						{"level": "INFO", "msg": "Conn.ResetSession Complete"},
+						{"level": "VERBOSE", "msg": "Conn.ResetSession Start"},
+						{"level": "TRACE", "msg": "Conn.ResetSession Complete"},
 						{"level": "DEBUG", "msg": "Stmt.ExecContext Start", "args": "[{Name: Ordinal:1 Value:4} {Name: Ordinal:2 Value:qux}]"},
 						{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": "[{Name: Ordinal:1 Value:4} {Name: Ordinal:2 Value:qux}]"},
 					})
@@ -388,8 +388,8 @@ func TestLowLevelWithContext(t *testing.T) {
 					assert.Error(t, err)
 					args := "[{Name: Ordinal:1 Value:abc} {Name: Ordinal:2 Value:qux}]"
 					logs.Assert(t, []map[string]interface{}{
-						{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
-						{"level": "INFO", "msg": "Conn.ResetSession Complete"},
+						{"level": "VERBOSE", "msg": "Conn.ResetSession Start"},
+						{"level": "TRACE", "msg": "Conn.ResetSession Complete"},
 						{"level": "DEBUG", "msg": "Stmt.ExecContext Start", "args": args},
 						{"level": "ERROR", "msg": "Stmt.ExecContext Error", "args": args, "error": "datatype mismatch"},
 					})
@@ -405,10 +405,10 @@ func TestLowLevelWithContext(t *testing.T) {
 			tx, err := db.BeginTx(ctx, nil)
 			assert.NoError(t, err)
 			logs.Assert(t, []map[string]interface{}{
-				{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
-				{"level": "INFO", "msg": "Conn.ResetSession Complete"},
-				{"level": "DEBUG", "msg": "BeginTx Start"},
-				{"level": "INFO", "msg": "BeginTx Complete"},
+				{"level": "VERBOSE", "msg": "Conn.ResetSession Start"},
+				{"level": "TRACE", "msg": "Conn.ResetSession Complete"},
+				{"level": "DEBUG", "msg": "Conn.BeginTx Start"},
+				{"level": "INFO", "msg": "Conn.BeginTx Complete"},
 			})
 
 			t.Run("update", func(t *testing.T) {
@@ -441,10 +441,10 @@ func TestLowLevelWithContext(t *testing.T) {
 			tx, err := db.BeginTx(ctx, nil)
 			assert.NoError(t, err)
 			logs.Assert(t, []map[string]interface{}{
-				{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
-				{"level": "INFO", "msg": "Conn.ResetSession Complete"},
-				{"level": "DEBUG", "msg": "BeginTx Start"},
-				{"level": "INFO", "msg": "BeginTx Complete"},
+				{"level": "VERBOSE", "msg": "Conn.ResetSession Start"},
+				{"level": "TRACE", "msg": "Conn.ResetSession Complete"},
+				{"level": "DEBUG", "msg": "Conn.BeginTx Start"},
+				{"level": "INFO", "msg": "Conn.BeginTx Complete"},
 			})
 
 			t.Run("update", func(t *testing.T) {
@@ -479,8 +479,8 @@ func TestLowLevelWithContext(t *testing.T) {
 		conn, err := db.Conn(ctx)
 		require.NoError(t, err)
 		logs.Assert(t, []map[string]interface{}{
-			{"level": "DEBUG", "msg": "Conn.ResetSession Start"},
-			{"level": "INFO", "msg": "Conn.ResetSession Complete"},
+			{"level": "VERBOSE", "msg": "Conn.ResetSession Start"},
+			{"level": "TRACE", "msg": "Conn.ResetSession Complete"},
 		})
 
 		defer func() {
