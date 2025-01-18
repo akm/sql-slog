@@ -16,6 +16,18 @@ $(GOLANGCI_LINT_CLI):
 lint: $(GOLANGCI_LINT_CLI)
 	golangci-lint run
 
+
+GODOC_CLI_VERSION=latest
+GODOC_CLI_MODULE=golang.org/x/tools/cmd/godoc
+GODOC_CLI=$(GOLANG_TOOL_PATH_TO_BIN)/bin/godoc
+$(GODOC_CLI):
+	go install $(GODOC_CLI_MODULE)@$(GODOC_CLI_VERSION)
+
+.PHONY: godoc
+godoc: $(GODOC_CLI)
+	@echo "Open http://localhost:6060/pkg/github.com/akm/sql-slog"
+	godoc -http=:6060
+
 mysql-%:
 	$(MAKE) -C tests/mysql $*
 
