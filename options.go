@@ -102,6 +102,9 @@ func Logger(logger *slog.Logger) Option {
 // Set the options for Conn.Begin
 func ConnBegin(f func(*StepOptions)) Option { return func(o *options) { f(&o.connBegin) } }
 
+// Set the options for Conn.Close
+func ConnClose(f func(*StepOptions)) Option { return func(o *options) { f(&o.connClose) } }
+
 // Set the options for Conn.Prepare
 func ConnPrepare(f func(*StepOptions)) Option { return func(o *options) { f(&o.connPrepare) } }
 
