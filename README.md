@@ -8,6 +8,10 @@
 
 A logger for Go SQL database drivers without modifying existing `*sql.DB` stdlib usage.
 
+## LOG EXAMPLES
+
+See logs with sqlite3 in [tests/sqlite3/demo-results](./tests/sqlite3/demo-results).
+
 ## FEATURES
 
 - [x] Keep using (or re-use existing) `*sql.DB` as is.
