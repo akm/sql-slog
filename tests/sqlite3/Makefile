@@ -30,4 +30,4 @@ clean:
 
 .PHONY: demo
 demo:
-	go run ./demo.go
+	go run ./demo.go ${LOG_LEVEL} ${LOG_FORMAT}

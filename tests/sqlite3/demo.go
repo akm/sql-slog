@@ -4,24 +4,29 @@ import (
 	"context"
 	"log/slog"
 	"os"
+	"slices"
 
 	sqlslog "github.com/akm/sql-slog"
 	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
-	format := "text"
-	if len(os.Args) > 1 {
-		format = os.Args[1]
+	var logLevel sqlslog.Level
+	if slices.Contains(os.Args, "debug") {
+		logLevel = sqlslog.LevelDebug
+	} else if slices.Contains(os.Args, "trace") {
+		logLevel = sqlslog.LevelTrace
+	} else if slices.Contains(os.Args, "verbose") {
+		logLevel = sqlslog.LevelVerbose
+	} else {
+		logLevel = sqlslog.LevelInfo
 	}
-
-	opts := &slog.HandlerOptions{Level: slog.LevelDebug}
+	opts := &slog.HandlerOptions{Level: logLevel}
 
 	var handler slog.Handler
-	switch format {
-	case "json":
+	if slices.Contains(os.Args, "json") {
 		handler = sqlslog.NewJSONHandler(os.Stdout, opts)
-	default:
+	} else {
 		handler = sqlslog.NewTextHandler(os.Stdout, opts)
 	}
 	logger := slog.New(handler)
