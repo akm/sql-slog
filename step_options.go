@@ -1,6 +1,6 @@
 package sqlslog
 
-type LogAction struct {
+type EventOptions struct {
 	Msg   string
 	Level Level
 }
@@ -38,9 +38,9 @@ func StepLogMsgWithEventName(name string, event StepEvent) string {
 
 // StepOptions is the options for the step.
 type StepOptions struct {
-	Start    LogAction
-	Error    LogAction
-	Complete LogAction
+	Start    EventOptions
+	Error    EventOptions
+	Complete EventOptions
 }
 
 func (po *StepOptions) SetLevel(lv Level) {
@@ -50,8 +50,8 @@ func (po *StepOptions) SetLevel(lv Level) {
 
 func newStepOptions(f StepLogMsgFormatter, name string, startLevel, errorLevel, completeLevel Level) *StepOptions {
 	return &StepOptions{
-		Start:    LogAction{Msg: f(name, StepEventStart), Level: startLevel},
-		Error:    LogAction{Msg: f(name, StepEventError), Level: errorLevel},
-		Complete: LogAction{Msg: f(name, StepEventComplete), Level: completeLevel},
+		Start:    EventOptions{Msg: f(name, StepEventStart), Level: startLevel},
+		Error:    EventOptions{Msg: f(name, StepEventError), Level: errorLevel},
+		Complete: EventOptions{Msg: f(name, StepEventComplete), Level: completeLevel},
 	}
 }
