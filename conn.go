@@ -63,7 +63,7 @@ var _ driver.NamedValueChecker = (*connWrapper)(nil)
 // Begin implements driver.Conn.
 func (c *connWrapper) Begin() (driver.Tx, error) {
 	var origTx driver.Tx
-	err := c.logger.logAction(&c.logger.options.connBegin, func() error {
+	err := c.logger.StepWithoutContext(&c.logger.options.connBegin, func() error {
 		var err error
 		origTx, err = c.original.Begin() //nolint:staticcheck
 		return err
@@ -76,14 +76,14 @@ func (c *connWrapper) Begin() (driver.Tx, error) {
 
 // Close implements driver.Conn.
 func (c *connWrapper) Close() error {
-	return c.logger.logAction(&c.logger.options.connClose, c.original.Close)
+	return c.logger.StepWithoutContext(&c.logger.options.connClose, c.original.Close)
 }
 
 // Prepare implements driver.Conn.
 func (c *connWrapper) Prepare(query string) (driver.Stmt, error) {
 	lg := c.logger.With(slog.String("query", query))
 	var origStmt driver.Stmt
-	err := lg.logAction(&c.logger.options.connPrepare, func() error {
+	err := lg.StepWithoutContext(&c.logger.options.connPrepare, func() error {
 		var err error
 		origStmt, err = c.original.Prepare(query)
 		return err

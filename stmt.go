@@ -16,14 +16,14 @@ var _ driver.Stmt = (*stmtWrapper)(nil)
 
 // Close implements driver.Stmt.
 func (s *stmtWrapper) Close() error {
-	return s.logger.logAction(&s.logger.options.stmtClose, s.original.Close)
+	return s.logger.StepWithoutContext(&s.logger.options.stmtClose, s.original.Close)
 }
 
 // Exec implements driver.Stmt.
 func (s *stmtWrapper) Exec(args []driver.Value) (driver.Result, error) {
 	lg := s.logger.With(slog.String("args", fmt.Sprintf("%+v", args)))
 	var result driver.Result
-	err := lg.logAction(&s.logger.options.stmtExec, func() error {
+	err := lg.StepWithoutContext(&s.logger.options.stmtExec, func() error {
 		var err error
 		result, err = s.original.Exec(args) //nolint:staticcheck
 		return err
@@ -43,7 +43,7 @@ func (s *stmtWrapper) NumInput() int {
 func (s *stmtWrapper) Query(args []driver.Value) (driver.Rows, error) {
 	lg := s.logger.With(slog.String("args", fmt.Sprintf("%+v", args)))
 	var rows driver.Rows
-	err := lg.logAction(&s.logger.options.stmtQuery, func() error {
+	err := lg.StepWithoutContext(&s.logger.options.stmtQuery, func() error {
 		var err error
 		rows, err = s.original.Query(args) //nolint:staticcheck
 		return err

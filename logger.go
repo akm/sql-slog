@@ -22,7 +22,7 @@ func (x *logger) With(kv ...interface{}) *logger {
 	return newLogger(x.Logger.With(kv...), x.options)
 }
 
-func (x *logger) logAction(step *StepOptions, fn func() error) error {
+func (x *logger) StepWithoutContext(step *StepOptions, fn func() error) error {
 	ctx := context.Background()
 	x.Log(ctx, slog.Level(step.Start.Level), step.Start.Msg)
 	t0 := time.Now()
