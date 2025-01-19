@@ -1,0 +1,22 @@
+go run ./demo.go debug text
+time=2025-01-19T13:30:14.586+09:00 level=DEBUG msg="sqlslog.Open Start" driver=sqlite3 dsn="file::memory:?cache=shared"
+time=2025-01-19T13:30:14.586+09:00 level=INFO msg="sqlslog.Open Complete" driver=sqlite3 dsn="file::memory:?cache=shared" duration=38083
+time=2025-01-19T13:30:14.586+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-19T13:30:14.586+09:00 level=DEBUG msg="Driver.Open Start" dsn="file::memory:?cache=shared"
+time=2025-01-19T13:30:14.586+09:00 level=INFO msg="Driver.Open Complete" dsn="file::memory:?cache=shared" duration=703875
+time=2025-01-19T13:30:14.587+09:00 level=INFO msg="Connector.Connect Complete" duration=718792
+time=2025-01-19T13:30:14.587+09:00 level=DEBUG msg="Conn.ExecContext Start" query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[]
+time=2025-01-19T13:30:14.587+09:00 level=INFO msg="Conn.ExecContext Complete" query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=64333
+time=2025-01-19T13:30:14.587+09:00 level=DEBUG msg="Conn.BeginTx Start"
+time=2025-01-19T13:30:14.587+09:00 level=INFO msg="Conn.BeginTx Complete" duration=3208
+time=2025-01-19T13:30:14.587+09:00 level=DEBUG msg="Conn.ExecContext Start" query="INSERT INTO test1 (name) VALUES (?)" args="[{Name: Ordinal:1 Value:Alice}]"
+time=2025-01-19T13:30:14.587+09:00 level=INFO msg="Conn.ExecContext Complete" query="INSERT INTO test1 (name) VALUES (?)" args="[{Name: Ordinal:1 Value:Alice}]" duration=8583
+time=2025-01-19T13:30:14.587+09:00 level=DEBUG msg="Tx.Commit Start"
+time=2025-01-19T13:30:14.587+09:00 level=INFO msg="Tx.Commit Complete" duration=3500
+time=2025-01-19T13:30:14.587+09:00 level=DEBUG msg="Conn.QueryContext Complete" query="SELECT * FROM test1" args=[] duration=5666
+time=2025-01-19T13:30:14.587+09:00 level=DEBUG msg="Rows.Next Complete" duration=3042
+time=2025-01-19T13:30:14.587+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-01-19T13:30:14.587+09:00 level=ERROR msg="Rows.Next Error" duration=1042 error=EOF
+time=2025-01-19T13:30:14.587+09:00 level=DEBUG msg="Rows.Close Complete" duration=583
+time=2025-01-19T13:30:14.587+09:00 level=DEBUG msg="Conn.Close Start"
+time=2025-01-19T13:30:14.587+09:00 level=INFO msg="Conn.Close Complete" duration=13667
