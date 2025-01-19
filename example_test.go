@@ -72,7 +72,7 @@ func ExampleNewTextHandler() {
 }
 
 func ExampleSetStepLogMsgFormatter() {
-	sqlslog.SetStepLogMsgFormatter(func(name string, event sqlslog.StepEvent) string {
+	sqlslog.SetStepLogMsgFormatter(func(name string, event sqlslog.Event) string {
 		return name + "/" + event.String()
 	})
 	dsn := "file::memory:?cache=shared"
