@@ -39,5 +39,9 @@ demo-logs-gen: demo-log-text-info demo-log-text-debug demo-log-text-trace demo-l
 
 .PHONY: clean
 clean:
-	rm -rf coverage $(DEMO_RESULTS_DIR)
+	rm -rf coverage
 	rm -f $(GO_COVERAGE_HTML) $(GO_COVERAGE_PROFILE)
+
+.PHONY: clobber
+clobber: clean
+	rm -rf $(DEMO_RESULTS_DIR)
