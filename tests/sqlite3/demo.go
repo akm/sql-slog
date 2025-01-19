@@ -30,7 +30,12 @@ func main() {
 	dsn := "file::memory:?cache=shared"
 
 	// Open a database
-	db, err := sqlslog.Open(ctx, "sqlite3", dsn, sqlslog.Logger(logger))
+	db, err := sqlslog.Open(ctx, "sqlite3", dsn,
+		sqlslog.Logger(logger),
+		sqlslog.ConnQueryContext(func(o *sqlslog.StepOptions) {
+			o.SetLevel(sqlslog.LevelDebug)
+		}),
+	)
 	if err != nil {
 		logger.Error("Failed to open database", "error", err)
 		os.Exit(1)
