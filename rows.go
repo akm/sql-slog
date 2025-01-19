@@ -2,11 +2,10 @@ package sqlslog
 
 import (
 	"database/sql/driver"
-	"log/slog"
 	"reflect"
 )
 
-func wrapRows(original driver.Rows, logger *slog.Logger) driver.Rows {
+func wrapRows(original driver.Rows, logger *logger) driver.Rows {
 	if original == nil {
 		return nil
 	}
@@ -20,14 +19,14 @@ func wrapRows(original driver.Rows, logger *slog.Logger) driver.Rows {
 
 type rowsWrapper struct {
 	original driver.Rows
-	logger   *slog.Logger
+	logger   *logger
 }
 
 var _ driver.Rows = (*rowsWrapper)(nil)
 
 // Close implements driver.Rows.
 func (r *rowsWrapper) Close() error {
-	return logAction(r.logger, "Rows.Close", r.original.Close)
+	return r.logger.StepWithoutContext(&r.logger.options.rowsClose, r.original.Close)
 }
 
 // Columns implements driver.Rows.
@@ -37,7 +36,7 @@ func (r *rowsWrapper) Columns() []string {
 
 // Next implements driver.Rows.
 func (r *rowsWrapper) Next(dest []driver.Value) error {
-	return logAction(r.logger, "Rows.Next", func() error {
+	return r.logger.StepWithoutContext(&r.logger.options.rowsNext, func() error {
 		return r.original.Next(dest)
 	})
 }
@@ -120,5 +119,5 @@ func (r *rowsNextResultSetWrapper) HasNextResultSet() bool {
 
 // NextResultSet implements driver.RowsNextResultSet.
 func (r *rowsNextResultSetWrapper) NextResultSet() error {
-	return logAction(r.logger, "Rows.NextResultSet", r.original.NextResultSet)
+	return r.logger.StepWithoutContext(&r.logger.options.rowsNextResultSet, r.original.NextResultSet)
 }

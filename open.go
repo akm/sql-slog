@@ -7,16 +7,38 @@ import (
 	"log/slog"
 )
 
-// Open opens a database specified by its database driver name and a driver-specific data source name.
-// And returns a new database handle with logger.
-func Open(ctx context.Context, driverName, dsn string, logger *slog.Logger) (*sql.DB, error) {
+/*
+Open opens a database specified by its database driver name and a driver-specific data source name.
+And returns a new database handle with logger.
+
+ctx is the context for the open operation.
+driverName is the name of the database driver as same as driverName of [sql.Open].
+dsn is the data source name as same as dataSourceName of [sql.Open].
+opts are the options for the logging behavior. See [Option] for the details.
+
+The returned DB can be used as same as *sql.DB from [sql.Open].
+
+See the following example for the usage:
+
+[Logger]: sets the slog.Logger to be used. If not set, the default is slog.Default().
+
+[StepOptions]: sets the options for the logging behavior.
+
+[SetStepLogMsgFormatter]: sets the function to format the step name.
+
+[sql.Open]: https://pkg.go.dev/database/sql#Open
+*/
+func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB, error) {
+	options := newOptions(opts...)
+	logger := newLogger(options.logger, options)
+
 	lg := logger.With(
 		slog.String("driver", driverName),
 		slog.String("dsn", dsn),
 	)
 
 	var db *sql.DB
-	err := logActionContext(ctx, lg, "sqlslog.Open", func() error {
+	err := lg.Step(ctx, &logger.options.sqlslogOpen, func() error {
 		var err error
 		db, err = open(driverName, dsn, logger)
 		return err
@@ -27,7 +49,7 @@ func Open(ctx context.Context, driverName, dsn string, logger *slog.Logger) (*sq
 	return db, nil
 }
 
-func open(driverName, dsn string, logger *slog.Logger) (*sql.DB, error) {
+func open(driverName, dsn string, logger *logger) (*sql.DB, error) {
 	db, err := sql.Open(driverName, dsn)
 	if err != nil {
 		return nil, err

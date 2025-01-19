@@ -4,25 +4,30 @@ import (
 	"context"
 	"log/slog"
 	"os"
+	"slices"
 
 	sqlslog "github.com/akm/sql-slog"
 	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
-	format := "text"
-	if len(os.Args) > 1 {
-		format = os.Args[1]
+	var logLevel sqlslog.Level
+	if slices.Contains(os.Args, "debug") {
+		logLevel = sqlslog.LevelDebug
+	} else if slices.Contains(os.Args, "trace") {
+		logLevel = sqlslog.LevelTrace
+	} else if slices.Contains(os.Args, "verbose") {
+		logLevel = sqlslog.LevelVerbose
+	} else {
+		logLevel = sqlslog.LevelInfo
 	}
-
-	opts := &slog.HandlerOptions{Level: slog.LevelDebug}
+	opts := &slog.HandlerOptions{Level: logLevel}
 
 	var handler slog.Handler
-	switch format {
-	case "json":
-		handler = slog.NewJSONHandler(os.Stdout, opts)
-	default:
-		handler = slog.NewTextHandler(os.Stdout, opts)
+	if slices.Contains(os.Args, "json") {
+		handler = sqlslog.NewJSONHandler(os.Stdout, opts)
+	} else {
+		handler = sqlslog.NewTextHandler(os.Stdout, opts)
 	}
 	logger := slog.New(handler)
 
@@ -30,7 +35,12 @@ func main() {
 	dsn := "file::memory:?cache=shared"
 
 	// Open a database
-	db, err := sqlslog.Open(ctx, "sqlite3", dsn, logger)
+	db, err := sqlslog.Open(ctx, "sqlite3", dsn,
+		sqlslog.Logger(logger),
+		sqlslog.ConnQueryContext(func(o *sqlslog.StepOptions) {
+			o.SetLevel(sqlslog.LevelDebug)
+		}),
+	)
 	if err != nil {
 		logger.Error("Failed to open database", "error", err)
 		os.Exit(1)

@@ -5,7 +5,7 @@ import (
 	"log/slog"
 )
 
-func wrapDriver(original driver.Driver, logger *slog.Logger) driver.Driver {
+func wrapDriver(original driver.Driver, logger *logger) driver.Driver {
 	if dc, ok := original.(driver.DriverContext); ok {
 		return &driverContextWrapper{
 			driverWrapper: driverWrapper{original: original, logger: logger},
@@ -21,7 +21,7 @@ func wrapDriver(original driver.Driver, logger *slog.Logger) driver.Driver {
 // should implement Connector and DriverContext interfaces.
 type driverWrapper struct {
 	original driver.Driver
-	logger   *slog.Logger
+	logger   *logger
 }
 
 var _ driver.Driver = (*driverWrapper)(nil)
@@ -30,7 +30,7 @@ var _ driver.Driver = (*driverWrapper)(nil)
 func (w *driverWrapper) Open(dsn string) (driver.Conn, error) {
 	lg := w.logger.With(slog.String("dsn", dsn))
 	var origConn driver.Conn
-	err := logAction(lg, "Driver.Open", func() error {
+	err := lg.StepWithoutContext(&w.logger.options.driverOpen, func() error {
 		var err error
 		origConn, err = w.original.Open(dsn)
 		return err
@@ -55,7 +55,7 @@ var _ driver.DriverContext = (*driverContextWrapper)(nil)
 func (w *driverContextWrapper) OpenConnector(dsn string) (driver.Connector, error) {
 	lg := w.logger.With(slog.String("dsn", dsn))
 	var origConnector driver.Connector
-	err := logAction(lg, "Driver.OpenConnector", func() error {
+	err := lg.StepWithoutContext(&w.logger.options.driverOpenConnector, func() error {
 		var err error
 		origConnector, err = w.original.OpenConnector(dsn)
 		return err

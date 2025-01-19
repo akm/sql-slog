@@ -16,6 +16,18 @@ $(GOLANGCI_LINT_CLI):
 lint: $(GOLANGCI_LINT_CLI)
 	golangci-lint run
 
+
+GODOC_CLI_VERSION=latest
+GODOC_CLI_MODULE=golang.org/x/tools/cmd/godoc
+GODOC_CLI=$(GOLANG_TOOL_PATH_TO_BIN)/bin/godoc
+$(GODOC_CLI):
+	go install $(GODOC_CLI_MODULE)@$(GODOC_CLI_VERSION)
+
+.PHONY: godoc
+godoc: $(GODOC_CLI)
+	@echo "Open http://localhost:6060/pkg/github.com/akm/sql-slog"
+	godoc -http=:6060
+
 mysql-%:
 	$(MAKE) -C tests/mysql $*
 
@@ -29,7 +41,7 @@ sqlite3-%:
 GO_TEST_OPTIONS?=
 
 .PHONY: test
-test: test-unit mysql-test postgres-test sqlite3-test
+test: test-unit sqlite3-test postgres-test mysql-test
 
 .PHONY: test-unit
 test-unit:
@@ -48,7 +60,7 @@ GO_COVERAGE_PROFILE?=coverage.txt
 $(GO_COVERAGE_PROFILE):
 	$(MAKE) test-coverage-profile
 
-test-with-coverage: test-with-coverage-unit mysql-test-with-coverage postgres-test-with-coverage sqlite3-test-with-coverage
+test-with-coverage: test-with-coverage-unit sqlite3-test-with-coverage postgres-test-with-coverage mysql-test-with-coverage
 
 # See https://app.codecov.io/github/akm/go-requestid/new
 .PHONY: test-with-coverage-unit
