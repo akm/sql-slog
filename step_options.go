@@ -43,9 +43,9 @@ type StepOptions struct {
 	Complete EventOptions
 }
 
-func (po *StepOptions) SetLevel(lv Level) {
-	po.Start.Level = lv - 4
-	po.Complete.Level = lv
+func (o *StepOptions) SetLevel(lv Level) {
+	o.Start.Level = lv - 4
+	o.Complete.Level = lv
 }
 
 func newStepOptions(f StepLogMsgFormatter, name string, startLevel, errorLevel, completeLevel Level) *StepOptions {
