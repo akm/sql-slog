@@ -139,7 +139,7 @@ var _ driver.ConnBeginTx = (*connWithContextWrapper)(nil)
 
 // ResetSession implements driver.SessionResetter.
 func (c *connWithContextWrapper) ResetSession(ctx context.Context) error {
-	return c.logger.logActionContext(ctx, &c.logger.options.connResetSession, func() error {
+	return c.logger.Step(ctx, &c.logger.options.connResetSession, func() error {
 		// https://cs.opensource.google/go/go/+/master:src/database/sql/sql.go;l=603-606
 		if v, ok := c.original.(driver.SessionResetter); ok {
 			return v.ResetSession(ctx)
@@ -150,7 +150,7 @@ func (c *connWithContextWrapper) ResetSession(ctx context.Context) error {
 
 // Ping implements driver.Pinger.
 func (c *connWithContextWrapper) Ping(ctx context.Context) error {
-	return c.logger.logActionContext(ctx, &c.logger.options.connPing, func() error {
+	return c.logger.Step(ctx, &c.logger.options.connPing, func() error {
 		// https://cs.opensource.google/go/go/+/master:src/database/sql/sql.go;l=882-891
 		if p, ok := c.original.(driver.Pinger); ok {
 			return p.Ping(ctx)
@@ -166,7 +166,7 @@ func (c *connWithContextWrapper) ExecContext(ctx context.Context, query string, 
 		slog.String("query", query),
 		slog.String("args", fmt.Sprintf("%+v", args)),
 	)
-	err := lg.logActionContext(ctx, &c.logger.options.connExecContext, func() error {
+	err := lg.Step(ctx, &c.logger.options.connExecContext, func() error {
 		var err error
 		result, err = c.originalConn.ExecContext(ctx, query, args)
 		return err
@@ -184,7 +184,7 @@ func (c *connWithContextWrapper) QueryContext(ctx context.Context, query string,
 		slog.String("query", query),
 		slog.String("args", fmt.Sprintf("%+v", args)),
 	)
-	err := lg.logActionContext(ctx, &c.logger.options.connQueryContext, func() error {
+	err := lg.Step(ctx, &c.logger.options.connQueryContext, func() error {
 		var err error
 		rows, err = c.originalConn.QueryContext(ctx, query, args)
 		return err
@@ -199,7 +199,7 @@ func (c *connWithContextWrapper) QueryContext(ctx context.Context, query string,
 func (c *connWithContextWrapper) PrepareContext(ctx context.Context, query string) (driver.Stmt, error) {
 	var stmt driver.Stmt
 	lg := c.logger.With(slog.String("query", query))
-	err := lg.logActionContext(ctx, &c.logger.options.connPrepareContext, func() error {
+	err := lg.Step(ctx, &c.logger.options.connPrepareContext, func() error {
 		var err error
 		stmt, err = c.originalConn.PrepareContext(ctx, query)
 		return err
@@ -213,7 +213,7 @@ func (c *connWithContextWrapper) PrepareContext(ctx context.Context, query strin
 // BeginTx implements driver.ConnBeginTx.
 func (c *connWithContextWrapper) BeginTx(ctx context.Context, opts driver.TxOptions) (driver.Tx, error) {
 	var tx driver.Tx
-	err := c.logger.logActionContext(ctx, &c.logger.options.connBeginTx, func() error {
+	err := c.logger.Step(ctx, &c.logger.options.connBeginTx, func() error {
 		var err error
 		tx, err = c.originalConn.BeginTx(ctx, opts)
 		return err

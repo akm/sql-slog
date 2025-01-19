@@ -19,7 +19,7 @@ func wrapConnector(original driver.Connector, logger *logger) driver.Connector {
 // Connect implements driver.Connector.
 func (c *connector) Connect(ctx context.Context) (driver.Conn, error) {
 	var origConn driver.Conn
-	err := c.logger.logActionContext(ctx, &c.logger.options.connectorConnect, func() error {
+	err := c.logger.Step(ctx, &c.logger.options.connectorConnect, func() error {
 		var err error
 		origConn, err = c.original.Connect(ctx)
 		return err

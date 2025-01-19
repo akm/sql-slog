@@ -36,7 +36,7 @@ func (x *logger) StepWithoutContext(step *StepOptions, fn func() error) error {
 	return nil
 }
 
-func (x *logger) logActionContext(ctx context.Context, step *StepOptions, fn func() error) error {
+func (x *logger) Step(ctx context.Context, step *StepOptions, fn func() error) error {
 	x.Log(ctx, slog.Level(step.Start.Level), step.Start.Msg)
 	t0 := time.Now()
 	err := fn()

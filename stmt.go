@@ -65,7 +65,7 @@ var _ driver.StmtExecContext = (*stmtExecContextWrapperImpl)(nil)
 func (s *stmtExecContextWrapperImpl) ExecContext(ctx context.Context, args []driver.NamedValue) (driver.Result, error) {
 	lg := s.logger.With(slog.String("args", fmt.Sprintf("%+v", args)))
 	var result driver.Result
-	err := lg.logActionContext(ctx, &s.logger.options.stmtExecContext, func() error {
+	err := lg.Step(ctx, &s.logger.options.stmtExecContext, func() error {
 		var err error
 		result, err = s.original.ExecContext(ctx, args)
 		return err
@@ -87,7 +87,7 @@ var _ driver.StmtQueryContext = (*stmtQueryContextWrapperImpl)(nil)
 func (s *stmtQueryContextWrapperImpl) QueryContext(ctx context.Context, args []driver.NamedValue) (driver.Rows, error) {
 	lg := s.logger.With(slog.String("args", fmt.Sprintf("%+v", args)))
 	var rows driver.Rows
-	err := lg.logActionContext(ctx, &s.logger.options.stmtQueryContext, func() error {
+	err := lg.Step(ctx, &s.logger.options.stmtQueryContext, func() error {
 		var err error
 		rows, err = s.original.QueryContext(ctx, args)
 		return err
