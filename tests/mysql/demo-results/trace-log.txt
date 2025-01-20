@@ -1,88 +1,88 @@
 go run ./demo.go trace text
-time=2025-01-21T08:38:02.921+09:00 level=DEBUG msg="sqlslog.Open Start" driver=mysql dsn=root@tcp(localhost:3306)/app1
-time=2025-01-21T08:38:02.922+09:00 level=DEBUG msg="Driver.OpenConnector Start" dsn=root@tcp(localhost:3306)/app1
-time=2025-01-21T08:38:02.922+09:00 level=INFO msg="Driver.OpenConnector Complete" dsn=root@tcp(localhost:3306)/app1 duration=1416
-time=2025-01-21T08:38:02.922+09:00 level=INFO msg="sqlslog.Open Complete" driver=mysql dsn=root@tcp(localhost:3306)/app1 duration=162250
-time=2025-01-21T08:38:02.922+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:02.922+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:02.925+09:00 level=ERROR msg="Connector.Connect Error" duration=2772917 error="driver: bad connection"
-time=2025-01-21T08:38:02.925+09:00 level=ERROR msg="Connector.Connect Error" duration=2838708 error="driver: bad connection"
-time=2025-01-21T08:38:02.925+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:02.925+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:02.926+09:00 level=ERROR msg="Connector.Connect Error" duration=981584 error="driver: bad connection"
-time=2025-01-21T08:38:02.926+09:00 level=ERROR msg="Connector.Connect Error" duration=1054500 error="driver: bad connection"
-time=2025-01-21T08:38:02.926+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:02.926+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:02.927+09:00 level=ERROR msg="Connector.Connect Error" duration=815292 error="driver: bad connection"
-time=2025-01-21T08:38:02.927+09:00 level=ERROR msg="Connector.Connect Error" duration=859417 error="driver: bad connection"
-time=2025-01-21T08:38:04.928+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:04.928+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:04.932+09:00 level=ERROR msg="Connector.Connect Error" duration=3936875 error="driver: bad connection"
-time=2025-01-21T08:38:04.932+09:00 level=ERROR msg="Connector.Connect Error" duration=4185375 error="driver: bad connection"
-time=2025-01-21T08:38:04.932+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:04.932+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:04.935+09:00 level=ERROR msg="Connector.Connect Error" duration=2565000 error="driver: bad connection"
-time=2025-01-21T08:38:04.935+09:00 level=ERROR msg="Connector.Connect Error" duration=2673458 error="driver: bad connection"
-time=2025-01-21T08:38:04.935+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:04.935+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:04.937+09:00 level=ERROR msg="Connector.Connect Error" duration=1656791 error="driver: bad connection"
-time=2025-01-21T08:38:04.937+09:00 level=ERROR msg="Connector.Connect Error" duration=1751125 error="driver: bad connection"
-time=2025-01-21T08:38:06.938+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:06.938+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:06.939+09:00 level=ERROR msg="Connector.Connect Error" duration=1367667 error="driver: bad connection"
-time=2025-01-21T08:38:06.939+09:00 level=ERROR msg="Connector.Connect Error" duration=1439166 error="driver: bad connection"
-time=2025-01-21T08:38:06.939+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:06.939+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:06.940+09:00 level=ERROR msg="Connector.Connect Error" duration=636917 error="driver: bad connection"
-time=2025-01-21T08:38:06.940+09:00 level=ERROR msg="Connector.Connect Error" duration=692000 error="driver: bad connection"
-time=2025-01-21T08:38:06.940+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:06.940+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:06.941+09:00 level=ERROR msg="Connector.Connect Error" duration=535167 error="driver: bad connection"
-time=2025-01-21T08:38:06.941+09:00 level=ERROR msg="Connector.Connect Error" duration=580917 error="driver: bad connection"
-time=2025-01-21T08:38:08.942+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:08.942+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:08.945+09:00 level=ERROR msg="Connector.Connect Error" duration=3380125 error="driver: bad connection"
-time=2025-01-21T08:38:08.946+09:00 level=ERROR msg="Connector.Connect Error" duration=3519917 error="driver: bad connection"
-time=2025-01-21T08:38:08.946+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:08.946+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:08.948+09:00 level=ERROR msg="Connector.Connect Error" duration=2033875 error="driver: bad connection"
-time=2025-01-21T08:38:08.948+09:00 level=ERROR msg="Connector.Connect Error" duration=2140833 error="driver: bad connection"
-time=2025-01-21T08:38:08.948+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:08.948+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:08.950+09:00 level=ERROR msg="Connector.Connect Error" duration=1804625 error="driver: bad connection"
-time=2025-01-21T08:38:08.950+09:00 level=ERROR msg="Connector.Connect Error" duration=1916375 error="driver: bad connection"
-time=2025-01-21T08:38:10.952+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:10.953+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:38:10.961+09:00 level=INFO msg="Connector.Connect Complete" duration=8703167
-time=2025-01-21T08:38:10.962+09:00 level=INFO msg="Connector.Connect Complete" duration=8871958
-time=2025-01-21T08:38:10.962+09:00 level=TRACE msg="Conn.Ping Complete" duration=553458
-time=2025-01-21T08:38:10.962+09:00 level=TRACE msg="Conn.ResetSession Complete" duration=4208
-time=2025-01-21T08:38:10.962+09:00 level=DEBUG msg="Conn.ExecContext Start" query="CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))" args=[]
-time=2025-01-21T08:38:10.971+09:00 level=INFO msg="Conn.ExecContext Complete" query="CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))" args=[] duration=8898708
-time=2025-01-21T08:38:10.971+09:00 level=TRACE msg="Conn.ResetSession Complete" duration=3875
-time=2025-01-21T08:38:10.971+09:00 level=TRACE msg="Conn.Ping Complete" duration=311958
-time=2025-01-21T08:38:10.972+09:00 level=TRACE msg="Conn.ResetSession Complete" duration=4000
-time=2025-01-21T08:38:10.972+09:00 level=DEBUG msg="Conn.BeginTx Start"
-time=2025-01-21T08:38:10.972+09:00 level=INFO msg="Conn.BeginTx Complete" duration=307750
-time=2025-01-21T08:38:10.972+09:00 level=DEBUG msg="Conn.ExecContext Start" query="INSERT INTO test1 (id, name) VALUES (?, ?)" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]"
-time=2025-01-21T08:38:10.972+09:00 level=ERROR msg="Conn.ExecContext Error" query="INSERT INTO test1 (id, name) VALUES (?, ?)" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=1000 error="driver: skip fast-path; continue as if unimplemented"
-time=2025-01-21T08:38:10.972+09:00 level=DEBUG msg="Conn.PrepareContext Start" query="INSERT INTO test1 (id, name) VALUES (?, ?)"
-time=2025-01-21T08:38:10.975+09:00 level=INFO msg="Conn.PrepareContext Complete" query="INSERT INTO test1 (id, name) VALUES (?, ?)" duration=3250209
-time=2025-01-21T08:38:10.975+09:00 level=DEBUG msg="Stmt.ExecContext Start" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]"
-time=2025-01-21T08:38:10.976+09:00 level=INFO msg="Stmt.ExecContext Complete" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=295167
-time=2025-01-21T08:38:10.976+09:00 level=DEBUG msg="Stmt.Close Start"
-time=2025-01-21T08:38:10.976+09:00 level=INFO msg="Stmt.Close Complete" duration=5834
-time=2025-01-21T08:38:10.976+09:00 level=DEBUG msg="Tx.Commit Start"
-time=2025-01-21T08:38:10.977+09:00 level=INFO msg="Tx.Commit Complete" duration=1111000
-time=2025-01-21T08:38:10.977+09:00 level=TRACE msg="Conn.ResetSession Complete" duration=3667
-time=2025-01-21T08:38:10.977+09:00 level=TRACE msg="Conn.QueryContext Start" query="SELECT * FROM test1" args=[]
-time=2025-01-21T08:38:10.977+09:00 level=DEBUG msg="Conn.QueryContext Complete" query="SELECT * FROM test1" args=[] duration=311459
-time=2025-01-21T08:38:10.977+09:00 level=TRACE msg="Rows.Next Start"
-time=2025-01-21T08:38:10.977+09:00 level=DEBUG msg="Rows.Next Complete" duration=34042 eof=false
-time=2025-01-21T08:38:10.977+09:00 level=INFO msg=Record id=1 name=Alice
-time=2025-01-21T08:38:10.977+09:00 level=TRACE msg="Rows.Next Start"
-time=2025-01-21T08:38:10.977+09:00 level=DEBUG msg="Rows.Next Complete" duration=375 eof=true
-time=2025-01-21T08:38:10.977+09:00 level=TRACE msg="Rows.Close Start"
-time=2025-01-21T08:38:10.977+09:00 level=DEBUG msg="Rows.Close Complete" duration=666
-time=2025-01-21T08:38:10.977+09:00 level=DEBUG msg="Conn.Close Start"
-time=2025-01-21T08:38:10.978+09:00 level=INFO msg="Conn.Close Complete" duration=36292
+time=2025-01-21T08:54:09.150+09:00 level=DEBUG msg="sqlslog.Open Start" driver=mysql dsn=root@tcp(localhost:3306)/app1
+time=2025-01-21T08:54:09.151+09:00 level=DEBUG msg="Driver.OpenConnector Start" dsn=root@tcp(localhost:3306)/app1
+time=2025-01-21T08:54:09.151+09:00 level=INFO msg="Driver.OpenConnector Complete" dsn=root@tcp(localhost:3306)/app1 duration=750
+time=2025-01-21T08:54:09.151+09:00 level=INFO msg="sqlslog.Open Complete" driver=mysql dsn=root@tcp(localhost:3306)/app1 duration=106708
+time=2025-01-21T08:54:09.151+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:09.151+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:09.154+09:00 level=ERROR msg="Connector.Connect Error" duration=3495667 error="driver: bad connection"
+time=2025-01-21T08:54:09.154+09:00 level=ERROR msg="Connector.Connect Error" duration=3558750 error="driver: bad connection"
+time=2025-01-21T08:54:09.154+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:09.154+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:09.156+09:00 level=ERROR msg="Connector.Connect Error" duration=1283042 error="driver: bad connection"
+time=2025-01-21T08:54:09.156+09:00 level=ERROR msg="Connector.Connect Error" duration=1353875 error="driver: bad connection"
+time=2025-01-21T08:54:09.156+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:09.156+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:09.157+09:00 level=ERROR msg="Connector.Connect Error" duration=1176250 error="driver: bad connection"
+time=2025-01-21T08:54:09.157+09:00 level=ERROR msg="Connector.Connect Error" duration=1237584 error="driver: bad connection"
+time=2025-01-21T08:54:11.157+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:11.157+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:11.159+09:00 level=ERROR msg="Connector.Connect Error" duration=2151625 error="driver: bad connection"
+time=2025-01-21T08:54:11.159+09:00 level=ERROR msg="Connector.Connect Error" duration=2193750 error="driver: bad connection"
+time=2025-01-21T08:54:11.159+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:11.159+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:11.161+09:00 level=ERROR msg="Connector.Connect Error" duration=1534167 error="driver: bad connection"
+time=2025-01-21T08:54:11.161+09:00 level=ERROR msg="Connector.Connect Error" duration=1555459 error="driver: bad connection"
+time=2025-01-21T08:54:11.161+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:11.161+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:11.162+09:00 level=ERROR msg="Connector.Connect Error" duration=1034000 error="driver: bad connection"
+time=2025-01-21T08:54:11.162+09:00 level=ERROR msg="Connector.Connect Error" duration=1047916 error="driver: bad connection"
+time=2025-01-21T08:54:13.162+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:13.162+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:13.164+09:00 level=ERROR msg="Connector.Connect Error" duration=1307542 error="driver: bad connection"
+time=2025-01-21T08:54:13.164+09:00 level=ERROR msg="Connector.Connect Error" duration=1358709 error="driver: bad connection"
+time=2025-01-21T08:54:13.164+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:13.164+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:13.164+09:00 level=ERROR msg="Connector.Connect Error" duration=580167 error="driver: bad connection"
+time=2025-01-21T08:54:13.164+09:00 level=ERROR msg="Connector.Connect Error" duration=615333 error="driver: bad connection"
+time=2025-01-21T08:54:13.164+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:13.164+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:13.165+09:00 level=ERROR msg="Connector.Connect Error" duration=497541 error="driver: bad connection"
+time=2025-01-21T08:54:13.165+09:00 level=ERROR msg="Connector.Connect Error" duration=525208 error="driver: bad connection"
+time=2025-01-21T08:54:15.165+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:15.165+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:15.168+09:00 level=ERROR msg="Connector.Connect Error" duration=3259667 error="driver: bad connection"
+time=2025-01-21T08:54:15.168+09:00 level=ERROR msg="Connector.Connect Error" duration=3304208 error="driver: bad connection"
+time=2025-01-21T08:54:15.168+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:15.168+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:15.169+09:00 level=ERROR msg="Connector.Connect Error" duration=1100334 error="driver: bad connection"
+time=2025-01-21T08:54:15.170+09:00 level=ERROR msg="Connector.Connect Error" duration=1141667 error="driver: bad connection"
+time=2025-01-21T08:54:15.170+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:15.170+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:15.170+09:00 level=ERROR msg="Connector.Connect Error" duration=871709 error="driver: bad connection"
+time=2025-01-21T08:54:15.170+09:00 level=ERROR msg="Connector.Connect Error" duration=887542 error="driver: bad connection"
+time=2025-01-21T08:54:17.172+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:17.172+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:54:17.178+09:00 level=INFO msg="Connector.Connect Complete" duration=6562708 eof=false
+time=2025-01-21T08:54:17.178+09:00 level=INFO msg="Connector.Connect Complete" duration=6818584 eof=false
+time=2025-01-21T08:54:17.180+09:00 level=TRACE msg="Conn.Ping Complete" duration=982417
+time=2025-01-21T08:54:17.180+09:00 level=TRACE msg="Conn.ResetSession Complete" duration=10625
+time=2025-01-21T08:54:17.180+09:00 level=DEBUG msg="Conn.ExecContext Start" query="CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))" args=[]
+time=2025-01-21T08:54:17.201+09:00 level=INFO msg="Conn.ExecContext Complete" query="CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))" args=[] duration=21481916
+time=2025-01-21T08:54:17.201+09:00 level=TRACE msg="Conn.ResetSession Complete" duration=8041
+time=2025-01-21T08:54:17.202+09:00 level=TRACE msg="Conn.Ping Complete" duration=507208
+time=2025-01-21T08:54:17.202+09:00 level=TRACE msg="Conn.ResetSession Complete" duration=1667
+time=2025-01-21T08:54:17.202+09:00 level=DEBUG msg="Conn.BeginTx Start"
+time=2025-01-21T08:54:17.202+09:00 level=INFO msg="Conn.BeginTx Complete" duration=433459
+time=2025-01-21T08:54:17.202+09:00 level=DEBUG msg="Conn.ExecContext Start" query="INSERT INTO test1 (id, name) VALUES (?, ?)" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]"
+time=2025-01-21T08:54:17.202+09:00 level=ERROR msg="Conn.ExecContext Error" query="INSERT INTO test1 (id, name) VALUES (?, ?)" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=916 error="driver: skip fast-path; continue as if unimplemented"
+time=2025-01-21T08:54:17.202+09:00 level=DEBUG msg="Conn.PrepareContext Start" query="INSERT INTO test1 (id, name) VALUES (?, ?)"
+time=2025-01-21T08:54:17.207+09:00 level=INFO msg="Conn.PrepareContext Complete" query="INSERT INTO test1 (id, name) VALUES (?, ?)" duration=4625792
+time=2025-01-21T08:54:17.207+09:00 level=DEBUG msg="Stmt.ExecContext Start" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]"
+time=2025-01-21T08:54:17.208+09:00 level=INFO msg="Stmt.ExecContext Complete" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=610167
+time=2025-01-21T08:54:17.208+09:00 level=DEBUG msg="Stmt.Close Start"
+time=2025-01-21T08:54:17.208+09:00 level=INFO msg="Stmt.Close Complete" duration=50125
+time=2025-01-21T08:54:17.208+09:00 level=DEBUG msg="Tx.Commit Start"
+time=2025-01-21T08:54:17.210+09:00 level=INFO msg="Tx.Commit Complete" duration=1609792
+time=2025-01-21T08:54:17.210+09:00 level=TRACE msg="Conn.ResetSession Complete" duration=5667
+time=2025-01-21T08:54:17.210+09:00 level=TRACE msg="Conn.QueryContext Start" query="SELECT * FROM test1" args=[]
+time=2025-01-21T08:54:17.210+09:00 level=DEBUG msg="Conn.QueryContext Complete" query="SELECT * FROM test1" args=[] duration=507125
+time=2025-01-21T08:54:17.210+09:00 level=TRACE msg="Rows.Next Start"
+time=2025-01-21T08:54:17.211+09:00 level=DEBUG msg="Rows.Next Complete" duration=26917 eof=false
+time=2025-01-21T08:54:17.211+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-01-21T08:54:17.211+09:00 level=TRACE msg="Rows.Next Start"
+time=2025-01-21T08:54:17.211+09:00 level=DEBUG msg="Rows.Next Complete" duration=125 eof=true
+time=2025-01-21T08:54:17.211+09:00 level=TRACE msg="Rows.Close Start"
+time=2025-01-21T08:54:17.211+09:00 level=DEBUG msg="Rows.Close Complete" duration=375
+time=2025-01-21T08:54:17.211+09:00 level=DEBUG msg="Conn.Close Start"
+time=2025-01-21T08:54:17.211+09:00 level=INFO msg="Conn.Close Complete" duration=41667

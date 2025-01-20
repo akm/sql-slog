@@ -1,22 +1,22 @@
 go run ./demo.go debug text
-time=2025-01-21T08:37:30.954+09:00 level=DEBUG msg="sqlslog.Open Start" driver=sqlite3 dsn="file::memory:?cache=shared"
-time=2025-01-21T08:37:30.954+09:00 level=INFO msg="sqlslog.Open Complete" driver=sqlite3 dsn="file::memory:?cache=shared" duration=43542
-time=2025-01-21T08:37:30.954+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T08:37:30.954+09:00 level=DEBUG msg="Driver.Open Start" dsn="file::memory:?cache=shared"
-time=2025-01-21T08:37:30.955+09:00 level=INFO msg="Driver.Open Complete" dsn="file::memory:?cache=shared" duration=783916 eof=false
-time=2025-01-21T08:37:30.955+09:00 level=INFO msg="Connector.Connect Complete" duration=798416
-time=2025-01-21T08:37:30.955+09:00 level=DEBUG msg="Conn.ExecContext Start" query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[]
-time=2025-01-21T08:37:30.955+09:00 level=INFO msg="Conn.ExecContext Complete" query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=91792
-time=2025-01-21T08:37:30.955+09:00 level=DEBUG msg="Conn.BeginTx Start"
-time=2025-01-21T08:37:30.955+09:00 level=INFO msg="Conn.BeginTx Complete" duration=3250
-time=2025-01-21T08:37:30.955+09:00 level=DEBUG msg="Conn.ExecContext Start" query="INSERT INTO test1 (name) VALUES (?)" args="[{Name: Ordinal:1 Value:Alice}]"
-time=2025-01-21T08:37:30.955+09:00 level=INFO msg="Conn.ExecContext Complete" query="INSERT INTO test1 (name) VALUES (?)" args="[{Name: Ordinal:1 Value:Alice}]" duration=9125
-time=2025-01-21T08:37:30.955+09:00 level=DEBUG msg="Tx.Commit Start"
-time=2025-01-21T08:37:30.955+09:00 level=INFO msg="Tx.Commit Complete" duration=3833
-time=2025-01-21T08:37:30.955+09:00 level=DEBUG msg="Conn.QueryContext Complete" query="SELECT * FROM test1" args=[] duration=5708
-time=2025-01-21T08:37:30.955+09:00 level=DEBUG msg="Rows.Next Complete" duration=3292 eof=false
-time=2025-01-21T08:37:30.955+09:00 level=INFO msg=Record id=1 name=Alice
-time=2025-01-21T08:37:30.955+09:00 level=DEBUG msg="Rows.Next Complete" duration=1250 eof=true
-time=2025-01-21T08:37:30.955+09:00 level=DEBUG msg="Rows.Close Complete" duration=625
-time=2025-01-21T08:37:30.955+09:00 level=DEBUG msg="Conn.Close Start"
-time=2025-01-21T08:37:30.955+09:00 level=INFO msg="Conn.Close Complete" duration=14500
+time=2025-01-21T08:53:38.549+09:00 level=DEBUG msg="sqlslog.Open Start" driver=sqlite3 dsn="file::memory:?cache=shared"
+time=2025-01-21T08:53:38.550+09:00 level=INFO msg="sqlslog.Open Complete" driver=sqlite3 dsn="file::memory:?cache=shared" duration=44542
+time=2025-01-21T08:53:38.550+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T08:53:38.550+09:00 level=DEBUG msg="Driver.Open Start" dsn="file::memory:?cache=shared"
+time=2025-01-21T08:53:38.550+09:00 level=INFO msg="Driver.Open Complete" dsn="file::memory:?cache=shared" duration=800292 eof=false
+time=2025-01-21T08:53:38.550+09:00 level=INFO msg="Connector.Connect Complete" duration=817458 eof=false
+time=2025-01-21T08:53:38.550+09:00 level=DEBUG msg="Conn.ExecContext Start" query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[]
+time=2025-01-21T08:53:38.551+09:00 level=INFO msg="Conn.ExecContext Complete" query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=100792
+time=2025-01-21T08:53:38.551+09:00 level=DEBUG msg="Conn.BeginTx Start"
+time=2025-01-21T08:53:38.551+09:00 level=INFO msg="Conn.BeginTx Complete" duration=3875
+time=2025-01-21T08:53:38.551+09:00 level=DEBUG msg="Conn.ExecContext Start" query="INSERT INTO test1 (name) VALUES (?)" args="[{Name: Ordinal:1 Value:Alice}]"
+time=2025-01-21T08:53:38.551+09:00 level=INFO msg="Conn.ExecContext Complete" query="INSERT INTO test1 (name) VALUES (?)" args="[{Name: Ordinal:1 Value:Alice}]" duration=12375
+time=2025-01-21T08:53:38.551+09:00 level=DEBUG msg="Tx.Commit Start"
+time=2025-01-21T08:53:38.551+09:00 level=INFO msg="Tx.Commit Complete" duration=4333
+time=2025-01-21T08:53:38.551+09:00 level=DEBUG msg="Conn.QueryContext Complete" query="SELECT * FROM test1" args=[] duration=6542
+time=2025-01-21T08:53:38.551+09:00 level=DEBUG msg="Rows.Next Complete" duration=3791 eof=false
+time=2025-01-21T08:53:38.551+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-01-21T08:53:38.551+09:00 level=DEBUG msg="Rows.Next Complete" duration=1333 eof=true
+time=2025-01-21T08:53:38.551+09:00 level=DEBUG msg="Rows.Close Complete" duration=625
+time=2025-01-21T08:53:38.551+09:00 level=DEBUG msg="Conn.Close Start"
+time=2025-01-21T08:53:38.551+09:00 level=INFO msg="Conn.Close Complete" duration=15459
