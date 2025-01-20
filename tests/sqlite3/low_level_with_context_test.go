@@ -285,7 +285,7 @@ func TestLowLevelWithContext(t *testing.T) {
 			for rows.Next() {
 				logs.Assert(t, []map[string]interface{}{
 					{"level": "TRACE", "msg": "Rows.Next Start"},
-					{"level": "DEBUG", "msg": "Rows.Next Complete"},
+					{"level": "DEBUG", "msg": "Rows.Next Complete", "eof": false},
 				})
 				logs.Start()
 
@@ -300,7 +300,7 @@ func TestLowLevelWithContext(t *testing.T) {
 
 			logs.Assert(t, []map[string]interface{}{
 				{"level": "TRACE", "msg": "Rows.Next Start"},
-				{"level": "ERROR", "msg": "Rows.Next Error", "error": "EOF"},
+				{"level": "DEBUG", "msg": "Rows.Next Complete", "eof": true},
 				{"level": "TRACE", "msg": "Rows.Close Start"},
 				{"level": "DEBUG", "msg": "Rows.Close Complete"},
 			})
@@ -349,7 +349,7 @@ func TestLowLevelWithContext(t *testing.T) {
 					{"level": "DEBUG", "msg": "Stmt.QueryContext Start", "args": "[{Name: Ordinal:1 Value:1}]"},
 					{"level": "INFO", "msg": "Stmt.QueryContext Complete", "args": "[{Name: Ordinal:1 Value:1}]"},
 					{"level": "TRACE", "msg": "Rows.Next Start"},
-					{"level": "DEBUG", "msg": "Rows.Next Complete"},
+					{"level": "DEBUG", "msg": "Rows.Next Complete", "eof": false},
 					{"level": "TRACE", "msg": "Rows.Close Start"},
 					{"level": "DEBUG", "msg": "Rows.Close Complete"},
 				})
