@@ -79,6 +79,9 @@ test-coverage: test-coverage-profile
 	go tool cover -html=$(GO_COVERAGE_PROFILE) -o $(GO_COVERAGE_HTML)
 	@command -v open && open $(GO_COVERAGE_HTML) || echo "open $(GO_COVERAGE_HTML)"
 
+.PHONY: demo-logs-gen
+demo-logs-gen: sqlite3-demo-logs-gen postgres-demo-logs-gen mysql-demo-logs-gen
+
 .PHONY: clean
 clean: mysql-clean postgres-clean sqlite3-clean
 	rm -rf coverage
