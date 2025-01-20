@@ -3,6 +3,9 @@ package sqlslog
 import (
 	"context"
 	"database/sql/driver"
+	"errors"
+	"io"
+	"log/slog"
 )
 
 type connector struct {
@@ -33,4 +36,18 @@ func (c *connector) Connect(ctx context.Context) (driver.Conn, error) {
 // Driver implements driver.Connector.
 func (c *connector) Driver() driver.Driver {
 	return c.original.Driver()
+}
+
+// HandleConnectorConnect returns completed and slice of slog.Attr.
+// If err is nil, it returns true and a slice of slog.Attr{slog.Bool("eof", false)}.
+// If err is io.EOF, it returns true and a slice of slog.Attr{slog.Bool("eof", true)}.
+// Otherwise, it returns false and nil.
+func HandleConnectorConnect(err error) (bool, []slog.Attr) {
+	if err == nil {
+		return true, []slog.Attr{slog.Bool("eof", false)}
+	}
+	if errors.Is(err, io.EOF) {
+		return true, []slog.Attr{slog.Bool("eof", true)}
+	}
+	return false, nil
 }
