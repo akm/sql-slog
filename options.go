@@ -1,6 +1,10 @@
 package sqlslog
 
-import "log/slog"
+import (
+	"errors"
+	"io"
+	"log/slog"
+)
 
 type options struct {
 	logger *slog.Logger
@@ -46,6 +50,12 @@ func newDefaultOptions(formatter StepLogMsgFormatter) *options {
 		return *newStepOptions(formatter, name, startLevel, LevelError, completeLevel)
 	}
 
+	withErrorHandler := func(opts StepOptions, eh func(error) (bool, []slog.Attr)) StepOptions {
+		r := opts
+		r.ErrorHandler = eh
+		return r
+	}
+
 	return &options{
 		logger:              slog.Default(),
 		connBegin:           stepOpts("Conn.Begin", LevelInfo),
@@ -62,15 +72,23 @@ func newDefaultOptions(formatter StepLogMsgFormatter) *options {
 		driverOpenConnector: stepOpts("Driver.OpenConnector", LevelInfo),
 		sqlslogOpen:         stepOpts("sqlslog.Open", LevelInfo),
 		rowsClose:           stepOpts("Rows.Close", LevelDebug),
-		rowsNext:            stepOpts("Rows.Next", LevelDebug),
-		rowsNextResultSet:   stepOpts("Rows.NextResultSet", LevelDebug),
-		stmtClose:           stepOpts("Stmt.Close", LevelInfo),
-		stmtExec:            stepOpts("Stmt.Exec", LevelInfo),
-		stmtQuery:           stepOpts("Stmt.Query", LevelInfo),
-		stmtExecContext:     stepOpts("Stmt.ExecContext", LevelInfo),
-		stmtQueryContext:    stepOpts("Stmt.QueryContext", LevelInfo),
-		txCommit:            stepOpts("Tx.Commit", LevelInfo),
-		txRollback:          stepOpts("Tx.Rollback", LevelInfo),
+		rowsNext: withErrorHandler(stepOpts("Rows.Next", LevelDebug), func(err error) (bool, []slog.Attr) {
+			if err == nil {
+				return true, []slog.Attr{slog.Bool("eof", false)}
+			}
+			if errors.Is(err, io.EOF) {
+				return true, []slog.Attr{slog.Bool("eof", true)}
+			}
+			return false, nil
+		}),
+		rowsNextResultSet: stepOpts("Rows.NextResultSet", LevelDebug),
+		stmtClose:         stepOpts("Stmt.Close", LevelInfo),
+		stmtExec:          stepOpts("Stmt.Exec", LevelInfo),
+		stmtQuery:         stepOpts("Stmt.Query", LevelInfo),
+		stmtExecContext:   stepOpts("Stmt.ExecContext", LevelInfo),
+		stmtQueryContext:  stepOpts("Stmt.QueryContext", LevelInfo),
+		txCommit:          stepOpts("Tx.Commit", LevelInfo),
+		txRollback:        stepOpts("Tx.Rollback", LevelInfo),
 	}
 }
 
