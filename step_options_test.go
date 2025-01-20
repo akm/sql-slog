@@ -87,7 +87,7 @@ func TestStepOptionsSetLevel(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			tt.o.SetLevel(tt.lv)
-			if *tt.o != *tt.want {
+			if !tt.o.compare(tt.want) {
 				t.Errorf("StepOptions.SetLevel() = %v, want %v", tt.o, tt.want)
 			}
 			if tt.o.Complete.Level != tt.lv {
