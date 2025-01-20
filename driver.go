@@ -2,7 +2,10 @@ package sqlslog
 
 import (
 	"database/sql/driver"
+	"errors"
+	"io"
 	"log/slog"
+	"strings"
 )
 
 func wrapDriver(original driver.Driver, logger *logger) driver.Driver {
@@ -64,4 +67,20 @@ func (w *driverContextWrapper) OpenConnector(dsn string) (driver.Connector, erro
 		return nil, err
 	}
 	return wrapConnector(origConnector, w.logger), nil
+}
+
+// HandleDriverOpenError returns completed and slice of slog.Attr.
+// If err is nil, it returns true and a slice of slog.Attr{slog.Bool("eof", false)}.
+// If err is io.EOF, it returns true and a slice of slog.Attr{slog.Bool("eof", true)}.
+// Otherwise, it returns false and nil.
+func HandleDriverOpenError(err error) (bool, []slog.Attr) {
+	if err == nil {
+		return true, []slog.Attr{slog.Bool("eof", false)}
+	}
+	if errors.Is(err, io.EOF) {
+		return true, []slog.Attr{slog.Bool("eof", true)}
+	} else if strings.ToUpper(err.Error()) == "EOF" {
+		return true, []slog.Attr{slog.Bool("eof", true)}
+	}
+	return false, nil
 }
