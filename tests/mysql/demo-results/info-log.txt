@@ -1,0 +1,33 @@
+go run ./demo.go info text
+time=2025-01-20T22:55:33.506+09:00 level=INFO msg="Driver.OpenConnector Complete" dsn=root@tcp(localhost:3306)/app1 duration=9334
+time=2025-01-20T22:55:33.506+09:00 level=INFO msg="sqlslog.Open Complete" driver=mysql dsn=root@tcp(localhost:3306)/app1 duration=365375
+time=2025-01-20T22:55:33.512+09:00 level=ERROR msg="Connector.Connect Error" duration=5369000 error="driver: bad connection"
+time=2025-01-20T22:55:33.512+09:00 level=ERROR msg="Connector.Connect Error" duration=5430750 error="driver: bad connection"
+time=2025-01-20T22:55:33.513+09:00 level=ERROR msg="Connector.Connect Error" duration=936625 error="driver: bad connection"
+time=2025-01-20T22:55:33.513+09:00 level=ERROR msg="Connector.Connect Error" duration=982667 error="driver: bad connection"
+time=2025-01-20T22:55:33.514+09:00 level=ERROR msg="Connector.Connect Error" duration=860958 error="driver: bad connection"
+time=2025-01-20T22:55:33.514+09:00 level=ERROR msg="Connector.Connect Error" duration=880583 error="driver: bad connection"
+time=2025-01-20T22:55:35.517+09:00 level=ERROR msg="Connector.Connect Error" duration=1693333 error="driver: bad connection"
+time=2025-01-20T22:55:35.517+09:00 level=ERROR msg="Connector.Connect Error" duration=1813583 error="driver: bad connection"
+time=2025-01-20T22:55:35.517+09:00 level=ERROR msg="Connector.Connect Error" duration=659250 error="driver: bad connection"
+time=2025-01-20T22:55:35.517+09:00 level=ERROR msg="Connector.Connect Error" duration=704084 error="driver: bad connection"
+time=2025-01-20T22:55:35.518+09:00 level=ERROR msg="Connector.Connect Error" duration=652958 error="driver: bad connection"
+time=2025-01-20T22:55:35.518+09:00 level=ERROR msg="Connector.Connect Error" duration=697125 error="driver: bad connection"
+time=2025-01-20T22:55:37.521+09:00 level=ERROR msg="Connector.Connect Error" duration=1890458 error="driver: bad connection"
+time=2025-01-20T22:55:37.521+09:00 level=ERROR msg="Connector.Connect Error" duration=1961875 error="driver: bad connection"
+time=2025-01-20T22:55:37.522+09:00 level=ERROR msg="Connector.Connect Error" duration=798792 error="driver: bad connection"
+time=2025-01-20T22:55:37.522+09:00 level=ERROR msg="Connector.Connect Error" duration=874750 error="driver: bad connection"
+time=2025-01-20T22:55:37.523+09:00 level=ERROR msg="Connector.Connect Error" duration=746292 error="driver: bad connection"
+time=2025-01-20T22:55:37.523+09:00 level=ERROR msg="Connector.Connect Error" duration=788250 error="driver: bad connection"
+time=2025-01-20T22:55:39.531+09:00 level=INFO msg="Connector.Connect Complete" duration=6937000
+time=2025-01-20T22:55:39.531+09:00 level=INFO msg="Connector.Connect Complete" duration=7129375
+time=2025-01-20T22:55:39.553+09:00 level=INFO msg="Conn.ExecContext Complete" query="CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))" args=[] duration=20009958
+time=2025-01-20T22:55:39.554+09:00 level=INFO msg="Conn.BeginTx Complete" duration=538833
+time=2025-01-20T22:55:39.554+09:00 level=ERROR msg="Conn.ExecContext Error" query="INSERT INTO test1 (id, name) VALUES (?, ?)" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=750 error="driver: skip fast-path; continue as if unimplemented"
+time=2025-01-20T22:55:39.559+09:00 level=INFO msg="Conn.PrepareContext Complete" query="INSERT INTO test1 (id, name) VALUES (?, ?)" duration=4862916
+time=2025-01-20T22:55:39.560+09:00 level=INFO msg="Stmt.ExecContext Complete" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=469917
+time=2025-01-20T22:55:39.560+09:00 level=INFO msg="Stmt.Close Complete" duration=7042
+time=2025-01-20T22:55:39.561+09:00 level=INFO msg="Tx.Commit Complete" duration=1402000
+time=2025-01-20T22:55:39.562+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-01-20T22:55:39.562+09:00 level=ERROR msg="Rows.Next Error" duration=458 error=EOF
+time=2025-01-20T22:55:39.562+09:00 level=INFO msg="Conn.Close Complete" duration=61708
