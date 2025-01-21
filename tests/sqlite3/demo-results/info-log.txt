@@ -1,10 +1,10 @@
 go run ./demo.go info text
-time=2025-01-21T21:20:26.153+09:00 level=INFO msg="sqlslog.Open Complete" driver=sqlite3 dsn="file::memory:?cache=shared" duration=71542
-time=2025-01-21T21:20:26.154+09:00 level=INFO msg="Driver.Open Complete" dsn="file::memory:?cache=shared" duration=681083
-time=2025-01-21T21:20:26.154+09:00 level=INFO msg="Connector.Connect Complete" duration=694708
-time=2025-01-21T21:20:26.154+09:00 level=INFO msg="Conn.ExecContext Complete" query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=89208
-time=2025-01-21T21:20:26.154+09:00 level=INFO msg="Conn.BeginTx Complete" duration=3167
-time=2025-01-21T21:20:26.154+09:00 level=INFO msg="Conn.ExecContext Complete" query="INSERT INTO test1 (name) VALUES (?)" args="[{Name: Ordinal:1 Value:Alice}]" duration=8416
-time=2025-01-21T21:20:26.154+09:00 level=INFO msg="Tx.Commit Complete" duration=3833
-time=2025-01-21T21:20:26.154+09:00 level=INFO msg=Record id=1 name=Alice
-time=2025-01-21T21:20:26.154+09:00 level=INFO msg="Conn.Close Complete" duration=13542
+time=2025-01-21T21:47:28.295+09:00 level=INFO msg="sqlslog.Open Complete" driver=sqlite3 dsn="file::memory:?cache=shared" duration=125708
+time=2025-01-21T21:47:28.296+09:00 level=INFO msg="Driver.Open Complete" dsn="file::memory:?cache=shared" duration=1116875
+time=2025-01-21T21:47:28.296+09:00 level=INFO msg="Connector.Connect Complete" duration=1140833
+time=2025-01-21T21:47:28.296+09:00 level=INFO msg="Conn.ExecContext Complete" query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=143500
+time=2025-01-21T21:47:28.296+09:00 level=INFO msg="Conn.BeginTx Complete" duration=5542
+time=2025-01-21T21:47:28.296+09:00 level=INFO msg="Conn.ExecContext Complete" query="INSERT INTO test1 (name) VALUES (?)" args="[{Name: Ordinal:1 Value:Alice}]" duration=14417
+time=2025-01-21T21:47:28.296+09:00 level=INFO msg="Tx.Commit Complete" duration=6292
+time=2025-01-21T21:47:28.296+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-01-21T21:47:28.296+09:00 level=INFO msg="Conn.Close Complete" duration=21709
