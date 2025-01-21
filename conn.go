@@ -3,6 +3,7 @@ package sqlslog
 import (
 	"context"
 	"database/sql/driver"
+	"errors"
 	"fmt"
 	"log/slog"
 )
@@ -222,4 +223,22 @@ func (c *connWithContextWrapper) BeginTx(ctx context.Context, opts driver.TxOpti
 		return nil, err
 	}
 	return wrapTx(tx, c.logger), nil
+}
+
+func ConnExecContextErrorHandler(driverName string) func(err error) (bool, []slog.Attr) {
+	switch driverName {
+	case "mysql":
+		return func(err error) (bool, []slog.Attr) {
+			if err == nil {
+				return true, nil
+			}
+			// https://pkg.go.dev/database/sql/driver#ErrSkip
+			if errors.Is(err, driver.ErrSkip) {
+				return true, []slog.Attr{slog.Bool("skip", true)}
+			}
+			return false, nil
+		}
+	default:
+		return nil
+	}
 }

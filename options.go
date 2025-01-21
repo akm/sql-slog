@@ -61,7 +61,7 @@ func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *option
 		connPrepare:         stepOpts("Conn.Prepare", LevelInfo),
 		connResetSession:    stepOpts("Conn.ResetSession", LevelTrace),
 		connPing:            stepOpts("Conn.Ping", LevelTrace),
-		connExecContext:     stepOpts("Conn.ExecContext", LevelInfo),
+		connExecContext:     withErrorHandler(stepOpts("Conn.ExecContext", LevelInfo), ConnExecContextErrorHandler(driverName)),
 		connQueryContext:    stepOpts("Conn.QueryContext", LevelInfo),
 		connPrepareContext:  stepOpts("Conn.PrepareContext", LevelInfo),
 		connBeginTx:         stepOpts("Conn.BeginTx", LevelInfo),
