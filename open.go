@@ -29,7 +29,7 @@ See the following example for the usage:
 [sql.Open]: https://pkg.go.dev/database/sql#Open
 */
 func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB, error) {
-	options := newOptions(opts...)
+	options := newOptions(driverName, opts...)
 	logger := newLogger(options.logger, options)
 
 	lg := logger.With(

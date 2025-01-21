@@ -38,16 +38,26 @@ func (c *connector) Driver() driver.Driver {
 	return c.original.Driver()
 }
 
-// HandleConnectorConnect returns completed and slice of slog.Attr.
+// ConnectorConnectErrorHandler returns a function that handles the error of driver.Connector.Connect.
+// The function returns completed and slice of slog.Attr.
+//
+// # For Postgres:
 // If err is nil, it returns true and a slice of slog.Attr{slog.Bool("eof", false)}.
 // If err is io.EOF, it returns true and a slice of slog.Attr{slog.Bool("eof", true)}.
 // Otherwise, it returns false and nil.
-func HandleConnectorConnect(err error) (bool, []slog.Attr) {
-	if err == nil {
-		return true, []slog.Attr{slog.Bool("eof", false)}
+func ConnectorConnectErrorHandler(driverName string) func(err error) (bool, []slog.Attr) {
+	switch driverName {
+	case "postgres":
+		return func(err error) (bool, []slog.Attr) {
+			if err == nil {
+				return true, []slog.Attr{slog.Bool("eof", false)}
+			}
+			if errors.Is(err, io.EOF) {
+				return true, []slog.Attr{slog.Bool("eof", true)}
+			}
+			return false, nil
+		}
+	default:
+		return nil
 	}
-	if errors.Is(err, io.EOF) {
-		return true, []slog.Attr{slog.Bool("eof", true)}
-	}
-	return false, nil
 }

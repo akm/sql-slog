@@ -32,7 +32,7 @@ type options struct {
 	txRollback          StepOptions
 }
 
-func newDefaultOptions(formatter StepLogMsgFormatter) *options {
+func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *options {
 	stepOpts := func(name string, completeLevel Level) StepOptions {
 		var startLevel Level
 		switch completeLevel {
@@ -65,7 +65,7 @@ func newDefaultOptions(formatter StepLogMsgFormatter) *options {
 		connQueryContext:    stepOpts("Conn.QueryContext", LevelInfo),
 		connPrepareContext:  stepOpts("Conn.PrepareContext", LevelInfo),
 		connBeginTx:         stepOpts("Conn.BeginTx", LevelInfo),
-		connectorConnect:    withErrorHandler(stepOpts("Connector.Connect", LevelInfo), HandleConnectorConnect),
+		connectorConnect:    withErrorHandler(stepOpts("Connector.Connect", LevelInfo), ConnectorConnectErrorHandler(driverName)),
 		driverOpen:          withErrorHandler(stepOpts("Driver.Open", LevelInfo), HandleDriverOpenError),
 		driverOpenConnector: stepOpts("Driver.OpenConnector", LevelInfo),
 		sqlslogOpen:         stepOpts("sqlslog.Open", LevelInfo),
@@ -91,8 +91,8 @@ var stepLogMsgFormatter = StepLogMsgWithEventName
 // If not set, the default is StepLogMsgWithEventName.
 func SetStepLogMsgFormatter(f StepLogMsgFormatter) { stepLogMsgFormatter = f }
 
-func newOptions(opts ...Option) *options {
-	o := newDefaultOptions(stepLogMsgFormatter)
+func newOptions(driverName string, opts ...Option) *options {
+	o := newDefaultOptions(driverName, stepLogMsgFormatter)
 	for _, opt := range opts {
 		opt(o)
 	}
