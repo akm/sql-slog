@@ -47,6 +47,16 @@ func (c *connector) Driver() driver.Driver {
 // Otherwise, it returns false and nil.
 func ConnectorConnectErrorHandler(driverName string) func(err error) (bool, []slog.Attr) {
 	switch driverName {
+	case "mysql":
+		return func(err error) (bool, []slog.Attr) {
+			if err == nil {
+				return true, []slog.Attr{slog.Bool("success", true)}
+			}
+			if err.Error() == "driver: bad connection" {
+				return true, []slog.Attr{slog.Bool("success", false)}
+			}
+			return false, nil
+		}
 	case "postgres":
 		return func(err error) (bool, []slog.Attr) {
 			if err == nil {
