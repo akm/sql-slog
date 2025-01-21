@@ -31,10 +31,24 @@ func (x *logger) Step(ctx context.Context, step *StepOptions, fn func() error) e
 	t0 := time.Now()
 	err := fn()
 	lg := x.With(slog.Int64("duration", time.Since(t0).Nanoseconds()))
-	if err != nil {
-		lg.Log(ctx, slog.Level(step.Error.Level), step.Error.Msg, "error", err)
-		return err
+	var complete bool
+	if step.ErrorHandler != nil {
+		var attrs []slog.Attr
+		complete, attrs = step.ErrorHandler(err)
+		if len(attrs) > 0 {
+			args := make([]interface{}, len(attrs))
+			for i, attr := range attrs {
+				args[i] = attr
+			}
+			lg = lg.With(args...)
+		}
+	} else {
+		complete = err == nil
 	}
-	lg.Log(ctx, slog.Level(step.Complete.Level), step.Complete.Msg)
-	return nil
+	if !complete {
+		lg.Log(ctx, slog.Level(step.Error.Level), step.Error.Msg, slog.Any("error", err))
+	} else {
+		lg.Log(ctx, slog.Level(step.Complete.Level), step.Complete.Msg)
+	}
+	return err
 }

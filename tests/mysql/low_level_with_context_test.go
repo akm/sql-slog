@@ -140,7 +140,7 @@ func TestLowLevelWithContext(t *testing.T) {
 					{"level": "VERBOSE", "msg": "Conn.ResetSession Start"},
 					{"level": "TRACE", "msg": "Conn.ResetSession Complete"},
 					{"level": "DEBUG", "msg": "Conn.ExecContext Start", "query": query, "args": args},
-					{"level": "ERROR", "msg": "Conn.ExecContext Error", "query": query, "args": args, "error": "driver: skip fast-path; continue as if unimplemented"},
+					{"level": "INFO", "msg": "Conn.ExecContext Complete", "query": query, "args": args, "skip": true},
 					{"level": "DEBUG", "msg": "Conn.PrepareContext Start", "query": "INSERT INTO test1 (id, name) VALUES (?, ?)"},
 					{"level": "INFO", "msg": "Conn.PrepareContext Complete", "query": "INSERT INTO test1 (id, name) VALUES (?, ?)"},
 					{"level": "DEBUG", "msg": "Stmt.ExecContext Start", "args": args},
@@ -172,7 +172,7 @@ func TestLowLevelWithContext(t *testing.T) {
 				{"level": "VERBOSE", "msg": "Conn.ResetSession Start"},
 				{"level": "TRACE", "msg": "Conn.ResetSession Complete"},
 				{"level": "DEBUG", "msg": "Conn.QueryContext Start", "query": query, "args": args},
-				{"level": "ERROR", "msg": "Conn.QueryContext Error", "query": query, "args": args, "error": "driver: skip fast-path; continue as if unimplemented"},
+				{"level": "INFO", "msg": "Conn.QueryContext Complete", "query": query, "args": args, "skip": true},
 				{"level": "DEBUG", "msg": "Conn.PrepareContext Start", "query": "SELECT id, name FROM test1 WHERE name LIKE ?"},
 				{"level": "INFO", "msg": "Conn.PrepareContext Complete", "query": "SELECT id, name FROM test1 WHERE name LIKE ?"},
 				{"level": "DEBUG", "msg": "Stmt.QueryContext Start", "args": args},
@@ -237,7 +237,7 @@ func TestLowLevelWithContext(t *testing.T) {
 			for rows.Next() {
 				logs.Assert(t, []map[string]interface{}{
 					{"level": "TRACE", "msg": "Rows.Next Start"},
-					{"level": "DEBUG", "msg": "Rows.Next Complete"},
+					{"level": "DEBUG", "msg": "Rows.Next Complete", "eof": false},
 				})
 				logs.Start()
 
@@ -254,7 +254,7 @@ func TestLowLevelWithContext(t *testing.T) {
 
 			logs.Assert(t, []map[string]interface{}{
 				{"level": "TRACE", "msg": "Rows.Next Start"},
-				{"level": "ERROR", "msg": "Rows.Next Error", "error": "EOF"},
+				{"level": "DEBUG", "msg": "Rows.Next Complete", "eof": true},
 				{"level": "TRACE", "msg": "Rows.Close Start"},
 				{"level": "DEBUG", "msg": "Rows.Close Complete"},
 				{"level": "DEBUG", "msg": "Stmt.Close Start"},
@@ -305,7 +305,7 @@ func TestLowLevelWithContext(t *testing.T) {
 					{"level": "DEBUG", "msg": "Stmt.QueryContext Start", "args": "[{Name: Ordinal:1 Value:1}]"},
 					{"level": "INFO", "msg": "Stmt.QueryContext Complete", "args": "[{Name: Ordinal:1 Value:1}]"},
 					{"level": "TRACE", "msg": "Rows.Next Start"},
-					{"level": "DEBUG", "msg": "Rows.Next Complete"},
+					{"level": "DEBUG", "msg": "Rows.Next Complete", "eof": false},
 					{"level": "TRACE", "msg": "Rows.Close Start"},
 					{"level": "DEBUG", "msg": "Rows.Close Complete"},
 				})
@@ -372,7 +372,7 @@ func TestLowLevelWithContext(t *testing.T) {
 				assert.NoError(t, err)
 				logs.Assert(t, []map[string]interface{}{
 					{"level": "DEBUG", "msg": "Conn.ExecContext Start", "query": query, "args": args},
-					{"level": "ERROR", "msg": "Conn.ExecContext Error", "query": query, "args": args, "error": "driver: skip fast-path; continue as if unimplemented"},
+					{"level": "INFO", "msg": "Conn.ExecContext Complete", "query": query, "args": args, "skip": true},
 					{"level": "DEBUG", "msg": "Conn.PrepareContext Start", "query": query},
 					{"level": "INFO", "msg": "Conn.PrepareContext Complete", "query": query},
 					{"level": "DEBUG", "msg": "Stmt.ExecContext Start", "args": args},
@@ -414,7 +414,7 @@ func TestLowLevelWithContext(t *testing.T) {
 				assert.NoError(t, err)
 				logs.Assert(t, []map[string]interface{}{
 					{"level": "DEBUG", "msg": "Conn.ExecContext Start", "query": query, "args": args},
-					{"level": "ERROR", "msg": "Conn.ExecContext Error", "query": query, "args": args, "error": "driver: skip fast-path; continue as if unimplemented"},
+					{"level": "INFO", "msg": "Conn.ExecContext Complete", "query": query, "args": args, "skip": true},
 					{"level": "DEBUG", "msg": "Conn.PrepareContext Start", "query": query},
 					{"level": "INFO", "msg": "Conn.PrepareContext Complete", "query": query},
 					{"level": "DEBUG", "msg": "Stmt.ExecContext Start", "args": args},

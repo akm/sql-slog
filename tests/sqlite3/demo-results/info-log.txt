@@ -1,11 +1,10 @@
 go run ./demo.go info text
-time=2025-01-19T13:30:14.251+09:00 level=INFO msg="sqlslog.Open Complete" driver=sqlite3 dsn="file::memory:?cache=shared" duration=158084
-time=2025-01-19T13:30:14.253+09:00 level=INFO msg="Driver.Open Complete" dsn="file::memory:?cache=shared" duration=1038333
-time=2025-01-19T13:30:14.253+09:00 level=INFO msg="Connector.Connect Complete" duration=1143667
-time=2025-01-19T13:30:14.253+09:00 level=INFO msg="Conn.ExecContext Complete" query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=172750
-time=2025-01-19T13:30:14.253+09:00 level=INFO msg="Conn.BeginTx Complete" duration=6875
-time=2025-01-19T13:30:14.253+09:00 level=INFO msg="Conn.ExecContext Complete" query="INSERT INTO test1 (name) VALUES (?)" args="[{Name: Ordinal:1 Value:Alice}]" duration=25541
-time=2025-01-19T13:30:14.253+09:00 level=INFO msg="Tx.Commit Complete" duration=8042
-time=2025-01-19T13:30:14.253+09:00 level=INFO msg=Record id=1 name=Alice
-time=2025-01-19T13:30:14.253+09:00 level=ERROR msg="Rows.Next Error" duration=2459 error=EOF
-time=2025-01-19T13:30:14.254+09:00 level=INFO msg="Conn.Close Complete" duration=25667
+time=2025-01-21T21:47:28.295+09:00 level=INFO msg="sqlslog.Open Complete" driver=sqlite3 dsn="file::memory:?cache=shared" duration=125708
+time=2025-01-21T21:47:28.296+09:00 level=INFO msg="Driver.Open Complete" dsn="file::memory:?cache=shared" duration=1116875
+time=2025-01-21T21:47:28.296+09:00 level=INFO msg="Connector.Connect Complete" duration=1140833
+time=2025-01-21T21:47:28.296+09:00 level=INFO msg="Conn.ExecContext Complete" query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=143500
+time=2025-01-21T21:47:28.296+09:00 level=INFO msg="Conn.BeginTx Complete" duration=5542
+time=2025-01-21T21:47:28.296+09:00 level=INFO msg="Conn.ExecContext Complete" query="INSERT INTO test1 (name) VALUES (?)" args="[{Name: Ordinal:1 Value:Alice}]" duration=14417
+time=2025-01-21T21:47:28.296+09:00 level=INFO msg="Tx.Commit Complete" duration=6292
+time=2025-01-21T21:47:28.296+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-01-21T21:47:28.296+09:00 level=INFO msg="Conn.Close Complete" duration=21709

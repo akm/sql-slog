@@ -1,36 +1,36 @@
 go run ./demo.go trace text
-time=2025-01-20T23:10:30.265+09:00 level=DEBUG msg="sqlslog.Open Start" driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
-time=2025-01-20T23:10:30.266+09:00 level=INFO msg="sqlslog.Open Complete" driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=86084
-time=2025-01-20T23:10:30.266+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-20T23:10:30.266+09:00 level=DEBUG msg="Driver.Open Start" dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
-time=2025-01-20T23:10:30.267+09:00 level=ERROR msg="Driver.Open Error" dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=1058667 error=EOF
-time=2025-01-20T23:10:30.267+09:00 level=ERROR msg="Connector.Connect Error" duration=1124083 error=EOF
-time=2025-01-20T23:10:32.268+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-20T23:10:32.268+09:00 level=DEBUG msg="Driver.Open Start" dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
-time=2025-01-20T23:10:32.281+09:00 level=INFO msg="Driver.Open Complete" dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=12656083
-time=2025-01-20T23:10:32.281+09:00 level=INFO msg="Connector.Connect Complete" duration=12902208
-time=2025-01-20T23:10:32.282+09:00 level=TRACE msg="Conn.Ping Complete" duration=633917
-time=2025-01-20T23:10:32.282+09:00 level=TRACE msg="Conn.ResetSession Complete" duration=458
-time=2025-01-20T23:10:32.282+09:00 level=DEBUG msg="Conn.ExecContext Start" query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[]
-time=2025-01-20T23:10:32.286+09:00 level=INFO msg="Conn.ExecContext Complete" query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=4416292
-time=2025-01-20T23:10:32.287+09:00 level=TRACE msg="Conn.ResetSession Complete" duration=292
-time=2025-01-20T23:10:32.287+09:00 level=TRACE msg="Conn.Ping Complete" duration=625500
-time=2025-01-20T23:10:32.287+09:00 level=TRACE msg="Conn.ResetSession Complete" duration=167
-time=2025-01-20T23:10:32.287+09:00 level=DEBUG msg="Conn.BeginTx Start"
-time=2025-01-20T23:10:32.288+09:00 level=INFO msg="Conn.BeginTx Complete" duration=570375
-time=2025-01-20T23:10:32.288+09:00 level=DEBUG msg="Conn.ExecContext Start" query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]"
-time=2025-01-20T23:10:32.290+09:00 level=INFO msg="Conn.ExecContext Complete" query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=1585250
-time=2025-01-20T23:10:32.290+09:00 level=DEBUG msg="Tx.Commit Start"
-time=2025-01-20T23:10:32.291+09:00 level=INFO msg="Tx.Commit Complete" duration=1096958
-time=2025-01-20T23:10:32.291+09:00 level=TRACE msg="Conn.ResetSession Complete" duration=125
-time=2025-01-20T23:10:32.291+09:00 level=TRACE msg="Conn.QueryContext Start" query="SELECT * FROM test1" args=[]
-time=2025-01-20T23:10:32.292+09:00 level=DEBUG msg="Conn.QueryContext Complete" query="SELECT * FROM test1" args=[] duration=636375
-time=2025-01-20T23:10:32.292+09:00 level=TRACE msg="Rows.Next Start"
-time=2025-01-20T23:10:32.292+09:00 level=DEBUG msg="Rows.Next Complete" duration=2709
-time=2025-01-20T23:10:32.292+09:00 level=INFO msg=Record id=1 name=Alice
-time=2025-01-20T23:10:32.292+09:00 level=TRACE msg="Rows.Next Start"
-time=2025-01-20T23:10:32.292+09:00 level=ERROR msg="Rows.Next Error" duration=1166 error=EOF
-time=2025-01-20T23:10:32.292+09:00 level=TRACE msg="Rows.Close Start"
-time=2025-01-20T23:10:32.292+09:00 level=DEBUG msg="Rows.Close Complete" duration=167
-time=2025-01-20T23:10:32.292+09:00 level=DEBUG msg="Conn.Close Start"
-time=2025-01-20T23:10:32.292+09:00 level=INFO msg="Conn.Close Complete" duration=52208
+time=2025-01-21T21:47:35.835+09:00 level=DEBUG msg="sqlslog.Open Start" driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
+time=2025-01-21T21:47:35.836+09:00 level=INFO msg="sqlslog.Open Complete" driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=62375
+time=2025-01-21T21:47:35.836+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:47:35.836+09:00 level=DEBUG msg="Driver.Open Start" dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
+time=2025-01-21T21:47:35.836+09:00 level=ERROR msg="Driver.Open Error" dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=242250 error="dial tcp 127.0.0.1:5432: connect: connection refused"
+time=2025-01-21T21:47:35.836+09:00 level=ERROR msg="Connector.Connect Error" duration=305541 error="dial tcp 127.0.0.1:5432: connect: connection refused"
+time=2025-01-21T21:47:37.837+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:47:37.837+09:00 level=DEBUG msg="Driver.Open Start" dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
+time=2025-01-21T21:47:37.849+09:00 level=INFO msg="Driver.Open Complete" dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=12018541 success=true
+time=2025-01-21T21:47:37.850+09:00 level=INFO msg="Connector.Connect Complete" duration=12248250 success=true
+time=2025-01-21T21:47:37.850+09:00 level=TRACE msg="Conn.Ping Complete" duration=540250
+time=2025-01-21T21:47:37.850+09:00 level=TRACE msg="Conn.ResetSession Complete" duration=542
+time=2025-01-21T21:47:37.850+09:00 level=DEBUG msg="Conn.ExecContext Start" query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[]
+time=2025-01-21T21:47:37.855+09:00 level=INFO msg="Conn.ExecContext Complete" query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=4640375
+time=2025-01-21T21:47:37.855+09:00 level=TRACE msg="Conn.ResetSession Complete" duration=167
+time=2025-01-21T21:47:37.856+09:00 level=TRACE msg="Conn.Ping Complete" duration=610083
+time=2025-01-21T21:47:37.856+09:00 level=TRACE msg="Conn.ResetSession Complete" duration=83
+time=2025-01-21T21:47:37.856+09:00 level=DEBUG msg="Conn.BeginTx Start"
+time=2025-01-21T21:47:37.856+09:00 level=INFO msg="Conn.BeginTx Complete" duration=479500
+time=2025-01-21T21:47:37.856+09:00 level=DEBUG msg="Conn.ExecContext Start" query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]"
+time=2025-01-21T21:47:37.858+09:00 level=INFO msg="Conn.ExecContext Complete" query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=1341917
+time=2025-01-21T21:47:37.858+09:00 level=DEBUG msg="Tx.Commit Start"
+time=2025-01-21T21:47:37.859+09:00 level=INFO msg="Tx.Commit Complete" duration=835417
+time=2025-01-21T21:47:37.859+09:00 level=TRACE msg="Conn.ResetSession Complete" duration=166
+time=2025-01-21T21:47:37.859+09:00 level=TRACE msg="Conn.QueryContext Start" query="SELECT * FROM test1" args=[]
+time=2025-01-21T21:47:37.859+09:00 level=DEBUG msg="Conn.QueryContext Complete" query="SELECT * FROM test1" args=[] duration=498833
+time=2025-01-21T21:47:37.859+09:00 level=TRACE msg="Rows.Next Start"
+time=2025-01-21T21:47:37.859+09:00 level=DEBUG msg="Rows.Next Complete" duration=2375 eof=false
+time=2025-01-21T21:47:37.859+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-01-21T21:47:37.859+09:00 level=TRACE msg="Rows.Next Start"
+time=2025-01-21T21:47:37.859+09:00 level=DEBUG msg="Rows.Next Complete" duration=1125 eof=true
+time=2025-01-21T21:47:37.859+09:00 level=TRACE msg="Rows.Close Start"
+time=2025-01-21T21:47:37.859+09:00 level=DEBUG msg="Rows.Close Complete" duration=125
+time=2025-01-21T21:47:37.859+09:00 level=DEBUG msg="Conn.Close Start"
+time=2025-01-21T21:47:37.859+09:00 level=INFO msg="Conn.Close Complete" duration=38042

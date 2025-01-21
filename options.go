@@ -1,6 +1,8 @@
 package sqlslog
 
-import "log/slog"
+import (
+	"log/slog"
+)
 
 type options struct {
 	logger *slog.Logger
@@ -30,7 +32,7 @@ type options struct {
 	txRollback          StepOptions
 }
 
-func newDefaultOptions(formatter StepLogMsgFormatter) *options {
+func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *options {
 	stepOpts := func(name string, completeLevel Level) StepOptions {
 		var startLevel Level
 		switch completeLevel {
@@ -46,6 +48,12 @@ func newDefaultOptions(formatter StepLogMsgFormatter) *options {
 		return *newStepOptions(formatter, name, startLevel, LevelError, completeLevel)
 	}
 
+	withErrorHandler := func(opts StepOptions, eh func(error) (bool, []slog.Attr)) StepOptions {
+		r := opts
+		r.ErrorHandler = eh
+		return r
+	}
+
 	return &options{
 		logger:              slog.Default(),
 		connBegin:           stepOpts("Conn.Begin", LevelInfo),
@@ -53,16 +61,16 @@ func newDefaultOptions(formatter StepLogMsgFormatter) *options {
 		connPrepare:         stepOpts("Conn.Prepare", LevelInfo),
 		connResetSession:    stepOpts("Conn.ResetSession", LevelTrace),
 		connPing:            stepOpts("Conn.Ping", LevelTrace),
-		connExecContext:     stepOpts("Conn.ExecContext", LevelInfo),
-		connQueryContext:    stepOpts("Conn.QueryContext", LevelInfo),
+		connExecContext:     withErrorHandler(stepOpts("Conn.ExecContext", LevelInfo), ConnExecContextErrorHandler(driverName)),
+		connQueryContext:    withErrorHandler(stepOpts("Conn.QueryContext", LevelInfo), ConnQueryContextErrorHandler(driverName)),
 		connPrepareContext:  stepOpts("Conn.PrepareContext", LevelInfo),
 		connBeginTx:         stepOpts("Conn.BeginTx", LevelInfo),
-		connectorConnect:    stepOpts("Connector.Connect", LevelInfo),
-		driverOpen:          stepOpts("Driver.Open", LevelInfo),
+		connectorConnect:    withErrorHandler(stepOpts("Connector.Connect", LevelInfo), ConnectorConnectErrorHandler(driverName)),
+		driverOpen:          withErrorHandler(stepOpts("Driver.Open", LevelInfo), DriverOpenErrorHandler(driverName)),
 		driverOpenConnector: stepOpts("Driver.OpenConnector", LevelInfo),
 		sqlslogOpen:         stepOpts("sqlslog.Open", LevelInfo),
 		rowsClose:           stepOpts("Rows.Close", LevelDebug),
-		rowsNext:            stepOpts("Rows.Next", LevelDebug),
+		rowsNext:            withErrorHandler(stepOpts("Rows.Next", LevelDebug), HandleRowsNextError),
 		rowsNextResultSet:   stepOpts("Rows.NextResultSet", LevelDebug),
 		stmtClose:           stepOpts("Stmt.Close", LevelInfo),
 		stmtExec:            stepOpts("Stmt.Exec", LevelInfo),
@@ -83,8 +91,8 @@ var stepLogMsgFormatter = StepLogMsgWithEventName
 // If not set, the default is StepLogMsgWithEventName.
 func SetStepLogMsgFormatter(f StepLogMsgFormatter) { stepLogMsgFormatter = f }
 
-func newOptions(opts ...Option) *options {
-	o := newDefaultOptions(stepLogMsgFormatter)
+func newOptions(driverName string, opts ...Option) *options {
+	o := newDefaultOptions(driverName, stepLogMsgFormatter)
 	for _, opt := range opts {
 		opt(o)
 	}
