@@ -1,78 +1,78 @@
 go run ./demo.go debug text
-time=2025-01-21T21:12:08.205+09:00 level=DEBUG msg="sqlslog.Open Start" driver=mysql dsn=root@tcp(localhost:3306)/app1
-time=2025-01-21T21:12:08.205+09:00 level=DEBUG msg="Driver.OpenConnector Start" dsn=root@tcp(localhost:3306)/app1
-time=2025-01-21T21:12:08.205+09:00 level=INFO msg="Driver.OpenConnector Complete" dsn=root@tcp(localhost:3306)/app1 duration=1667
-time=2025-01-21T21:12:08.205+09:00 level=INFO msg="sqlslog.Open Complete" driver=mysql dsn=root@tcp(localhost:3306)/app1 duration=187166
-time=2025-01-21T21:12:08.205+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:08.205+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:08.208+09:00 level=INFO msg="Connector.Connect Complete" duration=2689084 success=false
-time=2025-01-21T21:12:08.208+09:00 level=INFO msg="Connector.Connect Complete" duration=2725458 success=false
-time=2025-01-21T21:12:08.208+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:08.208+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:08.210+09:00 level=INFO msg="Connector.Connect Complete" duration=1543208 success=false
-time=2025-01-21T21:12:08.210+09:00 level=INFO msg="Connector.Connect Complete" duration=1581041 success=false
-time=2025-01-21T21:12:08.210+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:08.210+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:08.216+09:00 level=INFO msg="Connector.Connect Complete" duration=5880458 success=false
-time=2025-01-21T21:12:08.216+09:00 level=INFO msg="Connector.Connect Complete" duration=5938083 success=false
-time=2025-01-21T21:12:10.217+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:10.217+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:10.220+09:00 level=INFO msg="Connector.Connect Complete" duration=3371375 success=false
-time=2025-01-21T21:12:10.220+09:00 level=INFO msg="Connector.Connect Complete" duration=3537084 success=false
-time=2025-01-21T21:12:10.220+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:10.220+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:10.222+09:00 level=INFO msg="Connector.Connect Complete" duration=2001416 success=false
-time=2025-01-21T21:12:10.223+09:00 level=INFO msg="Connector.Connect Complete" duration=2103833 success=false
-time=2025-01-21T21:12:10.223+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:10.223+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:10.224+09:00 level=INFO msg="Connector.Connect Complete" duration=1737000 success=false
-time=2025-01-21T21:12:10.224+09:00 level=INFO msg="Connector.Connect Complete" duration=1809750 success=false
-time=2025-01-21T21:12:12.225+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:12.225+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:12.226+09:00 level=INFO msg="Connector.Connect Complete" duration=1069041 success=false
-time=2025-01-21T21:12:12.226+09:00 level=INFO msg="Connector.Connect Complete" duration=1111084 success=false
-time=2025-01-21T21:12:12.226+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:12.226+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:12.227+09:00 level=INFO msg="Connector.Connect Complete" duration=602209 success=false
-time=2025-01-21T21:12:12.227+09:00 level=INFO msg="Connector.Connect Complete" duration=632416 success=false
-time=2025-01-21T21:12:12.227+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:12.227+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:12.227+09:00 level=INFO msg="Connector.Connect Complete" duration=475708 success=false
-time=2025-01-21T21:12:12.227+09:00 level=INFO msg="Connector.Connect Complete" duration=512584 success=false
-time=2025-01-21T21:12:14.228+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:14.229+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:14.233+09:00 level=INFO msg="Connector.Connect Complete" duration=3874250 success=false
-time=2025-01-21T21:12:14.233+09:00 level=INFO msg="Connector.Connect Complete" duration=4072375 success=false
-time=2025-01-21T21:12:14.233+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:14.233+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:14.235+09:00 level=INFO msg="Connector.Connect Complete" duration=2503541 success=false
-time=2025-01-21T21:12:14.235+09:00 level=INFO msg="Connector.Connect Complete" duration=2647334 success=false
-time=2025-01-21T21:12:14.235+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:14.235+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:14.238+09:00 level=INFO msg="Connector.Connect Complete" duration=2341666 success=false
-time=2025-01-21T21:12:14.238+09:00 level=INFO msg="Connector.Connect Complete" duration=2474375 success=false
-time=2025-01-21T21:12:16.239+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:16.239+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:12:16.245+09:00 level=INFO msg="Connector.Connect Complete" duration=5868041 success=true
-time=2025-01-21T21:12:16.245+09:00 level=INFO msg="Connector.Connect Complete" duration=6028875 success=true
-time=2025-01-21T21:12:16.246+09:00 level=DEBUG msg="Conn.ExecContext Start" query="CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))" args=[]
-time=2025-01-21T21:12:16.274+09:00 level=INFO msg="Conn.ExecContext Complete" query="CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))" args=[] duration=27143917
-time=2025-01-21T21:12:16.274+09:00 level=DEBUG msg="Conn.BeginTx Start"
-time=2025-01-21T21:12:16.274+09:00 level=INFO msg="Conn.BeginTx Complete" duration=358042
-time=2025-01-21T21:12:16.274+09:00 level=DEBUG msg="Conn.ExecContext Start" query="INSERT INTO test1 (id, name) VALUES (?, ?)" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]"
-time=2025-01-21T21:12:16.274+09:00 level=ERROR msg="Conn.ExecContext Error" query="INSERT INTO test1 (id, name) VALUES (?, ?)" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=709 error="driver: skip fast-path; continue as if unimplemented"
-time=2025-01-21T21:12:16.275+09:00 level=DEBUG msg="Conn.PrepareContext Start" query="INSERT INTO test1 (id, name) VALUES (?, ?)"
-time=2025-01-21T21:12:16.277+09:00 level=INFO msg="Conn.PrepareContext Complete" query="INSERT INTO test1 (id, name) VALUES (?, ?)" duration=2404625
-time=2025-01-21T21:12:16.277+09:00 level=DEBUG msg="Stmt.ExecContext Start" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]"
-time=2025-01-21T21:12:16.277+09:00 level=INFO msg="Stmt.ExecContext Complete" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=322292
-time=2025-01-21T21:12:16.277+09:00 level=DEBUG msg="Stmt.Close Start"
-time=2025-01-21T21:12:16.277+09:00 level=INFO msg="Stmt.Close Complete" duration=5666
-time=2025-01-21T21:12:16.277+09:00 level=DEBUG msg="Tx.Commit Start"
-time=2025-01-21T21:12:16.279+09:00 level=INFO msg="Tx.Commit Complete" duration=1194709
-time=2025-01-21T21:12:16.279+09:00 level=DEBUG msg="Conn.QueryContext Complete" query="SELECT * FROM test1" args=[] duration=339833
-time=2025-01-21T21:12:16.279+09:00 level=DEBUG msg="Rows.Next Complete" duration=33417 eof=false
-time=2025-01-21T21:12:16.279+09:00 level=INFO msg=Record id=1 name=Alice
-time=2025-01-21T21:12:16.279+09:00 level=DEBUG msg="Rows.Next Complete" duration=333 eof=true
-time=2025-01-21T21:12:16.279+09:00 level=DEBUG msg="Rows.Close Complete" duration=833
-time=2025-01-21T21:12:16.279+09:00 level=DEBUG msg="Conn.Close Start"
-time=2025-01-21T21:12:16.279+09:00 level=INFO msg="Conn.Close Complete" duration=41417
+time=2025-01-21T21:20:49.059+09:00 level=DEBUG msg="sqlslog.Open Start" driver=mysql dsn=root@tcp(localhost:3306)/app1
+time=2025-01-21T21:20:49.060+09:00 level=DEBUG msg="Driver.OpenConnector Start" dsn=root@tcp(localhost:3306)/app1
+time=2025-01-21T21:20:49.060+09:00 level=INFO msg="Driver.OpenConnector Complete" dsn=root@tcp(localhost:3306)/app1 duration=1292
+time=2025-01-21T21:20:49.060+09:00 level=INFO msg="sqlslog.Open Complete" driver=mysql dsn=root@tcp(localhost:3306)/app1 duration=188458
+time=2025-01-21T21:20:49.060+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:49.060+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:49.063+09:00 level=INFO msg="Connector.Connect Complete" duration=2929458 success=false
+time=2025-01-21T21:20:49.063+09:00 level=INFO msg="Connector.Connect Complete" duration=2988834 success=false
+time=2025-01-21T21:20:49.063+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:49.063+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:49.064+09:00 level=INFO msg="Connector.Connect Complete" duration=964209 success=false
+time=2025-01-21T21:20:49.064+09:00 level=INFO msg="Connector.Connect Complete" duration=1018500 success=false
+time=2025-01-21T21:20:49.064+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:49.064+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:49.065+09:00 level=INFO msg="Connector.Connect Complete" duration=891125 success=false
+time=2025-01-21T21:20:49.065+09:00 level=INFO msg="Connector.Connect Complete" duration=931375 success=false
+time=2025-01-21T21:20:51.066+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:51.066+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:51.068+09:00 level=INFO msg="Connector.Connect Complete" duration=1618250 success=false
+time=2025-01-21T21:20:51.068+09:00 level=INFO msg="Connector.Connect Complete" duration=1666125 success=false
+time=2025-01-21T21:20:51.068+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:51.068+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:51.069+09:00 level=INFO msg="Connector.Connect Complete" duration=791792 success=false
+time=2025-01-21T21:20:51.069+09:00 level=INFO msg="Connector.Connect Complete" duration=832208 success=false
+time=2025-01-21T21:20:51.069+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:51.069+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:51.069+09:00 level=INFO msg="Connector.Connect Complete" duration=592667 success=false
+time=2025-01-21T21:20:51.069+09:00 level=INFO msg="Connector.Connect Complete" duration=631417 success=false
+time=2025-01-21T21:20:53.070+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:53.070+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:53.072+09:00 level=INFO msg="Connector.Connect Complete" duration=1482291 success=false
+time=2025-01-21T21:20:53.072+09:00 level=INFO msg="Connector.Connect Complete" duration=1528542 success=false
+time=2025-01-21T21:20:53.072+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:53.072+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:53.072+09:00 level=INFO msg="Connector.Connect Complete" duration=556916 success=false
+time=2025-01-21T21:20:53.072+09:00 level=INFO msg="Connector.Connect Complete" duration=584750 success=false
+time=2025-01-21T21:20:53.072+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:53.072+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:53.073+09:00 level=INFO msg="Connector.Connect Complete" duration=570209 success=false
+time=2025-01-21T21:20:53.073+09:00 level=INFO msg="Connector.Connect Complete" duration=595875 success=false
+time=2025-01-21T21:20:55.074+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:55.074+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:55.078+09:00 level=INFO msg="Connector.Connect Complete" duration=3430500 success=false
+time=2025-01-21T21:20:55.078+09:00 level=INFO msg="Connector.Connect Complete" duration=3582541 success=false
+time=2025-01-21T21:20:55.078+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:55.078+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:55.080+09:00 level=INFO msg="Connector.Connect Complete" duration=1629792 success=false
+time=2025-01-21T21:20:55.080+09:00 level=INFO msg="Connector.Connect Complete" duration=1723291 success=false
+time=2025-01-21T21:20:55.080+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:55.080+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:55.081+09:00 level=INFO msg="Connector.Connect Complete" duration=1220041 success=false
+time=2025-01-21T21:20:55.081+09:00 level=INFO msg="Connector.Connect Complete" duration=1308167 success=false
+time=2025-01-21T21:20:57.082+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:57.082+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-21T21:20:57.087+09:00 level=INFO msg="Connector.Connect Complete" duration=5102333 success=true
+time=2025-01-21T21:20:57.087+09:00 level=INFO msg="Connector.Connect Complete" duration=5207625 success=true
+time=2025-01-21T21:20:57.088+09:00 level=DEBUG msg="Conn.ExecContext Start" query="CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))" args=[]
+time=2025-01-21T21:20:57.107+09:00 level=INFO msg="Conn.ExecContext Complete" query="CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))" args=[] duration=19165959
+time=2025-01-21T21:20:57.108+09:00 level=DEBUG msg="Conn.BeginTx Start"
+time=2025-01-21T21:20:57.108+09:00 level=INFO msg="Conn.BeginTx Complete" duration=489209
+time=2025-01-21T21:20:57.109+09:00 level=DEBUG msg="Conn.ExecContext Start" query="INSERT INTO test1 (id, name) VALUES (?, ?)" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]"
+time=2025-01-21T21:20:57.109+09:00 level=ERROR msg="Conn.ExecContext Error" query="INSERT INTO test1 (id, name) VALUES (?, ?)" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=542 error="driver: skip fast-path; continue as if unimplemented"
+time=2025-01-21T21:20:57.109+09:00 level=DEBUG msg="Conn.PrepareContext Start" query="INSERT INTO test1 (id, name) VALUES (?, ?)"
+time=2025-01-21T21:20:57.111+09:00 level=INFO msg="Conn.PrepareContext Complete" query="INSERT INTO test1 (id, name) VALUES (?, ?)" duration=2324208
+time=2025-01-21T21:20:57.111+09:00 level=DEBUG msg="Stmt.ExecContext Start" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]"
+time=2025-01-21T21:20:57.112+09:00 level=INFO msg="Stmt.ExecContext Complete" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=513292
+time=2025-01-21T21:20:57.112+09:00 level=DEBUG msg="Stmt.Close Start"
+time=2025-01-21T21:20:57.112+09:00 level=INFO msg="Stmt.Close Complete" duration=23625
+time=2025-01-21T21:20:57.112+09:00 level=DEBUG msg="Tx.Commit Start"
+time=2025-01-21T21:20:57.113+09:00 level=INFO msg="Tx.Commit Complete" duration=1452000
+time=2025-01-21T21:20:57.114+09:00 level=DEBUG msg="Conn.QueryContext Complete" query="SELECT * FROM test1" args=[] duration=520458
+time=2025-01-21T21:20:57.114+09:00 level=DEBUG msg="Rows.Next Complete" duration=24250 eof=false
+time=2025-01-21T21:20:57.114+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-01-21T21:20:57.114+09:00 level=DEBUG msg="Rows.Next Complete" duration=125 eof=true
+time=2025-01-21T21:20:57.114+09:00 level=DEBUG msg="Rows.Close Complete" duration=375
+time=2025-01-21T21:20:57.114+09:00 level=DEBUG msg="Conn.Close Start"
+time=2025-01-21T21:20:57.114+09:00 level=INFO msg="Conn.Close Complete" duration=33583
