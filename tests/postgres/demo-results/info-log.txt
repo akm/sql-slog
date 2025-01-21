@@ -1,12 +1,12 @@
 go run ./demo.go info text
-time=2025-01-21T21:04:24.252+09:00 level=INFO msg="sqlslog.Open Complete" driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=90958
-time=2025-01-21T21:04:24.253+09:00 level=INFO msg="Driver.Open Complete" dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=1266667 eof=true
-time=2025-01-21T21:04:24.253+09:00 level=INFO msg="Connector.Connect Complete" duration=1327916 eof=true
-time=2025-01-21T21:04:26.269+09:00 level=INFO msg="Driver.Open Complete" dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=14007250 eof=false
-time=2025-01-21T21:04:26.269+09:00 level=INFO msg="Connector.Connect Complete" duration=14280917 eof=false
-time=2025-01-21T21:04:26.274+09:00 level=INFO msg="Conn.ExecContext Complete" query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=4100834
-time=2025-01-21T21:04:26.275+09:00 level=INFO msg="Conn.BeginTx Complete" duration=505916
-time=2025-01-21T21:04:26.277+09:00 level=INFO msg="Conn.ExecContext Complete" query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=1428583
-time=2025-01-21T21:04:26.277+09:00 level=INFO msg="Tx.Commit Complete" duration=826083
-time=2025-01-21T21:04:26.278+09:00 level=INFO msg=Record id=1 name=Alice
-time=2025-01-21T21:04:26.278+09:00 level=INFO msg="Conn.Close Complete" duration=38208
+time=2025-01-21T21:11:49.123+09:00 level=INFO msg="sqlslog.Open Complete" driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=90375
+time=2025-01-21T21:11:49.124+09:00 level=INFO msg="Driver.Open Complete" dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=948209 eof=true
+time=2025-01-21T21:11:49.124+09:00 level=INFO msg="Connector.Connect Complete" duration=1004833 success=false
+time=2025-01-21T21:11:51.139+09:00 level=INFO msg="Driver.Open Complete" dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=13911958 eof=false
+time=2025-01-21T21:11:51.139+09:00 level=INFO msg="Connector.Connect Complete" duration=14181584 success=true
+time=2025-01-21T21:11:51.144+09:00 level=INFO msg="Conn.ExecContext Complete" query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=4349500
+time=2025-01-21T21:11:51.146+09:00 level=INFO msg="Conn.BeginTx Complete" duration=575459
+time=2025-01-21T21:11:51.148+09:00 level=INFO msg="Conn.ExecContext Complete" query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=1663584
+time=2025-01-21T21:11:51.149+09:00 level=INFO msg="Tx.Commit Complete" duration=1095667
+time=2025-01-21T21:11:51.150+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-01-21T21:11:51.150+09:00 level=INFO msg="Conn.Close Complete" duration=46417
