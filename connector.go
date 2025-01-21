@@ -60,10 +60,10 @@ func ConnectorConnectErrorHandler(driverName string) func(err error) (bool, []sl
 	case "postgres":
 		return func(err error) (bool, []slog.Attr) {
 			if err == nil {
-				return true, []slog.Attr{slog.Bool("eof", false)}
+				return true, []slog.Attr{slog.Bool("success", true)}
 			}
 			if errors.Is(err, io.EOF) {
-				return true, []slog.Attr{slog.Bool("eof", true)}
+				return true, []slog.Attr{slog.Bool("success", false)}
 			}
 			return false, nil
 		}
