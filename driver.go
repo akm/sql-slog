@@ -79,10 +79,10 @@ func DriverOpenErrorHandler(driverName string) func(err error) (bool, []slog.Att
 	case "postgres":
 		return func(err error) (bool, []slog.Attr) {
 			if err == nil {
-				return true, []slog.Attr{slog.Bool("eof", false)}
+				return true, []slog.Attr{slog.Bool("success", true)}
 			}
 			if strings.ToUpper(err.Error()) == "EOF" {
-				return true, []slog.Attr{slog.Bool("eof", true)}
+				return true, []slog.Attr{slog.Bool("success", false)}
 			}
 			return false, nil
 		}
