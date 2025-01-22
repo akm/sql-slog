@@ -10,6 +10,11 @@ type options struct {
 	durationKey  string
 	durationType DurationType
 
+	idGen     IDGen
+	connIDKey string
+	txIDKey   string
+	stmtIDKey string
+
 	connBegin           StepOptions
 	connClose           StepOptions
 	connPrepare         StepOptions
@@ -58,9 +63,15 @@ func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *option
 	}
 
 	return &options{
-		logger:              slog.Default(),
-		durationKey:         DurationKeyDefault,
-		durationType:        DurationNanoSeconds,
+		logger:       slog.Default(),
+		durationKey:  DurationKeyDefault,
+		durationType: DurationNanoSeconds,
+
+		idGen:     IDGeneratorDefault,
+		connIDKey: ConnIDKeyDefault,
+		txIDKey:   TxIDKeyDefault,
+		stmtIDKey: StmtIDKeyDefault,
+
 		connBegin:           stepOpts("Conn.Begin", LevelInfo),
 		connClose:           stepOpts("Conn.Close", LevelInfo),
 		connPrepare:         stepOpts("Conn.Prepare", LevelInfo),
