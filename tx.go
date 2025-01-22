@@ -17,10 +17,10 @@ var _ driver.Tx = (*txWrapper)(nil)
 
 // Commit implements driver.Tx.
 func (t *txWrapper) Commit() error {
-	return t.logger.StepWithoutContext(&t.logger.options.txCommit, withNilAttr(t.original.Commit))
+	return ignoreAttr(t.logger.StepWithoutContext(&t.logger.options.txCommit, withNilAttr(t.original.Commit)))
 }
 
 // Rollback implements driver.Tx.
 func (t *txWrapper) Rollback() error {
-	return t.logger.StepWithoutContext(&t.logger.options.txRollback, withNilAttr(t.original.Rollback))
+	return ignoreAttr(t.logger.StepWithoutContext(&t.logger.options.txRollback, withNilAttr(t.original.Rollback)))
 }

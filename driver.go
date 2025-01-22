@@ -31,11 +31,11 @@ var _ driver.Driver = (*driverWrapper)(nil)
 func (w *driverWrapper) Open(dsn string) (driver.Conn, error) {
 	lg := w.logger.With(slog.String("dsn", dsn))
 	var origConn driver.Conn
-	err := lg.StepWithoutContext(&w.logger.options.driverOpen, func() (*slog.Attr, error) {
+	err := ignoreAttr(lg.StepWithoutContext(&w.logger.options.driverOpen, func() (*slog.Attr, error) {
 		var err error
 		origConn, err = w.original.Open(dsn)
 		return nil, err
-	})
+	}))
 	if err != nil {
 		return nil, err
 	}
@@ -56,11 +56,11 @@ var _ driver.DriverContext = (*driverContextWrapper)(nil)
 func (w *driverContextWrapper) OpenConnector(dsn string) (driver.Connector, error) {
 	lg := w.logger.With(slog.String("dsn", dsn))
 	var origConnector driver.Connector
-	err := lg.StepWithoutContext(&w.logger.options.driverOpenConnector, func() (*slog.Attr, error) {
+	err := ignoreAttr(lg.StepWithoutContext(&w.logger.options.driverOpenConnector, func() (*slog.Attr, error) {
 		var err error
 		origConnector, err = w.original.OpenConnector(dsn)
 		return nil, err
-	})
+	}))
 	if err != nil {
 		return nil, err
 	}
