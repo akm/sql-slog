@@ -20,8 +20,12 @@ func (a *LogsAssertion) Start() {
 	a.buf.Reset()
 }
 
+func (a *LogsAssertion) JsonLines(t *testing.T) []map[string]interface{} {
+	return parseJsonLines(t, a.buf.Bytes())
+}
+
 func (a *LogsAssertion) Assert(t *testing.T, expected []map[string]interface{}) {
-	actual := parseJsonLines(t, a.buf.Bytes())
+	actual := a.JsonLines(t)
 	assertMapSlice(t, expected, actual,
 		ignore("time"),
 		when(msgEndsWith(" Complete"), deleteIfFloat64("duration")),
