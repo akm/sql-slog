@@ -7,6 +7,9 @@ import (
 type options struct {
 	logger *slog.Logger
 
+	durationKey  string
+	durationType DurationType
+
 	connBegin           StepOptions
 	connClose           StepOptions
 	connPrepare         StepOptions
@@ -56,6 +59,8 @@ func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *option
 
 	return &options{
 		logger:              slog.Default(),
+		durationKey:         DurationKeyDefault,
+		durationType:        DurationNanoSeconds,
 		connBegin:           stepOpts("Conn.Begin", LevelInfo),
 		connClose:           stepOpts("Conn.Close", LevelInfo),
 		connPrepare:         stepOpts("Conn.Prepare", LevelInfo),

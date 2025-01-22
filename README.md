@@ -20,7 +20,7 @@ A logger for Go SQL database drivers without modifying existing `*sql.DB` stdlib
 - [x] No logger adapters. Just use [log/slog](https://pkg.go.dev/log/slog)
 - [x] No dependencies except stdlib.
 - [x] Leveled, detailed and configurable logging.
-- [ ] Duration
+- [x] Duration
 - [ ] Trackable log output
 
 ## INSTALL

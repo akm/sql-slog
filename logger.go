@@ -30,7 +30,7 @@ func (x *logger) Step(ctx context.Context, step *StepOptions, fn func() error) e
 	x.Log(ctx, slog.Level(step.Start.Level), step.Start.Msg)
 	t0 := time.Now()
 	err := fn()
-	lg := x.With(slog.Int64("duration", time.Since(t0).Nanoseconds()))
+	lg := x.With(x.durationAttr(time.Since(t0)))
 	var complete bool
 	if step.ErrorHandler != nil {
 		var attrs []slog.Attr
@@ -51,4 +51,22 @@ func (x *logger) Step(ctx context.Context, step *StepOptions, fn func() error) e
 		lg.Log(ctx, slog.Level(step.Complete.Level), step.Complete.Msg)
 	}
 	return err
+}
+
+func (x *logger) durationAttr(d time.Duration) slog.Attr {
+	key := x.options.durationKey
+	switch x.options.durationType {
+	case DurationNanoSeconds:
+		return slog.Int64(key, d.Nanoseconds())
+	case DurationMicroSeconds:
+		return slog.Int64(key, d.Microseconds())
+	case DurationMilliSeconds:
+		return slog.Int64(key, d.Milliseconds())
+	case DurationGoDuration:
+		return slog.Duration(key, d)
+	case DurationString:
+		return slog.String(key, d.String())
+	default:
+		return slog.Int64(key, d.Nanoseconds())
+	}
 }
