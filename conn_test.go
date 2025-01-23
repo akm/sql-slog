@@ -1,8 +1,10 @@
 package sqlslog
 
 import (
+	"context"
 	"database/sql/driver"
 	"fmt"
+	"log/slog"
 	"testing"
 )
 
@@ -75,4 +77,95 @@ func TestConnQueryContextErrorHandler(t *testing.T) {
 			}
 		})
 	})
+}
+
+type mockErrorConn struct {
+	error error
+}
+
+func newMockErrConn(err error) *mockErrorConn {
+	return &mockErrorConn{error: err}
+}
+
+// Begin implements driver.Conn.
+func (m *mockErrorConn) Begin() (driver.Tx, error) {
+	return nil, m.error
+}
+
+// Close implements driver.Conn.
+func (m *mockErrorConn) Close() error {
+	return m.error
+}
+
+// Prepare implements driver.Conn.
+func (m *mockErrorConn) Prepare(query string) (driver.Stmt, error) {
+	return nil, m.error
+}
+
+// BeginTx implements driver.ConnBeginTx.
+func (m *mockErrorConn) BeginTx(ctx context.Context, opts driver.TxOptions) (driver.Tx, error) {
+	return nil, m.error
+}
+
+// PrepareContext implements driver.ConnPrepareContext.
+func (m *mockErrorConn) PrepareContext(ctx context.Context, query string) (driver.Stmt, error) {
+	return nil, m.error
+}
+
+// QueryContext implements driver.QueryerContext.
+func (m *mockErrorConn) QueryContext(ctx context.Context, query string, args []driver.NamedValue) (driver.Rows, error) {
+	return nil, m.error
+}
+
+// ExecContext implements driver.ExecerContext.
+func (m *mockErrorConn) ExecContext(ctx context.Context, query string, args []driver.NamedValue) (driver.Result, error) {
+	return nil, m.error
+}
+
+var _ driver.Conn = (*mockErrorConn)(nil)
+var _ driver.ConnBeginTx = (*mockErrorConn)(nil)
+var _ driver.ConnPrepareContext = (*mockErrorConn)(nil)
+var _ driver.ExecerContext = (*mockErrorConn)(nil)
+var _ driver.QueryerContext = (*mockErrorConn)(nil)
+
+// var _ driver.Pinger = (*mockErrorConn)(nil) // not implemented for the test below
+
+func TestWithMockErrorConn(t *testing.T) {
+	logger := newLogger(slog.Default(), newOptions("sqlite3"))
+	w := wrapConn(newMockErrConn(fmt.Errorf("unexpected error")), logger)
+	t.Run("Begin", func(t *testing.T) {
+		if _, err := w.Begin(); err == nil {
+			t.Fatal("Expected error")
+		}
+	})
+	t.Run("Prepare", func(t *testing.T) {
+		if _, err := w.Prepare("dummy"); err == nil {
+			t.Fatal("Expected error")
+		}
+	})
+	t.Run("BeginTx", func(t *testing.T) {
+		if _, err := w.(driver.ConnBeginTx).BeginTx(context.Background(), driver.TxOptions{}); err == nil {
+			t.Fatal("Expected error")
+		}
+	})
+	t.Run("PrepareContext", func(t *testing.T) {
+		if _, err := w.(driver.ConnPrepareContext).PrepareContext(context.Background(), "dummy"); err == nil {
+			t.Fatal("Expected error")
+		}
+	})
+}
+
+func TestPingInCase(t *testing.T) {
+	logger := newLogger(slog.Default(), newOptions("sqlite3"))
+	conn := newMockErrConn(nil)
+	w := &connWithContextWrapper{
+		connWrapper: connWrapper{
+			original: conn,
+			logger:   logger,
+		},
+		originalConn: conn,
+	}
+	if err := w.Ping(context.Background()); err != nil {
+		t.Fatal("Unexpected error")
+	}
 }
