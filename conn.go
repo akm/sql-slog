@@ -206,16 +206,23 @@ func (c *connWithContextWrapper) QueryContext(ctx context.Context, query string,
 // PrepareContext implements driver.ConnPrepareContext.
 func (c *connWithContextWrapper) PrepareContext(ctx context.Context, query string) (driver.Stmt, error) {
 	var stmt driver.Stmt
-	lg := c.logger.With(slog.String("query", query))
-	err := ignoreAttr(lg.Step(ctx, &c.logger.options.connPrepareContext, func() (*slog.Attr, error) {
+	attr, err := c.logger.With(slog.String("query", query)).Step(ctx, &c.logger.options.connPrepareContext, func() (*slog.Attr, error) {
 		var err error
 		stmt, err = c.originalConn.PrepareContext(ctx, query)
-		return nil, err
-	}))
+		if err != nil {
+			return nil, err
+		}
+		attrRaw := slog.String(c.logger.options.stmtIDKey, c.logger.options.idGen())
+		return &attrRaw, nil
+	})
 	if err != nil {
 		return nil, err
 	}
-	return wrapStmt(stmt, c.logger), nil
+	lg := c.logger
+	if attr != nil {
+		lg = lg.With(*attr)
+	}
+	return wrapStmt(stmt, lg), nil
 }
 
 // BeginTx implements driver.ConnBeginTx.
