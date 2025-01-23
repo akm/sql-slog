@@ -27,17 +27,18 @@ func TestLowLevelWithoutContext(t *testing.T) {
 	logs := testhelper.NewLogAssertion(buf)
 	logger := slog.New(sqlslog.NewJSONHandler(buf, &slog.HandlerOptions{Level: sqlslog.LevelVerbose}))
 
-	idGen := testhelper.NewSeqIdGenerator(0)
+	seqIdGen := testhelper.NewSeqIDGenerator()
 	connIDKey := "conn_id"
-	connIDExpected := "0001"
 
 	db, err := sqlslog.Open(ctx, "sqlite3", dsn,
 		sqlslog.Logger(logger),
-		sqlslog.IDGenerator(idGen),
+		sqlslog.IDGenerator(seqIdGen.Generate),
 		sqlslog.ConnIDKey(connIDKey),
 	)
 	require.NoError(t, err)
 	defer db.Close()
+
+	connIDExpected := seqIdGen.Next()
 
 	t.Run("sqlslog.Open log", func(t *testing.T) {
 		logs.Assert(t, []map[string]interface{}{

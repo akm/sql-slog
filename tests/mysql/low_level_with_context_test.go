@@ -38,13 +38,13 @@ func TestLowLevelWithContext(t *testing.T) {
 	logs.Start()
 	logger := slog.New(sqlslog.NewJSONHandler(buf, &slog.HandlerOptions{Level: sqlslog.LevelVerbose}))
 
-	idGen := testhelper.NewSeqIdGenerator(0)
+	seqIdGen := testhelper.NewSeqIDGenerator()
 	connIDKey := "conn_id"
-	connIDExpected := "0001"
+	connIDExpected := seqIdGen.Next()
 
 	db, err := sqlslog.Open(ctx, "mysql", "root@tcp(localhost:3306)/"+dbName,
 		sqlslog.Logger(logger),
-		sqlslog.IDGenerator(idGen),
+		sqlslog.IDGenerator(seqIdGen.Generate),
 		sqlslog.ConnIDKey(connIDKey),
 	)
 	require.NoError(t, err)
