@@ -30,12 +30,14 @@ func TestLowLevelWithContext(t *testing.T) {
 	seqIdGen := testhelper.NewSeqIDGenerator()
 	connIDKey := "conn_id"
 	stmtIDKey := "stmt_id"
+	txIDKey := "tx_id"
 
 	db, err := sqlslog.Open(ctx, "sqlite3", dsn,
 		sqlslog.Logger(logger),
 		sqlslog.IDGenerator(seqIdGen.Generate),
 		sqlslog.ConnIDKey(connIDKey),
 		sqlslog.StmtIDKey(stmtIDKey),
+		sqlslog.TxIDKey(txIDKey),
 		sqlslog.ConnBegin(func(o *sqlslog.StepOptions) { o.Complete.Msg = "Conn.Begin Complete" }),
 		sqlslog.ConnClose(func(o *sqlslog.StepOptions) { o.Complete.Msg = "Conn.Close Complete" }),
 		sqlslog.ConnPrepare(func(o *sqlslog.StepOptions) { o.Complete.Msg = "Conn.Prepare Complete" }),
@@ -537,6 +539,7 @@ func TestLowLevelWithContext(t *testing.T) {
 					dConn := driverConn.(driver.Conn)
 
 					var tx driver.Tx
+					txIDExpected := seqIdGen.Next()
 					t.Run("Begin", func(t *testing.T) {
 						logs.Start()
 						var err error
@@ -544,7 +547,7 @@ func TestLowLevelWithContext(t *testing.T) {
 						require.NoError(t, err)
 						logs.Assert(t, []map[string]interface{}{
 							{"level": "DEBUG", "msg": "Conn.Begin Start", connIDKey: connIDExpected},
-							{"level": "INFO", "msg": "Conn.Begin Complete", connIDKey: connIDExpected},
+							{"level": "INFO", "msg": "Conn.Begin Complete", connIDKey: connIDExpected, txIDKey: txIDExpected},
 						})
 					})
 
@@ -617,8 +620,8 @@ func TestLowLevelWithContext(t *testing.T) {
 						err := tx.Rollback()
 						require.NoError(t, err)
 						logs.Assert(t, []map[string]interface{}{
-							{"level": "DEBUG", "msg": "Tx.Rollback Start", connIDKey: connIDExpected},
-							{"level": "INFO", "msg": "Tx.Rollback Complete", connIDKey: connIDExpected},
+							{"level": "DEBUG", "msg": "Tx.Rollback Start", connIDKey: connIDExpected, txIDKey: txIDExpected},
+							{"level": "INFO", "msg": "Tx.Rollback Complete", connIDKey: connIDExpected, txIDKey: txIDExpected},
 						})
 					})
 				}

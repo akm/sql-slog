@@ -64,15 +64,23 @@ var _ driver.NamedValueChecker = (*connWrapper)(nil)
 // Begin implements driver.Conn.
 func (c *connWrapper) Begin() (driver.Tx, error) {
 	var origTx driver.Tx
-	_, err := c.logger.StepWithoutContext(&c.logger.options.connBegin, func() (*slog.Attr, error) {
+	attr, err := c.logger.StepWithoutContext(&c.logger.options.connBegin, func() (*slog.Attr, error) {
 		var err error
 		origTx, err = c.original.Begin() //nolint:staticcheck
-		return nil, err
+		if err != nil {
+			return nil, err
+		}
+		attrRaw := slog.String(c.logger.options.txIDKey, c.logger.options.idGen())
+		return &attrRaw, nil
 	})
 	if err != nil {
 		return nil, err
 	}
-	return wrapTx(origTx, c.logger), nil
+	lg := c.logger
+	if attr != nil {
+		lg = lg.With(*attr)
+	}
+	return wrapTx(origTx, lg), nil
 }
 
 // Close implements driver.Conn.
