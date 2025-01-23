@@ -236,15 +236,23 @@ func (c *connWithContextWrapper) PrepareContext(ctx context.Context, query strin
 // BeginTx implements driver.ConnBeginTx.
 func (c *connWithContextWrapper) BeginTx(ctx context.Context, opts driver.TxOptions) (driver.Tx, error) {
 	var tx driver.Tx
-	err := ignoreAttr(c.logger.Step(ctx, &c.logger.options.connBeginTx, func() (*slog.Attr, error) {
+	attr, err := c.logger.Step(ctx, &c.logger.options.connBeginTx, func() (*slog.Attr, error) {
 		var err error
 		tx, err = c.originalConn.BeginTx(ctx, opts)
-		return nil, err
-	}))
+		if err != nil {
+			return nil, err
+		}
+		attrRaw := slog.String(c.logger.options.txIDKey, c.logger.options.idGen())
+		return &attrRaw, nil
+	})
 	if err != nil {
 		return nil, err
 	}
-	return wrapTx(tx, c.logger), nil
+	lg := c.logger
+	if attr != nil {
+		lg = lg.With(*attr)
+	}
+	return wrapTx(tx, lg), nil
 }
 
 func ConnExecContextErrorHandler(driverName string) func(err error) (bool, []slog.Attr) {

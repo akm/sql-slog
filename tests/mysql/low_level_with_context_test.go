@@ -41,6 +41,7 @@ func TestLowLevelWithContext(t *testing.T) {
 	seqIdGen := testhelper.NewSeqIDGenerator()
 	connIDKey := "conn_id"
 	stmtIDKey := "stmt_id"
+	txIDKey := "tx_id"
 	connIDExpected := seqIdGen.Next()
 
 	db, err := sqlslog.Open(ctx, "mysql", "root@tcp(localhost:3306)/"+dbName,
@@ -48,6 +49,7 @@ func TestLowLevelWithContext(t *testing.T) {
 		sqlslog.IDGenerator(seqIdGen.Generate),
 		sqlslog.ConnIDKey(connIDKey),
 		sqlslog.StmtIDKey(stmtIDKey),
+		sqlslog.TxIDKey(txIDKey),
 	)
 	require.NoError(t, err)
 	defer db.Close()
@@ -370,6 +372,7 @@ func TestLowLevelWithContext(t *testing.T) {
 
 	t.Run("with tx", func(t *testing.T) {
 		t.Run("rollback", func(t *testing.T) {
+			txIDExpected := seqIdGen.Next()
 			logs.Start()
 			tx, err := db.BeginTx(ctx, nil)
 			assert.NoError(t, err)
@@ -377,7 +380,7 @@ func TestLowLevelWithContext(t *testing.T) {
 				{"level": "VERBOSE", "msg": "Conn.ResetSession Start", connIDKey: connIDExpected},
 				{"level": "TRACE", "msg": "Conn.ResetSession Complete", connIDKey: connIDExpected},
 				{"level": "DEBUG", "msg": "Conn.BeginTx Start", connIDKey: connIDExpected},
-				{"level": "INFO", "msg": "Conn.BeginTx Complete", connIDKey: connIDExpected},
+				{"level": "INFO", "msg": "Conn.BeginTx Complete", connIDKey: connIDExpected, txIDKey: txIDExpected},
 			})
 
 			t.Run("update", func(t *testing.T) {
@@ -407,12 +410,13 @@ func TestLowLevelWithContext(t *testing.T) {
 				err := tx.Rollback()
 				assert.NoError(t, err)
 				logs.Assert(t, []map[string]interface{}{
-					{"level": "DEBUG", "msg": "Tx.Rollback Start", connIDKey: connIDExpected},
-					{"level": "INFO", "msg": "Tx.Rollback Complete", connIDKey: connIDExpected},
+					{"level": "DEBUG", "msg": "Tx.Rollback Start", connIDKey: connIDExpected, txIDKey: txIDExpected},
+					{"level": "INFO", "msg": "Tx.Rollback Complete", connIDKey: connIDExpected, txIDKey: txIDExpected},
 				})
 			})
 		})
 		t.Run("commit", func(t *testing.T) {
+			txIDExpected := seqIdGen.Next()
 			logs.Start()
 			tx, err := db.BeginTx(ctx, nil)
 			assert.NoError(t, err)
@@ -420,7 +424,7 @@ func TestLowLevelWithContext(t *testing.T) {
 				{"level": "VERBOSE", "msg": "Conn.ResetSession Start", connIDKey: connIDExpected},
 				{"level": "TRACE", "msg": "Conn.ResetSession Complete", connIDKey: connIDExpected},
 				{"level": "DEBUG", "msg": "Conn.BeginTx Start", connIDKey: connIDExpected},
-				{"level": "INFO", "msg": "Conn.BeginTx Complete", connIDKey: connIDExpected},
+				{"level": "INFO", "msg": "Conn.BeginTx Complete", connIDKey: connIDExpected, txIDKey: txIDExpected},
 			})
 
 			t.Run("update", func(t *testing.T) {
@@ -450,8 +454,8 @@ func TestLowLevelWithContext(t *testing.T) {
 				err := tx.Commit()
 				assert.NoError(t, err)
 				logs.Assert(t, []map[string]interface{}{
-					{"level": "DEBUG", "msg": "Tx.Commit Start", connIDKey: connIDExpected},
-					{"level": "INFO", "msg": "Tx.Commit Complete", connIDKey: connIDExpected},
+					{"level": "DEBUG", "msg": "Tx.Commit Start", connIDKey: connIDExpected, txIDKey: txIDExpected},
+					{"level": "INFO", "msg": "Tx.Commit Complete", connIDKey: connIDExpected, txIDKey: txIDExpected},
 				})
 			})
 		})
