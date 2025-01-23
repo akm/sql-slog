@@ -134,7 +134,7 @@ func TestWithMockErrorConn(t *testing.T) {
 	logger := newLogger(slog.Default(), newOptions("sqlite3"))
 	w := wrapConn(newMockErrConn(fmt.Errorf("unexpected error")), logger)
 	t.Run("Begin", func(t *testing.T) {
-		if _, err := w.Begin(); err == nil {
+		if _, err := w.Begin(); err == nil { //nolint:staticcheck
 			t.Fatal("Expected error")
 		}
 	})
