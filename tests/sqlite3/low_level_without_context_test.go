@@ -509,8 +509,8 @@ func TestLowLevelWithoutContext(t *testing.T) {
 							buf.Reset()
 							stmt.Close()
 							logs.Assert(t, []map[string]interface{}{
-								{"level": "DEBUG", "msg": "Stmt.Close Start", "query": query, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
-								{"level": "INFO", "msg": "Stmt.Close Complete", "query": query, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+								{"level": "DEBUG", "msg": "Stmt.Close Start", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+								{"level": "INFO", "msg": "Stmt.Close Complete", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 							})
 						}()
 
@@ -537,8 +537,8 @@ func TestLowLevelWithoutContext(t *testing.T) {
 							buf.Reset()
 							stmt.Close()
 							logs.Assert(t, []map[string]interface{}{
-								{"level": "DEBUG", "msg": "Stmt.Close Start", "query": query, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
-								{"level": "INFO", "msg": "Stmt.Close Complete", "query": query, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+								{"level": "DEBUG", "msg": "Stmt.Close Start", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+								{"level": "INFO", "msg": "Stmt.Close Complete", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 							})
 						}()
 

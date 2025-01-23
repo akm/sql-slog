@@ -82,9 +82,8 @@ func (c *connWrapper) Close() error {
 
 // Prepare implements driver.Conn.
 func (c *connWrapper) Prepare(query string) (driver.Stmt, error) {
-	lg := c.logger.With(slog.String("query", query))
 	var origStmt driver.Stmt
-	attr, err := lg.StepWithoutContext(&c.logger.options.connPrepare, func() (*slog.Attr, error) {
+	attr, err := c.logger.With(slog.String("query", query)).StepWithoutContext(&c.logger.options.connPrepare, func() (*slog.Attr, error) {
 		var err error
 		origStmt, err = c.original.Prepare(query)
 		if err != nil {
@@ -96,6 +95,7 @@ func (c *connWrapper) Prepare(query string) (driver.Stmt, error) {
 	if err != nil {
 		return nil, err
 	}
+	lg := c.logger
 	if attr != nil {
 		lg = lg.With(*attr)
 	}

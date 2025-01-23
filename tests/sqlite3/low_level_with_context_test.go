@@ -561,8 +561,8 @@ func TestLowLevelWithContext(t *testing.T) {
 							logs.Start()
 							stmt.Close()
 							logs.Assert(t, []map[string]interface{}{
-								{"level": "DEBUG", "msg": "Stmt.Close Start", "query": query, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
-								{"level": "INFO", "msg": "Stmt.Close Complete", "query": query, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+								{"level": "DEBUG", "msg": "Stmt.Close Start", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+								{"level": "INFO", "msg": "Stmt.Close Complete", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 							})
 						}()
 
@@ -589,8 +589,8 @@ func TestLowLevelWithContext(t *testing.T) {
 								assert.NoError(t, err)
 								args := "[4 qux]"
 								logs.Assert(t, []map[string]interface{}{
-									{"level": "DEBUG", "msg": "Stmt.Exec Start", "query": query, "args": args, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
-									{"level": "INFO", "msg": "Stmt.Exec Complete", "query": query, "args": args, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+									{"level": "DEBUG", "msg": "Stmt.Exec Start", "args": args, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+									{"level": "INFO", "msg": "Stmt.Exec Complete", "args": args, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 								})
 								rowsAffected, err := result.RowsAffected()
 								assert.NoError(t, err)
@@ -602,8 +602,8 @@ func TestLowLevelWithContext(t *testing.T) {
 								assert.Error(t, err)
 								args := "[abc qux]"
 								logs.Assert(t, []map[string]interface{}{
-									{"level": "DEBUG", "msg": "Stmt.Exec Start", "query": query, "args": args, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
-									{"level": "ERROR", "msg": "Stmt.Exec Error", "query": query, "args": args, "error": "datatype mismatch", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+									{"level": "DEBUG", "msg": "Stmt.Exec Start", "args": args, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+									{"level": "ERROR", "msg": "Stmt.Exec Error", "args": args, "error": "datatype mismatch", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 								})
 							})
 						})
