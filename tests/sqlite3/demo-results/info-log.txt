@@ -1,10 +1,10 @@
 go run ./demo.go info text
-time=2025-01-21T21:47:28.295+09:00 level=INFO msg="sqlslog.Open Complete" driver=sqlite3 dsn="file::memory:?cache=shared" duration=125708
-time=2025-01-21T21:47:28.296+09:00 level=INFO msg="Driver.Open Complete" dsn="file::memory:?cache=shared" duration=1116875
-time=2025-01-21T21:47:28.296+09:00 level=INFO msg="Connector.Connect Complete" duration=1140833
-time=2025-01-21T21:47:28.296+09:00 level=INFO msg="Conn.ExecContext Complete" query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=143500
-time=2025-01-21T21:47:28.296+09:00 level=INFO msg="Conn.BeginTx Complete" duration=5542
-time=2025-01-21T21:47:28.296+09:00 level=INFO msg="Conn.ExecContext Complete" query="INSERT INTO test1 (name) VALUES (?)" args="[{Name: Ordinal:1 Value:Alice}]" duration=14417
-time=2025-01-21T21:47:28.296+09:00 level=INFO msg="Tx.Commit Complete" duration=6292
-time=2025-01-21T21:47:28.296+09:00 level=INFO msg=Record id=1 name=Alice
-time=2025-01-21T21:47:28.296+09:00 level=INFO msg="Conn.Close Complete" duration=21709
+time=2025-01-24T07:59:15.997+09:00 level=INFO msg="sqlslog.Open Complete" driver=sqlite3 dsn="file::memory:?cache=shared" duration=113625
+time=2025-01-24T07:59:15.999+09:00 level=INFO msg="Driver.Open Complete" dsn="file::memory:?cache=shared" duration=1080125 conn_id=FqpQnbatUopqRgqS
+time=2025-01-24T07:59:15.999+09:00 level=INFO msg="Connector.Connect Complete" duration=1100167
+time=2025-01-24T07:59:15.999+09:00 level=INFO msg="Conn.ExecContext Complete" conn_id=FqpQnbatUopqRgqS query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=172583
+time=2025-01-24T07:59:15.999+09:00 level=INFO msg="Conn.BeginTx Complete" conn_id=FqpQnbatUopqRgqS duration=5459 tx_id=xkl_3Hl3x0cikHo5
+time=2025-01-24T07:59:15.999+09:00 level=INFO msg="Conn.ExecContext Complete" conn_id=FqpQnbatUopqRgqS query="INSERT INTO test1 (name) VALUES (?)" args="[{Name: Ordinal:1 Value:Alice}]" duration=14625
+time=2025-01-24T07:59:15.999+09:00 level=INFO msg="Tx.Commit Complete" conn_id=FqpQnbatUopqRgqS tx_id=xkl_3Hl3x0cikHo5 duration=6042
+time=2025-01-24T07:59:15.999+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-01-24T07:59:15.999+09:00 level=INFO msg="Conn.Close Complete" conn_id=FqpQnbatUopqRgqS duration=21875
