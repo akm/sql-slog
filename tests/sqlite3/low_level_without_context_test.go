@@ -29,11 +29,13 @@ func TestLowLevelWithoutContext(t *testing.T) {
 
 	seqIdGen := testhelper.NewSeqIDGenerator()
 	connIDKey := "conn_id"
+	stmtIDKey := "stmt_id"
 
 	db, err := sqlslog.Open(ctx, "sqlite3", dsn,
 		sqlslog.Logger(logger),
 		sqlslog.IDGenerator(seqIdGen.Generate),
 		sqlslog.ConnIDKey(connIDKey),
+		sqlslog.StmtIDKey(stmtIDKey),
 	)
 	require.NoError(t, err)
 	defer db.Close()
@@ -122,7 +124,6 @@ func TestLowLevelWithoutContext(t *testing.T) {
 			{"level": "DEBUG", "msg": "Stmt.Close Start", connIDKey: connIDExpected},
 			{"level": "INFO", "msg": "Stmt.Close Complete", connIDKey: connIDExpected},
 		})
-
 	})
 
 	t.Run("without tx", func(t *testing.T) {
@@ -493,21 +494,23 @@ func TestLowLevelWithoutContext(t *testing.T) {
 					})
 
 					t.Run("Prepare and Query", func(t *testing.T) {
+						stmtIDExpected := seqIdGen.Next()
+
 						query := "SELECT id, name FROM test1 WHERE id = ?"
 						buf.Reset()
 						stmt, err := dConn.Prepare(query)
 						require.NoError(t, err)
 						logs.Assert(t, []map[string]interface{}{
 							{"level": "DEBUG", "msg": "Conn.Prepare Start", "query": query, connIDKey: connIDExpected},
-							{"level": "INFO", "msg": "Conn.Prepare Complete", "query": query, connIDKey: connIDExpected},
+							{"level": "INFO", "msg": "Conn.Prepare Complete", "query": query, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 						})
 
 						defer func() {
 							buf.Reset()
 							stmt.Close()
 							logs.Assert(t, []map[string]interface{}{
-								{"level": "DEBUG", "msg": "Stmt.Close Start", "query": query, connIDKey: connIDExpected},
-								{"level": "INFO", "msg": "Stmt.Close Complete", "query": query, connIDKey: connIDExpected},
+								{"level": "DEBUG", "msg": "Stmt.Close Start", "query": query, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+								{"level": "INFO", "msg": "Stmt.Close Complete", "query": query, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 							})
 						}()
 
@@ -519,21 +522,23 @@ func TestLowLevelWithoutContext(t *testing.T) {
 					})
 
 					t.Run("Prepare and Exec", func(t *testing.T) {
+						stmtIDExpected := seqIdGen.Next()
+
 						query := "DELETE FROM test1 WHERE id = ?"
 						buf.Reset()
 						stmt, err := dConn.Prepare(query)
 						require.NoError(t, err)
 						logs.Assert(t, []map[string]interface{}{
 							{"level": "DEBUG", "msg": "Conn.Prepare Start", "query": query, connIDKey: connIDExpected},
-							{"level": "INFO", "msg": "Conn.Prepare Complete", "query": query, connIDKey: connIDExpected},
+							{"level": "INFO", "msg": "Conn.Prepare Complete", "query": query, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 						})
 
 						defer func() {
 							buf.Reset()
 							stmt.Close()
 							logs.Assert(t, []map[string]interface{}{
-								{"level": "DEBUG", "msg": "Stmt.Close Start", "query": query, connIDKey: connIDExpected},
-								{"level": "INFO", "msg": "Stmt.Close Complete", "query": query, connIDKey: connIDExpected},
+								{"level": "DEBUG", "msg": "Stmt.Close Start", "query": query, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+								{"level": "INFO", "msg": "Stmt.Close Complete", "query": query, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 							})
 						}()
 

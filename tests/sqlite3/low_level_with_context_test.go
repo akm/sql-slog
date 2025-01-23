@@ -29,11 +29,13 @@ func TestLowLevelWithContext(t *testing.T) {
 
 	seqIdGen := testhelper.NewSeqIDGenerator()
 	connIDKey := "conn_id"
+	stmtIDKey := "stmt_id"
 
 	db, err := sqlslog.Open(ctx, "sqlite3", dsn,
 		sqlslog.Logger(logger),
 		sqlslog.IDGenerator(seqIdGen.Generate),
 		sqlslog.ConnIDKey(connIDKey),
+		sqlslog.StmtIDKey(stmtIDKey),
 		sqlslog.ConnBegin(func(o *sqlslog.StepOptions) { o.Complete.Msg = "Conn.Begin Complete" }),
 		sqlslog.ConnClose(func(o *sqlslog.StepOptions) { o.Complete.Msg = "Conn.Close Complete" }),
 		sqlslog.ConnPrepare(func(o *sqlslog.StepOptions) { o.Complete.Msg = "Conn.Prepare Complete" }),
@@ -544,21 +546,23 @@ func TestLowLevelWithContext(t *testing.T) {
 					})
 
 					t.Run("Prepare", func(t *testing.T) {
+						stmtIDExpected := seqIdGen.Next()
+
 						query := "SELECT id, name FROM test1 WHERE id = ?"
 						logs.Start()
 						stmt, err := dConn.Prepare(query)
 						require.NoError(t, err)
 						logs.Assert(t, []map[string]interface{}{
 							{"level": "DEBUG", "msg": "Conn.Prepare Start", "query": query, connIDKey: connIDExpected},
-							{"level": "INFO", "msg": "Conn.Prepare Complete", "query": query, connIDKey: connIDExpected},
+							{"level": "INFO", "msg": "Conn.Prepare Complete", "query": query, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 						})
 
 						defer func() {
 							logs.Start()
 							stmt.Close()
 							logs.Assert(t, []map[string]interface{}{
-								{"level": "DEBUG", "msg": "Stmt.Close Start", "query": query, connIDKey: connIDExpected},
-								{"level": "INFO", "msg": "Stmt.Close Complete", "query": query, connIDKey: connIDExpected},
+								{"level": "DEBUG", "msg": "Stmt.Close Start", "query": query, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+								{"level": "INFO", "msg": "Stmt.Close Complete", "query": query, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 							})
 						}()
 
@@ -570,6 +574,8 @@ func TestLowLevelWithContext(t *testing.T) {
 					})
 
 					t.Run("prepare + Exec", func(t *testing.T) {
+						stmtIDExpected := seqIdGen.Next()
+
 						query := "INSERT INTO test1 (id, name) VALUES (?, ?)"
 						stmt, err := dConn.Prepare(query)
 						assert.NoError(t, err)
@@ -583,8 +589,8 @@ func TestLowLevelWithContext(t *testing.T) {
 								assert.NoError(t, err)
 								args := "[4 qux]"
 								logs.Assert(t, []map[string]interface{}{
-									{"level": "DEBUG", "msg": "Stmt.Exec Start", "query": query, "args": args, connIDKey: connIDExpected},
-									{"level": "INFO", "msg": "Stmt.Exec Complete", "query": query, "args": args, connIDKey: connIDExpected},
+									{"level": "DEBUG", "msg": "Stmt.Exec Start", "query": query, "args": args, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+									{"level": "INFO", "msg": "Stmt.Exec Complete", "query": query, "args": args, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 								})
 								rowsAffected, err := result.RowsAffected()
 								assert.NoError(t, err)
@@ -596,8 +602,8 @@ func TestLowLevelWithContext(t *testing.T) {
 								assert.Error(t, err)
 								args := "[abc qux]"
 								logs.Assert(t, []map[string]interface{}{
-									{"level": "DEBUG", "msg": "Stmt.Exec Start", "query": query, "args": args, connIDKey: connIDExpected},
-									{"level": "ERROR", "msg": "Stmt.Exec Error", "query": query, "args": args, "error": "datatype mismatch", connIDKey: connIDExpected},
+									{"level": "DEBUG", "msg": "Stmt.Exec Start", "query": query, "args": args, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+									{"level": "ERROR", "msg": "Stmt.Exec Error", "query": query, "args": args, "error": "datatype mismatch", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 								})
 							})
 						})
