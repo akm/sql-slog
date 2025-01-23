@@ -54,12 +54,25 @@ func TestConnExecContextErrorHandler(t *testing.T) {
 }
 
 func TestConnQueryContextErrorHandler(t *testing.T) {
-	errHandler := ConnQueryContextErrorHandler("mysql")
-	complete, attrs := errHandler(fmt.Errorf("dummy"))
-	if complete {
-		t.Fatal("Expected false")
-	}
-	if attrs != nil {
-		t.Fatal("Expected nil")
-	}
+	t.Run("mysql", func(t *testing.T) {
+		errHandler := ConnQueryContextErrorHandler("mysql")
+		t.Run("nil error", func(t *testing.T) {
+			complete, attrs := errHandler(nil)
+			if !complete {
+				t.Fatal("Expected true")
+			}
+			if attrs != nil {
+				t.Fatal("Expected nil")
+			}
+		})
+		t.Run("unexpected error", func(t *testing.T) {
+			complete, attrs := errHandler(fmt.Errorf("dummy"))
+			if complete {
+				t.Fatal("Expected false")
+			}
+			if attrs != nil {
+				t.Fatal("Expected nil")
+			}
+		})
+	})
 }
