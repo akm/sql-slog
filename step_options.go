@@ -38,6 +38,11 @@ func StepLogMsgWithEventName(name string, event Event) string {
 	return name + " " + event.String()
 }
 
+// StepLogMsgWithoutEventName returns the formatted step log message without the event name.
+func StepLogMsgWithoutEventName(name string, _ Event) string {
+	return name
+}
+
 // StepOptions is the options for the step.
 type StepOptions struct {
 	Start    EventOptions
