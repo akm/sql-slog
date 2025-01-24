@@ -43,11 +43,14 @@ func TestLowLevelWithContext(t *testing.T) {
 	txIDKey := "tx_id"
 
 	db, err := sqlslog.Open(ctx, "postgres", dsn,
-		sqlslog.Logger(logger),
-		sqlslog.IDGenerator(seqIdGen.Generate),
-		sqlslog.ConnIDKey(connIDKey),
-		sqlslog.StmtIDKey(stmtIDKey),
-		sqlslog.TxIDKey(txIDKey),
+		append(
+			testhelper.StepEventMsgOptions,
+			sqlslog.Logger(logger),
+			sqlslog.IDGenerator(seqIdGen.Generate),
+			sqlslog.ConnIDKey(connIDKey),
+			sqlslog.StmtIDKey(stmtIDKey),
+			sqlslog.TxIDKey(txIDKey),
+		)...,
 	)
 	require.NoError(t, err)
 	defer db.Close()

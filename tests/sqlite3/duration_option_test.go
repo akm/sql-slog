@@ -90,9 +90,12 @@ func TestDuration(t *testing.T) {
 			logs := testhelper.NewLogAssertion(buf)
 			logger := slog.New(sqlslog.NewJSONHandler(buf, &slog.HandlerOptions{Level: sqlslog.LevelVerbose}))
 			db, err := sqlslog.Open(ctx, "sqlite3", dsn,
-				sqlslog.Logger(logger),
-				sqlslog.DurationKey(tc.durationKey),
-				sqlslog.Duration(tc.durationType),
+				append(
+					testhelper.StepEventMsgOptions,
+					sqlslog.Logger(logger),
+					sqlslog.DurationKey(tc.durationKey),
+					sqlslog.Duration(tc.durationType),
+				)...,
 			)
 			require.NoError(t, err)
 			defer db.Close()
