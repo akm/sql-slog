@@ -16,18 +16,18 @@ var _ driver.Stmt = (*stmtWrapper)(nil)
 
 // Close implements driver.Stmt.
 func (s *stmtWrapper) Close() error {
-	return s.logger.StepWithoutContext(&s.logger.options.stmtClose, s.original.Close)
+	return ignoreAttr(s.logger.StepWithoutContext(&s.logger.options.stmtClose, withNilAttr(s.original.Close)))
 }
 
 // Exec implements driver.Stmt.
 func (s *stmtWrapper) Exec(args []driver.Value) (driver.Result, error) {
 	lg := s.logger.With(slog.String("args", fmt.Sprintf("%+v", args)))
 	var result driver.Result
-	err := lg.StepWithoutContext(&s.logger.options.stmtExec, func() error {
+	err := ignoreAttr(lg.StepWithoutContext(&s.logger.options.stmtExec, func() (*slog.Attr, error) {
 		var err error
 		result, err = s.original.Exec(args) //nolint:staticcheck
-		return err
-	})
+		return nil, err
+	}))
 	if err != nil {
 		return nil, err
 	}
@@ -43,11 +43,11 @@ func (s *stmtWrapper) NumInput() int {
 func (s *stmtWrapper) Query(args []driver.Value) (driver.Rows, error) {
 	lg := s.logger.With(slog.String("args", fmt.Sprintf("%+v", args)))
 	var rows driver.Rows
-	err := lg.StepWithoutContext(&s.logger.options.stmtQuery, func() error {
+	err := ignoreAttr(lg.StepWithoutContext(&s.logger.options.stmtQuery, func() (*slog.Attr, error) {
 		var err error
 		rows, err = s.original.Query(args) //nolint:staticcheck
-		return err
-	})
+		return nil, err
+	}))
 	if err != nil {
 		return nil, err
 	}
@@ -65,11 +65,11 @@ var _ driver.StmtExecContext = (*stmtExecContextWrapperImpl)(nil)
 func (s *stmtExecContextWrapperImpl) ExecContext(ctx context.Context, args []driver.NamedValue) (driver.Result, error) {
 	lg := s.logger.With(slog.String("args", fmt.Sprintf("%+v", args)))
 	var result driver.Result
-	err := lg.Step(ctx, &s.logger.options.stmtExecContext, func() error {
+	err := ignoreAttr(lg.Step(ctx, &s.logger.options.stmtExecContext, func() (*slog.Attr, error) {
 		var err error
 		result, err = s.original.ExecContext(ctx, args)
-		return err
-	})
+		return nil, err
+	}))
 	if err != nil {
 		return nil, err
 	}
@@ -87,11 +87,11 @@ var _ driver.StmtQueryContext = (*stmtQueryContextWrapperImpl)(nil)
 func (s *stmtQueryContextWrapperImpl) QueryContext(ctx context.Context, args []driver.NamedValue) (driver.Rows, error) {
 	lg := s.logger.With(slog.String("args", fmt.Sprintf("%+v", args)))
 	var rows driver.Rows
-	err := lg.Step(ctx, &s.logger.options.stmtQueryContext, func() error {
+	err := ignoreAttr(lg.Step(ctx, &s.logger.options.stmtQueryContext, func() (*slog.Attr, error) {
 		var err error
 		rows, err = s.original.QueryContext(ctx, args)
-		return err
-	})
+		return nil, err
+	}))
 	if err != nil {
 		return nil, err
 	}

@@ -64,33 +64,48 @@ var _ driver.NamedValueChecker = (*connWrapper)(nil)
 // Begin implements driver.Conn.
 func (c *connWrapper) Begin() (driver.Tx, error) {
 	var origTx driver.Tx
-	err := c.logger.StepWithoutContext(&c.logger.options.connBegin, func() error {
+	attr, err := c.logger.StepWithoutContext(&c.logger.options.connBegin, func() (*slog.Attr, error) {
 		var err error
 		origTx, err = c.original.Begin() //nolint:staticcheck
-		return err
+		if err != nil {
+			return nil, err
+		}
+		attrRaw := slog.String(c.logger.options.txIDKey, c.logger.options.idGen())
+		return &attrRaw, nil
 	})
 	if err != nil {
 		return nil, err
 	}
-	return wrapTx(origTx, c.logger), nil
+	lg := c.logger
+	if attr != nil {
+		lg = lg.With(*attr)
+	}
+	return wrapTx(origTx, lg), nil
 }
 
 // Close implements driver.Conn.
 func (c *connWrapper) Close() error {
-	return c.logger.StepWithoutContext(&c.logger.options.connClose, c.original.Close)
+	return ignoreAttr(c.logger.StepWithoutContext(&c.logger.options.connClose, withNilAttr(c.original.Close)))
 }
 
 // Prepare implements driver.Conn.
 func (c *connWrapper) Prepare(query string) (driver.Stmt, error) {
-	lg := c.logger.With(slog.String("query", query))
 	var origStmt driver.Stmt
-	err := lg.StepWithoutContext(&c.logger.options.connPrepare, func() error {
+	attr, err := c.logger.With(slog.String("query", query)).StepWithoutContext(&c.logger.options.connPrepare, func() (*slog.Attr, error) {
 		var err error
 		origStmt, err = c.original.Prepare(query)
-		return err
+		if err != nil {
+			return nil, err
+		}
+		attrRaw := slog.String(c.logger.options.stmtIDKey, c.logger.options.idGen())
+		return &attrRaw, nil
 	})
 	if err != nil {
 		return nil, err
+	}
+	lg := c.logger
+	if attr != nil {
+		lg = lg.With(*attr)
 	}
 	return wrapStmt(origStmt, lg), nil
 }
@@ -140,24 +155,24 @@ var _ driver.ConnBeginTx = (*connWithContextWrapper)(nil)
 
 // ResetSession implements driver.SessionResetter.
 func (c *connWithContextWrapper) ResetSession(ctx context.Context) error {
-	return c.logger.Step(ctx, &c.logger.options.connResetSession, func() error {
+	return ignoreAttr(c.logger.Step(ctx, &c.logger.options.connResetSession, func() (*slog.Attr, error) {
 		// https://cs.opensource.google/go/go/+/master:src/database/sql/sql.go;l=603-606
 		if v, ok := c.original.(driver.SessionResetter); ok {
-			return v.ResetSession(ctx)
+			return nil, v.ResetSession(ctx)
 		}
-		return nil
-	})
+		return nil, nil
+	}))
 }
 
 // Ping implements driver.Pinger.
 func (c *connWithContextWrapper) Ping(ctx context.Context) error {
-	return c.logger.Step(ctx, &c.logger.options.connPing, func() error {
+	return ignoreAttr(c.logger.Step(ctx, &c.logger.options.connPing, func() (*slog.Attr, error) {
 		// https://cs.opensource.google/go/go/+/master:src/database/sql/sql.go;l=882-891
 		if p, ok := c.original.(driver.Pinger); ok {
-			return p.Ping(ctx)
+			return nil, p.Ping(ctx)
 		}
-		return nil
-	})
+		return nil, nil
+	}))
 }
 
 // ExecContext implements driver.ExecerContext.
@@ -167,11 +182,11 @@ func (c *connWithContextWrapper) ExecContext(ctx context.Context, query string, 
 		slog.String("query", query),
 		slog.String("args", fmt.Sprintf("%+v", args)),
 	)
-	err := lg.Step(ctx, &c.logger.options.connExecContext, func() error {
+	err := ignoreAttr(lg.Step(ctx, &c.logger.options.connExecContext, func() (*slog.Attr, error) {
 		var err error
 		result, err = c.originalConn.ExecContext(ctx, query, args)
-		return err
-	})
+		return nil, err
+	}))
 	if err != nil {
 		return nil, err
 	}
@@ -185,11 +200,11 @@ func (c *connWithContextWrapper) QueryContext(ctx context.Context, query string,
 		slog.String("query", query),
 		slog.String("args", fmt.Sprintf("%+v", args)),
 	)
-	err := lg.Step(ctx, &c.logger.options.connQueryContext, func() error {
+	err := ignoreAttr(lg.Step(ctx, &c.logger.options.connQueryContext, func() (*slog.Attr, error) {
 		var err error
 		rows, err = c.originalConn.QueryContext(ctx, query, args)
-		return err
-	})
+		return nil, err
+	}))
 	if err != nil {
 		return nil, err
 	}
@@ -199,30 +214,45 @@ func (c *connWithContextWrapper) QueryContext(ctx context.Context, query string,
 // PrepareContext implements driver.ConnPrepareContext.
 func (c *connWithContextWrapper) PrepareContext(ctx context.Context, query string) (driver.Stmt, error) {
 	var stmt driver.Stmt
-	lg := c.logger.With(slog.String("query", query))
-	err := lg.Step(ctx, &c.logger.options.connPrepareContext, func() error {
+	attr, err := c.logger.With(slog.String("query", query)).Step(ctx, &c.logger.options.connPrepareContext, func() (*slog.Attr, error) {
 		var err error
 		stmt, err = c.originalConn.PrepareContext(ctx, query)
-		return err
+		if err != nil {
+			return nil, err
+		}
+		attrRaw := slog.String(c.logger.options.stmtIDKey, c.logger.options.idGen())
+		return &attrRaw, nil
 	})
 	if err != nil {
 		return nil, err
 	}
-	return wrapStmt(stmt, c.logger), nil
+	lg := c.logger
+	if attr != nil {
+		lg = lg.With(*attr)
+	}
+	return wrapStmt(stmt, lg), nil
 }
 
 // BeginTx implements driver.ConnBeginTx.
 func (c *connWithContextWrapper) BeginTx(ctx context.Context, opts driver.TxOptions) (driver.Tx, error) {
 	var tx driver.Tx
-	err := c.logger.Step(ctx, &c.logger.options.connBeginTx, func() error {
+	attr, err := c.logger.Step(ctx, &c.logger.options.connBeginTx, func() (*slog.Attr, error) {
 		var err error
 		tx, err = c.originalConn.BeginTx(ctx, opts)
-		return err
+		if err != nil {
+			return nil, err
+		}
+		attrRaw := slog.String(c.logger.options.txIDKey, c.logger.options.idGen())
+		return &attrRaw, nil
 	})
 	if err != nil {
 		return nil, err
 	}
-	return wrapTx(tx, c.logger), nil
+	lg := c.logger
+	if attr != nil {
+		lg = lg.With(*attr)
+	}
+	return wrapTx(tx, lg), nil
 }
 
 func ConnExecContextErrorHandler(driverName string) func(err error) (bool, []slog.Attr) {

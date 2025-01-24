@@ -1,94 +1,82 @@
 go run ./demo.go verbose text
-time=2025-01-21T21:48:09.364+09:00 level=DEBUG msg="sqlslog.Open Start" driver=mysql dsn=root@tcp(localhost:3306)/app1
-time=2025-01-21T21:48:09.365+09:00 level=DEBUG msg="Driver.OpenConnector Start" dsn=root@tcp(localhost:3306)/app1
-time=2025-01-21T21:48:09.365+09:00 level=INFO msg="Driver.OpenConnector Complete" dsn=root@tcp(localhost:3306)/app1 duration=1417
-time=2025-01-21T21:48:09.365+09:00 level=INFO msg="sqlslog.Open Complete" driver=mysql dsn=root@tcp(localhost:3306)/app1 duration=143125
-time=2025-01-21T21:48:09.365+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:09.365+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:09.368+09:00 level=INFO msg="Connector.Connect Complete" duration=3302250 success=false
-time=2025-01-21T21:48:09.368+09:00 level=INFO msg="Connector.Connect Complete" duration=3347208 success=false
-time=2025-01-21T21:48:09.368+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:09.368+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:09.369+09:00 level=INFO msg="Connector.Connect Complete" duration=1148292 success=false
-time=2025-01-21T21:48:09.369+09:00 level=INFO msg="Connector.Connect Complete" duration=1191750 success=false
-time=2025-01-21T21:48:09.369+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:09.369+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:09.370+09:00 level=INFO msg="Connector.Connect Complete" duration=755875 success=false
-time=2025-01-21T21:48:09.370+09:00 level=INFO msg="Connector.Connect Complete" duration=803875 success=false
-time=2025-01-21T21:48:11.371+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:11.372+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:11.377+09:00 level=INFO msg="Connector.Connect Complete" duration=5154041 success=false
-time=2025-01-21T21:48:11.377+09:00 level=INFO msg="Connector.Connect Complete" duration=5320375 success=false
-time=2025-01-21T21:48:11.377+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:11.377+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:11.380+09:00 level=INFO msg="Connector.Connect Complete" duration=2934083 success=false
-time=2025-01-21T21:48:11.380+09:00 level=INFO msg="Connector.Connect Complete" duration=3153667 success=false
-time=2025-01-21T21:48:11.380+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:11.380+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:11.385+09:00 level=INFO msg="Connector.Connect Complete" duration=4620375 success=false
-time=2025-01-21T21:48:11.385+09:00 level=INFO msg="Connector.Connect Complete" duration=4765625 success=false
-time=2025-01-21T21:48:13.386+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:13.386+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:13.387+09:00 level=INFO msg="Connector.Connect Complete" duration=926667 success=false
-time=2025-01-21T21:48:13.387+09:00 level=INFO msg="Connector.Connect Complete" duration=943916 success=false
-time=2025-01-21T21:48:13.387+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:13.387+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:13.388+09:00 level=INFO msg="Connector.Connect Complete" duration=620459 success=false
-time=2025-01-21T21:48:13.388+09:00 level=INFO msg="Connector.Connect Complete" duration=630750 success=false
-time=2025-01-21T21:48:13.388+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:13.388+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:13.389+09:00 level=INFO msg="Connector.Connect Complete" duration=622291 success=false
-time=2025-01-21T21:48:13.389+09:00 level=INFO msg="Connector.Connect Complete" duration=636125 success=false
-time=2025-01-21T21:48:15.390+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:15.390+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:15.393+09:00 level=INFO msg="Connector.Connect Complete" duration=2940958 success=false
-time=2025-01-21T21:48:15.393+09:00 level=INFO msg="Connector.Connect Complete" duration=3166083 success=false
-time=2025-01-21T21:48:15.393+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:15.393+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:15.395+09:00 level=INFO msg="Connector.Connect Complete" duration=1961250 success=false
-time=2025-01-21T21:48:15.395+09:00 level=INFO msg="Connector.Connect Complete" duration=2080917 success=false
-time=2025-01-21T21:48:15.395+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:15.395+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:15.397+09:00 level=INFO msg="Connector.Connect Complete" duration=1431042 success=false
-time=2025-01-21T21:48:15.397+09:00 level=INFO msg="Connector.Connect Complete" duration=1509459 success=false
-time=2025-01-21T21:48:17.398+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:17.398+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:48:17.403+09:00 level=INFO msg="Connector.Connect Complete" duration=5275417 success=true
-time=2025-01-21T21:48:17.403+09:00 level=INFO msg="Connector.Connect Complete" duration=5405875 success=true
-time=2025-01-21T21:48:17.403+09:00 level=VERBOSE msg="Conn.Ping Start"
-time=2025-01-21T21:48:17.404+09:00 level=TRACE msg="Conn.Ping Complete" duration=544584
-time=2025-01-21T21:48:17.404+09:00 level=VERBOSE msg="Conn.ResetSession Start"
-time=2025-01-21T21:48:17.404+09:00 level=TRACE msg="Conn.ResetSession Complete" duration=7875
-time=2025-01-21T21:48:17.404+09:00 level=DEBUG msg="Conn.ExecContext Start" query="CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))" args=[]
-time=2025-01-21T21:48:17.430+09:00 level=INFO msg="Conn.ExecContext Complete" query="CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))" args=[] duration=25827584
-time=2025-01-21T21:48:17.430+09:00 level=VERBOSE msg="Conn.ResetSession Start"
-time=2025-01-21T21:48:17.430+09:00 level=TRACE msg="Conn.ResetSession Complete" duration=6708
-time=2025-01-21T21:48:17.430+09:00 level=VERBOSE msg="Conn.Ping Start"
-time=2025-01-21T21:48:17.430+09:00 level=TRACE msg="Conn.Ping Complete" duration=329625
-time=2025-01-21T21:48:17.430+09:00 level=VERBOSE msg="Conn.ResetSession Start"
-time=2025-01-21T21:48:17.430+09:00 level=TRACE msg="Conn.ResetSession Complete" duration=4458
-time=2025-01-21T21:48:17.430+09:00 level=DEBUG msg="Conn.BeginTx Start"
-time=2025-01-21T21:48:17.431+09:00 level=INFO msg="Conn.BeginTx Complete" duration=360000
-time=2025-01-21T21:48:17.431+09:00 level=DEBUG msg="Conn.ExecContext Start" query="INSERT INTO test1 (id, name) VALUES (?, ?)" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]"
-time=2025-01-21T21:48:17.431+09:00 level=INFO msg="Conn.ExecContext Complete" query="INSERT INTO test1 (id, name) VALUES (?, ?)" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=375 skip=true
-time=2025-01-21T21:48:17.431+09:00 level=DEBUG msg="Conn.PrepareContext Start" query="INSERT INTO test1 (id, name) VALUES (?, ?)"
-time=2025-01-21T21:48:17.432+09:00 level=INFO msg="Conn.PrepareContext Complete" query="INSERT INTO test1 (id, name) VALUES (?, ?)" duration=1148000
-time=2025-01-21T21:48:17.432+09:00 level=DEBUG msg="Stmt.ExecContext Start" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]"
-time=2025-01-21T21:48:17.432+09:00 level=INFO msg="Stmt.ExecContext Complete" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=333875
-time=2025-01-21T21:48:17.432+09:00 level=DEBUG msg="Stmt.Close Start"
-time=2025-01-21T21:48:17.433+09:00 level=INFO msg="Stmt.Close Complete" duration=13708
-time=2025-01-21T21:48:17.433+09:00 level=DEBUG msg="Tx.Commit Start"
-time=2025-01-21T21:48:17.434+09:00 level=INFO msg="Tx.Commit Complete" duration=1001083
-time=2025-01-21T21:48:17.434+09:00 level=VERBOSE msg="Conn.ResetSession Start"
-time=2025-01-21T21:48:17.434+09:00 level=TRACE msg="Conn.ResetSession Complete" duration=3750
-time=2025-01-21T21:48:17.434+09:00 level=TRACE msg="Conn.QueryContext Start" query="SELECT * FROM test1" args=[]
-time=2025-01-21T21:48:17.434+09:00 level=DEBUG msg="Conn.QueryContext Complete" query="SELECT * FROM test1" args=[] duration=337666
-time=2025-01-21T21:48:17.434+09:00 level=TRACE msg="Rows.Next Start"
-time=2025-01-21T21:48:17.434+09:00 level=DEBUG msg="Rows.Next Complete" duration=35125 eof=false
-time=2025-01-21T21:48:17.434+09:00 level=INFO msg=Record id=1 name=Alice
-time=2025-01-21T21:48:17.434+09:00 level=TRACE msg="Rows.Next Start"
-time=2025-01-21T21:48:17.434+09:00 level=DEBUG msg="Rows.Next Complete" duration=334 eof=true
-time=2025-01-21T21:48:17.434+09:00 level=TRACE msg="Rows.Close Start"
-time=2025-01-21T21:48:17.434+09:00 level=DEBUG msg="Rows.Close Complete" duration=417
-time=2025-01-21T21:48:17.434+09:00 level=DEBUG msg="Conn.Close Start"
-time=2025-01-21T21:48:17.434+09:00 level=INFO msg="Conn.Close Complete" duration=36417
+time=2025-01-24T07:59:53.679+09:00 level=DEBUG msg="sqlslog.Open Start" driver=mysql dsn=root@tcp(localhost:3306)/app1
+time=2025-01-24T07:59:53.680+09:00 level=DEBUG msg="Driver.OpenConnector Start" dsn=root@tcp(localhost:3306)/app1
+time=2025-01-24T07:59:53.680+09:00 level=INFO msg="Driver.OpenConnector Complete" dsn=root@tcp(localhost:3306)/app1 duration=1459 conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:53.680+09:00 level=INFO msg="sqlslog.Open Complete" driver=mysql dsn=root@tcp(localhost:3306)/app1 duration=153750
+time=2025-01-24T07:59:53.680+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-24T07:59:53.680+09:00 level=DEBUG msg="Connector.Connect Start" conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:53.687+09:00 level=INFO msg="Connector.Connect Complete" conn_id=ezkYQRdqMRA1OpWP duration=7529542 success=false
+time=2025-01-24T07:59:53.687+09:00 level=INFO msg="Connector.Connect Complete" duration=7560542 success=false
+time=2025-01-24T07:59:53.687+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-24T07:59:53.687+09:00 level=DEBUG msg="Connector.Connect Start" conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:53.688+09:00 level=INFO msg="Connector.Connect Complete" conn_id=ezkYQRdqMRA1OpWP duration=1149958 success=false
+time=2025-01-24T07:59:53.688+09:00 level=INFO msg="Connector.Connect Complete" duration=1168167 success=false
+time=2025-01-24T07:59:53.688+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-24T07:59:53.688+09:00 level=DEBUG msg="Connector.Connect Start" conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:53.689+09:00 level=INFO msg="Connector.Connect Complete" conn_id=ezkYQRdqMRA1OpWP duration=601208 success=false
+time=2025-01-24T07:59:53.689+09:00 level=INFO msg="Connector.Connect Complete" duration=617959 success=false
+time=2025-01-24T07:59:55.690+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-24T07:59:55.690+09:00 level=DEBUG msg="Connector.Connect Start" conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:55.697+09:00 level=INFO msg="Connector.Connect Complete" conn_id=ezkYQRdqMRA1OpWP duration=6744667 success=false
+time=2025-01-24T07:59:55.697+09:00 level=INFO msg="Connector.Connect Complete" duration=7082916 success=false
+time=2025-01-24T07:59:55.698+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-24T07:59:55.698+09:00 level=DEBUG msg="Connector.Connect Start" conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:55.708+09:00 level=INFO msg="Connector.Connect Complete" conn_id=ezkYQRdqMRA1OpWP duration=9886667 success=false
+time=2025-01-24T07:59:55.708+09:00 level=INFO msg="Connector.Connect Complete" duration=9995584 success=false
+time=2025-01-24T07:59:55.708+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-24T07:59:55.708+09:00 level=DEBUG msg="Connector.Connect Start" conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:55.709+09:00 level=INFO msg="Connector.Connect Complete" conn_id=ezkYQRdqMRA1OpWP duration=1868375 success=false
+time=2025-01-24T07:59:55.710+09:00 level=INFO msg="Connector.Connect Complete" duration=1899417 success=false
+time=2025-01-24T07:59:57.711+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-24T07:59:57.711+09:00 level=DEBUG msg="Connector.Connect Start" conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:57.715+09:00 level=INFO msg="Connector.Connect Complete" conn_id=ezkYQRdqMRA1OpWP duration=4141500 success=false
+time=2025-01-24T07:59:57.715+09:00 level=INFO msg="Connector.Connect Complete" duration=4320417 success=false
+time=2025-01-24T07:59:57.715+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-24T07:59:57.715+09:00 level=DEBUG msg="Connector.Connect Start" conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:57.718+09:00 level=INFO msg="Connector.Connect Complete" conn_id=ezkYQRdqMRA1OpWP duration=2951833 success=false
+time=2025-01-24T07:59:57.718+09:00 level=INFO msg="Connector.Connect Complete" duration=3133583 success=false
+time=2025-01-24T07:59:57.719+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-24T07:59:57.719+09:00 level=DEBUG msg="Connector.Connect Start" conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:57.721+09:00 level=INFO msg="Connector.Connect Complete" conn_id=ezkYQRdqMRA1OpWP duration=2237625 success=false
+time=2025-01-24T07:59:57.721+09:00 level=INFO msg="Connector.Connect Complete" duration=2633458 success=false
+time=2025-01-24T07:59:59.723+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-24T07:59:59.723+09:00 level=DEBUG msg="Connector.Connect Start" conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:59.730+09:00 level=INFO msg="Connector.Connect Complete" conn_id=ezkYQRdqMRA1OpWP duration=6181250 success=true
+time=2025-01-24T07:59:59.730+09:00 level=INFO msg="Connector.Connect Complete" duration=6545834 success=true
+time=2025-01-24T07:59:59.730+09:00 level=VERBOSE msg="Conn.Ping Start" conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:59.731+09:00 level=TRACE msg="Conn.Ping Complete" conn_id=ezkYQRdqMRA1OpWP duration=798584
+time=2025-01-24T07:59:59.731+09:00 level=VERBOSE msg="Conn.ResetSession Start" conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:59.731+09:00 level=TRACE msg="Conn.ResetSession Complete" conn_id=ezkYQRdqMRA1OpWP duration=10875
+time=2025-01-24T07:59:59.731+09:00 level=DEBUG msg="Conn.ExecContext Start" conn_id=ezkYQRdqMRA1OpWP query="CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))" args=[]
+time=2025-01-24T07:59:59.752+09:00 level=INFO msg="Conn.ExecContext Complete" conn_id=ezkYQRdqMRA1OpWP query="CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))" args=[] duration=21256084
+time=2025-01-24T07:59:59.752+09:00 level=VERBOSE msg="Conn.ResetSession Start" conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:59.752+09:00 level=TRACE msg="Conn.ResetSession Complete" conn_id=ezkYQRdqMRA1OpWP duration=8458
+time=2025-01-24T07:59:59.752+09:00 level=VERBOSE msg="Conn.Ping Start" conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:59.753+09:00 level=TRACE msg="Conn.Ping Complete" conn_id=ezkYQRdqMRA1OpWP duration=612708
+time=2025-01-24T07:59:59.753+09:00 level=VERBOSE msg="Conn.ResetSession Start" conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:59.753+09:00 level=TRACE msg="Conn.ResetSession Complete" conn_id=ezkYQRdqMRA1OpWP duration=4375
+time=2025-01-24T07:59:59.753+09:00 level=DEBUG msg="Conn.BeginTx Start" conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:59.754+09:00 level=INFO msg="Conn.BeginTx Complete" conn_id=ezkYQRdqMRA1OpWP duration=553250 tx_id=x7G4K9bIfTk8uLLG
+time=2025-01-24T07:59:59.754+09:00 level=DEBUG msg="Conn.ExecContext Start" conn_id=ezkYQRdqMRA1OpWP query="INSERT INTO test1 (id, name) VALUES (?, ?)" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]"
+time=2025-01-24T07:59:59.754+09:00 level=INFO msg="Conn.ExecContext Complete" conn_id=ezkYQRdqMRA1OpWP query="INSERT INTO test1 (id, name) VALUES (?, ?)" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=1208 skip=true
+time=2025-01-24T07:59:59.754+09:00 level=DEBUG msg="Conn.PrepareContext Start" conn_id=ezkYQRdqMRA1OpWP query="INSERT INTO test1 (id, name) VALUES (?, ?)"
+time=2025-01-24T07:59:59.757+09:00 level=INFO msg="Conn.PrepareContext Complete" conn_id=ezkYQRdqMRA1OpWP query="INSERT INTO test1 (id, name) VALUES (?, ?)" duration=3146875 stmt_id=FosnfeH3MVzCbp1e
+time=2025-01-24T07:59:59.757+09:00 level=DEBUG msg="Stmt.ExecContext Start" conn_id=ezkYQRdqMRA1OpWP stmt_id=FosnfeH3MVzCbp1e args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]"
+time=2025-01-24T07:59:59.758+09:00 level=INFO msg="Stmt.ExecContext Complete" conn_id=ezkYQRdqMRA1OpWP stmt_id=FosnfeH3MVzCbp1e args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=546709
+time=2025-01-24T07:59:59.758+09:00 level=DEBUG msg="Stmt.Close Start" conn_id=ezkYQRdqMRA1OpWP stmt_id=FosnfeH3MVzCbp1e
+time=2025-01-24T07:59:59.758+09:00 level=INFO msg="Stmt.Close Complete" conn_id=ezkYQRdqMRA1OpWP stmt_id=FosnfeH3MVzCbp1e duration=7208
+time=2025-01-24T07:59:59.758+09:00 level=DEBUG msg="Tx.Commit Start" conn_id=ezkYQRdqMRA1OpWP tx_id=x7G4K9bIfTk8uLLG
+time=2025-01-24T07:59:59.759+09:00 level=INFO msg="Tx.Commit Complete" conn_id=ezkYQRdqMRA1OpWP tx_id=x7G4K9bIfTk8uLLG duration=1483000
+time=2025-01-24T07:59:59.759+09:00 level=VERBOSE msg="Conn.ResetSession Start" conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:59.759+09:00 level=TRACE msg="Conn.ResetSession Complete" conn_id=ezkYQRdqMRA1OpWP duration=4542
+time=2025-01-24T07:59:59.759+09:00 level=TRACE msg="Conn.QueryContext Start" conn_id=ezkYQRdqMRA1OpWP query="SELECT * FROM test1" args=[]
+time=2025-01-24T07:59:59.760+09:00 level=DEBUG msg="Conn.QueryContext Complete" conn_id=ezkYQRdqMRA1OpWP query="SELECT * FROM test1" args=[] duration=644875
+time=2025-01-24T07:59:59.760+09:00 level=TRACE msg="Rows.Next Start" conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:59.760+09:00 level=DEBUG msg="Rows.Next Complete" conn_id=ezkYQRdqMRA1OpWP duration=27083 eof=false
+time=2025-01-24T07:59:59.760+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-01-24T07:59:59.760+09:00 level=TRACE msg="Rows.Next Start" conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:59.760+09:00 level=DEBUG msg="Rows.Next Complete" conn_id=ezkYQRdqMRA1OpWP duration=208 eof=true
+time=2025-01-24T07:59:59.760+09:00 level=TRACE msg="Rows.Close Start" conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:59.760+09:00 level=DEBUG msg="Rows.Close Complete" conn_id=ezkYQRdqMRA1OpWP duration=959
+time=2025-01-24T07:59:59.760+09:00 level=DEBUG msg="Conn.Close Start" conn_id=ezkYQRdqMRA1OpWP
+time=2025-01-24T07:59:59.760+09:00 level=INFO msg="Conn.Close Complete" conn_id=ezkYQRdqMRA1OpWP duration=57833

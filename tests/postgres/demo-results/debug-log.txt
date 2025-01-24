@@ -1,26 +1,26 @@
 go run ./demo.go debug text
-time=2025-01-21T21:47:33.035+09:00 level=DEBUG msg="sqlslog.Open Start" driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
-time=2025-01-21T21:47:33.035+09:00 level=INFO msg="sqlslog.Open Complete" driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=87792
-time=2025-01-21T21:47:33.035+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:47:33.035+09:00 level=DEBUG msg="Driver.Open Start" dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
-time=2025-01-21T21:47:33.037+09:00 level=INFO msg="Driver.Open Complete" dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=1368792 success=false
-time=2025-01-21T21:47:33.037+09:00 level=INFO msg="Connector.Connect Complete" duration=1428125 success=false
-time=2025-01-21T21:47:35.038+09:00 level=DEBUG msg="Connector.Connect Start"
-time=2025-01-21T21:47:35.038+09:00 level=DEBUG msg="Driver.Open Start" dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
-time=2025-01-21T21:47:35.051+09:00 level=INFO msg="Driver.Open Complete" dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=13316000 success=true
-time=2025-01-21T21:47:35.052+09:00 level=INFO msg="Connector.Connect Complete" duration=13537625 success=true
-time=2025-01-21T21:47:35.053+09:00 level=DEBUG msg="Conn.ExecContext Start" query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[]
-time=2025-01-21T21:47:35.057+09:00 level=INFO msg="Conn.ExecContext Complete" query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=4753959
-time=2025-01-21T21:47:35.058+09:00 level=DEBUG msg="Conn.BeginTx Start"
-time=2025-01-21T21:47:35.059+09:00 level=INFO msg="Conn.BeginTx Complete" duration=687916
-time=2025-01-21T21:47:35.059+09:00 level=DEBUG msg="Conn.ExecContext Start" query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]"
-time=2025-01-21T21:47:35.061+09:00 level=INFO msg="Conn.ExecContext Complete" query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=1946584
-time=2025-01-21T21:47:35.061+09:00 level=DEBUG msg="Tx.Commit Start"
-time=2025-01-21T21:47:35.063+09:00 level=INFO msg="Tx.Commit Complete" duration=1291541
-time=2025-01-21T21:47:35.064+09:00 level=DEBUG msg="Conn.QueryContext Complete" query="SELECT * FROM test1" args=[] duration=812375
-time=2025-01-21T21:47:35.064+09:00 level=DEBUG msg="Rows.Next Complete" duration=2291 eof=false
-time=2025-01-21T21:47:35.064+09:00 level=INFO msg=Record id=1 name=Alice
-time=2025-01-21T21:47:35.064+09:00 level=DEBUG msg="Rows.Next Complete" duration=1125 eof=true
-time=2025-01-21T21:47:35.064+09:00 level=DEBUG msg="Rows.Close Complete" duration=416
-time=2025-01-21T21:47:35.064+09:00 level=DEBUG msg="Conn.Close Start"
-time=2025-01-21T21:47:35.064+09:00 level=INFO msg="Conn.Close Complete" duration=70958
+time=2025-01-24T07:59:20.496+09:00 level=DEBUG msg="sqlslog.Open Start" driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
+time=2025-01-24T07:59:20.496+09:00 level=INFO msg="sqlslog.Open Complete" driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=76459
+time=2025-01-24T07:59:20.496+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-24T07:59:20.496+09:00 level=DEBUG msg="Driver.Open Start" dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
+time=2025-01-24T07:59:20.498+09:00 level=INFO msg="Driver.Open Complete" dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=1410042 success=false
+time=2025-01-24T07:59:20.498+09:00 level=INFO msg="Connector.Connect Complete" duration=1479000 success=false
+time=2025-01-24T07:59:22.499+09:00 level=DEBUG msg="Connector.Connect Start"
+time=2025-01-24T07:59:22.499+09:00 level=DEBUG msg="Driver.Open Start" dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
+time=2025-01-24T07:59:22.512+09:00 level=INFO msg="Driver.Open Complete" dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=12582083 success=true conn_id=N5We6AtW_OD1DX89
+time=2025-01-24T07:59:22.512+09:00 level=INFO msg="Connector.Connect Complete" duration=12747042 success=true
+time=2025-01-24T07:59:22.512+09:00 level=DEBUG msg="Conn.ExecContext Start" conn_id=N5We6AtW_OD1DX89 query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[]
+time=2025-01-24T07:59:22.516+09:00 level=INFO msg="Conn.ExecContext Complete" conn_id=N5We6AtW_OD1DX89 query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=3825167
+time=2025-01-24T07:59:22.517+09:00 level=DEBUG msg="Conn.BeginTx Start" conn_id=N5We6AtW_OD1DX89
+time=2025-01-24T07:59:22.518+09:00 level=INFO msg="Conn.BeginTx Complete" conn_id=N5We6AtW_OD1DX89 duration=1305042 tx_id=6gyswkHWSgdxOzHQ
+time=2025-01-24T07:59:22.518+09:00 level=DEBUG msg="Conn.ExecContext Start" conn_id=N5We6AtW_OD1DX89 query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]"
+time=2025-01-24T07:59:22.520+09:00 level=INFO msg="Conn.ExecContext Complete" conn_id=N5We6AtW_OD1DX89 query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=1272375
+time=2025-01-24T07:59:22.520+09:00 level=DEBUG msg="Tx.Commit Start" conn_id=N5We6AtW_OD1DX89 tx_id=6gyswkHWSgdxOzHQ
+time=2025-01-24T07:59:22.520+09:00 level=INFO msg="Tx.Commit Complete" conn_id=N5We6AtW_OD1DX89 tx_id=6gyswkHWSgdxOzHQ duration=737917
+time=2025-01-24T07:59:22.521+09:00 level=DEBUG msg="Conn.QueryContext Complete" conn_id=N5We6AtW_OD1DX89 query="SELECT * FROM test1" args=[] duration=463791
+time=2025-01-24T07:59:22.521+09:00 level=DEBUG msg="Rows.Next Complete" conn_id=N5We6AtW_OD1DX89 duration=2542 eof=false
+time=2025-01-24T07:59:22.521+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-01-24T07:59:22.521+09:00 level=DEBUG msg="Rows.Next Complete" conn_id=N5We6AtW_OD1DX89 duration=958 eof=true
+time=2025-01-24T07:59:22.521+09:00 level=DEBUG msg="Rows.Close Complete" conn_id=N5We6AtW_OD1DX89 duration=250
+time=2025-01-24T07:59:22.521+09:00 level=DEBUG msg="Conn.Close Start" conn_id=N5We6AtW_OD1DX89
+time=2025-01-24T07:59:22.521+09:00 level=INFO msg="Conn.Close Complete" conn_id=N5We6AtW_OD1DX89 duration=37792
