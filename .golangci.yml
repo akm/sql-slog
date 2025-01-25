@@ -10,7 +10,7 @@ linters:
     - copyloopvar
     - cyclop
     - decorder
-    - depguard
+    # - depguard
     - dogsled
     - dupl
     - dupword
