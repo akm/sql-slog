@@ -80,7 +80,7 @@ func (r *rowsWrapper) ColumnTypeDatabaseTypeName(index int) string {
 }
 
 // ColumnTypeLength implements driver.RowsColumnTypeLength.
-func (r *rowsWrapper) ColumnTypeLength(index int) (length int64, ok bool) {
+func (r *rowsWrapper) ColumnTypeLength(index int) (int64, bool) {
 	if c, ok := r.original.(driver.RowsColumnTypeLength); ok {
 		return c.ColumnTypeLength(index)
 	} else {
@@ -89,7 +89,7 @@ func (r *rowsWrapper) ColumnTypeLength(index int) (length int64, ok bool) {
 }
 
 // ColumnTypeNullable implements driver.RowsColumnTypeNullable.
-func (r *rowsWrapper) ColumnTypeNullable(index int) (nullable bool, ok bool) {
+func (r *rowsWrapper) ColumnTypeNullable(index int) (bool, bool) {
 	if c, ok := r.original.(driver.RowsColumnTypeNullable); ok {
 		return c.ColumnTypeNullable(index)
 	} else {
@@ -98,7 +98,7 @@ func (r *rowsWrapper) ColumnTypeNullable(index int) (nullable bool, ok bool) {
 }
 
 // ColumnTypePrecisionScale implements driver.RowsColumnTypePrecisionScale.
-func (r *rowsWrapper) ColumnTypePrecisionScale(index int) (precision int64, scale int64, ok bool) {
+func (r *rowsWrapper) ColumnTypePrecisionScale(index int) (int64, int64, bool) {
 	if c, ok := r.original.(driver.RowsColumnTypePrecisionScale); ok {
 		return c.ColumnTypePrecisionScale(index)
 	} else {
