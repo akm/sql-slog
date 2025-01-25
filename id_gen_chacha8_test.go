@@ -9,6 +9,7 @@ import (
 )
 
 func TestChaCha8Gen(t *testing.T) {
+	t.Parallel()
 	idGenAttemptsStr := os.Getenv("ID_GEN_ATTEMPTS")
 	if idGenAttemptsStr == "" {
 		idGenAttemptsStr = "1000"
@@ -29,6 +30,7 @@ func TestChaCha8Gen(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("length %d", tc.length), func(t *testing.T) {
+			t.Parallel()
 			idGen := NewChaCha8IDGenerator(tc.length)
 			values := make([]string, idGenAttempts)
 			for i := 0; i < idGenAttempts; i++ {

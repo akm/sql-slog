@@ -31,12 +31,15 @@ func (m *mockStmtForWrapStmt) Query(args []driver.Value) (driver.Rows, error) {
 }
 
 func TestWrapStmt(t *testing.T) {
+	t.Parallel()
 	t.Run("nil", func(t *testing.T) {
+		t.Parallel()
 		if wrapStmt(nil, nil) != nil {
 			t.Fatal("Expected nil")
 		}
 	})
 	t.Run("implements driver.Stmt but not stmtWithContext", func(t *testing.T) {
+		t.Parallel()
 		mock := &mockStmtForWrapStmt{}
 		logger := &logger{}
 		stmt := wrapStmt(mock, logger)

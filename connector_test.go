@@ -8,12 +8,14 @@ import (
 )
 
 func TestConnectorConnectErrorHandler(t *testing.T) {
+	t.Parallel()
 	testcases := []string{
 		"mysql",
 		"postgres",
 	}
 	for _, driverName := range testcases {
 		t.Run(driverName, func(t *testing.T) {
+			t.Parallel()
 			errHandler := ConnectorConnectErrorHandler(driverName)
 			complete, attrs := errHandler(fmt.Errorf("dummy"))
 			if complete {
@@ -40,6 +42,7 @@ func (m *mockConnectorForWrapConnector) Driver() driver.Driver {
 }
 
 func TestConnectorDriver(t *testing.T) {
+	t.Parallel()
 	mock := &mockConnectorForWrapConnector{}
 	logger := &logger{}
 	conn := wrapConnector(mock, logger)

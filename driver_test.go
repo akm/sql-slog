@@ -26,7 +26,9 @@ var _ driver.Driver = (*mockErrorDiverContext)(nil)
 var _ driver.DriverContext = (*mockErrorDiverContext)(nil)
 
 func TestDriverContextWrapperOpenConnector(t *testing.T) {
+	t.Parallel()
 	t.Run("unexpected error", func(t *testing.T) {
+		t.Parallel()
 		buf := bytes.NewBuffer(nil)
 		logger := slog.New(NewTextHandler(buf, nil))
 		dw := wrapDriver(&mockErrorDiverContext{},
@@ -44,8 +46,11 @@ func TestDriverContextWrapperOpenConnector(t *testing.T) {
 }
 
 func TestDriverOpenErrorHandler(t *testing.T) {
+	t.Parallel()
 	t.Run("postgres", func(t *testing.T) {
+		t.Parallel()
 		t.Run("unexpected error", func(t *testing.T) {
+			t.Parallel()
 			eh := DriverOpenErrorHandler("postgres")
 			completed, attrs := eh(errors.New("unexpected error"))
 			if completed {

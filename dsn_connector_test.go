@@ -18,6 +18,7 @@ func (m *mockDriverForDsnConnector) Open(name string) (driver.Conn, error) {
 }
 
 func TestDsnConnector(t *testing.T) {
+	t.Parallel()
 	var d dsnConnector
 	dsn := "dsn"
 	drv := &mockDriverForDsnConnector{}
@@ -28,6 +29,7 @@ func TestDsnConnector(t *testing.T) {
 	})
 
 	t.Run("Driver", func(t *testing.T) {
+		t.Parallel()
 		if d.Driver() != drv {
 			t.Errorf("expected %v, got %v", drv, d.Driver())
 		}

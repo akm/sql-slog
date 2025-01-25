@@ -29,12 +29,15 @@ func (m *mockConnForWrapConn) Prepare(query string) (driver.Stmt, error) {
 var _ driver.Conn = (*mockConnForWrapConn)(nil)
 
 func TestWrapConn(t *testing.T) {
+	t.Parallel()
 	t.Run("nil", func(t *testing.T) {
+		t.Parallel()
 		if wrapConn(nil, nil) != nil {
 			t.Fatal("Expected nil")
 		}
 	})
 	t.Run("implements driver.Conn but not connWithContext", func(t *testing.T) {
+		t.Parallel()
 		mock := &mockConnForWrapConn{}
 		logger := &logger{}
 		conn := wrapConn(mock, logger)
@@ -45,6 +48,7 @@ func TestWrapConn(t *testing.T) {
 }
 
 func TestConnExecContextErrorHandler(t *testing.T) {
+	t.Parallel()
 	errHandler := ConnExecContextErrorHandler("mysql")
 	complete, attrs := errHandler(fmt.Errorf("dummy"))
 	if complete {
@@ -56,9 +60,12 @@ func TestConnExecContextErrorHandler(t *testing.T) {
 }
 
 func TestConnQueryContextErrorHandler(t *testing.T) {
+	t.Parallel()
 	t.Run("mysql", func(t *testing.T) {
+		t.Parallel()
 		errHandler := ConnQueryContextErrorHandler("mysql")
 		t.Run("nil error", func(t *testing.T) {
+			t.Parallel()
 			complete, attrs := errHandler(nil)
 			if !complete {
 				t.Fatal("Expected true")
@@ -68,6 +75,7 @@ func TestConnQueryContextErrorHandler(t *testing.T) {
 			}
 		})
 		t.Run("unexpected error", func(t *testing.T) {
+			t.Parallel()
 			complete, attrs := errHandler(fmt.Errorf("dummy"))
 			if complete {
 				t.Fatal("Expected false")
@@ -131,24 +139,29 @@ var _ driver.QueryerContext = (*mockErrorConn)(nil)
 // var _ driver.Pinger = (*mockErrorConn)(nil) // not implemented for the test below
 
 func TestWithMockErrorConn(t *testing.T) {
+	t.Parallel()
 	logger := newLogger(slog.Default(), newOptions("sqlite3"))
 	w := wrapConn(newMockErrConn(fmt.Errorf("unexpected error")), logger)
 	t.Run("Begin", func(t *testing.T) {
+		t.Parallel()
 		if _, err := w.Begin(); err == nil { //nolint:staticcheck
 			t.Fatal("Expected error")
 		}
 	})
 	t.Run("Prepare", func(t *testing.T) {
+		t.Parallel()
 		if _, err := w.Prepare("dummy"); err == nil {
 			t.Fatal("Expected error")
 		}
 	})
 	t.Run("BeginTx", func(t *testing.T) {
+		t.Parallel()
 		if _, err := w.(driver.ConnBeginTx).BeginTx(context.Background(), driver.TxOptions{}); err == nil {
 			t.Fatal("Expected error")
 		}
 	})
 	t.Run("PrepareContext", func(t *testing.T) {
+		t.Parallel()
 		if _, err := w.(driver.ConnPrepareContext).PrepareContext(context.Background(), "dummy"); err == nil {
 			t.Fatal("Expected error")
 		}
@@ -156,6 +169,7 @@ func TestWithMockErrorConn(t *testing.T) {
 }
 
 func TestPingInCase(t *testing.T) {
+	t.Parallel()
 	logger := newLogger(slog.Default(), newOptions("sqlite3"))
 	conn := newMockErrConn(nil)
 	w := &connWithContextWrapper{

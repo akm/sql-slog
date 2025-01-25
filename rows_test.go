@@ -8,6 +8,7 @@ import (
 )
 
 func TestWrapRows(t *testing.T) {
+	t.Parallel()
 	if wrapRows(nil, nil) != nil {
 		t.Fatal("Expected nil")
 	}
@@ -33,14 +34,17 @@ func (m *mockRows) Next(dest []driver.Value) error {
 }
 
 func TestWithMockRows(t *testing.T) {
+	t.Parallel()
 	wrapped := &rowsWrapper{original: &mockRows{}, logger: newLogger(slog.Default(), nil)}
 	t.Run("ColumnTypeScanType", func(t *testing.T) {
+		t.Parallel()
 		res := wrapped.ColumnTypeScanType(0)
 		if res == nil {
 			t.Fatal("Expected non-nil")
 		}
 	})
 	t.Run("ColumnTypeDatabaseTypeName", func(t *testing.T) {
+		t.Parallel()
 		res := wrapped.ColumnTypeDatabaseTypeName(0)
 		if res != "" {
 			t.Fatal("Expected empty")
@@ -49,6 +53,7 @@ func TestWithMockRows(t *testing.T) {
 }
 
 func TestHandleRowsNextError(t *testing.T) {
+	t.Parallel()
 	complete, attrs := HandleRowsNextError(fmt.Errorf("dummy"))
 	if complete {
 		t.Fatal("Expected false")
