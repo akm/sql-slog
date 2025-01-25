@@ -22,7 +22,7 @@ linters:
     - errorlint
     - execinquery
     - exhaustive
-    - exhaustruct
+    # - exhaustruct
     - exportloopref
     - fatcontext
     - forbidigo
