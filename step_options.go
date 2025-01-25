@@ -55,8 +55,10 @@ type StepOptions struct {
 	ErrorHandler func(error) (bool, []slog.Attr)
 }
 
+const defaultSlogLevelDiff = 4
+
 func (o *StepOptions) SetLevel(lv Level) {
-	o.Start.Level = lv - 4
+	o.Start.Level = lv - defaultSlogLevelDiff
 	o.Complete.Level = lv
 }
 
