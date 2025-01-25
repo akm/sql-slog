@@ -33,7 +33,7 @@ func TestChaCha8Gen(t *testing.T) {
 			t.Parallel()
 			idGen := NewChaCha8IDGenerator(tc.length)
 			values := make([]string, idGenAttempts)
-			for i := 0; i < idGenAttempts; i++ {
+			for i := range idGenAttempts {
 				values[i] = idGen.Generate()
 			}
 			for _, v := range values {

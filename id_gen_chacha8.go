@@ -31,7 +31,7 @@ var generatorRunes = []byte("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNO
 func (g *ChaCha8IDGenerator) Generate() string {
 	r := make([]byte, g.length)
 	runesLen := len(generatorRunes)
-	for i := 0; i < g.length; i++ {
+	for i := range g.length {
 		r[i] = generatorRunes[g.IntN(runesLen)]
 	}
 	return string(r)
