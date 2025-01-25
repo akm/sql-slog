@@ -94,7 +94,7 @@ linters:
     - tenv
     - testableexamples
     - testifylint
-    - testpackage
+    # - testpackage
     - thelper
     - tparallel
     - unconvert
