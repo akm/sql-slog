@@ -92,7 +92,7 @@ linters:
     - tagalign
     - tagliatelle
     - tenv
-    - testableexamples
+    # - testableexamples
     - testifylint
     # - testpackage
     - thelper
