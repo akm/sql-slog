@@ -1,22 +1,28 @@
 package sqlslog
 
 import (
+	"bytes"
+	"context"
 	"database/sql/driver"
+	"errors"
+	"log/slog"
 	"testing"
 )
 
-type mockStmtForWrapStmt struct{}
+type mockStmtForWrapStmt struct {
+	error error
+}
 
 var _ driver.Stmt = (*mockStmtForWrapStmt)(nil)
 
 // Close implements driver.Stmt.
 func (m *mockStmtForWrapStmt) Close() error {
-	panic("unimplemented")
+	return m.error
 }
 
 // Exec implements driver.Stmt.
 func (m *mockStmtForWrapStmt) Exec([]driver.Value) (driver.Result, error) {
-	panic("unimplemented")
+	return nil, m.error
 }
 
 // NumInput implements driver.Stmt.
@@ -26,7 +32,7 @@ func (m *mockStmtForWrapStmt) NumInput() int {
 
 // Query implements driver.Stmt.
 func (m *mockStmtForWrapStmt) Query([]driver.Value) (driver.Rows, error) {
-	panic("unimplemented")
+	return nil, m.error
 }
 
 func TestWrapStmt(t *testing.T) {
@@ -46,4 +52,64 @@ func TestWrapStmt(t *testing.T) {
 			t.Fatal("Expected non-nil")
 		}
 	})
+
+	t.Run("Query", func(t *testing.T) {
+		dummyError := errors.New("unexpected Query error")
+		mock := &mockStmtForWrapStmt{
+			error: dummyError,
+		}
+
+		buf := bytes.NewBuffer(nil)
+		logger := slog.New(NewJSONHandler(buf, nil))
+		wrapped := wrapStmt(mock, newLogger(logger, newOptions("dummy")))
+		_, err := wrapped.Query(nil) // nolint:staticcheck
+		if err == nil {
+			t.Fatal("Expected non-nil")
+		}
+		if !errors.Is(err, dummyError) {
+			t.Fatalf("Expected %q but got %q", dummyError, err)
+		}
+	})
+}
+
+type mockErrorStmtWithContext struct {
+	mockStmtForWrapStmt
+	error error
+}
+
+var (
+	_ driver.Stmt             = (*mockErrorStmtWithContext)(nil)
+	_ driver.StmtExecContext  = (*mockErrorStmtWithContext)(nil)
+	_ driver.StmtQueryContext = (*mockErrorStmtWithContext)(nil)
+)
+
+func (m *mockErrorStmtWithContext) QueryContext(ctx context.Context, args []driver.NamedValue) (driver.Rows, error) {
+	return nil, m.error
+}
+
+func (m *mockErrorStmtWithContext) ExecContext(ctx context.Context, args []driver.NamedValue) (driver.Result, error) {
+	return nil, m.error
+}
+
+func TestWithMockErrorStmtWithContext(t *testing.T) {
+	dummyError := errors.New("unexpected QueryContext error")
+	mock := &mockErrorStmtWithContext{
+		mockStmtForWrapStmt: mockStmtForWrapStmt{},
+		error:               dummyError,
+	}
+
+	buf := bytes.NewBuffer(nil)
+	logger := slog.New(NewJSONHandler(buf, nil))
+	wrapped := wrapStmt(mock, newLogger(logger, newOptions("dummy")))
+	stmtWithQueryContext, ok := wrapped.(driver.StmtQueryContext)
+	if !ok {
+		t.Fatal("Expected StmtQueryContext")
+	}
+	_, err := stmtWithQueryContext.QueryContext(context.TODO(), nil)
+	if err == nil {
+		t.Fatal("Expected non-nil")
+	}
+	if !errors.Is(err, dummyError) {
+		t.Fatalf("Expected %q but got %q", dummyError, err)
+	}
 }
