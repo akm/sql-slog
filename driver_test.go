@@ -60,5 +60,4 @@ func TestDriverOpenErrorHandler(t *testing.T) {
 			}
 		})
 	})
-
 }
