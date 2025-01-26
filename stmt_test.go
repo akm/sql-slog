@@ -16,7 +16,7 @@ func (m *mockStmtForWrapStmt) Close() error {
 }
 
 // Exec implements driver.Stmt.
-func (m *mockStmtForWrapStmt) Exec(args []driver.Value) (driver.Result, error) {
+func (m *mockStmtForWrapStmt) Exec([]driver.Value) (driver.Result, error) {
 	panic("unimplemented")
 }
 
@@ -26,7 +26,7 @@ func (m *mockStmtForWrapStmt) NumInput() int {
 }
 
 // Query implements driver.Stmt.
-func (m *mockStmtForWrapStmt) Query(args []driver.Value) (driver.Rows, error) {
+func (m *mockStmtForWrapStmt) Query([]driver.Value) (driver.Rows, error) {
 	panic("unimplemented")
 }
 

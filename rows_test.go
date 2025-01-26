@@ -29,7 +29,7 @@ func (m *mockRows) Columns() []string {
 }
 
 // Next implements driver.Rows.
-func (m *mockRows) Next(dest []driver.Value) error {
+func (m *mockRows) Next([]driver.Value) error {
 	panic("unimplemented")
 }
 
