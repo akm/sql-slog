@@ -36,6 +36,7 @@ func TestWrapHandlerOptions(t *testing.T) {
 }
 
 func TestMergeReplaceAttrs(t *testing.T) {
+	t.Parallel()
 	t.Run("no parameter", func(t *testing.T) {
 		t.Parallel()
 		f := MergeReplaceAttrs()
