@@ -22,7 +22,7 @@ func (m *mockConnForWrapConn) Close() error {
 }
 
 // Prepare implements driver.Conn.
-func (m *mockConnForWrapConn) Prepare(query string) (driver.Stmt, error) {
+func (m *mockConnForWrapConn) Prepare(string) (driver.Stmt, error) {
 	panic("unimplemented")
 }
 
@@ -106,27 +106,27 @@ func (m *mockErrorConn) Close() error {
 }
 
 // Prepare implements driver.Conn.
-func (m *mockErrorConn) Prepare(query string) (driver.Stmt, error) {
+func (m *mockErrorConn) Prepare(string) (driver.Stmt, error) {
 	return nil, m.error
 }
 
 // BeginTx implements driver.ConnBeginTx.
-func (m *mockErrorConn) BeginTx(ctx context.Context, opts driver.TxOptions) (driver.Tx, error) {
+func (m *mockErrorConn) BeginTx(context.Context, driver.TxOptions) (driver.Tx, error) {
 	return nil, m.error
 }
 
 // PrepareContext implements driver.ConnPrepareContext.
-func (m *mockErrorConn) PrepareContext(ctx context.Context, query string) (driver.Stmt, error) {
+func (m *mockErrorConn) PrepareContext(context.Context, string) (driver.Stmt, error) {
 	return nil, m.error
 }
 
 // QueryContext implements driver.QueryerContext.
-func (m *mockErrorConn) QueryContext(ctx context.Context, query string, args []driver.NamedValue) (driver.Rows, error) {
+func (m *mockErrorConn) QueryContext(context.Context, string, []driver.NamedValue) (driver.Rows, error) {
 	return nil, m.error
 }
 
 // ExecContext implements driver.ExecerContext.
-func (m *mockErrorConn) ExecContext(ctx context.Context, query string, args []driver.NamedValue) (driver.Result, error) {
+func (m *mockErrorConn) ExecContext(context.Context, string, []driver.NamedValue) (driver.Result, error) {
 	return nil, m.error
 }
 

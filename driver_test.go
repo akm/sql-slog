@@ -12,12 +12,12 @@ type mockErrorDiverContext struct {
 }
 
 // Open implements driver.Driver.
-func (m *mockErrorDiverContext) Open(name string) (driver.Conn, error) {
+func (m *mockErrorDiverContext) Open(string) (driver.Conn, error) {
 	return nil, errors.New("unexpected error")
 }
 
 // OpenConnector implements driver.DriverContext.
-func (m *mockErrorDiverContext) OpenConnector(name string) (driver.Connector, error) {
+func (m *mockErrorDiverContext) OpenConnector(string) (driver.Connector, error) {
 	return nil, errors.New("unexpected error")
 }
 
