@@ -1,0 +1,22 @@
+package sqlslog
+
+import "testing"
+
+func TestSetStepLogMsgFormatter(t *testing.T) {
+	t.Run("defaultOptions", func(t *testing.T) {
+		opts := newOptions("dummy")
+		if opts.connBegin.Complete.Msg != "Conn.Begin" {
+			t.Errorf("unexpected default value: %s", opts.connBegin.Complete.Msg)
+		}
+	})
+
+	t.Run("CustomStepLogMsgFormatter", func(t *testing.T) {
+		formatter, backup := StepLogMsgWithEventName, stepLogMsgFormatter
+		SetStepLogMsgFormatter(formatter)
+		defer SetStepLogMsgFormatter(backup)
+		opts := newOptions("dummy")
+		if opts.connBegin.Complete.Msg != "Conn.Begin Complete" {
+			t.Errorf("unexpected default value: %s", opts.connBegin.Complete.Msg)
+		}
+	})
+}
