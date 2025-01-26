@@ -17,6 +17,7 @@ func TestLoggerDurationAttr(t *testing.T) {
 			value:        time.Duration(1),
 			durationType: DurationNanoSeconds,
 			expected: func(t *testing.T, attr slog.Attr) {
+				t.Helper()
 				if v, ok := attr.Value.Any().(int64); !ok {
 					t.Errorf("expected: %T, but got %T", int64(0), v)
 				} else if v != 1 {
@@ -28,6 +29,7 @@ func TestLoggerDurationAttr(t *testing.T) {
 			value:        time.Duration(2_000),
 			durationType: DurationMicroSeconds,
 			expected: func(t *testing.T, attr slog.Attr) {
+				t.Helper()
 				if v, ok := attr.Value.Any().(int64); !ok {
 					t.Errorf("expected: %T, but got %T", int64(0), v)
 				} else if v != 2 {
@@ -39,6 +41,7 @@ func TestLoggerDurationAttr(t *testing.T) {
 			value:        time.Duration(3_000_000),
 			durationType: DurationMilliSeconds,
 			expected: func(t *testing.T, attr slog.Attr) {
+				t.Helper()
 				if v, ok := attr.Value.Any().(int64); !ok {
 					t.Errorf("expected: %T, but got %T", int64(0), v)
 				} else if v != 3 {
@@ -50,6 +53,7 @@ func TestLoggerDurationAttr(t *testing.T) {
 			value:        time.Duration(4_000_000_000),
 			durationType: DurationGoDuration,
 			expected: func(t *testing.T, attr slog.Attr) {
+				t.Helper()
 				if attr.Value.Duration() != time.Duration(4_000_000_000) {
 					t.Errorf("expected: %d, but got %d", 4_000_000_000, attr.Value.Duration())
 				}
@@ -59,6 +63,7 @@ func TestLoggerDurationAttr(t *testing.T) {
 			value:        time.Duration(567_000_000),
 			durationType: DurationString,
 			expected: func(t *testing.T, attr slog.Attr) {
+				t.Helper()
 				if v, ok := attr.Value.Any().(string); !ok {
 					t.Errorf("expected: %T, but got %T", "", v)
 				} else if v != "567ms" {
@@ -70,6 +75,7 @@ func TestLoggerDurationAttr(t *testing.T) {
 			value:        time.Duration(890_000),
 			durationType: DurationType(-1),
 			expected: func(t *testing.T, attr slog.Attr) {
+				t.Helper()
 				if v, ok := attr.Value.Any().(int64); !ok {
 					t.Errorf("expected: %T, but got %T", int64(0), v)
 				} else if v != 890_000 {
