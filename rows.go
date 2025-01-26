@@ -15,9 +15,8 @@ func wrapRows(original driver.Rows, logger *logger) driver.Rows {
 	rw := rowsWrapper{original, logger}
 	if rnrs, ok := original.(driver.RowsNextResultSet); ok {
 		return &rowsNextResultSetWrapper{rw, rnrs}
-	} else {
-		return &rw
 	}
+	return &rw
 }
 
 type rowsWrapper struct {
@@ -65,9 +64,8 @@ func (r *rowsWrapper) ColumnTypeScanType(index int) reflect.Type {
 	// https://cs.opensource.google/go/go/+/master:src/database/sql/sql.go;l=3284-3288
 	if c, ok := r.original.(driver.RowsColumnTypeScanType); ok {
 		return c.ColumnTypeScanType(index)
-	} else {
-		return reflect.TypeFor[any]()
 	}
+	return reflect.TypeFor[any]()
 }
 
 // ColumnTypeDatabaseTypeName implements driver.RowsColumnTypeDatabaseTypeName.
@@ -90,18 +88,16 @@ func (r *rowsWrapper) ColumnTypeLength(index int) (int64, bool) {
 func (r *rowsWrapper) ColumnTypeNullable(index int) (bool, bool) {
 	if c, ok := r.original.(driver.RowsColumnTypeNullable); ok {
 		return c.ColumnTypeNullable(index)
-	} else {
-		return false, false
 	}
+	return false, false
 }
 
 // ColumnTypePrecisionScale implements driver.RowsColumnTypePrecisionScale.
 func (r *rowsWrapper) ColumnTypePrecisionScale(index int) (int64, int64, bool) {
 	if c, ok := r.original.(driver.RowsColumnTypePrecisionScale); ok {
 		return c.ColumnTypePrecisionScale(index)
-	} else {
-		return 0, 0, false
 	}
+	return 0, 0, false
 }
 
 type rowsNextResultSetWrapper struct {
