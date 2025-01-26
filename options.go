@@ -43,7 +43,7 @@ type options struct {
 func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *options {
 	stepOpts := func(name string, completeLevel Level) StepOptions {
 		var startLevel Level
-		switch completeLevel {
+		switch completeLevel { // nolint:exhaustive
 		case LevelError:
 			startLevel = LevelInfo
 		case LevelInfo:
