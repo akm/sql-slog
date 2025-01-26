@@ -115,6 +115,7 @@ issues:
     - path: _test\.go
       linters:
         - err113
+        - funlen
 linters-settings:
   cyclop:
     skip-tests: true
