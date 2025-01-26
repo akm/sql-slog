@@ -17,7 +17,6 @@ const (
 	LevelError   Level = Level(slog.LevelError) // the same as slog.LevelError.
 )
 
-// var _ slog.Level = slog.Level(LevelVerbose)
 var _ slog.Leveler = LevelVerbose
 
 // String returns the string representation of the log level.

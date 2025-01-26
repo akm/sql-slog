@@ -29,7 +29,7 @@ func WrapHandlerOptions(opts *slog.HandlerOptions) *slog.HandlerOptions {
 	return opts
 }
 
-// ReplaceLevelAttr is a type of ReplaceAttr of [slog.HandlerOptions]
+// ReplaceLevelAttr is a type of ReplaceAttr of [slog.HandlerOptions].
 type ReplaceAttrFunc = func([]string, slog.Attr) slog.Attr
 
 // ReplaceLevelAttr merges the [ReplaceAttrFunc] functions.
