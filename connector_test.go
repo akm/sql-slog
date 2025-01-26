@@ -3,7 +3,7 @@ package sqlslog
 import (
 	"context"
 	"database/sql/driver"
-	"fmt"
+	"errors"
 	"testing"
 )
 
@@ -17,7 +17,7 @@ func TestConnectorConnectErrorHandler(t *testing.T) {
 		t.Run(driverName, func(t *testing.T) {
 			t.Parallel()
 			errHandler := ConnectorConnectErrorHandler(driverName)
-			complete, attrs := errHandler(fmt.Errorf("dummy"))
+			complete, attrs := errHandler(errors.New("dummy"))
 			if complete {
 				t.Fatal("Expected false")
 			}

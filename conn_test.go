@@ -3,7 +3,7 @@ package sqlslog
 import (
 	"context"
 	"database/sql/driver"
-	"fmt"
+	"errors"
 	"log/slog"
 	"testing"
 )
@@ -50,7 +50,7 @@ func TestWrapConn(t *testing.T) {
 func TestConnExecContextErrorHandler(t *testing.T) {
 	t.Parallel()
 	errHandler := ConnExecContextErrorHandler("mysql")
-	complete, attrs := errHandler(fmt.Errorf("dummy"))
+	complete, attrs := errHandler(errors.New("dummy"))
 	if complete {
 		t.Fatal("Expected false")
 	}
@@ -76,7 +76,7 @@ func TestConnQueryContextErrorHandler(t *testing.T) {
 		})
 		t.Run("unexpected error", func(t *testing.T) {
 			t.Parallel()
-			complete, attrs := errHandler(fmt.Errorf("dummy"))
+			complete, attrs := errHandler(errors.New("dummy"))
 			if complete {
 				t.Fatal("Expected false")
 			}
@@ -141,7 +141,7 @@ var _ driver.QueryerContext = (*mockErrorConn)(nil)
 func TestWithMockErrorConn(t *testing.T) {
 	t.Parallel()
 	logger := newLogger(slog.Default(), newOptions("sqlite3"))
-	w := wrapConn(newMockErrConn(fmt.Errorf("unexpected error")), logger)
+	w := wrapConn(newMockErrConn(errors.New("unexpected error")), logger)
 	t.Run("Begin", func(t *testing.T) {
 		t.Parallel()
 		if _, err := w.Begin(); err == nil { //nolint:staticcheck

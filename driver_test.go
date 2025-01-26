@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"database/sql/driver"
 	"errors"
-	"fmt"
 	"log/slog"
 	"testing"
 )
@@ -14,12 +13,12 @@ type mockErrorDiverContext struct {
 
 // Open implements driver.Driver.
 func (m *mockErrorDiverContext) Open(name string) (driver.Conn, error) {
-	return nil, fmt.Errorf("unexpected error")
+	return nil, errors.New("unexpected error")
 }
 
 // OpenConnector implements driver.DriverContext.
 func (m *mockErrorDiverContext) OpenConnector(name string) (driver.Connector, error) {
-	return nil, fmt.Errorf("unexpected error")
+	return nil, errors.New("unexpected error")
 }
 
 var _ driver.Driver = (*mockErrorDiverContext)(nil)

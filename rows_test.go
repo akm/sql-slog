@@ -2,7 +2,7 @@ package sqlslog
 
 import (
 	"database/sql/driver"
-	"fmt"
+	"errors"
 	"log/slog"
 	"testing"
 )
@@ -54,7 +54,7 @@ func TestWithMockRows(t *testing.T) {
 
 func TestHandleRowsNextError(t *testing.T) {
 	t.Parallel()
-	complete, attrs := HandleRowsNextError(fmt.Errorf("dummy"))
+	complete, attrs := HandleRowsNextError(errors.New("dummy"))
 	if complete {
 		t.Fatal("Expected false")
 	}
