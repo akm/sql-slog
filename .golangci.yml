@@ -115,3 +115,6 @@ issues:
     - path: _test\.go
       linters:
         - err113
+linters-settings:
+  cyclop:
+    skip-tests: true
