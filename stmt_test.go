@@ -54,6 +54,7 @@ func TestWrapStmt(t *testing.T) {
 	})
 
 	t.Run("Query", func(t *testing.T) {
+		t.Parallel()
 		dummyError := errors.New("unexpected Query error")
 		mock := &mockStmtForWrapStmt{
 			error: dummyError,
@@ -92,6 +93,7 @@ func (m *mockErrorStmtWithContext) ExecContext(context.Context, []driver.NamedVa
 }
 
 func TestWithMockErrorStmtWithContext(t *testing.T) {
+	t.Parallel()
 	dummyError := errors.New("unexpected QueryContext error")
 	mock := &mockErrorStmtWithContext{
 		mockStmtForWrapStmt: mockStmtForWrapStmt{},

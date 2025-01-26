@@ -3,7 +3,9 @@ package sqlslog
 import "testing"
 
 func TestSetStepLogMsgFormatter(t *testing.T) {
+	t.Parallel()
 	t.Run("defaultOptions", func(t *testing.T) {
+		t.Parallel()
 		opts := newOptions("dummy")
 		if opts.connBegin.Complete.Msg != "Conn.Begin" {
 			t.Errorf("unexpected default value: %s", opts.connBegin.Complete.Msg)
@@ -11,6 +13,7 @@ func TestSetStepLogMsgFormatter(t *testing.T) {
 	})
 
 	t.Run("CustomStepLogMsgFormatter", func(t *testing.T) {
+		t.Parallel()
 		formatter, backup := StepLogMsgWithEventName, stepLogMsgFormatter
 		SetStepLogMsgFormatter(formatter)
 		defer SetStepLogMsgFormatter(backup)

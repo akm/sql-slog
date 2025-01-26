@@ -81,6 +81,7 @@ func (m *mockRowsNextResultSet) NextResultSet() error {
 var _ driver.RowsNextResultSet = (*mockRowsNextResultSet)(nil)
 
 func TestRowsNextResultSet(t *testing.T) {
+	t.Parallel()
 	errMsg := "unpected RNRS error"
 	rows := &mockRowsNextResultSet{
 		mockRows: mockRows{},
