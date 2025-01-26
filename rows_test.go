@@ -1,6 +1,7 @@
 package sqlslog
 
 import (
+	"bytes"
 	"database/sql/driver"
 	"errors"
 	"log/slog"
@@ -50,6 +51,55 @@ func TestWithMockRows(t *testing.T) {
 			t.Fatal("Expected empty")
 		}
 	})
+}
+
+type mockRowsNextResultSet struct {
+	mockRows
+	error error
+}
+
+func (m *mockRowsNextResultSet) Close() error {
+	return m.error
+}
+
+func (m *mockRowsNextResultSet) Columns() []string {
+	panic("unimplemented")
+}
+
+func (m *mockRowsNextResultSet) HasNextResultSet() bool {
+	panic("unimplemented")
+}
+
+func (m *mockRowsNextResultSet) Next(dest []driver.Value) error {
+	return m.error
+}
+
+func (m *mockRowsNextResultSet) NextResultSet() error {
+	return m.error
+}
+
+var _ driver.RowsNextResultSet = (*mockRowsNextResultSet)(nil)
+
+func TestRowsNextResultSet(t *testing.T) {
+	errMsg := "unpected RNRS error"
+	rows := &mockRowsNextResultSet{
+		mockRows: mockRows{},
+		error:    errors.New(errMsg),
+	}
+	buf := bytes.NewBuffer(nil)
+	logger := slog.New(NewJSONHandler(buf, nil))
+	wrapped := wrapRows(rows, newLogger(logger, newOptions("dummy")))
+	wrappedRNRS, ok := wrapped.(driver.RowsNextResultSet)
+	if !ok {
+		t.Fatal("Expected true")
+	}
+	err := wrappedRNRS.NextResultSet()
+	if err == nil {
+		t.Fatal("Expected non-nil")
+	}
+	if err.Error() != errMsg {
+		t.Fatalf("Expected %q, got %q", errMsg, err.Error())
+	}
 }
 
 func TestHandleRowsNextError(t *testing.T) {
