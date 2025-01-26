@@ -172,7 +172,7 @@ func DriverOpenConnector(f func(*StepOptions)) Option {
 }
 
 // Set the options for sqlslog.Open
-func SqlslogOpen(f func(*StepOptions)) Option { return func(o *options) { f(&o.sqlslogOpen) } }
+func SqlslogOpen(f func(*StepOptions)) Option { return func(o *options) { f(&o.sqlslogOpen) } } // nolint:revive
 
 // Set the options for Rows.Close
 func RowsClose(f func(*StepOptions)) Option { return func(o *options) { f(&o.rowsClose) } }
