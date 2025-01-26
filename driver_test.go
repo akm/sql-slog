@@ -4,29 +4,32 @@ import (
 	"bytes"
 	"database/sql/driver"
 	"errors"
-	"fmt"
+	"io"
 	"log/slog"
 	"testing"
 )
 
-type mockErrorDiverContext struct {
-}
+type mockErrorDiverContext struct{}
 
 // Open implements driver.Driver.
-func (m *mockErrorDiverContext) Open(name string) (driver.Conn, error) {
-	return nil, fmt.Errorf("unexpected error")
+func (m *mockErrorDiverContext) Open(string) (driver.Conn, error) {
+	return nil, errors.New("unexpected error")
 }
 
 // OpenConnector implements driver.DriverContext.
-func (m *mockErrorDiverContext) OpenConnector(name string) (driver.Connector, error) {
-	return nil, fmt.Errorf("unexpected error")
+func (m *mockErrorDiverContext) OpenConnector(string) (driver.Connector, error) {
+	return nil, errors.New("unexpected error")
 }
 
-var _ driver.Driver = (*mockErrorDiverContext)(nil)
-var _ driver.DriverContext = (*mockErrorDiverContext)(nil)
+var (
+	_ driver.Driver        = (*mockErrorDiverContext)(nil)
+	_ driver.DriverContext = (*mockErrorDiverContext)(nil)
+)
 
 func TestDriverContextWrapperOpenConnector(t *testing.T) {
+	t.Parallel()
 	t.Run("unexpected error", func(t *testing.T) {
+		t.Parallel()
 		buf := bytes.NewBuffer(nil)
 		logger := slog.New(NewTextHandler(buf, nil))
 		dw := wrapDriver(&mockErrorDiverContext{},
@@ -44,8 +47,11 @@ func TestDriverContextWrapperOpenConnector(t *testing.T) {
 }
 
 func TestDriverOpenErrorHandler(t *testing.T) {
+	t.Parallel()
 	t.Run("postgres", func(t *testing.T) {
+		t.Parallel()
 		t.Run("unexpected error", func(t *testing.T) {
+			t.Parallel()
 			eh := DriverOpenErrorHandler("postgres")
 			completed, attrs := eh(errors.New("unexpected error"))
 			if completed {
@@ -55,6 +61,16 @@ func TestDriverOpenErrorHandler(t *testing.T) {
 				t.Error("expected attrs to be nil")
 			}
 		})
+		t.Run("io.EOF", func(t *testing.T) {
+			t.Parallel()
+			eh := DriverOpenErrorHandler("postgres")
+			completed, attrs := eh(io.EOF)
+			if !completed {
+				t.Errorf("expected completed to be true")
+			}
+			if attrs == nil {
+				t.Error("expected attrs to be non-nil")
+			}
+		})
 	})
-
 }

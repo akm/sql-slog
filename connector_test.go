@@ -3,19 +3,22 @@ package sqlslog
 import (
 	"context"
 	"database/sql/driver"
-	"fmt"
+	"errors"
+	"io"
 	"testing"
 )
 
 func TestConnectorConnectErrorHandler(t *testing.T) {
+	t.Parallel()
 	testcases := []string{
 		"mysql",
 		"postgres",
 	}
 	for _, driverName := range testcases {
 		t.Run(driverName, func(t *testing.T) {
+			t.Parallel()
 			errHandler := ConnectorConnectErrorHandler(driverName)
-			complete, attrs := errHandler(fmt.Errorf("dummy"))
+			complete, attrs := errHandler(errors.New("dummy"))
 			if complete {
 				t.Fatal("Expected false")
 			}
@@ -24,10 +27,21 @@ func TestConnectorConnectErrorHandler(t *testing.T) {
 			}
 		})
 	}
+
+	t.Run("postgres io.EOF", func(t *testing.T) {
+		t.Parallel()
+		errHandler := ConnectorConnectErrorHandler("postgres")
+		complete, attrs := errHandler(io.EOF)
+		if !complete {
+			t.Fatal("Expected true")
+		}
+		if attrs == nil {
+			t.Fatal("Expected non-nil")
+		}
+	})
 }
 
-type mockConnectorForWrapConnector struct {
-}
+type mockConnectorForWrapConnector struct{}
 
 var _ driver.Connector = (*mockConnectorForWrapConnector)(nil)
 
@@ -40,6 +54,7 @@ func (m *mockConnectorForWrapConnector) Driver() driver.Driver {
 }
 
 func TestConnectorDriver(t *testing.T) {
+	t.Parallel()
 	mock := &mockConnectorForWrapConnector{}
 	logger := &logger{}
 	conn := wrapConnector(mock, logger)

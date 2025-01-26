@@ -8,6 +8,7 @@ import (
 )
 
 func TestOpen(t *testing.T) {
+	t.Parallel()
 	ctx := context.TODO()
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(slog.NewJSONHandler(buf, &slog.HandlerOptions{Level: slog.LevelDebug}))

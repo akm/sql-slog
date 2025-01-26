@@ -103,5 +103,4 @@ func TestDuration(t *testing.T) {
 			tc.assertion(t, logs)
 		})
 	}
-
 }

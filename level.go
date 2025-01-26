@@ -17,7 +17,6 @@ const (
 	LevelError   Level = Level(slog.LevelError) // the same as slog.LevelError.
 )
 
-// var _ slog.Level = slog.Level(LevelVerbose)
 var _ slog.Leveler = LevelVerbose
 
 // String returns the string representation of the log level.
@@ -54,7 +53,7 @@ func (l Level) Level() slog.Level {
 func ReplaceLevelAttr(_ []string, a slog.Attr) slog.Attr {
 	// https://go.dev/src/log/slog/example_custom_levels_test.go
 	if a.Key == slog.LevelKey {
-		level := Level(a.Value.Any().(slog.Level))
+		level := Level(a.Value.Any().(slog.Level)) //nolint:forcetypeassert
 		a.Value = slog.StringValue(level.String())
 	}
 	return a

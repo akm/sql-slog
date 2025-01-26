@@ -7,6 +7,7 @@ import (
 )
 
 func TestNewTextHandler(t *testing.T) {
+	t.Parallel()
 	buf := bytes.NewBuffer(nil)
 	h := NewTextHandler(buf, nil)
 	if h == nil {
@@ -15,13 +16,16 @@ func TestNewTextHandler(t *testing.T) {
 }
 
 func TestWrapHandlerOptions(t *testing.T) {
+	t.Parallel()
 	t.Run("nil parameter", func(t *testing.T) {
+		t.Parallel()
 		h := WrapHandlerOptions(nil)
 		if h == nil {
 			t.Errorf("want not nil, got nil")
 		}
 	})
 	t.Run("one parameter", func(t *testing.T) {
+		t.Parallel()
 		h := WrapHandlerOptions(&slog.HandlerOptions{})
 		if h == nil {
 			t.Errorf("want not nil, got nil")
@@ -32,21 +36,25 @@ func TestWrapHandlerOptions(t *testing.T) {
 }
 
 func TestMergeReplaceAttrs(t *testing.T) {
+	t.Parallel()
 	t.Run("no parameter", func(t *testing.T) {
+		t.Parallel()
 		f := MergeReplaceAttrs()
 		if f != nil {
 			t.Error("want nil, got not nil function")
 		}
 	})
 	t.Run("nil parameter", func(t *testing.T) {
+		t.Parallel()
 		f := MergeReplaceAttrs(nil, nil)
 		if f != nil {
 			t.Error("want nil, got not nil function")
 		}
 	})
 	t.Run("one parameter", func(t *testing.T) {
+		t.Parallel()
 		called := false
-		f := MergeReplaceAttrs(func(group []string, a slog.Attr) slog.Attr {
+		f := MergeReplaceAttrs(func(_ []string, a slog.Attr) slog.Attr {
 			called = true
 			return a
 		})
@@ -65,11 +73,12 @@ func TestMergeReplaceAttrs(t *testing.T) {
 		}
 	})
 	t.Run("two parameters", func(t *testing.T) {
+		t.Parallel()
 		f := MergeReplaceAttrs(
-			func(group []string, a slog.Attr) slog.Attr {
+			func(_ []string, a slog.Attr) slog.Attr {
 				return slog.String(a.Key, a.Value.String()+"+1")
 			},
-			func(group []string, a slog.Attr) slog.Attr {
+			func(_ []string, a slog.Attr) slog.Attr {
 				return slog.String(a.Key, a.Value.String()+"+2")
 			},
 		)

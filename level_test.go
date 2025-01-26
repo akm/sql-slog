@@ -6,6 +6,7 @@ import (
 )
 
 func TestLevelString(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		baseName string
 		base     Level
@@ -34,6 +35,7 @@ func TestLevelString(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(fmt.Sprintf("%s%d", tt.baseName, tt.diff), func(t *testing.T) {
+			t.Parallel()
 			if got := (tt.base + tt.diff).String(); got != tt.want {
 				t.Errorf("Level.String() = %v, want %v", got, tt.want)
 			}

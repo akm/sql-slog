@@ -171,7 +171,6 @@ func TestLowLevelWithoutContext(t *testing.T) {
 				assert.NoError(t, err)
 				assert.Equal(t, 2, cnt)
 			})
-
 		})
 
 		t.Run("select all", func(t *testing.T) {
@@ -388,7 +387,6 @@ func TestLowLevelWithoutContext(t *testing.T) {
 				assert.Equal(t, int64(1), rowsAffected)
 			})
 		})
-
 	})
 
 	t.Run("with tx", func(t *testing.T) {
@@ -614,6 +612,5 @@ func TestLowLevelWithoutContext(t *testing.T) {
 			require.NoError(t, err)
 			assert.Equal(t, int64(1), rowAffected)
 		})
-
 	})
 }

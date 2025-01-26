@@ -12,9 +12,8 @@ func wrapDriver(original driver.Driver, logger *logger) driver.Driver {
 			driverWrapper: driverWrapper{original: original, logger: logger},
 			original:      dc,
 		}
-	} else {
-		return &driverWrapper{original: original, logger: logger}
 	}
+	return &driverWrapper{original: original, logger: logger}
 }
 
 // https://pkg.go.dev/database/sql/driver@go1.23.4#pkg-overview
@@ -54,8 +53,10 @@ type driverContextWrapper struct {
 	original driver.DriverContext
 }
 
-var _ driver.Driver = (*driverContextWrapper)(nil)
-var _ driver.DriverContext = (*driverContextWrapper)(nil)
+var (
+	_ driver.Driver        = (*driverContextWrapper)(nil)
+	_ driver.DriverContext = (*driverContextWrapper)(nil)
+)
 
 // var _ driver.Connector = (*driverWrapper)(nil)
 

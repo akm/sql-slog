@@ -7,6 +7,7 @@ import (
 )
 
 // ChaCha8IDGenerator generates random IDs using ChaCha8 in math/rand/v2.
+// The seed is generated using crypto/rand.
 type ChaCha8IDGenerator struct {
 	*rand.Rand
 	length int
@@ -20,7 +21,7 @@ func NewChaCha8IDGenerator(length int) *ChaCha8IDGenerator {
 	}
 
 	return &ChaCha8IDGenerator{
-		Rand:   rand.New(rand.NewChaCha8(s)),
+		Rand:   rand.New(rand.NewChaCha8(s)), // nolint:gosec
 		length: length,
 	}
 }
@@ -31,7 +32,7 @@ var generatorRunes = []byte("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNO
 func (g *ChaCha8IDGenerator) Generate() string {
 	r := make([]byte, g.length)
 	runesLen := len(generatorRunes)
-	for i := 0; i < g.length; i++ {
+	for i := range g.length {
 		r[i] = generatorRunes[g.IntN(runesLen)]
 	}
 	return string(r)

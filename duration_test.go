@@ -6,6 +6,7 @@ import (
 )
 
 func TestDurationString(t *testing.T) {
+	t.Parallel()
 	testcases := []struct {
 		gen      func() time.Duration
 		expected string
@@ -54,6 +55,7 @@ func TestDurationString(t *testing.T) {
 
 	for _, tc := range testcases {
 		t.Run(tc.expected, func(t *testing.T) {
+			t.Parallel()
 			d := tc.gen()
 			actual := d.String()
 			if actual != tc.expected {

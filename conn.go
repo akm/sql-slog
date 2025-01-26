@@ -12,12 +12,8 @@ func wrapConn(original driver.Conn, logger *logger) driver.Conn {
 	if original == nil {
 		return nil
 	}
-	switch original.(type) {
-	case *connWithContextWrapper:
+	if _, ok := original.(*connWithContextWrapper); ok {
 		return original
-		// Commented out because it's not used.
-		// case *connWrapper:
-		// 	return original
 	}
 
 	if cwc, ok := original.(connWithContext); ok {
@@ -53,8 +49,10 @@ type connWrapper struct {
 // var _ driver.Execer = (*conn)(nil)
 // var _ driver.Queryer = (*conn)(nil)
 
-var _ driver.Conn = (*connWrapper)(nil)
-var _ driver.Validator = (*connWrapper)(nil)
+var (
+	_ driver.Conn      = (*connWrapper)(nil)
+	_ driver.Validator = (*connWrapper)(nil)
+)
 
 // To support custom data types, implement NamedValueChecker.
 // NamedValueChecker also allows queries to accept per-query
@@ -142,16 +140,20 @@ type connWithContextWrapper struct {
 
 // // All Conn implementations should implement the following
 // interfaces: Pinger, SessionResetter, and Validator.
-var _ driver.Pinger = (*connWithContextWrapper)(nil)
-var _ driver.SessionResetter = (*connWithContextWrapper)(nil)
+var (
+	_ driver.Pinger          = (*connWithContextWrapper)(nil)
+	_ driver.SessionResetter = (*connWithContextWrapper)(nil)
+)
 
 // If named parameters or context are supported, the driver's
 // Conn should implement: ExecerContext, QueryerContext,
 // ConnPrepareContext, and ConnBeginTx.
-var _ driver.ExecerContext = (*connWithContextWrapper)(nil)
-var _ driver.QueryerContext = (*connWithContextWrapper)(nil)
-var _ driver.ConnPrepareContext = (*connWithContextWrapper)(nil)
-var _ driver.ConnBeginTx = (*connWithContextWrapper)(nil)
+var (
+	_ driver.ExecerContext      = (*connWithContextWrapper)(nil)
+	_ driver.QueryerContext     = (*connWithContextWrapper)(nil)
+	_ driver.ConnPrepareContext = (*connWithContextWrapper)(nil)
+	_ driver.ConnBeginTx        = (*connWithContextWrapper)(nil)
+)
 
 // ResetSession implements driver.SessionResetter.
 func (c *connWithContextWrapper) ResetSession(ctx context.Context) error {
@@ -257,7 +259,7 @@ func (c *connWithContextWrapper) BeginTx(ctx context.Context, opts driver.TxOpti
 
 func ConnExecContextErrorHandler(driverName string) func(err error) (bool, []slog.Attr) {
 	switch driverName {
-	case "mysql":
+	case driverNameMysql:
 		return func(err error) (bool, []slog.Attr) {
 			if err == nil {
 				return true, nil
@@ -275,7 +277,7 @@ func ConnExecContextErrorHandler(driverName string) func(err error) (bool, []slo
 
 func ConnQueryContextErrorHandler(driverName string) func(err error) (bool, []slog.Attr) {
 	switch driverName {
-	case "mysql":
+	case driverNameMysql:
 		return func(err error) (bool, []slog.Attr) {
 			if err == nil {
 				return true, nil

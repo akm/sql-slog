@@ -139,7 +139,6 @@ func TestLowLevelWithContext(t *testing.T) {
 			{"level": "DEBUG", "msg": "Stmt.Close Start", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 			{"level": "INFO", "msg": "Stmt.Close Complete", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 		})
-
 	})
 
 	t.Run("without tx", func(t *testing.T) {
@@ -354,7 +353,6 @@ func TestLowLevelWithContext(t *testing.T) {
 				assert.Equal(t, int64(1), rowsAffected)
 			})
 		})
-
 	})
 
 	t.Run("with tx", func(t *testing.T) {

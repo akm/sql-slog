@@ -3,6 +3,7 @@ package sqlslog
 import "testing"
 
 func TestEventString(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		name string
 		e    Event
@@ -31,6 +32,7 @@ func TestEventString(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			if got := tt.e.String(); got != tt.want {
 				t.Errorf("Event.String() = %v, want %v", got, tt.want)
 			}
@@ -39,6 +41,8 @@ func TestEventString(t *testing.T) {
 }
 
 func TestStepOptionsSetLevel(t *testing.T) {
+	t.Parallel()
+
 	newOpt := func(start, err, comp Level) *StepOptions {
 		return &StepOptions{
 			Start:    EventOptions{Level: start},
@@ -86,6 +90,7 @@ func TestStepOptionsSetLevel(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			tt.o.SetLevel(tt.lv)
 			if !tt.o.compare(tt.want) {
 				t.Errorf("StepOptions.SetLevel() = %v, want %v", tt.o, tt.want)
