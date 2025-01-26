@@ -103,16 +103,20 @@ type stmtExecContextWrapper struct {
 	stmtExecContextWrapperImpl
 }
 
-var _ driver.Stmt = (*stmtExecContextWrapper)(nil)
-var _ driver.StmtExecContext = (*stmtExecContextWrapper)(nil)
+var (
+	_ driver.Stmt            = (*stmtExecContextWrapper)(nil)
+	_ driver.StmtExecContext = (*stmtExecContextWrapper)(nil)
+)
 
 type stmtQueryContextWrapper struct {
 	stmtWrapper
 	stmtQueryContextWrapperImpl
 }
 
-var _ driver.Stmt = (*stmtQueryContextWrapper)(nil)
-var _ driver.StmtQueryContext = (*stmtQueryContextWrapper)(nil)
+var (
+	_ driver.Stmt             = (*stmtQueryContextWrapper)(nil)
+	_ driver.StmtQueryContext = (*stmtQueryContextWrapper)(nil)
+)
 
 type stmtContextWrapper struct {
 	stmtWrapper
@@ -120,9 +124,11 @@ type stmtContextWrapper struct {
 	stmtQueryContextWrapperImpl
 }
 
-var _ driver.Stmt = (*stmtContextWrapper)(nil)
-var _ driver.StmtExecContext = (*stmtContextWrapper)(nil)
-var _ driver.StmtQueryContext = (*stmtContextWrapper)(nil)
+var (
+	_ driver.Stmt             = (*stmtContextWrapper)(nil)
+	_ driver.StmtExecContext  = (*stmtContextWrapper)(nil)
+	_ driver.StmtQueryContext = (*stmtContextWrapper)(nil)
+)
 
 func wrapStmt(original driver.Stmt, logger *logger) driver.Stmt {
 	if original == nil {

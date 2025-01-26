@@ -130,7 +130,6 @@ func TestLowLevelWithContext(t *testing.T) {
 			{"level": "DEBUG", "msg": "Stmt.Close Start", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 			{"level": "INFO", "msg": "Stmt.Close Complete", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 		})
-
 	})
 
 	t.Run("without tx", func(t *testing.T) {
@@ -172,7 +171,6 @@ func TestLowLevelWithContext(t *testing.T) {
 				assert.NoError(t, err)
 				assert.Equal(t, 2, cnt)
 			})
-
 		})
 
 		t.Run("select all", func(t *testing.T) {
@@ -362,7 +360,6 @@ func TestLowLevelWithContext(t *testing.T) {
 				{"level": "DEBUG", "msg": "Conn.PrepareContext Start", "query": query, connIDKey: connIDExpected},
 				{"level": "ERROR", "msg": "Conn.PrepareContext Error", "query": query, "error": "near \"invalid\": syntax error", connIDKey: connIDExpected},
 			})
-
 		})
 
 		t.Run("prepare + ExecContext", func(t *testing.T) {
@@ -416,7 +413,6 @@ func TestLowLevelWithContext(t *testing.T) {
 				})
 			})
 		})
-
 	})
 
 	t.Run("with tx", func(t *testing.T) {
@@ -613,5 +609,4 @@ func TestLowLevelWithContext(t *testing.T) {
 			assert.NoError(t, err)
 		})
 	})
-
 }

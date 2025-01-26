@@ -5,8 +5,7 @@ import (
 	"testing"
 )
 
-type mockStmtForWrapStmt struct {
-}
+type mockStmtForWrapStmt struct{}
 
 var _ driver.Stmt = (*mockStmtForWrapStmt)(nil)
 

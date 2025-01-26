@@ -8,8 +8,7 @@ import (
 	"testing"
 )
 
-type mockConnForWrapConn struct {
-}
+type mockConnForWrapConn struct{}
 
 // Begin implements driver.Conn.
 func (m *mockConnForWrapConn) Begin() (driver.Tx, error) {
@@ -130,11 +129,13 @@ func (m *mockErrorConn) ExecContext(context.Context, string, []driver.NamedValue
 	return nil, m.error
 }
 
-var _ driver.Conn = (*mockErrorConn)(nil)
-var _ driver.ConnBeginTx = (*mockErrorConn)(nil)
-var _ driver.ConnPrepareContext = (*mockErrorConn)(nil)
-var _ driver.ExecerContext = (*mockErrorConn)(nil)
-var _ driver.QueryerContext = (*mockErrorConn)(nil)
+var (
+	_ driver.Conn               = (*mockErrorConn)(nil)
+	_ driver.ConnBeginTx        = (*mockErrorConn)(nil)
+	_ driver.ConnPrepareContext = (*mockErrorConn)(nil)
+	_ driver.ExecerContext      = (*mockErrorConn)(nil)
+	_ driver.QueryerContext     = (*mockErrorConn)(nil)
+)
 
 // var _ driver.Pinger = (*mockErrorConn)(nil) // not implemented for the test below
 

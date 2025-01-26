@@ -370,7 +370,6 @@ func TestLowLevelWithContext(t *testing.T) {
 				assert.Equal(t, int64(1), rowsAffected)
 			})
 		})
-
 	})
 
 	t.Run("with tx", func(t *testing.T) {

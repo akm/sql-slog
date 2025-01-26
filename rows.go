@@ -53,11 +53,13 @@ func (r *rowsWrapper) Next(dest []driver.Value) error {
 // These are used in database/sql/sql.go
 // https://cs.opensource.google/go/go/+/master:src/database/sql/sql.go;l=3284-3300
 
-var _ driver.RowsColumnTypeScanType = (*rowsWrapper)(nil)
-var _ driver.RowsColumnTypeDatabaseTypeName = (*rowsWrapper)(nil)
-var _ driver.RowsColumnTypeLength = (*rowsWrapper)(nil)
-var _ driver.RowsColumnTypeNullable = (*rowsWrapper)(nil)
-var _ driver.RowsColumnTypePrecisionScale = (*rowsWrapper)(nil)
+var (
+	_ driver.RowsColumnTypeScanType         = (*rowsWrapper)(nil)
+	_ driver.RowsColumnTypeDatabaseTypeName = (*rowsWrapper)(nil)
+	_ driver.RowsColumnTypeLength           = (*rowsWrapper)(nil)
+	_ driver.RowsColumnTypeNullable         = (*rowsWrapper)(nil)
+	_ driver.RowsColumnTypePrecisionScale   = (*rowsWrapper)(nil)
+)
 
 // ColumnTypeScanType implements driver.RowsColumnTypeScanType.
 func (r *rowsWrapper) ColumnTypeScanType(index int) reflect.Type {

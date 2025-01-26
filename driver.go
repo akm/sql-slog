@@ -53,8 +53,10 @@ type driverContextWrapper struct {
 	original driver.DriverContext
 }
 
-var _ driver.Driver = (*driverContextWrapper)(nil)
-var _ driver.DriverContext = (*driverContextWrapper)(nil)
+var (
+	_ driver.Driver        = (*driverContextWrapper)(nil)
+	_ driver.DriverContext = (*driverContextWrapper)(nil)
+)
 
 // var _ driver.Connector = (*driverWrapper)(nil)
 

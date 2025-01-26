@@ -8,8 +8,7 @@ import (
 	"testing"
 )
 
-type mockErrorDiverContext struct {
-}
+type mockErrorDiverContext struct{}
 
 // Open implements driver.Driver.
 func (m *mockErrorDiverContext) Open(string) (driver.Conn, error) {
@@ -21,8 +20,10 @@ func (m *mockErrorDiverContext) OpenConnector(string) (driver.Connector, error) 
 	return nil, errors.New("unexpected error")
 }
 
-var _ driver.Driver = (*mockErrorDiverContext)(nil)
-var _ driver.DriverContext = (*mockErrorDiverContext)(nil)
+var (
+	_ driver.Driver        = (*mockErrorDiverContext)(nil)
+	_ driver.DriverContext = (*mockErrorDiverContext)(nil)
+)
 
 func TestDriverContextWrapperOpenConnector(t *testing.T) {
 	t.Parallel()

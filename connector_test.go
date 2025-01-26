@@ -28,8 +28,7 @@ func TestConnectorConnectErrorHandler(t *testing.T) {
 	}
 }
 
-type mockConnectorForWrapConnector struct {
-}
+type mockConnectorForWrapConnector struct{}
 
 var _ driver.Connector = (*mockConnectorForWrapConnector)(nil)
 
