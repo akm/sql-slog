@@ -7,6 +7,7 @@ import (
 )
 
 func TestLoggerDurationAttr(t *testing.T) {
+	t.Parallel()
 	key := "duration"
 	testcases := []struct {
 		value        time.Duration
