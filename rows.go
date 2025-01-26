@@ -74,18 +74,16 @@ func (r *rowsWrapper) ColumnTypeScanType(index int) reflect.Type {
 func (r *rowsWrapper) ColumnTypeDatabaseTypeName(index int) string {
 	if c, ok := r.original.(driver.RowsColumnTypeDatabaseTypeName); ok {
 		return c.ColumnTypeDatabaseTypeName(index)
-	} else {
-		return ""
 	}
+	return ""
 }
 
 // ColumnTypeLength implements driver.RowsColumnTypeLength.
 func (r *rowsWrapper) ColumnTypeLength(index int) (int64, bool) {
 	if c, ok := r.original.(driver.RowsColumnTypeLength); ok {
 		return c.ColumnTypeLength(index)
-	} else {
-		return 0, false
 	}
+	return 0, false
 }
 
 // ColumnTypeNullable implements driver.RowsColumnTypeNullable.
