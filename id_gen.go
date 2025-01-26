@@ -7,10 +7,10 @@ type IDGen = func() string
 // Default is IDGeneratorDefault
 func IDGenerator(idGen IDGen) Option { return func(o *options) { o.idGen = idGen } }
 
-const defaultIdLength = 16
+const defaultIDLength = 16
 
 // IDGeneratorDefault is the default ID generator.
-var IDGeneratorDefault = NewChaCha8IDGenerator(defaultIdLength).Generate
+var IDGeneratorDefault = NewChaCha8IDGenerator(defaultIDLength).Generate
 
 const (
 	ConnIDKeyDefault = "conn_id"
