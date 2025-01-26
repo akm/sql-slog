@@ -118,3 +118,5 @@ issues:
 linters-settings:
   cyclop:
     skip-tests: true
+  lll:
+    line-length: 200
