@@ -116,7 +116,12 @@ func (r *rowsNextResultSetWrapper) HasNextResultSet() bool {
 
 // NextResultSet implements driver.RowsNextResultSet.
 func (r *rowsNextResultSetWrapper) NextResultSet() error {
-	return ignoreAttr(r.logger.StepWithoutContext(&r.logger.options.rowsNextResultSet, withNilAttr(r.original.NextResultSet)))
+	return ignoreAttr(
+		r.logger.StepWithoutContext(
+			&r.logger.options.rowsNextResultSet,
+			withNilAttr(r.original.NextResultSet),
+		),
+	)
 }
 
 // HandleRowsNextError returns completed and slice of slog.Attr.
