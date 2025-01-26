@@ -45,11 +45,12 @@ func (x *logger) Step(ctx context.Context, step *StepOptions, fn func() (*slog.A
 	} else {
 		complete = err == nil
 	}
-	if !complete {
+	switch {
+	case !complete:
 		lg.Log(ctx, slog.Level(step.Error.Level), step.Error.Msg, slog.Any("error", err))
-	} else if attr != nil {
+	case attr != nil:
 		lg.Log(ctx, slog.Level(step.Complete.Level), step.Complete.Msg, *attr)
-	} else {
+	default:
 		lg.Log(ctx, slog.Level(step.Complete.Level), step.Complete.Msg)
 	}
 	return attr, err
