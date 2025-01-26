@@ -54,7 +54,7 @@ func TestMergeReplaceAttrs(t *testing.T) {
 	t.Run("one parameter", func(t *testing.T) {
 		t.Parallel()
 		called := false
-		f := MergeReplaceAttrs(func(group []string, a slog.Attr) slog.Attr {
+		f := MergeReplaceAttrs(func(_ []string, a slog.Attr) slog.Attr {
 			called = true
 			return a
 		})
@@ -75,10 +75,10 @@ func TestMergeReplaceAttrs(t *testing.T) {
 	t.Run("two parameters", func(t *testing.T) {
 		t.Parallel()
 		f := MergeReplaceAttrs(
-			func(group []string, a slog.Attr) slog.Attr {
+			func(_ []string, a slog.Attr) slog.Attr {
 				return slog.String(a.Key, a.Value.String()+"+1")
 			},
-			func(group []string, a slog.Attr) slog.Attr {
+			func(_ []string, a slog.Attr) slog.Attr {
 				return slog.String(a.Key, a.Value.String()+"+2")
 			},
 		)
