@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"database/sql/driver"
 	"errors"
+	"io"
 	"log/slog"
 	"testing"
 )
@@ -58,6 +59,17 @@ func TestDriverOpenErrorHandler(t *testing.T) {
 			}
 			if attrs != nil {
 				t.Error("expected attrs to be nil")
+			}
+		})
+		t.Run("io.EOF", func(t *testing.T) {
+			t.Parallel()
+			eh := DriverOpenErrorHandler("postgres")
+			completed, attrs := eh(io.EOF)
+			if !completed {
+				t.Errorf("expected completed to be true")
+			}
+			if attrs == nil {
+				t.Error("expected attrs to be non-nil")
 			}
 		})
 	})
