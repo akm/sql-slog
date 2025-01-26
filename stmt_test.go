@@ -83,11 +83,11 @@ var (
 	_ driver.StmtQueryContext = (*mockErrorStmtWithContext)(nil)
 )
 
-func (m *mockErrorStmtWithContext) QueryContext(ctx context.Context, args []driver.NamedValue) (driver.Rows, error) {
+func (m *mockErrorStmtWithContext) QueryContext(context.Context, []driver.NamedValue) (driver.Rows, error) {
 	return nil, m.error
 }
 
-func (m *mockErrorStmtWithContext) ExecContext(ctx context.Context, args []driver.NamedValue) (driver.Result, error) {
+func (m *mockErrorStmtWithContext) ExecContext(context.Context, []driver.NamedValue) (driver.Result, error) {
 	return nil, m.error
 }
 

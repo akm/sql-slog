@@ -70,7 +70,7 @@ func (m *mockRowsNextResultSet) HasNextResultSet() bool {
 	panic("unimplemented")
 }
 
-func (m *mockRowsNextResultSet) Next(dest []driver.Value) error {
+func (m *mockRowsNextResultSet) Next([]driver.Value) error {
 	return m.error
 }
 
