@@ -1,5 +1,5 @@
 package sqlslog
 
 const (
-	driverNameMysql = "mysql"
+	DriverNameMysql = "mysql"
 )
