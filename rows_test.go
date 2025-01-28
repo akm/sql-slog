@@ -89,7 +89,7 @@ func TestRowsNextResultSet(t *testing.T) {
 	}
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(NewJSONHandler(buf, nil))
-	wrapped := WrapRows(rows, NewSqlLogger(logger, newOptions("dummy")))
+	wrapped := WrapRows(rows, NewSqlLogger(logger, NewOptions("dummy")))
 	wrappedRNRS, ok := wrapped.(driver.RowsNextResultSet)
 	if !ok {
 		t.Fatal("Expected true")

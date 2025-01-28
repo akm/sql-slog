@@ -8,10 +8,10 @@ import (
 
 type SqlLogger struct {
 	*slog.Logger
-	options *options
+	options *Options
 }
 
-func NewSqlLogger(rawLogger *slog.Logger, opts *options) *SqlLogger {
+func NewSqlLogger(rawLogger *slog.Logger, opts *Options) *SqlLogger {
 	return &SqlLogger{
 		Logger:  rawLogger,
 		options: opts,
