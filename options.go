@@ -2,6 +2,8 @@ package sqlslog
 
 import (
 	"log/slog"
+
+	"github.com/akm/sql-slog/public"
 )
 
 type Options struct {
@@ -77,8 +79,8 @@ func NewDefaultOptions(driverName string, formatter StepLogMsgFormatter) *Option
 		connPrepare:         stepOpts("Conn.Prepare", LevelInfo),
 		connResetSession:    stepOpts("Conn.ResetSession", LevelTrace),
 		connPing:            stepOpts("Conn.Ping", LevelTrace),
-		connExecContext:     withErrorHandler(stepOpts("Conn.ExecContext", LevelInfo), ConnExecContextErrorHandler(driverName)),
-		connQueryContext:    withErrorHandler(stepOpts("Conn.QueryContext", LevelInfo), ConnQueryContextErrorHandler(driverName)),
+		connExecContext:     withErrorHandler(stepOpts("Conn.ExecContext", LevelInfo), public.ConnExecContextErrorHandler(driverName)),
+		connQueryContext:    withErrorHandler(stepOpts("Conn.QueryContext", LevelInfo), public.ConnQueryContextErrorHandler(driverName)),
 		connPrepareContext:  stepOpts("Conn.PrepareContext", LevelInfo),
 		connBeginTx:         stepOpts("Conn.BeginTx", LevelInfo),
 		connectorConnect:    withErrorHandler(stepOpts("Connector.Connect", LevelInfo), ConnectorConnectErrorHandler(driverName)),

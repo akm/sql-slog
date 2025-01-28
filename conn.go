@@ -3,11 +3,8 @@ package sqlslog
 import (
 	"context"
 	"database/sql/driver"
-	"errors"
 	"fmt"
 	"log/slog"
-
-	"github.com/akm/sql-slog/public"
 )
 
 func wrapConn(original driver.Conn, logger *SqlLogger) driver.Conn {
@@ -257,40 +254,4 @@ func (c *connWithContextWrapper) BeginTx(ctx context.Context, opts driver.TxOpti
 		lg = lg.With(*attr)
 	}
 	return wrapTx(tx, lg), nil
-}
-
-func ConnExecContextErrorHandler(driverName string) func(err error) (bool, []slog.Attr) {
-	switch driverName {
-	case public.DriverNameMysql:
-		return func(err error) (bool, []slog.Attr) {
-			if err == nil {
-				return true, nil
-			}
-			// https://pkg.go.dev/database/sql/driver#ErrSkip
-			if errors.Is(err, driver.ErrSkip) {
-				return true, []slog.Attr{slog.Bool("skip", true)}
-			}
-			return false, nil
-		}
-	default:
-		return nil
-	}
-}
-
-func ConnQueryContextErrorHandler(driverName string) func(err error) (bool, []slog.Attr) {
-	switch driverName {
-	case public.DriverNameMysql:
-		return func(err error) (bool, []slog.Attr) {
-			if err == nil {
-				return true, nil
-			}
-			// https://pkg.go.dev/database/sql/driver#ErrSkip
-			if errors.Is(err, driver.ErrSkip) {
-				return true, []slog.Attr{slog.Bool("skip", true)}
-			}
-			return false, nil
-		}
-	default:
-		return nil
-	}
 }
