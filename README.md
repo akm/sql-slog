@@ -10,9 +10,9 @@ A logger for Go SQL database drivers without modifying existing `*sql.DB` stdlib
 
 ## LOG EXAMPLES
 
-- [mysql](./tests/mysql/demo-results)
-- [postgres](./tests/postgres/demo-results)
-- [sqlite3](./tests/sqlite3/demo-results)
+- [mysql](./examples/mysql/demo1/results)
+- [postgres](./examples/postgres/demo1/results)
+- [sqlite3](./examples/sqlite3/demo1/results)
 
 ## FEATURES
 
