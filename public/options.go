@@ -1,9 +1,7 @@
-package sqlslog
+package public
 
 import (
 	"log/slog"
-
-	"github.com/akm/sql-slog/public"
 )
 
 type Options struct {
@@ -79,16 +77,16 @@ func NewDefaultOptions(driverName string, formatter StepLogMsgFormatter) *Option
 		ConnPrepare:         stepOpts("Conn.Prepare", LevelInfo),
 		ConnResetSession:    stepOpts("Conn.ResetSession", LevelTrace),
 		ConnPing:            stepOpts("Conn.Ping", LevelTrace),
-		ConnExecContext:     withErrorHandler(stepOpts("Conn.ExecContext", LevelInfo), public.ConnExecContextErrorHandler(driverName)),
-		ConnQueryContext:    withErrorHandler(stepOpts("Conn.QueryContext", LevelInfo), public.ConnQueryContextErrorHandler(driverName)),
+		ConnExecContext:     withErrorHandler(stepOpts("Conn.ExecContext", LevelInfo), ConnExecContextErrorHandler(driverName)),
+		ConnQueryContext:    withErrorHandler(stepOpts("Conn.QueryContext", LevelInfo), ConnQueryContextErrorHandler(driverName)),
 		ConnPrepareContext:  stepOpts("Conn.PrepareContext", LevelInfo),
 		ConnBeginTx:         stepOpts("Conn.BeginTx", LevelInfo),
-		ConnectorConnect:    withErrorHandler(stepOpts("Connector.Connect", LevelInfo), public.ConnectorConnectErrorHandler(driverName)),
-		DriverOpen:          withErrorHandler(stepOpts("Driver.Open", LevelInfo), public.DriverOpenErrorHandler(driverName)),
+		ConnectorConnect:    withErrorHandler(stepOpts("Connector.Connect", LevelInfo), ConnectorConnectErrorHandler(driverName)),
+		DriverOpen:          withErrorHandler(stepOpts("Driver.Open", LevelInfo), DriverOpenErrorHandler(driverName)),
 		DriverOpenConnector: stepOpts("Driver.OpenConnector", LevelInfo),
 		SqlslogOpen:         stepOpts("sqlslog.Open", LevelInfo),
 		RowsClose:           stepOpts("Rows.Close", LevelDebug),
-		RowsNext:            withErrorHandler(stepOpts("Rows.Next", LevelDebug), public.HandleRowsNextError),
+		RowsNext:            withErrorHandler(stepOpts("Rows.Next", LevelDebug), HandleRowsNextError),
 		RowsNextResultSet:   stepOpts("Rows.NextResultSet", LevelDebug),
 		StmtClose:           stepOpts("Stmt.Close", LevelInfo),
 		StmtExec:            stepOpts("Stmt.Exec", LevelInfo),
