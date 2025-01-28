@@ -22,6 +22,9 @@ A logger for Go SQL database drivers without modifying existing `*sql.DB` stdlib
 - Leveled, detailed and configurable logging.
 - Duration
 - Trackable log output
+  - conn_id
+  - tx_id
+  - stmt_id
 
 ## INSTALL
 
