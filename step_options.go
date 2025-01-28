@@ -68,7 +68,7 @@ func (o *StepOptions) compare(other *StepOptions) bool {
 		o.Complete.Level == other.Complete.Level
 }
 
-func newStepOptions(f StepLogMsgFormatter, name string, startLevel, errorLevel, completeLevel Level) *StepOptions {
+func NewStepOptions(f StepLogMsgFormatter, name string, startLevel, errorLevel, completeLevel Level) *StepOptions {
 	return &StepOptions{
 		Start:    EventOptions{Msg: f(name, EventStart), Level: startLevel},
 		Error:    EventOptions{Msg: f(name, EventError), Level: errorLevel},
