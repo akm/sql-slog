@@ -5,22 +5,22 @@ import (
 	"log/slog"
 )
 
-// NewJSONHandler returns a new JSON handler by using [slog.NewJSONHandler]
+// NewJSONHandler returns a new JSON handler using [slog.NewJSONHandler]
 // with custom options for sqlslog.
-// See [WrapHandlerOptions] for the details of the options .
+// See [WrapHandlerOptions] for details on the options.
 func NewJSONHandler(w io.Writer, opts *slog.HandlerOptions) *slog.JSONHandler {
 	return slog.NewJSONHandler(w, WrapHandlerOptions(opts))
 }
 
-// NewTextHandler returns a new Text handler by using [slog.NewTextHandler]
+// NewTextHandler returns a new Text handler using [slog.NewTextHandler]
 // with custom options for sqlslog.
-// See [WrapHandlerOptions] for the details of the options .
+// See [WrapHandlerOptions] for details on the options.
 func NewTextHandler(w io.Writer, opts *slog.HandlerOptions) *slog.TextHandler {
 	return slog.NewTextHandler(w, WrapHandlerOptions(opts))
 }
 
 // WrapHandlerOptions wraps the options with custom options for sqlslog.
-// It merge ReplaceAttr functions with [ReplaceLevelAttr].
+// It merges ReplaceAttr functions with [ReplaceLevelAttr].
 func WrapHandlerOptions(opts *slog.HandlerOptions) *slog.HandlerOptions {
 	if opts == nil {
 		opts = &slog.HandlerOptions{}
@@ -29,13 +29,13 @@ func WrapHandlerOptions(opts *slog.HandlerOptions) *slog.HandlerOptions {
 	return opts
 }
 
-// ReplaceLevelAttr is a type of ReplaceAttr of [slog.HandlerOptions].
+// ReplaceLevelAttr is a type of ReplaceAttr for [slog.HandlerOptions].
 type ReplaceAttrFunc = func([]string, slog.Attr) slog.Attr
 
-// ReplaceLevelAttr merges the [ReplaceAttrFunc] functions.
+// MergeReplaceAttrs merges multiple [ReplaceAttrFunc] functions.
 // If functions are nil or empty, it returns nil.
-// If functions are only one, it returns the function.
-// If functions are more than one, it returns the merged function.
+// If there is only one function, it returns that function.
+// If there are multiple functions, it returns a merged function.
 func MergeReplaceAttrs(funcs ...ReplaceAttrFunc) ReplaceAttrFunc {
 	var valids []ReplaceAttrFunc
 	for _, f := range funcs {

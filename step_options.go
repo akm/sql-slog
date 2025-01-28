@@ -11,9 +11,9 @@ type EventOptions struct {
 type Event int
 
 const (
-	EventStart    Event = iota + 1 // is the event when the step starts.
-	EventError                     // is the event when the step ends with an error.
-	EventComplete                  // is the event when the step completes successfully.
+	EventStart    Event = iota + 1 // Event when the step starts.
+	EventError                     // Event when the step ends with an error.
+	EventComplete                  // Event when the step completes successfully.
 )
 
 // String returns the string representation of the event.
@@ -43,15 +43,15 @@ func StepLogMsgWithoutEventName(name string, _ Event) string {
 	return name
 }
 
-// StepOptions is the options for the step.
+// StepOptions is an struct that expresses the options for the step.
 type StepOptions struct {
 	Start    EventOptions
 	Error    EventOptions
 	Complete EventOptions
 
 	// ErrorHandler is the function to handle the error.
-	// When the error should not be logged as an error but an complete, it should return true.
-	// And add the attributes to the log.
+	// When the error should not be logged as an error but as complete, it should return true.
+	// It can also add attributes to the log.
 	ErrorHandler func(error) (bool, []slog.Attr)
 }
 

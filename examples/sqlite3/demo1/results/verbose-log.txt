@@ -1,0 +1,30 @@
+go run . verbose text
+time=2025-01-28T21:28:13.474+09:00 level=DEBUG msg=sqlslog.Open driver=sqlite3 dsn="file::memory:?cache=shared"
+time=2025-01-28T21:28:13.474+09:00 level=INFO msg=sqlslog.Open driver=sqlite3 dsn="file::memory:?cache=shared" duration=44750
+time=2025-01-28T21:28:13.474+09:00 level=DEBUG msg=Connector.Connect
+time=2025-01-28T21:28:13.474+09:00 level=DEBUG msg=Driver.Open dsn="file::memory:?cache=shared"
+time=2025-01-28T21:28:13.475+09:00 level=INFO msg=Driver.Open dsn="file::memory:?cache=shared" duration=773625 conn_id=35EYRRkZkgUxteTO
+time=2025-01-28T21:28:13.475+09:00 level=INFO msg=Connector.Connect duration=795833
+time=2025-01-28T21:28:13.475+09:00 level=DEBUG msg=Conn.ExecContext conn_id=35EYRRkZkgUxteTO query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[]
+time=2025-01-28T21:28:13.475+09:00 level=INFO msg=Conn.ExecContext conn_id=35EYRRkZkgUxteTO query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=127584
+time=2025-01-28T21:28:13.475+09:00 level=VERBOSE msg=Conn.ResetSession conn_id=35EYRRkZkgUxteTO
+time=2025-01-28T21:28:13.475+09:00 level=TRACE msg=Conn.ResetSession conn_id=35EYRRkZkgUxteTO duration=625
+time=2025-01-28T21:28:13.475+09:00 level=DEBUG msg=Conn.BeginTx conn_id=35EYRRkZkgUxteTO
+time=2025-01-28T21:28:13.475+09:00 level=INFO msg=Conn.BeginTx conn_id=35EYRRkZkgUxteTO duration=4167 tx_id=QasxgomCHtoMN27g
+time=2025-01-28T21:28:13.475+09:00 level=DEBUG msg=Conn.ExecContext conn_id=35EYRRkZkgUxteTO query="INSERT INTO test1 (name) VALUES (?)" args="[{Name: Ordinal:1 Value:Alice}]"
+time=2025-01-28T21:28:13.475+09:00 level=INFO msg=Conn.ExecContext conn_id=35EYRRkZkgUxteTO query="INSERT INTO test1 (name) VALUES (?)" args="[{Name: Ordinal:1 Value:Alice}]" duration=10292
+time=2025-01-28T21:28:13.475+09:00 level=DEBUG msg=Tx.Commit conn_id=35EYRRkZkgUxteTO tx_id=QasxgomCHtoMN27g
+time=2025-01-28T21:28:13.475+09:00 level=INFO msg=Tx.Commit conn_id=35EYRRkZkgUxteTO tx_id=QasxgomCHtoMN27g duration=4458
+time=2025-01-28T21:28:13.475+09:00 level=VERBOSE msg=Conn.ResetSession conn_id=35EYRRkZkgUxteTO
+time=2025-01-28T21:28:13.475+09:00 level=TRACE msg=Conn.ResetSession conn_id=35EYRRkZkgUxteTO duration=84
+time=2025-01-28T21:28:13.475+09:00 level=TRACE msg=Conn.QueryContext conn_id=35EYRRkZkgUxteTO query="SELECT * FROM test1" args=[]
+time=2025-01-28T21:28:13.475+09:00 level=DEBUG msg=Conn.QueryContext conn_id=35EYRRkZkgUxteTO query="SELECT * FROM test1" args=[] duration=6458
+time=2025-01-28T21:28:13.475+09:00 level=TRACE msg=Rows.Next conn_id=35EYRRkZkgUxteTO
+time=2025-01-28T21:28:13.475+09:00 level=DEBUG msg=Rows.Next conn_id=35EYRRkZkgUxteTO duration=4500 eof=false
+time=2025-01-28T21:28:13.475+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-01-28T21:28:13.475+09:00 level=TRACE msg=Rows.Next conn_id=35EYRRkZkgUxteTO
+time=2025-01-28T21:28:13.475+09:00 level=DEBUG msg=Rows.Next conn_id=35EYRRkZkgUxteTO duration=1333 eof=true
+time=2025-01-28T21:28:13.475+09:00 level=TRACE msg=Rows.Close conn_id=35EYRRkZkgUxteTO
+time=2025-01-28T21:28:13.475+09:00 level=DEBUG msg=Rows.Close conn_id=35EYRRkZkgUxteTO duration=708
+time=2025-01-28T21:28:13.475+09:00 level=DEBUG msg=Conn.Close conn_id=35EYRRkZkgUxteTO
+time=2025-01-28T21:28:13.475+09:00 level=INFO msg=Conn.Close conn_id=35EYRRkZkgUxteTO duration=15625

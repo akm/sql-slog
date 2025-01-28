@@ -1,10 +1,10 @@
 package sqlslog
 
-// IDGen is a function that generates ID string.
+// IDGen is a function that generates an ID string.
 type IDGen = func() string
 
 // IDGenerator returns an Option that sets the ID generator.
-// Default is IDGeneratorDefault.
+// The default is IDGeneratorDefault.
 func IDGenerator(idGen IDGen) Option { return func(o *options) { o.idGen = idGen } }
 
 const defaultIDLength = 16
@@ -19,13 +19,13 @@ const (
 )
 
 // ConnIDKey sets the key for the connection ID.
-// Default is ConnIDKeyDefault.
+// The default is ConnIDKeyDefault.
 func ConnIDKey(key string) Option { return func(o *options) { o.connIDKey = key } }
 
 // TxIDKey sets the key for the transaction ID.
-// Default is TxIDKeyDefault.
+// The default is TxIDKeyDefault.
 func TxIDKey(key string) Option { return func(o *options) { o.txIDKey = key } }
 
 // StmtIDKey sets the key for the statement ID.
-// Default is StmtIDKeyDefault.
+// The default is StmtIDKeyDefault.
 func StmtIDKey(key string) Option { return func(o *options) { o.stmtIDKey = key } }

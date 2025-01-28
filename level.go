@@ -5,16 +5,16 @@ import (
 	"log/slog"
 )
 
-// Level is log level for sqlslog.
+// Level is the log level for sqlslog.
 type Level slog.Level
 
 const (
-	LevelVerbose Level = Level(-12)             // lower than slog.LevelTrace.
-	LevelTrace   Level = Level(-8)              // lower than slog.LevelDebug.
-	LevelDebug   Level = Level(slog.LevelDebug) // the same as slog.LevelDebug.
-	LevelInfo    Level = Level(slog.LevelInfo)  // the same as slog.LevelInfo.
-	LevelWarn    Level = Level(slog.LevelWarn)  // the same as slog.LevelWarn.
-	LevelError   Level = Level(slog.LevelError) // the same as slog.LevelError.
+	LevelVerbose Level = Level(-12)             // Lower than slog.LevelTrace.
+	LevelTrace   Level = Level(-8)              // Lower than slog.LevelDebug.
+	LevelDebug   Level = Level(slog.LevelDebug) // Same as slog.LevelDebug.
+	LevelInfo    Level = Level(slog.LevelInfo)  // Same as slog.LevelInfo.
+	LevelWarn    Level = Level(slog.LevelWarn)  // Same as slog.LevelWarn.
+	LevelError   Level = Level(slog.LevelError) // Same as slog.LevelError.
 )
 
 var _ slog.Leveler = LevelVerbose
@@ -49,7 +49,7 @@ func (l Level) Level() slog.Level {
 	return slog.Level(l)
 }
 
-// ReplaceLevelAttr replaces the log level as sqlslog.Level with the string representation.
+// ReplaceLevelAttr replaces the log level as sqlslog.Level with its string representation.
 func ReplaceLevelAttr(_ []string, a slog.Attr) slog.Attr {
 	// https://go.dev/src/log/slog/example_custom_levels_test.go
 	if a.Key == slog.LevelKey {
