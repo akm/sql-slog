@@ -44,7 +44,7 @@ func (r *rowsWrapper) Next(dest []driver.Value) error {
 }
 
 // If the driver knows how to describe the types
-// present in the returned result it should implement the following
+// present in the returned result, it should implement the following
 // interfaces: RowsColumnTypeScanType, RowsColumnTypeDatabaseTypeName,
 // RowsColumnTypeLength, RowsColumnTypeNullable, and
 // RowsColumnTypePrecisionScale. A given row value may also return a
@@ -126,7 +126,7 @@ func (r *rowsNextResultSetWrapper) NextResultSet() error {
 	)
 }
 
-// HandleRowsNextError returns completed and slice of slog.Attr.
+// HandleRowsNextError returns a boolean indicating completion and a slice of slog.Attr.
 // If err is nil, it returns true and a slice of slog.Attr{slog.Bool("eof", false)}.
 // If err is io.EOF, it returns true and a slice of slog.Attr{slog.Bool("eof", true)}.
 // Otherwise, it returns false and nil.

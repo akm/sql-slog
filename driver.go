@@ -82,12 +82,12 @@ func (w *driverContextWrapper) OpenConnector(dsn string) (driver.Connector, erro
 	return wrapConnector(origConnector, lg), nil
 }
 
-// DriverOpenErrorHandler returns a function that handles the error of driver.Driver.Open.
-// The function returns completed and slice of slog.Attr.
+// DriverOpenErrorHandler returns a function that handles errors from driver.Driver.Open.
+// The function returns a boolean indicating completion and a slice of slog.Attr.
 //
 // # For Postgres:
-// If err is nil, it returns true and a slice of slog.Attr{slog.Bool("eof", false)}.
-// If err is io.EOF, it returns true and a slice of slog.Attr{slog.Bool("eof", true)}.
+// If err is nil, it returns true and a slice of slog.Attr{slog.Bool("success", true)}.
+// If err is io.EOF, it returns true and a slice of slog.Attr{slog.Bool("success", false)}.
 // Otherwise, it returns false and nil.
 func DriverOpenErrorHandler(driverName string) func(err error) (bool, []slog.Attr) {
 	switch driverName {

@@ -98,7 +98,7 @@ func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *option
 	}
 }
 
-// Option is a function that sets some option on the options struct.
+// Option is a function that sets an option on the options struct.
 type Option func(*options)
 
 var stepLogMsgFormatter = StepLogMsgWithoutEventName

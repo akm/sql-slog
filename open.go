@@ -8,21 +8,21 @@ import (
 )
 
 /*
-Open opens a database specified by its database driver name and a driver-specific data source name.
-And returns a new database handle with logger.
+Open opens a database specified by its driver name and a driver-specific data source name,
+and returns a new database handle with logging capabilities.
 
 ctx is the context for the open operation.
-driverName is the name of the database driver as same as driverName of [sql.Open].
-dsn is the data source name as same as dataSourceName of [sql.Open].
-opts are the options for the logging behavior. See [Option] for the details.
+driverName is the name of the database driver, same as the driverName in [sql.Open].
+dsn is the data source name, same as the dataSourceName in [sql.Open].
+opts are the options for logging behavior. See [Option] for details.
 
-The returned DB can be used as same as *sql.DB from [sql.Open].
+The returned DB can be used the same way as *sql.DB from [sql.Open].
 
-See the following example for the usage:
+See the following example for usage:
 
 [Logger]: sets the slog.Logger to be used. If not set, the default is slog.Default().
 
-[StepOptions]: sets the options for the logging behavior.
+[StepOptions]: sets the options for logging behavior.
 
 [SetStepLogMsgFormatter]: sets the function to format the step name.
 
