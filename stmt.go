@@ -9,7 +9,7 @@ import (
 
 type stmtWrapper struct {
 	original driver.Stmt
-	logger   *logger
+	logger   *SqlLogger
 }
 
 var _ driver.Stmt = (*stmtWrapper)(nil)
@@ -56,7 +56,7 @@ func (s *stmtWrapper) Query(args []driver.Value) (driver.Rows, error) {
 
 type stmtExecContextWrapperImpl struct {
 	original driver.StmtExecContext
-	logger   *logger
+	logger   *SqlLogger
 }
 
 var _ driver.StmtExecContext = (*stmtExecContextWrapperImpl)(nil)
@@ -78,7 +78,7 @@ func (s *stmtExecContextWrapperImpl) ExecContext(ctx context.Context, args []dri
 
 type stmtQueryContextWrapperImpl struct {
 	original driver.StmtQueryContext
-	logger   *logger
+	logger   *SqlLogger
 }
 
 var _ driver.StmtQueryContext = (*stmtQueryContextWrapperImpl)(nil)
@@ -130,7 +130,7 @@ var (
 	_ driver.StmtQueryContext = (*stmtContextWrapper)(nil)
 )
 
-func wrapStmt(original driver.Stmt, logger *logger) driver.Stmt {
+func wrapStmt(original driver.Stmt, logger *SqlLogger) driver.Stmt {
 	if original == nil {
 		return nil
 	}
