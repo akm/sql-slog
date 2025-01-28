@@ -57,8 +57,8 @@ func (x *SqlLogger) Step(ctx context.Context, step *StepOptions, fn func() (*slo
 }
 
 func (x *SqlLogger) durationAttr(d time.Duration) slog.Attr {
-	key := x.options.durationKey
-	switch x.options.durationType {
+	key := x.options.DurationKey
+	switch x.options.DurationType {
 	case DurationNanoSeconds:
 		return slog.Int64(key, d.Nanoseconds())
 	case DurationMicroSeconds:

@@ -4,7 +4,7 @@ package sqlslog
 // The default is DurationNanoSeconds.
 func Duration(v DurationType) Option {
 	return func(o *Options) {
-		o.durationType = v
+		o.DurationType = v
 	}
 }
 
@@ -12,6 +12,6 @@ func Duration(v DurationType) Option {
 // The default is specified by DurationKeyDefault.
 func DurationKey(key string) Option {
 	return func(o *Options) {
-		o.durationKey = key
+		o.DurationKey = key
 	}
 }

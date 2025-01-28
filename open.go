@@ -30,7 +30,7 @@ See the following example for usage:
 */
 func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB, error) {
 	options := NewOptions(driverName, opts...)
-	logger := NewSqlLogger(options.logger, options)
+	logger := NewSqlLogger(options.Logger, options)
 
 	lg := logger.With(
 		slog.String("driver", driverName),
@@ -38,7 +38,7 @@ func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB,
 	)
 
 	var db *sql.DB
-	err := IgnoreAttr(lg.Step(ctx, &logger.options.sqlslogOpen, func() (*slog.Attr, error) {
+	err := IgnoreAttr(lg.Step(ctx, &logger.options.SqlslogOpen, func() (*slog.Attr, error) {
 		var err error
 		db, err = open(driverName, dsn, logger)
 		return nil, err

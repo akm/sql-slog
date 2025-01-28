@@ -26,7 +26,7 @@ var _ driver.Rows = (*rowsWrapper)(nil)
 
 // Close implements driver.Rows.
 func (r *rowsWrapper) Close() error {
-	return IgnoreAttr(r.logger.StepWithoutContext(&r.logger.options.rowsClose, WithNilAttr(r.original.Close)))
+	return IgnoreAttr(r.logger.StepWithoutContext(&r.logger.options.RowsClose, WithNilAttr(r.original.Close)))
 }
 
 // Columns implements driver.Rows.
@@ -36,7 +36,7 @@ func (r *rowsWrapper) Columns() []string {
 
 // Next implements driver.Rows.
 func (r *rowsWrapper) Next(dest []driver.Value) error {
-	return IgnoreAttr(r.logger.StepWithoutContext(&r.logger.options.rowsNext, func() (*slog.Attr, error) {
+	return IgnoreAttr(r.logger.StepWithoutContext(&r.logger.options.RowsNext, func() (*slog.Attr, error) {
 		return nil, r.original.Next(dest)
 	}))
 }
@@ -118,7 +118,7 @@ func (r *rowsNextResultSetWrapper) HasNextResultSet() bool {
 func (r *rowsNextResultSetWrapper) NextResultSet() error {
 	return IgnoreAttr(
 		r.logger.StepWithoutContext(
-			&r.logger.options.rowsNextResultSet,
+			&r.logger.options.RowsNextResultSet,
 			WithNilAttr(r.original.NextResultSet),
 		),
 	)
