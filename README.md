@@ -16,12 +16,12 @@ A logger for Go SQL database drivers without modifying existing `*sql.DB` stdlib
 
 ## FEATURES
 
-- [x] Keep using (or re-use existing) `*sql.DB` as is.
-- [x] No logger adapters. Just use [log/slog](https://pkg.go.dev/log/slog)
-- [x] No dependencies except stdlib.
-- [x] Leveled, detailed and configurable logging.
-- [x] Duration
-- [x] Trackable log output
+- Keep using (or re-use existing) `*sql.DB` as is.
+- No logger adapters. Just use [log/slog](https://pkg.go.dev/log/slog)
+- No dependencies except stdlib.
+- Leveled, detailed and configurable logging.
+- Duration
+- Trackable log output
 
 ## INSTALL
 
