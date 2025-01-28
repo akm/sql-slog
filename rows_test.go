@@ -10,7 +10,7 @@ import (
 
 func TestWrapRows(t *testing.T) {
 	t.Parallel()
-	if wrapRows(nil, nil) != nil {
+	if WrapRows(nil, nil) != nil {
 		t.Fatal("Expected nil")
 	}
 }
@@ -89,7 +89,7 @@ func TestRowsNextResultSet(t *testing.T) {
 	}
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(NewJSONHandler(buf, nil))
-	wrapped := wrapRows(rows, newLogger(logger, newOptions("dummy")))
+	wrapped := WrapRows(rows, newLogger(logger, newOptions("dummy")))
 	wrappedRNRS, ok := wrapped.(driver.RowsNextResultSet)
 	if !ok {
 		t.Fatal("Expected true")

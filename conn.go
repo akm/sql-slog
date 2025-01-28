@@ -210,7 +210,7 @@ func (c *connWithContextWrapper) QueryContext(ctx context.Context, query string,
 	if err != nil {
 		return nil, err
 	}
-	return wrapRows(rows, c.logger), nil
+	return WrapRows(rows, c.logger), nil
 }
 
 // PrepareContext implements driver.ConnPrepareContext.

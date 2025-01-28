@@ -8,7 +8,7 @@ import (
 	"reflect"
 )
 
-func wrapRows(original driver.Rows, logger *logger) driver.Rows {
+func WrapRows(original driver.Rows, logger *logger) driver.Rows {
 	if original == nil {
 		return nil
 	}
