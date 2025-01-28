@@ -84,7 +84,7 @@ func NewDefaultOptions(driverName string, formatter StepLogMsgFormatter) *Option
 		connPrepareContext:  stepOpts("Conn.PrepareContext", LevelInfo),
 		connBeginTx:         stepOpts("Conn.BeginTx", LevelInfo),
 		connectorConnect:    withErrorHandler(stepOpts("Connector.Connect", LevelInfo), public.ConnectorConnectErrorHandler(driverName)),
-		driverOpen:          withErrorHandler(stepOpts("Driver.Open", LevelInfo), DriverOpenErrorHandler(driverName)),
+		driverOpen:          withErrorHandler(stepOpts("Driver.Open", LevelInfo), public.DriverOpenErrorHandler(driverName)),
 		driverOpenConnector: stepOpts("Driver.OpenConnector", LevelInfo),
 		sqlslogOpen:         stepOpts("sqlslog.Open", LevelInfo),
 		rowsClose:           stepOpts("Rows.Close", LevelDebug),
