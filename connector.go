@@ -22,7 +22,7 @@ func wrapConnector(original driver.Connector, logger *SqlLogger) driver.Connecto
 // Connect implements driver.Connector.
 func (c *connector) Connect(ctx context.Context) (driver.Conn, error) {
 	var origConn driver.Conn
-	err := ignoreAttr(c.logger.Step(ctx, &c.logger.options.connectorConnect, func() (*slog.Attr, error) {
+	err := IgnoreAttr(c.logger.Step(ctx, &c.logger.options.connectorConnect, func() (*slog.Attr, error) {
 		var err error
 		origConn, err = c.original.Connect(ctx)
 		return nil, err

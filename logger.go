@@ -74,12 +74,12 @@ func (x *SqlLogger) durationAttr(d time.Duration) slog.Attr {
 	}
 }
 
-func withNilAttr(f func() error) func() (*slog.Attr, error) {
+func WithNilAttr(f func() error) func() (*slog.Attr, error) {
 	return func() (*slog.Attr, error) {
 		return nil, f()
 	}
 }
 
-func ignoreAttr(_ *slog.Attr, err error) error {
+func IgnoreAttr(_ *slog.Attr, err error) error {
 	return err
 }

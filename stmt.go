@@ -16,14 +16,14 @@ var _ driver.Stmt = (*stmtWrapper)(nil)
 
 // Close implements driver.Stmt.
 func (s *stmtWrapper) Close() error {
-	return ignoreAttr(s.logger.StepWithoutContext(&s.logger.options.stmtClose, withNilAttr(s.original.Close)))
+	return IgnoreAttr(s.logger.StepWithoutContext(&s.logger.options.stmtClose, WithNilAttr(s.original.Close)))
 }
 
 // Exec implements driver.Stmt.
 func (s *stmtWrapper) Exec(args []driver.Value) (driver.Result, error) {
 	lg := s.logger.With(slog.String("args", fmt.Sprintf("%+v", args)))
 	var result driver.Result
-	err := ignoreAttr(lg.StepWithoutContext(&s.logger.options.stmtExec, func() (*slog.Attr, error) {
+	err := IgnoreAttr(lg.StepWithoutContext(&s.logger.options.stmtExec, func() (*slog.Attr, error) {
 		var err error
 		result, err = s.original.Exec(args) //nolint:staticcheck
 		return nil, err
@@ -43,7 +43,7 @@ func (s *stmtWrapper) NumInput() int {
 func (s *stmtWrapper) Query(args []driver.Value) (driver.Rows, error) {
 	lg := s.logger.With(slog.String("args", fmt.Sprintf("%+v", args)))
 	var rows driver.Rows
-	err := ignoreAttr(lg.StepWithoutContext(&s.logger.options.stmtQuery, func() (*slog.Attr, error) {
+	err := IgnoreAttr(lg.StepWithoutContext(&s.logger.options.stmtQuery, func() (*slog.Attr, error) {
 		var err error
 		rows, err = s.original.Query(args) //nolint:staticcheck
 		return nil, err
@@ -65,7 +65,7 @@ var _ driver.StmtExecContext = (*stmtExecContextWrapperImpl)(nil)
 func (s *stmtExecContextWrapperImpl) ExecContext(ctx context.Context, args []driver.NamedValue) (driver.Result, error) {
 	lg := s.logger.With(slog.String("args", fmt.Sprintf("%+v", args)))
 	var result driver.Result
-	err := ignoreAttr(lg.Step(ctx, &s.logger.options.stmtExecContext, func() (*slog.Attr, error) {
+	err := IgnoreAttr(lg.Step(ctx, &s.logger.options.stmtExecContext, func() (*slog.Attr, error) {
 		var err error
 		result, err = s.original.ExecContext(ctx, args)
 		return nil, err
@@ -87,7 +87,7 @@ var _ driver.StmtQueryContext = (*stmtQueryContextWrapperImpl)(nil)
 func (s *stmtQueryContextWrapperImpl) QueryContext(ctx context.Context, args []driver.NamedValue) (driver.Rows, error) {
 	lg := s.logger.With(slog.String("args", fmt.Sprintf("%+v", args)))
 	var rows driver.Rows
-	err := ignoreAttr(lg.Step(ctx, &s.logger.options.stmtQueryContext, func() (*slog.Attr, error) {
+	err := IgnoreAttr(lg.Step(ctx, &s.logger.options.stmtQueryContext, func() (*slog.Attr, error) {
 		var err error
 		rows, err = s.original.QueryContext(ctx, args)
 		return nil, err
