@@ -6,6 +6,8 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+
+	"github.com/akm/sql-slog/public"
 )
 
 func wrapConn(original driver.Conn, logger *SqlLogger) driver.Conn {
@@ -259,7 +261,7 @@ func (c *connWithContextWrapper) BeginTx(ctx context.Context, opts driver.TxOpti
 
 func ConnExecContextErrorHandler(driverName string) func(err error) (bool, []slog.Attr) {
 	switch driverName {
-	case DriverNameMysql:
+	case public.DriverNameMysql:
 		return func(err error) (bool, []slog.Attr) {
 			if err == nil {
 				return true, nil
@@ -277,7 +279,7 @@ func ConnExecContextErrorHandler(driverName string) func(err error) (bool, []slo
 
 func ConnQueryContextErrorHandler(driverName string) func(err error) (bool, []slog.Attr) {
 	switch driverName {
-	case DriverNameMysql:
+	case public.DriverNameMysql:
 		return func(err error) (bool, []slog.Attr) {
 			if err == nil {
 				return true, nil

@@ -1,4 +1,4 @@
-package sqlslog
+package public
 
 const (
 	DriverNameMysql = "mysql"
