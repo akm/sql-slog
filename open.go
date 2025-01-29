@@ -5,6 +5,7 @@ import (
 	"database/sql"
 
 	"github.com/akm/sql-slog/internal/wrap"
+	"github.com/akm/sql-slog/opts"
 )
 
 /*
@@ -28,6 +29,6 @@ See the following example for usage:
 
 [sql.Open]: https://pkg.go.dev/database/sql#Open
 */
-func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB, error) {
+func Open(ctx context.Context, driverName, dsn string, opts ...opts.Option) (*sql.DB, error) {
 	return wrap.Open(ctx, driverName, dsn, opts...)
 }

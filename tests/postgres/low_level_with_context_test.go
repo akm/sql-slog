@@ -11,6 +11,7 @@ import (
 	"time"
 
 	sqlslog "github.com/akm/sql-slog"
+	"github.com/akm/sql-slog/opts"
 	"github.com/akm/sql-slog/tests/testhelper"
 	_ "github.com/lib/pq"
 	"github.com/stretchr/testify/assert"
@@ -35,7 +36,7 @@ func TestLowLevelWithContext(t *testing.T) {
 
 	buf := bytes.NewBuffer(nil)
 	logs := testhelper.NewLogAssertion(buf)
-	logger := slog.New(sqlslog.NewJSONHandler(buf, &slog.HandlerOptions{Level: sqlslog.LevelVerbose}))
+	logger := slog.New(opts.NewJSONHandler(buf, &slog.HandlerOptions{Level: opts.LevelVerbose}))
 
 	seqIdGen := testhelper.NewSeqIDGenerator()
 	connIDKey := "conn_id"
@@ -45,11 +46,11 @@ func TestLowLevelWithContext(t *testing.T) {
 	db, err := sqlslog.Open(ctx, "postgres", dsn,
 		append(
 			testhelper.StepEventMsgOptions,
-			sqlslog.Logger(logger),
-			sqlslog.IDGenerator(seqIdGen.Generate),
-			sqlslog.ConnIDKey(connIDKey),
-			sqlslog.StmtIDKey(stmtIDKey),
-			sqlslog.TxIDKey(txIDKey),
+			opts.Logger(logger),
+			opts.IDGenerator(seqIdGen.Generate),
+			opts.ConnIDKey(connIDKey),
+			opts.StmtIDKey(stmtIDKey),
+			opts.TxIDKey(txIDKey),
 		)...,
 	)
 	require.NoError(t, err)

@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	sqlslog "github.com/akm/sql-slog"
+	"github.com/akm/sql-slog/opts"
 	"github.com/akm/sql-slog/tests/testhelper"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/stretchr/testify/assert"
@@ -23,7 +24,7 @@ func TestDuration(t *testing.T) {
 
 	type testCase struct {
 		durationKey  string
-		durationType sqlslog.DurationType
+		durationType opts.DurationType
 		assertion    func(t *testing.T, logs *testhelper.LogsAssertion)
 	}
 
@@ -47,35 +48,35 @@ func TestDuration(t *testing.T) {
 	testCases := []testCase{
 		{
 			durationKey:  "d",
-			durationType: sqlslog.DurationNanoSeconds,
+			durationType: opts.DurationNanoSeconds,
 			assertion: func(t *testing.T, logs *testhelper.LogsAssertion) {
 				assertFloat64Duration("d")(t, findCompleteLog(t, logs))
 			},
 		},
 		{
 			durationKey:  "duration-μs",
-			durationType: sqlslog.DurationMicroSeconds,
+			durationType: opts.DurationMicroSeconds,
 			assertion: func(t *testing.T, logs *testhelper.LogsAssertion) {
 				assertFloat64Duration("duration-μs")(t, findCompleteLog(t, logs))
 			},
 		},
 		{
 			durationKey:  "duration-msec",
-			durationType: sqlslog.DurationMilliSeconds,
+			durationType: opts.DurationMilliSeconds,
 			assertion: func(t *testing.T, logs *testhelper.LogsAssertion) {
 				assertFloat64Duration("duration-msec")(t, findCompleteLog(t, logs))
 			},
 		},
 		{
 			durationKey:  "duration-of-go",
-			durationType: sqlslog.DurationGoDuration,
+			durationType: opts.DurationGoDuration,
 			assertion: func(t *testing.T, logs *testhelper.LogsAssertion) {
 				assertFloat64Duration("duration-of-go")(t, findCompleteLog(t, logs))
 			},
 		},
 		{
 			durationKey:  "duration-string",
-			durationType: sqlslog.DurationString,
+			durationType: opts.DurationString,
 			assertion: func(t *testing.T, logs *testhelper.LogsAssertion) {
 				log := findCompleteLog(t, logs)
 				require.NotNil(t, log)
@@ -88,13 +89,13 @@ func TestDuration(t *testing.T) {
 		t.Run(tc.durationKey, func(t *testing.T) {
 			buf := bytes.NewBuffer(nil)
 			logs := testhelper.NewLogAssertion(buf)
-			logger := slog.New(sqlslog.NewJSONHandler(buf, &slog.HandlerOptions{Level: sqlslog.LevelVerbose}))
+			logger := slog.New(opts.NewJSONHandler(buf, &slog.HandlerOptions{Level: opts.LevelVerbose}))
 			db, err := sqlslog.Open(ctx, "sqlite3", dsn,
 				append(
 					testhelper.StepEventMsgOptions,
-					sqlslog.Logger(logger),
-					sqlslog.DurationKey(tc.durationKey),
-					sqlslog.Duration(tc.durationType),
+					opts.Logger(logger),
+					opts.DurationKey(tc.durationKey),
+					opts.Duration(tc.durationType),
 				)...,
 			)
 			require.NoError(t, err)

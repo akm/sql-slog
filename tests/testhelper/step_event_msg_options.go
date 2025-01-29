@@ -1,7 +1,7 @@
 package testhelper
 
 import (
-	sqlslog "github.com/akm/sql-slog"
+	sqlslog "github.com/akm/sql-slog/opts"
 )
 
 var StepEventMsgOptions = []sqlslog.Option{
