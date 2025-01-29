@@ -13,3 +13,10 @@ const (
 	TxIDKeyDefault   = sqlslogopts.TxIDKeyDefault
 	StmtIDKeyDefault = sqlslogopts.StmtIDKeyDefault
 )
+
+var (
+	IDGenerator = sqlslogopts.IDGenerator
+	ConnIDKey   = sqlslogopts.ConnIDKey
+	TxIDKey     = sqlslogopts.TxIDKey
+	StmtIDKey   = sqlslogopts.StmtIDKey
+)
