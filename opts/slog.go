@@ -1,4 +1,4 @@
-package sqlslogopts
+package opts
 
 import (
 	"io"

@@ -1,4 +1,4 @@
-package sqlslogopts
+package opts
 
 type DurationType int
 
