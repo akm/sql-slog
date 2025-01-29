@@ -51,7 +51,7 @@ func Open(ctx context.Context, driverName, dsn string, opts ...public.Option) (*
 	return db, nil
 }
 
-func openWithWrappedConnector(driverName, dsn string, logger *SqlLogger) (*sql.DB, error) {
+func openWithWrappedConnector(driverName, dsn string, logger *SQLLogger) (*sql.DB, error) {
 	db, err := sql.Open(driverName, dsn)
 	if err != nil {
 		return nil, err

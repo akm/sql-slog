@@ -7,7 +7,7 @@ import (
 	"log/slog"
 )
 
-func WrapConn(original driver.Conn, logger *SqlLogger) driver.Conn {
+func WrapConn(original driver.Conn, logger *SQLLogger) driver.Conn {
 	if original == nil {
 		return nil
 	}
@@ -41,7 +41,7 @@ func WrapConn(original driver.Conn, logger *SqlLogger) driver.Conn {
 
 type connWrapper struct {
 	original driver.Conn
-	logger   *SqlLogger
+	logger   *SQLLogger
 }
 
 // Deprecated interfaces, not implemented.

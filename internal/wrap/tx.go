@@ -4,13 +4,13 @@ import (
 	"database/sql/driver"
 )
 
-func WrapTx(original driver.Tx, logger *SqlLogger) *txWrapper {
+func WrapTx(original driver.Tx, logger *SQLLogger) *txWrapper {
 	return &txWrapper{original: original, logger: logger}
 }
 
 type txWrapper struct {
 	original driver.Tx
-	logger   *SqlLogger
+	logger   *SQLLogger
 }
 
 var _ driver.Tx = (*txWrapper)(nil)

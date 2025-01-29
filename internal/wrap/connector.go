@@ -8,12 +8,12 @@ import (
 
 type connector struct {
 	original driver.Connector
-	logger   *SqlLogger
+	logger   *SQLLogger
 }
 
 var _ driver.Connector = (*connector)(nil)
 
-func WrapConnector(original driver.Connector, logger *SqlLogger) driver.Connector {
+func WrapConnector(original driver.Connector, logger *SQLLogger) driver.Connector {
 	return &connector{original: original, logger: logger}
 }
 

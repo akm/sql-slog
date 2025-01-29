@@ -3,7 +3,7 @@ package wrap
 import "github.com/akm/sql-slog/public"
 
 type (
-	SqlLogger = public.SqlLogger
+	SQLLogger = public.SQLLogger
 )
 
 var (

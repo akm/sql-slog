@@ -46,7 +46,7 @@ func TestWrapStmt(t *testing.T) {
 	t.Run("implements driver.Stmt but not stmtWithContext", func(t *testing.T) {
 		t.Parallel()
 		mock := &mockStmtForWrapStmt{}
-		logger := &SqlLogger{}
+		logger := &SQLLogger{}
 		stmt := WrapStmt(mock, logger)
 		if stmt == nil {
 			t.Fatal("Expected non-nil")

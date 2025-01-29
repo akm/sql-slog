@@ -6,27 +6,27 @@ import (
 	"time"
 )
 
-type SqlLogger struct {
+type SQLLogger struct {
 	*slog.Logger
 	Options *Options
 }
 
-func NewSqlLogger(rawLogger *slog.Logger, opts *Options) *SqlLogger {
-	return &SqlLogger{
+func NewSqlLogger(rawLogger *slog.Logger, opts *Options) *SQLLogger {
+	return &SQLLogger{
 		Logger:  rawLogger,
 		Options: opts,
 	}
 }
 
-func (x *SqlLogger) With(kv ...interface{}) *SqlLogger {
+func (x *SQLLogger) With(kv ...interface{}) *SQLLogger {
 	return NewSqlLogger(x.Logger.With(kv...), x.Options)
 }
 
-func (x *SqlLogger) StepWithoutContext(step *StepOptions, fn func() (*slog.Attr, error)) (*slog.Attr, error) {
+func (x *SQLLogger) StepWithoutContext(step *StepOptions, fn func() (*slog.Attr, error)) (*slog.Attr, error) {
 	return x.Step(context.Background(), step, fn)
 }
 
-func (x *SqlLogger) Step(ctx context.Context, step *StepOptions, fn func() (*slog.Attr, error)) (*slog.Attr, error) {
+func (x *SQLLogger) Step(ctx context.Context, step *StepOptions, fn func() (*slog.Attr, error)) (*slog.Attr, error) {
 	x.Log(ctx, slog.Level(step.Start.Level), step.Start.Msg)
 	t0 := time.Now()
 	attr, err := fn()
@@ -56,7 +56,7 @@ func (x *SqlLogger) Step(ctx context.Context, step *StepOptions, fn func() (*slo
 	return attr, err
 }
 
-func (x *SqlLogger) durationAttr(d time.Duration) slog.Attr {
+func (x *SQLLogger) durationAttr(d time.Duration) slog.Attr {
 	key := x.Options.DurationKey
 	switch x.Options.DurationType {
 	case DurationNanoSeconds:

@@ -38,7 +38,7 @@ func TestWrapConn(t *testing.T) {
 	t.Run("implements driver.Conn but not connWithContext", func(t *testing.T) {
 		t.Parallel()
 		mock := &mockConnForWrapConn{}
-		logger := &SqlLogger{}
+		logger := &SQLLogger{}
 		conn := WrapConn(mock, logger)
 		if conn == nil {
 			t.Fatal("Expected non-nil")
