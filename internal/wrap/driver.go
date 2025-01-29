@@ -44,7 +44,7 @@ func (w *driverWrapper) Open(dsn string) (driver.Conn, error) {
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return WrapConn(origConn, lg), nil
+	return wrapConn(origConn, lg), nil
 }
 
 type driverContextWrapper struct {

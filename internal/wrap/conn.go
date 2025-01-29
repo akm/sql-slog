@@ -7,7 +7,7 @@ import (
 	"log/slog"
 )
 
-func WrapConn(original driver.Conn, logger *SQLLogger) driver.Conn {
+func wrapConn(original driver.Conn, logger *SQLLogger) driver.Conn {
 	if original == nil {
 		return nil
 	}

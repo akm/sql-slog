@@ -28,7 +28,7 @@ func (c *connector) Connect(ctx context.Context) (driver.Conn, error) {
 	if err != nil {
 		return nil, err
 	}
-	return WrapConn(origConn, c.logger), nil
+	return wrapConn(origConn, c.logger), nil
 }
 
 // Driver implements driver.Connector.
