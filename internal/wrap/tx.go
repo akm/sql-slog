@@ -4,7 +4,7 @@ import (
 	"database/sql/driver"
 )
 
-func WrapTx(original driver.Tx, logger *SQLLogger) *txWrapper {
+func wrapTx(original driver.Tx, logger *SQLLogger) *txWrapper {
 	return &txWrapper{original: original, logger: logger}
 }
 

@@ -77,7 +77,7 @@ func (c *connWrapper) Begin() (driver.Tx, error) {
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return WrapTx(origTx, lg), nil
+	return wrapTx(origTx, lg), nil
 }
 
 // Close implements driver.Conn.
@@ -253,5 +253,5 @@ func (c *connWithContextWrapper) BeginTx(ctx context.Context, opts driver.TxOpti
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return WrapTx(tx, lg), nil
+	return wrapTx(tx, lg), nil
 }
