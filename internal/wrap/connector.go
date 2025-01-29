@@ -1,11 +1,9 @@
-package sqlslog
+package wrap
 
 import (
 	"context"
 	"database/sql/driver"
 	"log/slog"
-
-	"github.com/akm/sql-slog/internal/wrap"
 )
 
 type connector struct {
@@ -15,7 +13,7 @@ type connector struct {
 
 var _ driver.Connector = (*connector)(nil)
 
-func wrapConnector(original driver.Connector, logger *SqlLogger) driver.Connector {
+func WrapConnector(original driver.Connector, logger *SqlLogger) driver.Connector {
 	return &connector{original: original, logger: logger}
 }
 
@@ -30,7 +28,7 @@ func (c *connector) Connect(ctx context.Context) (driver.Conn, error) {
 	if err != nil {
 		return nil, err
 	}
-	return wrap.WrapConn(origConn, c.logger), nil
+	return WrapConn(origConn, c.logger), nil
 }
 
 // Driver implements driver.Connector.

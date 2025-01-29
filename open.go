@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"database/sql/driver"
 	"log/slog"
+
+	"github.com/akm/sql-slog/internal/wrap"
 )
 
 /*
@@ -70,5 +72,5 @@ func open(driverName, dsn string, logger *SqlLogger) (*sql.DB, error) {
 		origConnector = &dsnConnector{dsn: dsn, driver: drv}
 	}
 
-	return sql.OpenDB(wrapConnector(origConnector, logger)), nil
+	return sql.OpenDB(wrap.WrapConnector(origConnector, logger)), nil
 }

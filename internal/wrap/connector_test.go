@@ -1,4 +1,4 @@
-package sqlslog
+package wrap
 
 import (
 	"context"
@@ -22,7 +22,7 @@ func TestConnectorDriver(t *testing.T) {
 	t.Parallel()
 	mock := &mockConnectorForWrapConnector{}
 	logger := &SqlLogger{}
-	conn := wrapConnector(mock, logger)
+	conn := WrapConnector(mock, logger)
 	if conn.Driver() != nil {
 		t.Fatal("Expected nil")
 	}
