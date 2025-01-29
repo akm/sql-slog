@@ -3,8 +3,6 @@ package sqlslog
 import (
 	"context"
 	"database/sql"
-	"database/sql/driver"
-	"log/slog"
 
 	"github.com/akm/sql-slog/internal/wrap"
 )
@@ -31,46 +29,5 @@ See the following example for usage:
 [sql.Open]: https://pkg.go.dev/database/sql#Open
 */
 func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB, error) {
-	options := NewOptions(driverName, opts...)
-	logger := NewSqlLogger(options.Logger, options)
-
-	lg := logger.With(
-		slog.String("driver", driverName),
-		slog.String("dsn", dsn),
-	)
-
-	var db *sql.DB
-	err := IgnoreAttr(lg.Step(ctx, &logger.Options.SqlslogOpen, func() (*slog.Attr, error) {
-		var err error
-		db, err = openWithWrappedConnector(driverName, dsn, logger)
-		return nil, err
-	}))
-	if err != nil {
-		return nil, err
-	}
-	return db, nil
-}
-
-func openWithWrappedConnector(driverName, dsn string, logger *SqlLogger) (*sql.DB, error) {
-	db, err := sql.Open(driverName, dsn)
-	if err != nil {
-		return nil, err
-	}
-	// This db is not used directly, but it is used to get the driver.
-
-	drv := wrap.WrapDriver(db.Driver(), logger)
-
-	var origConnector driver.Connector
-
-	if dc, ok := drv.(driver.DriverContext); ok {
-		connector, err := dc.OpenConnector(dsn)
-		if err != nil {
-			return nil, err
-		}
-		origConnector = connector
-	} else {
-		origConnector = wrap.NewDsnConnector(dsn, drv)
-	}
-
-	return sql.OpenDB(wrap.WrapConnector(origConnector, logger)), nil
+	return wrap.Open(ctx, driverName, dsn, opts...)
 }
