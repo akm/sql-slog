@@ -1,4 +1,4 @@
-package sqlslog
+package public
 
 import (
 	"context"
