@@ -8,7 +8,7 @@ import (
 	"log/slog"
 	"testing"
 
-	sqlslogopts "github.com/akm/sql-slog/opts"
+	"github.com/akm/sql-slog/opts"
 )
 
 type mockStmtForWrapStmt struct {
@@ -63,8 +63,8 @@ func TestWrapStmt(t *testing.T) {
 		}
 
 		buf := bytes.NewBuffer(nil)
-		logger := slog.New(sqlslogopts.NewJSONHandler(buf, nil))
-		wrapped := wrapStmt(mock, newLogger(logger, sqlslogopts.NewOptions("dummy")))
+		logger := slog.New(opts.NewJSONHandler(buf, nil))
+		wrapped := wrapStmt(mock, newLogger(logger, opts.NewOptions("dummy")))
 		_, err := wrapped.Query(nil) // nolint:staticcheck
 		if err == nil {
 			t.Fatal("Expected non-nil")
@@ -103,8 +103,8 @@ func TestWithMockErrorStmtWithContext(t *testing.T) {
 	}
 
 	buf := bytes.NewBuffer(nil)
-	logger := slog.New(sqlslogopts.NewJSONHandler(buf, nil))
-	wrapped := wrapStmt(mock, newLogger(logger, sqlslogopts.NewOptions("dummy")))
+	logger := slog.New(opts.NewJSONHandler(buf, nil))
+	wrapped := wrapStmt(mock, newLogger(logger, opts.NewOptions("dummy")))
 	stmtWithQueryContext, ok := wrapped.(driver.StmtQueryContext)
 	if !ok {
 		t.Fatal("Expected StmtQueryContext")

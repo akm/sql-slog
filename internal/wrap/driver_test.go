@@ -7,7 +7,7 @@ import (
 	"log/slog"
 	"testing"
 
-	sqlslogopts "github.com/akm/sql-slog/opts"
+	"github.com/akm/sql-slog/opts"
 )
 
 type mockErrorDiverContext struct{}
@@ -32,9 +32,9 @@ func TestDriverContextWrapperOpenConnector(t *testing.T) {
 	t.Run("unexpected error", func(t *testing.T) {
 		t.Parallel()
 		buf := bytes.NewBuffer(nil)
-		logger := slog.New(sqlslogopts.NewTextHandler(buf, nil))
+		logger := slog.New(opts.NewTextHandler(buf, nil))
 		dw := wrapDriver(&mockErrorDiverContext{},
-			newLogger(logger, sqlslogopts.NewOptions("sqlite3")),
+			newLogger(logger, opts.NewOptions("sqlite3")),
 		)
 		dwc, ok := dw.(driver.DriverContext)
 		if !ok {

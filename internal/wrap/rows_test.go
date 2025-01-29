@@ -7,7 +7,7 @@ import (
 	"log/slog"
 	"testing"
 
-	sqlslogopts "github.com/akm/sql-slog/opts"
+	"github.com/akm/sql-slog/opts"
 )
 
 func TestWrapRows(t *testing.T) {
@@ -90,8 +90,8 @@ func TestRowsNextResultSet(t *testing.T) {
 		error:    errors.New(errMsg),
 	}
 	buf := bytes.NewBuffer(nil)
-	logger := slog.New(sqlslogopts.NewJSONHandler(buf, nil))
-	wrapped := wrapRows(rows, newLogger(logger, sqlslogopts.NewOptions("dummy")))
+	logger := slog.New(opts.NewJSONHandler(buf, nil))
+	wrapped := wrapRows(rows, newLogger(logger, opts.NewOptions("dummy")))
 	wrappedRNRS, ok := wrapped.(driver.RowsNextResultSet)
 	if !ok {
 		t.Fatal("Expected true")
