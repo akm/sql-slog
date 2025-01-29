@@ -1,4 +1,4 @@
-package sqlslog
+package wrap
 
 import (
 	"context"
@@ -31,7 +31,7 @@ func TestWrapConn(t *testing.T) {
 	t.Parallel()
 	t.Run("nil", func(t *testing.T) {
 		t.Parallel()
-		if wrapConn(nil, nil) != nil {
+		if WrapConn(nil, nil) != nil {
 			t.Fatal("Expected nil")
 		}
 	})
@@ -39,7 +39,7 @@ func TestWrapConn(t *testing.T) {
 		t.Parallel()
 		mock := &mockConnForWrapConn{}
 		logger := &SqlLogger{}
-		conn := wrapConn(mock, logger)
+		conn := WrapConn(mock, logger)
 		if conn == nil {
 			t.Fatal("Expected non-nil")
 		}
@@ -102,7 +102,7 @@ var (
 func TestWithMockErrorConn(t *testing.T) {
 	t.Parallel()
 	logger := NewSqlLogger(slog.Default(), NewOptions("sqlite3"))
-	w := wrapConn(newMockErrConn(errors.New("unexpected error")), logger)
+	w := WrapConn(newMockErrConn(errors.New("unexpected error")), logger)
 	t.Run("Begin", func(t *testing.T) {
 		t.Parallel()
 		if _, err := w.Begin(); err == nil { //nolint:staticcheck

@@ -1,15 +1,13 @@
-package sqlslog
+package wrap
 
 import (
 	"context"
 	"database/sql/driver"
 	"fmt"
 	"log/slog"
-
-	"github.com/akm/sql-slog/internal/wrap"
 )
 
-func wrapConn(original driver.Conn, logger *SqlLogger) driver.Conn {
+func WrapConn(original driver.Conn, logger *SqlLogger) driver.Conn {
 	if original == nil {
 		return nil
 	}
@@ -79,7 +77,7 @@ func (c *connWrapper) Begin() (driver.Tx, error) {
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return wrap.WrapTx(origTx, lg), nil
+	return WrapTx(origTx, lg), nil
 }
 
 // Close implements driver.Conn.
@@ -106,7 +104,7 @@ func (c *connWrapper) Prepare(query string) (driver.Stmt, error) {
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return wrap.WrapStmt(origStmt, lg), nil
+	return WrapStmt(origStmt, lg), nil
 }
 
 // IsValid implements driver.Validator.
@@ -211,7 +209,7 @@ func (c *connWithContextWrapper) QueryContext(ctx context.Context, query string,
 	if err != nil {
 		return nil, err
 	}
-	return wrap.WrapRows(rows, c.logger), nil
+	return WrapRows(rows, c.logger), nil
 }
 
 // PrepareContext implements driver.ConnPrepareContext.
@@ -233,7 +231,7 @@ func (c *connWithContextWrapper) PrepareContext(ctx context.Context, query strin
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return wrap.WrapStmt(stmt, lg), nil
+	return WrapStmt(stmt, lg), nil
 }
 
 // BeginTx implements driver.ConnBeginTx.
@@ -255,5 +253,5 @@ func (c *connWithContextWrapper) BeginTx(ctx context.Context, opts driver.TxOpti
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return wrap.WrapTx(tx, lg), nil
+	return WrapTx(tx, lg), nil
 }
