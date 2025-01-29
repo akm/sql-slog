@@ -90,7 +90,7 @@ func TestRowsNextResultSet(t *testing.T) {
 		error:    errors.New(errMsg),
 	}
 	buf := bytes.NewBuffer(nil)
-	logger := slog.New(NewJSONHandler(buf, nil))
+	logger := slog.New(sqlslogopts.NewJSONHandler(buf, nil))
 	wrapped := wrapRows(rows, NewSQLLogger(logger, sqlslogopts.NewOptions("dummy")))
 	wrappedRNRS, ok := wrapped.(driver.RowsNextResultSet)
 	if !ok {

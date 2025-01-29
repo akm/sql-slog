@@ -63,7 +63,7 @@ func TestWrapStmt(t *testing.T) {
 		}
 
 		buf := bytes.NewBuffer(nil)
-		logger := slog.New(NewJSONHandler(buf, nil))
+		logger := slog.New(sqlslogopts.NewJSONHandler(buf, nil))
 		wrapped := wrapStmt(mock, NewSQLLogger(logger, sqlslogopts.NewOptions("dummy")))
 		_, err := wrapped.Query(nil) // nolint:staticcheck
 		if err == nil {
@@ -103,7 +103,7 @@ func TestWithMockErrorStmtWithContext(t *testing.T) {
 	}
 
 	buf := bytes.NewBuffer(nil)
-	logger := slog.New(NewJSONHandler(buf, nil))
+	logger := slog.New(sqlslogopts.NewJSONHandler(buf, nil))
 	wrapped := wrapStmt(mock, NewSQLLogger(logger, sqlslogopts.NewOptions("dummy")))
 	stmtWithQueryContext, ok := wrapped.(driver.StmtQueryContext)
 	if !ok {
