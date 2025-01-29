@@ -104,7 +104,7 @@ func (c *connWrapper) Prepare(query string) (driver.Stmt, error) {
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return WrapStmt(origStmt, lg), nil
+	return wrapStmt(origStmt, lg), nil
 }
 
 // IsValid implements driver.Validator.
@@ -231,7 +231,7 @@ func (c *connWithContextWrapper) PrepareContext(ctx context.Context, query strin
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return WrapStmt(stmt, lg), nil
+	return wrapStmt(stmt, lg), nil
 }
 
 // BeginTx implements driver.ConnBeginTx.

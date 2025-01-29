@@ -130,7 +130,7 @@ var (
 	_ driver.StmtQueryContext = (*stmtContextWrapper)(nil)
 )
 
-func WrapStmt(original driver.Stmt, logger *SQLLogger) driver.Stmt {
+func wrapStmt(original driver.Stmt, logger *SQLLogger) driver.Stmt {
 	if original == nil {
 		return nil
 	}
