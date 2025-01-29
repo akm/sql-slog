@@ -1,17 +1,17 @@
 package sqlslog
 
 import (
-	"github.com/akm/sql-slog/public"
+	"github.com/akm/sql-slog/sqlslogopts"
 )
 
-type DurationType = public.DurationType
+type DurationType = sqlslogopts.DurationType
 
 const (
-	DurationNanoSeconds  DurationType = public.DurationNanoSeconds
-	DurationMicroSeconds DurationType = public.DurationMicroSeconds
-	DurationMilliSeconds DurationType = public.DurationMilliSeconds
-	DurationGoDuration   DurationType = public.DurationGoDuration
-	DurationString       DurationType = public.DurationString
+	DurationNanoSeconds  DurationType = sqlslogopts.DurationNanoSeconds
+	DurationMicroSeconds DurationType = sqlslogopts.DurationMicroSeconds
+	DurationMilliSeconds DurationType = sqlslogopts.DurationMilliSeconds
+	DurationGoDuration   DurationType = sqlslogopts.DurationGoDuration
+	DurationString       DurationType = sqlslogopts.DurationString
 )
 
-const DurationKeyDefault = public.DurationKeyDefault
+const DurationKeyDefault = sqlslogopts.DurationKeyDefault

@@ -1,15 +1,15 @@
 package sqlslog
 
-import "github.com/akm/sql-slog/public"
+import "github.com/akm/sql-slog/sqlslogopts"
 
 type (
-	Event               = public.Event
-	StepOptions         = public.StepOptions
-	StepLogMsgFormatter = public.StepLogMsgFormatter
+	Event               = sqlslogopts.Event
+	StepOptions         = sqlslogopts.StepOptions
+	StepLogMsgFormatter = sqlslogopts.StepLogMsgFormatter
 )
 
 var (
-	NewStepOptions             = public.NewStepOptions
-	StepLogMsgWithEventName    = public.StepLogMsgWithEventName
-	StepLogMsgWithoutEventName = public.StepLogMsgWithoutEventName
+	NewStepOptions             = sqlslogopts.NewStepOptions
+	StepLogMsgWithEventName    = sqlslogopts.StepLogMsgWithEventName
+	StepLogMsgWithoutEventName = sqlslogopts.StepLogMsgWithoutEventName
 )

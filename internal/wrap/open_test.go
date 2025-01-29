@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"testing"
 
-	"github.com/akm/sql-slog/public"
+	"github.com/akm/sql-slog/sqlslogopts"
 )
 
 func TestOpen(t *testing.T) {
@@ -15,7 +15,7 @@ func TestOpen(t *testing.T) {
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(slog.NewJSONHandler(buf, &slog.HandlerOptions{Level: slog.LevelDebug}))
 
-	db, err := Open(ctx, "invalid-driver", "", public.Logger(logger))
+	db, err := Open(ctx, "invalid-driver", "", sqlslogopts.Logger(logger))
 	if err == nil {
 		t.Fatal("Expected error")
 	}

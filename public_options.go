@@ -1,40 +1,40 @@
 package sqlslog
 
-import "github.com/akm/sql-slog/public"
+import "github.com/akm/sql-slog/sqlslogopts"
 
 type (
-	Options = public.Options
-	Option  = public.Option
+	Options = sqlslogopts.Options
+	Option  = sqlslogopts.Option
 )
 
 var (
-	NewOptions             = public.NewOptions
-	Logger                 = public.Logger
-	SetStepLogMsgFormatter = public.SetStepLogMsgFormatter
+	NewOptions             = sqlslogopts.NewOptions
+	Logger                 = sqlslogopts.Logger
+	SetStepLogMsgFormatter = sqlslogopts.SetStepLogMsgFormatter
 )
 
 var (
-	ConnBegin           = public.ConnBegin
-	ConnClose           = public.ConnClose
-	ConnPrepare         = public.ConnPrepare
-	ConnResetSession    = public.ConnResetSession
-	ConnPing            = public.ConnPing
-	ConnExecContext     = public.ConnExecContext
-	ConnQueryContext    = public.ConnQueryContext
-	ConnPrepareContext  = public.ConnPrepareContext
-	ConnBeginTx         = public.ConnBeginTx
-	ConnectorConnect    = public.ConnectorConnect
-	DriverOpen          = public.DriverOpen
-	DriverOpenConnector = public.DriverOpenConnector
-	SqlslogOpen         = public.SqlslogOpen
-	RowsClose           = public.RowsClose
-	RowsNext            = public.RowsNext
-	RowsNextResultSet   = public.RowsNextResultSet
-	StmtClose           = public.StmtClose
-	StmtExec            = public.StmtExec
-	StmtQuery           = public.StmtQuery
-	StmtExecContext     = public.StmtExecContext
-	StmtQueryContext    = public.StmtQueryContext
-	TxCommit            = public.TxCommit
-	TxRollback          = public.TxRollback
+	ConnBegin           = sqlslogopts.ConnBegin
+	ConnClose           = sqlslogopts.ConnClose
+	ConnPrepare         = sqlslogopts.ConnPrepare
+	ConnResetSession    = sqlslogopts.ConnResetSession
+	ConnPing            = sqlslogopts.ConnPing
+	ConnExecContext     = sqlslogopts.ConnExecContext
+	ConnQueryContext    = sqlslogopts.ConnQueryContext
+	ConnPrepareContext  = sqlslogopts.ConnPrepareContext
+	ConnBeginTx         = sqlslogopts.ConnBeginTx
+	ConnectorConnect    = sqlslogopts.ConnectorConnect
+	DriverOpen          = sqlslogopts.DriverOpen
+	DriverOpenConnector = sqlslogopts.DriverOpenConnector
+	SqlslogOpen         = sqlslogopts.SqlslogOpen
+	RowsClose           = sqlslogopts.RowsClose
+	RowsNext            = sqlslogopts.RowsNext
+	RowsNextResultSet   = sqlslogopts.RowsNextResultSet
+	StmtClose           = sqlslogopts.StmtClose
+	StmtExec            = sqlslogopts.StmtExec
+	StmtQuery           = sqlslogopts.StmtQuery
+	StmtExecContext     = sqlslogopts.StmtExecContext
+	StmtQueryContext    = sqlslogopts.StmtQueryContext
+	TxCommit            = sqlslogopts.TxCommit
+	TxRollback          = sqlslogopts.TxRollback
 )

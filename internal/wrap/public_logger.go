@@ -1,14 +1,14 @@
 package wrap
 
-import "github.com/akm/sql-slog/public"
+import "github.com/akm/sql-slog/sqlslogopts"
 
 type (
-	SQLLogger = public.SQLLogger
+	SQLLogger = sqlslogopts.SQLLogger
 )
 
 var (
-	NewSQLLogger = public.NewSQLLogger
+	NewSQLLogger = sqlslogopts.NewSQLLogger
 
-	IgnoreAttr  = public.IgnoreAttr
-	WithNilAttr = public.WithNilAttr
+	IgnoreAttr  = sqlslogopts.IgnoreAttr
+	WithNilAttr = sqlslogopts.WithNilAttr
 )

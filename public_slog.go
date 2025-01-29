@@ -1,14 +1,14 @@
 package sqlslog
 
 import (
-	"github.com/akm/sql-slog/public"
+	"github.com/akm/sql-slog/sqlslogopts"
 )
 
-type ReplaceAttrFunc = public.ReplaceAttrFunc
+type ReplaceAttrFunc = sqlslogopts.ReplaceAttrFunc
 
 var (
-	NewJSONHandler     = public.NewJSONHandler
-	NewTextHandler     = public.NewTextHandler
-	WrapHandlerOptions = public.WrapHandlerOptions
-	MergeReplaceAttrs  = public.MergeReplaceAttrs
+	NewJSONHandler     = sqlslogopts.NewJSONHandler
+	NewTextHandler     = sqlslogopts.NewTextHandler
+	WrapHandlerOptions = sqlslogopts.WrapHandlerOptions
+	MergeReplaceAttrs  = sqlslogopts.MergeReplaceAttrs
 )

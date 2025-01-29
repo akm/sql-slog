@@ -1,4 +1,4 @@
-package public
+package sqlslogopts
 
 import (
 	cryptoRand "crypto/rand"

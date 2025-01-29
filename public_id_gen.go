@@ -1,15 +1,15 @@
 package sqlslog
 
 import (
-	"github.com/akm/sql-slog/public"
+	"github.com/akm/sql-slog/sqlslogopts"
 )
 
-type IDGen = public.IDGen
+type IDGen = sqlslogopts.IDGen
 
-var IDGeneratorDefault = public.IDGeneratorDefault
+var IDGeneratorDefault = sqlslogopts.IDGeneratorDefault
 
 const (
-	ConnIDKeyDefault = public.ConnIDKeyDefault
-	TxIDKeyDefault   = public.TxIDKeyDefault
-	StmtIDKeyDefault = public.StmtIDKeyDefault
+	ConnIDKeyDefault = sqlslogopts.ConnIDKeyDefault
+	TxIDKeyDefault   = sqlslogopts.TxIDKeyDefault
+	StmtIDKeyDefault = sqlslogopts.StmtIDKeyDefault
 )

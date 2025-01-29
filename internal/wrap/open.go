@@ -6,7 +6,7 @@ import (
 	"database/sql/driver"
 	"log/slog"
 
-	"github.com/akm/sql-slog/public"
+	"github.com/akm/sql-slog/sqlslogopts"
 )
 
 /*
@@ -30,7 +30,7 @@ See the following example for usage:
 
 [sql.Open]: https://pkg.go.dev/database/sql#Open
 */
-func Open(ctx context.Context, driverName, dsn string, opts ...public.Option) (*sql.DB, error) {
+func Open(ctx context.Context, driverName, dsn string, opts ...sqlslogopts.Option) (*sql.DB, error) {
 	options := NewOptions(driverName, opts...)
 	logger := NewSQLLogger(options.Logger, options)
 

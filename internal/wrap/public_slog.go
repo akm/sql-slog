@@ -1,9 +1,9 @@
 package wrap
 
 import (
-	"github.com/akm/sql-slog/public"
+	"github.com/akm/sql-slog/sqlslogopts"
 )
 
 var (
-	NewJSONHandler = public.NewJSONHandler
+	NewJSONHandler = sqlslogopts.NewJSONHandler
 )
