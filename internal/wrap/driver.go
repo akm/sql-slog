@@ -78,5 +78,5 @@ func (w *driverContextWrapper) OpenConnector(dsn string) (driver.Connector, erro
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return WrapConnector(origConnector, lg), nil
+	return wrapConnector(origConnector, lg), nil
 }

@@ -13,7 +13,7 @@ type connector struct {
 
 var _ driver.Connector = (*connector)(nil)
 
-func WrapConnector(original driver.Connector, logger *SQLLogger) driver.Connector {
+func wrapConnector(original driver.Connector, logger *SQLLogger) driver.Connector {
 	return &connector{original: original, logger: logger}
 }
 

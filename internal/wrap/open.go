@@ -72,5 +72,5 @@ func openWithWrappedConnector(driverName, dsn string, logger *SQLLogger) (*sql.D
 		origConnector = NewDsnConnector(dsn, drv)
 	}
 
-	return sql.OpenDB(WrapConnector(origConnector, logger)), nil
+	return sql.OpenDB(wrapConnector(origConnector, logger)), nil
 }

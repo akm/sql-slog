@@ -22,7 +22,7 @@ func TestConnectorDriver(t *testing.T) {
 	t.Parallel()
 	mock := &mockConnectorForWrapConnector{}
 	logger := &SQLLogger{}
-	conn := WrapConnector(mock, logger)
+	conn := wrapConnector(mock, logger)
 	if conn.Driver() != nil {
 		t.Fatal("Expected nil")
 	}
