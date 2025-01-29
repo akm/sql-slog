@@ -1,10 +1,10 @@
-package sqlslog
+package wrap
 
 import (
 	"database/sql/driver"
 )
 
-func wrapTx(original driver.Tx, logger *SqlLogger) *txWrapper {
+func WrapTx(original driver.Tx, logger *SqlLogger) *txWrapper {
 	return &txWrapper{original: original, logger: logger}
 }
 
