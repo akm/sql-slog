@@ -58,7 +58,7 @@ func open(driverName, dsn string, logger *SqlLogger) (*sql.DB, error) {
 	}
 	// This db is not used directly, but it is used to get the driver.
 
-	drv := wrapDriver(db.Driver(), logger)
+	drv := wrap.WrapDriver(db.Driver(), logger)
 
 	var origConnector driver.Connector
 

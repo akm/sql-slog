@@ -1,13 +1,11 @@
-package sqlslog
+package wrap
 
 import (
 	"database/sql/driver"
 	"log/slog"
-
-	"github.com/akm/sql-slog/internal/wrap"
 )
 
-func wrapDriver(original driver.Driver, logger *SqlLogger) driver.Driver {
+func WrapDriver(original driver.Driver, logger *SqlLogger) driver.Driver {
 	if dc, ok := original.(driver.DriverContext); ok {
 		return &driverContextWrapper{
 			driverWrapper: driverWrapper{original: original, logger: logger},
@@ -46,7 +44,7 @@ func (w *driverWrapper) Open(dsn string) (driver.Conn, error) {
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return wrap.WrapConn(origConn, lg), nil
+	return WrapConn(origConn, lg), nil
 }
 
 type driverContextWrapper struct {
@@ -80,5 +78,5 @@ func (w *driverContextWrapper) OpenConnector(dsn string) (driver.Connector, erro
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return wrap.WrapConnector(origConnector, lg), nil
+	return WrapConnector(origConnector, lg), nil
 }
