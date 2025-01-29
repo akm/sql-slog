@@ -6,7 +6,7 @@ import (
 	"reflect"
 )
 
-func WrapRows(original driver.Rows, logger *SQLLogger) driver.Rows {
+func wrapRows(original driver.Rows, logger *SQLLogger) driver.Rows {
 	if original == nil {
 		return nil
 	}
