@@ -1,7 +1,7 @@
 package sqlslog
 
 import (
-	"github.com/akm/sql-slog/sqlslogopts"
+	sqlslogopts "github.com/akm/sql-slog/opts"
 )
 
 type IDGen = sqlslogopts.IDGen

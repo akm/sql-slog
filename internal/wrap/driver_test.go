@@ -7,7 +7,7 @@ import (
 	"log/slog"
 	"testing"
 
-	"github.com/akm/sql-slog/sqlslogopts"
+	sqlslogopts "github.com/akm/sql-slog/opts"
 )
 
 type mockErrorDiverContext struct{}

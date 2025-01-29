@@ -1,7 +1,7 @@
 package wrap
 
 import (
-	"github.com/akm/sql-slog/sqlslogopts"
+	sqlslogopts "github.com/akm/sql-slog/opts"
 )
 
 var (

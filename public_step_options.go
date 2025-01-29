@@ -1,6 +1,6 @@
 package sqlslog
 
-import "github.com/akm/sql-slog/sqlslogopts"
+import sqlslogopts "github.com/akm/sql-slog/opts"
 
 type (
 	Event               = sqlslogopts.Event

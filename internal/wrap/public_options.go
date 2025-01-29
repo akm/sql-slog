@@ -1,6 +1,6 @@
 package wrap
 
-import "github.com/akm/sql-slog/sqlslogopts"
+import sqlslogopts "github.com/akm/sql-slog/opts"
 
 var (
 	NewOptions = sqlslogopts.NewOptions

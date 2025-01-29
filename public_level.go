@@ -3,7 +3,7 @@ package sqlslog
 import (
 	"log/slog"
 
-	"github.com/akm/sql-slog/sqlslogopts"
+	sqlslogopts "github.com/akm/sql-slog/opts"
 )
 
 type Level = sqlslogopts.Level
