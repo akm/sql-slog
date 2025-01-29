@@ -48,7 +48,7 @@ func TestWrapStmt(t *testing.T) {
 	t.Run("implements driver.Stmt but not stmtWithContext", func(t *testing.T) {
 		t.Parallel()
 		mock := &mockStmtForWrapStmt{}
-		logger := &SQLLogger{}
+		logger := &logger{}
 		stmt := wrapStmt(mock, logger)
 		if stmt == nil {
 			t.Fatal("Expected non-nil")
@@ -64,7 +64,7 @@ func TestWrapStmt(t *testing.T) {
 
 		buf := bytes.NewBuffer(nil)
 		logger := slog.New(sqlslogopts.NewJSONHandler(buf, nil))
-		wrapped := wrapStmt(mock, NewSQLLogger(logger, sqlslogopts.NewOptions("dummy")))
+		wrapped := wrapStmt(mock, newLogger(logger, sqlslogopts.NewOptions("dummy")))
 		_, err := wrapped.Query(nil) // nolint:staticcheck
 		if err == nil {
 			t.Fatal("Expected non-nil")
@@ -104,7 +104,7 @@ func TestWithMockErrorStmtWithContext(t *testing.T) {
 
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(sqlslogopts.NewJSONHandler(buf, nil))
-	wrapped := wrapStmt(mock, NewSQLLogger(logger, sqlslogopts.NewOptions("dummy")))
+	wrapped := wrapStmt(mock, newLogger(logger, sqlslogopts.NewOptions("dummy")))
 	stmtWithQueryContext, ok := wrapped.(driver.StmtQueryContext)
 	if !ok {
 		t.Fatal("Expected StmtQueryContext")

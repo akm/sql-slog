@@ -32,7 +32,7 @@ See the following example for usage:
 */
 func Open(ctx context.Context, driverName, dsn string, opts ...sqlslogopts.Option) (*sql.DB, error) {
 	options := sqlslogopts.NewOptions(driverName, opts...)
-	logger := NewSQLLogger(options.Logger, options)
+	logger := newLogger(options.Logger, options)
 
 	lg := logger.With(
 		slog.String("driver", driverName),
@@ -51,7 +51,7 @@ func Open(ctx context.Context, driverName, dsn string, opts ...sqlslogopts.Optio
 	return db, nil
 }
 
-func openWithWrappedConnector(driverName, dsn string, logger *SQLLogger) (*sql.DB, error) {
+func openWithWrappedConnector(driverName, dsn string, logger *logger) (*sql.DB, error) {
 	db, err := sql.Open(driverName, dsn)
 	if err != nil {
 		return nil, err

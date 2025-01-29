@@ -6,7 +6,7 @@ import (
 	"reflect"
 )
 
-func wrapRows(original driver.Rows, logger *SQLLogger) driver.Rows {
+func wrapRows(original driver.Rows, logger *logger) driver.Rows {
 	if original == nil {
 		return nil
 	}
@@ -19,7 +19,7 @@ func wrapRows(original driver.Rows, logger *SQLLogger) driver.Rows {
 
 type rowsWrapper struct {
 	original driver.Rows
-	logger   *SQLLogger
+	logger   *logger
 }
 
 var _ driver.Rows = (*rowsWrapper)(nil)

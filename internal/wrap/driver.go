@@ -5,7 +5,7 @@ import (
 	"log/slog"
 )
 
-func wrapDriver(original driver.Driver, logger *SQLLogger) driver.Driver {
+func wrapDriver(original driver.Driver, logger *logger) driver.Driver {
 	if dc, ok := original.(driver.DriverContext); ok {
 		return &driverContextWrapper{
 			driverWrapper: driverWrapper{original: original, logger: logger},
@@ -20,7 +20,7 @@ func wrapDriver(original driver.Driver, logger *SQLLogger) driver.Driver {
 // should implement Connector and DriverContext interfaces.
 type driverWrapper struct {
 	original driver.Driver
-	logger   *SQLLogger
+	logger   *logger
 }
 
 var _ driver.Driver = (*driverWrapper)(nil)

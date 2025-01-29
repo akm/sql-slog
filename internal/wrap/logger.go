@@ -8,27 +8,27 @@ import (
 	"github.com/akm/sql-slog/opts"
 )
 
-type SQLLogger struct {
+type logger struct {
 	*slog.Logger
 	Options *opts.Options
 }
 
-func NewSQLLogger(rawLogger *slog.Logger, opts *opts.Options) *SQLLogger {
-	return &SQLLogger{
+func newLogger(rawLogger *slog.Logger, opts *opts.Options) *logger {
+	return &logger{
 		Logger:  rawLogger,
 		Options: opts,
 	}
 }
 
-func (x *SQLLogger) With(kv ...interface{}) *SQLLogger {
-	return NewSQLLogger(x.Logger.With(kv...), x.Options)
+func (x *logger) With(kv ...interface{}) *logger {
+	return newLogger(x.Logger.With(kv...), x.Options)
 }
 
-func (x *SQLLogger) StepWithoutContext(step *opts.StepOptions, fn func() (*slog.Attr, error)) (*slog.Attr, error) {
+func (x *logger) StepWithoutContext(step *opts.StepOptions, fn func() (*slog.Attr, error)) (*slog.Attr, error) {
 	return x.Step(context.Background(), step, fn)
 }
 
-func (x *SQLLogger) Step(ctx context.Context, step *opts.StepOptions, fn func() (*slog.Attr, error)) (*slog.Attr, error) {
+func (x *logger) Step(ctx context.Context, step *opts.StepOptions, fn func() (*slog.Attr, error)) (*slog.Attr, error) {
 	x.Log(ctx, slog.Level(step.Start.Level), step.Start.Msg)
 	t0 := time.Now()
 	attr, err := fn()
@@ -58,7 +58,7 @@ func (x *SQLLogger) Step(ctx context.Context, step *opts.StepOptions, fn func() 
 	return attr, err
 }
 
-func (x *SQLLogger) durationAttr(d time.Duration) slog.Attr {
+func (x *logger) durationAttr(d time.Duration) slog.Attr {
 	key := x.Options.DurationKey
 	switch x.Options.DurationType {
 	case opts.DurationNanoSeconds:
