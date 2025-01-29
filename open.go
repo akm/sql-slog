@@ -38,7 +38,7 @@ func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB,
 	)
 
 	var db *sql.DB
-	err := IgnoreAttr(lg.Step(ctx, &logger.options.SqlslogOpen, func() (*slog.Attr, error) {
+	err := IgnoreAttr(lg.Step(ctx, &logger.Options.SqlslogOpen, func() (*slog.Attr, error) {
 		var err error
 		db, err = open(driverName, dsn, logger)
 		return nil, err

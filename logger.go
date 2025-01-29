@@ -8,18 +8,18 @@ import (
 
 type SqlLogger struct {
 	*slog.Logger
-	options *Options
+	Options *Options
 }
 
 func NewSqlLogger(rawLogger *slog.Logger, opts *Options) *SqlLogger {
 	return &SqlLogger{
 		Logger:  rawLogger,
-		options: opts,
+		Options: opts,
 	}
 }
 
 func (x *SqlLogger) With(kv ...interface{}) *SqlLogger {
-	return NewSqlLogger(x.Logger.With(kv...), x.options)
+	return NewSqlLogger(x.Logger.With(kv...), x.Options)
 }
 
 func (x *SqlLogger) StepWithoutContext(step *StepOptions, fn func() (*slog.Attr, error)) (*slog.Attr, error) {
@@ -57,8 +57,8 @@ func (x *SqlLogger) Step(ctx context.Context, step *StepOptions, fn func() (*slo
 }
 
 func (x *SqlLogger) durationAttr(d time.Duration) slog.Attr {
-	key := x.options.DurationKey
-	switch x.options.DurationType {
+	key := x.Options.DurationKey
+	switch x.Options.DurationType {
 	case DurationNanoSeconds:
 		return slog.Int64(key, d.Nanoseconds())
 	case DurationMicroSeconds:

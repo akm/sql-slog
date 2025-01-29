@@ -28,13 +28,13 @@ var _ driver.Driver = (*driverWrapper)(nil)
 // Open implements driver.Driver.
 func (w *driverWrapper) Open(dsn string) (driver.Conn, error) {
 	var origConn driver.Conn
-	attr, err := w.logger.With(slog.String("dsn", dsn)).StepWithoutContext(&w.logger.options.DriverOpen, func() (*slog.Attr, error) {
+	attr, err := w.logger.With(slog.String("dsn", dsn)).StepWithoutContext(&w.logger.Options.DriverOpen, func() (*slog.Attr, error) {
 		var err error
 		origConn, err = w.original.Open(dsn)
 		if err != nil {
 			return nil, err
 		}
-		attrRaw := slog.String(w.logger.options.ConnIDKey, w.logger.options.IdGen())
+		attrRaw := slog.String(w.logger.Options.ConnIDKey, w.logger.Options.IdGen())
 		return &attrRaw, err
 	})
 	if err != nil {
@@ -62,13 +62,13 @@ var (
 // OpenConnector implements driver.DriverContext.
 func (w *driverContextWrapper) OpenConnector(dsn string) (driver.Connector, error) {
 	var origConnector driver.Connector
-	attr, err := w.logger.With(slog.String("dsn", dsn)).StepWithoutContext(&w.logger.options.DriverOpenConnector, func() (*slog.Attr, error) {
+	attr, err := w.logger.With(slog.String("dsn", dsn)).StepWithoutContext(&w.logger.Options.DriverOpenConnector, func() (*slog.Attr, error) {
 		var err error
 		origConnector, err = w.original.OpenConnector(dsn)
 		if err != nil {
 			return nil, err
 		}
-		attrRaw := slog.String(w.logger.options.ConnIDKey, w.logger.options.IdGen())
+		attrRaw := slog.String(w.logger.Options.ConnIDKey, w.logger.Options.IdGen())
 		return &attrRaw, err
 	})
 	if err != nil {
