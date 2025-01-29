@@ -67,7 +67,7 @@ func (c *connWrapper) Begin() (driver.Tx, error) {
 		if err != nil {
 			return nil, err
 		}
-		attrRaw := slog.String(c.logger.Options.TxIDKey, c.logger.Options.IdGen())
+		attrRaw := slog.String(c.logger.Options.TxIDKey, c.logger.Options.IDGen())
 		return &attrRaw, nil
 	})
 	if err != nil {
@@ -94,7 +94,7 @@ func (c *connWrapper) Prepare(query string) (driver.Stmt, error) {
 		if err != nil {
 			return nil, err
 		}
-		attrRaw := slog.String(c.logger.Options.StmtIDKey, c.logger.Options.IdGen())
+		attrRaw := slog.String(c.logger.Options.StmtIDKey, c.logger.Options.IDGen())
 		return &attrRaw, nil
 	})
 	if err != nil {
@@ -221,7 +221,7 @@ func (c *connWithContextWrapper) PrepareContext(ctx context.Context, query strin
 		if err != nil {
 			return nil, err
 		}
-		attrRaw := slog.String(c.logger.Options.StmtIDKey, c.logger.Options.IdGen())
+		attrRaw := slog.String(c.logger.Options.StmtIDKey, c.logger.Options.IDGen())
 		return &attrRaw, nil
 	})
 	if err != nil {
@@ -243,7 +243,7 @@ func (c *connWithContextWrapper) BeginTx(ctx context.Context, opts driver.TxOpti
 		if err != nil {
 			return nil, err
 		}
-		attrRaw := slog.String(c.logger.Options.TxIDKey, c.logger.Options.IdGen())
+		attrRaw := slog.String(c.logger.Options.TxIDKey, c.logger.Options.IDGen())
 		return &attrRaw, nil
 	})
 	if err != nil {

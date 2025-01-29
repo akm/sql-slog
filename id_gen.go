@@ -2,7 +2,7 @@ package sqlslog
 
 // IDGenerator returns an Option that sets the ID generator.
 // The default is IDGeneratorDefault.
-func IDGenerator(idGen IDGen) Option { return func(o *Options) { o.IdGen = idGen } }
+func IDGenerator(idGen IDGen) Option { return func(o *Options) { o.IDGen = idGen } }
 
 // ConnIDKey sets the key for the connection ID.
 // The default is ConnIDKeyDefault.

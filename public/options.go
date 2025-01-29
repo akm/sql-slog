@@ -10,7 +10,7 @@ type Options struct {
 	DurationKey  string
 	DurationType DurationType
 
-	IdGen     IDGen
+	IDGen     IDGen
 	ConnIDKey string
 	TxIDKey   string
 	StmtIDKey string
@@ -67,7 +67,7 @@ func NewDefaultOptions(driverName string, formatter StepLogMsgFormatter) *Option
 		DurationKey:  DurationKeyDefault,
 		DurationType: DurationNanoSeconds,
 
-		IdGen:     IDGeneratorDefault,
+		IDGen:     IDGeneratorDefault,
 		ConnIDKey: ConnIDKeyDefault,
 		TxIDKey:   TxIDKeyDefault,
 		StmtIDKey: StmtIDKeyDefault,

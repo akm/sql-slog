@@ -34,7 +34,7 @@ func (w *driverWrapper) Open(dsn string) (driver.Conn, error) {
 		if err != nil {
 			return nil, err
 		}
-		attrRaw := slog.String(w.logger.Options.ConnIDKey, w.logger.Options.IdGen())
+		attrRaw := slog.String(w.logger.Options.ConnIDKey, w.logger.Options.IDGen())
 		return &attrRaw, err
 	})
 	if err != nil {
@@ -68,7 +68,7 @@ func (w *driverContextWrapper) OpenConnector(dsn string) (driver.Connector, erro
 		if err != nil {
 			return nil, err
 		}
-		attrRaw := slog.String(w.logger.Options.ConnIDKey, w.logger.Options.IdGen())
+		attrRaw := slog.String(w.logger.Options.ConnIDKey, w.logger.Options.IDGen())
 		return &attrRaw, err
 	})
 	if err != nil {
