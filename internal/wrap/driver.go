@@ -5,7 +5,7 @@ import (
 	"log/slog"
 )
 
-func WrapDriver(original driver.Driver, logger *SQLLogger) driver.Driver {
+func wrapDriver(original driver.Driver, logger *SQLLogger) driver.Driver {
 	if dc, ok := original.(driver.DriverContext); ok {
 		return &driverContextWrapper{
 			driverWrapper: driverWrapper{original: original, logger: logger},
