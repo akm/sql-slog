@@ -14,4 +14,9 @@ const (
 	DurationString       DurationType = sqlslogopts.DurationString
 )
 
+var (
+	Duration    = sqlslogopts.Duration
+	DurationKey = sqlslogopts.DurationKey
+)
+
 const DurationKeyDefault = sqlslogopts.DurationKeyDefault

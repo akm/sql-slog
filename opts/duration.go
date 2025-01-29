@@ -10,5 +10,21 @@ const (
 	DurationString                           // Values in log are expressed with slog.String and time.Duration.String
 )
 
+// Duration is an option to specify duration value in log.
+// The default is DurationNanoSeconds.
+func Duration(v DurationType) Option {
+	return func(o *Options) {
+		o.DurationType = v
+	}
+}
+
+// DurationKey is an option to specify the key for duration value in log.
+// The default is specified by DurationKeyDefault.
+func DurationKey(key string) Option {
+	return func(o *Options) {
+		o.DurationKey = key
+	}
+}
+
 // DurationKeyDefault is the default key for duration value in log.
 const DurationKeyDefault = "duration"
