@@ -1,5 +1,5 @@
 package opts
 
 const (
-	DriverNameMysql = "mysql"
+	driverNameMysql = "mysql"
 )

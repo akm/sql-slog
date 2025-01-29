@@ -8,7 +8,7 @@ import (
 
 func ConnExecContextErrorHandler(driverName string) func(err error) (bool, []slog.Attr) {
 	switch driverName {
-	case DriverNameMysql:
+	case driverNameMysql:
 		return func(err error) (bool, []slog.Attr) {
 			if err == nil {
 				return true, nil
@@ -26,7 +26,7 @@ func ConnExecContextErrorHandler(driverName string) func(err error) (bool, []slo
 
 func ConnQueryContextErrorHandler(driverName string) func(err error) (bool, []slog.Attr) {
 	switch driverName {
-	case DriverNameMysql:
+	case driverNameMysql:
 		return func(err error) (bool, []slog.Attr) {
 			if err == nil {
 				return true, nil
