@@ -6,6 +6,8 @@ import (
 	"errors"
 	"log/slog"
 	"testing"
+
+	sqlslogopts "github.com/akm/sql-slog/opts"
 )
 
 type mockConnForWrapConn struct{}
@@ -101,7 +103,7 @@ var (
 
 func TestWithMockErrorConn(t *testing.T) {
 	t.Parallel()
-	logger := NewSQLLogger(slog.Default(), NewOptions("sqlite3"))
+	logger := NewSQLLogger(slog.Default(), sqlslogopts.NewOptions("sqlite3"))
 	w := wrapConn(newMockErrConn(errors.New("unexpected error")), logger)
 	t.Run("Begin", func(t *testing.T) {
 		t.Parallel()
@@ -131,7 +133,7 @@ func TestWithMockErrorConn(t *testing.T) {
 
 func TestPingInCase(t *testing.T) {
 	t.Parallel()
-	logger := NewSQLLogger(slog.Default(), NewOptions("sqlite3"))
+	logger := NewSQLLogger(slog.Default(), sqlslogopts.NewOptions("sqlite3"))
 	conn := newMockErrConn(nil)
 	w := &connWithContextWrapper{
 		connWrapper: connWrapper{
