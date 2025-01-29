@@ -1,9 +1,11 @@
-package opts
+package wrap
 
 import (
 	"log/slog"
 	"testing"
 	"time"
+
+	"github.com/akm/sql-slog/opts"
 )
 
 func TestLoggerDurationAttr(t *testing.T) {
@@ -11,12 +13,12 @@ func TestLoggerDurationAttr(t *testing.T) {
 	key := "duration"
 	testcases := []struct {
 		value        time.Duration
-		durationType DurationType
+		durationType opts.DurationType
 		expected     func(t *testing.T, attr slog.Attr)
 	}{
 		{
 			value:        time.Duration(1),
-			durationType: DurationNanoSeconds,
+			durationType: opts.DurationNanoSeconds,
 			expected: func(t *testing.T, attr slog.Attr) {
 				t.Helper()
 				if v, ok := attr.Value.Any().(int64); !ok {
@@ -28,7 +30,7 @@ func TestLoggerDurationAttr(t *testing.T) {
 		},
 		{
 			value:        time.Duration(2_000),
-			durationType: DurationMicroSeconds,
+			durationType: opts.DurationMicroSeconds,
 			expected: func(t *testing.T, attr slog.Attr) {
 				t.Helper()
 				if v, ok := attr.Value.Any().(int64); !ok {
@@ -40,7 +42,7 @@ func TestLoggerDurationAttr(t *testing.T) {
 		},
 		{
 			value:        time.Duration(3_000_000),
-			durationType: DurationMilliSeconds,
+			durationType: opts.DurationMilliSeconds,
 			expected: func(t *testing.T, attr slog.Attr) {
 				t.Helper()
 				if v, ok := attr.Value.Any().(int64); !ok {
@@ -52,7 +54,7 @@ func TestLoggerDurationAttr(t *testing.T) {
 		},
 		{
 			value:        time.Duration(4_000_000_000),
-			durationType: DurationGoDuration,
+			durationType: opts.DurationGoDuration,
 			expected: func(t *testing.T, attr slog.Attr) {
 				t.Helper()
 				if attr.Value.Duration() != time.Duration(4_000_000_000) {
@@ -62,7 +64,7 @@ func TestLoggerDurationAttr(t *testing.T) {
 		},
 		{
 			value:        time.Duration(567_000_000),
-			durationType: DurationString,
+			durationType: opts.DurationString,
 			expected: func(t *testing.T, attr slog.Attr) {
 				t.Helper()
 				if v, ok := attr.Value.Any().(string); !ok {
@@ -74,7 +76,7 @@ func TestLoggerDurationAttr(t *testing.T) {
 		},
 		{
 			value:        time.Duration(890_000),
-			durationType: DurationType(-1),
+			durationType: opts.DurationType(-1),
 			expected: func(t *testing.T, attr slog.Attr) {
 				t.Helper()
 				if v, ok := attr.Value.Any().(int64); !ok {
@@ -88,7 +90,7 @@ func TestLoggerDurationAttr(t *testing.T) {
 	for _, tc := range testcases {
 		t.Run(tc.value.String(), func(t *testing.T) {
 			t.Parallel()
-			attr := NewSQLLogger(nil, &Options{DurationKey: key, DurationType: tc.durationType}).durationAttr(tc.value)
+			attr := NewSQLLogger(nil, &opts.Options{DurationKey: key, DurationType: tc.durationType}).durationAttr(tc.value)
 			tc.expected(t, attr)
 		})
 	}
