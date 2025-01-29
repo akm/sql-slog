@@ -1,12 +1,10 @@
-package sqlslog
+package wrap
 
 import (
 	"context"
 	"database/sql/driver"
 	"fmt"
 	"log/slog"
-
-	"github.com/akm/sql-slog/internal/wrap"
 )
 
 type stmtWrapper struct {
@@ -53,7 +51,7 @@ func (s *stmtWrapper) Query(args []driver.Value) (driver.Rows, error) {
 	if err != nil {
 		return nil, err
 	}
-	return wrap.WrapRows(rows, s.logger), nil
+	return WrapRows(rows, s.logger), nil
 }
 
 type stmtExecContextWrapperImpl struct {
@@ -97,7 +95,7 @@ func (s *stmtQueryContextWrapperImpl) QueryContext(ctx context.Context, args []d
 	if err != nil {
 		return nil, err
 	}
-	return wrap.WrapRows(rows, s.logger), nil
+	return WrapRows(rows, s.logger), nil
 }
 
 type stmtExecContextWrapper struct {
@@ -132,7 +130,7 @@ var (
 	_ driver.StmtQueryContext = (*stmtContextWrapper)(nil)
 )
 
-func wrapStmt(original driver.Stmt, logger *SqlLogger) driver.Stmt {
+func WrapStmt(original driver.Stmt, logger *SqlLogger) driver.Stmt {
 	if original == nil {
 		return nil
 	}

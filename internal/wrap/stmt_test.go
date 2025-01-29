@@ -1,4 +1,4 @@
-package sqlslog
+package wrap
 
 import (
 	"bytes"
@@ -39,7 +39,7 @@ func TestWrapStmt(t *testing.T) {
 	t.Parallel()
 	t.Run("nil", func(t *testing.T) {
 		t.Parallel()
-		if wrapStmt(nil, nil) != nil {
+		if WrapStmt(nil, nil) != nil {
 			t.Fatal("Expected nil")
 		}
 	})
@@ -47,7 +47,7 @@ func TestWrapStmt(t *testing.T) {
 		t.Parallel()
 		mock := &mockStmtForWrapStmt{}
 		logger := &SqlLogger{}
-		stmt := wrapStmt(mock, logger)
+		stmt := WrapStmt(mock, logger)
 		if stmt == nil {
 			t.Fatal("Expected non-nil")
 		}
@@ -62,7 +62,7 @@ func TestWrapStmt(t *testing.T) {
 
 		buf := bytes.NewBuffer(nil)
 		logger := slog.New(NewJSONHandler(buf, nil))
-		wrapped := wrapStmt(mock, NewSqlLogger(logger, NewOptions("dummy")))
+		wrapped := WrapStmt(mock, NewSqlLogger(logger, NewOptions("dummy")))
 		_, err := wrapped.Query(nil) // nolint:staticcheck
 		if err == nil {
 			t.Fatal("Expected non-nil")
@@ -102,7 +102,7 @@ func TestWithMockErrorStmtWithContext(t *testing.T) {
 
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(NewJSONHandler(buf, nil))
-	wrapped := wrapStmt(mock, NewSqlLogger(logger, NewOptions("dummy")))
+	wrapped := WrapStmt(mock, NewSqlLogger(logger, NewOptions("dummy")))
 	stmtWithQueryContext, ok := wrapped.(driver.StmtQueryContext)
 	if !ok {
 		t.Fatal("Expected StmtQueryContext")
