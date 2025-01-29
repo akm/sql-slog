@@ -15,17 +15,17 @@ and returns a new database handle with logging capabilities.
 ctx is the context for the open operation.
 driverName is the name of the database driver, same as the driverName in [sql.Open].
 dsn is the data source name, same as the dataSourceName in [sql.Open].
-opts are the options for logging behavior. See [Option] for details.
+opts are the options for logging behavior. See [opts.Option] for details.
 
 The returned DB can be used the same way as *sql.DB from [sql.Open].
 
 See the following example for usage:
 
-[Logger]: sets the slog.Logger to be used. If not set, the default is slog.Default().
+[opts.Logger]: sets the slog.Logger to be used. If not set, the default is slog.Default().
 
-[StepOptions]: sets the options for logging behavior.
+[opts.StepOptions]: sets the options for logging behavior.
 
-[SetStepLogMsgFormatter]: sets the function to format the step name.
+[opts.SetStepLogMsgFormatter]: sets the function to format the step name.
 
 [sql.Open]: https://pkg.go.dev/database/sql#Open
 */
