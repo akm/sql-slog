@@ -54,14 +54,14 @@ db, err := sqlslog.Open(ctx, "mysql", dsn)
 
 ### Additional Log Levels
 
-sqlslog provides additional log levels `LevelTrace` and `LevelVerbose` as [sqlslog.Level](https://pkg.go.dev/github.com/akm/sql-slog#Level).
+sqlslog provides additional log levels `LevelTrace` and `LevelVerbose` as [opts.Level](https://pkg.go.dev/github.com/akm/sql-slog/opts#Level).
 
-To display the log levels correctly, the logger handler must be customized. You can create a handler using [sqlslog.NewJSONHandler](https://pkg.go.dev/github.com/akm/sql-slog#NewJSONHandler) and [sqlslog.NewTextHandler](https://pkg.go.dev/github.com/akm/sql-slog#NewTextHandler).
+To display the log levels correctly, the logger handler must be customized. You can create a handler using [opts.NewJSONHandler](https://pkg.go.dev/github.com/akm/sql-slog/opts#NewJSONHandler) and [opts.NewTextHandler](https://pkg.go.dev/github.com/akm/sql-slog/opts#NewTextHandler).
 
-Pass an [sqlslog.Option](https://pkg.go.dev/github.com/akm/sql-slog#Option) created by [sqlslog.Logger](https://pkg.go.dev/github.com/akm/sql-slog#Logger) to [sqlslog.Open](https://pkg.go.dev/github.com/akm/sql-slog#Open) to use them.
+Pass an [opts.Option](https://pkg.go.dev/github.com/akm/sql-slog/opts#Option) created by [opts.Logger](https://pkg.go.dev/github.com/akm/sql-slog/opts#Logger) to [sqlslog.Open](https://pkg.go.dev/github.com/akm/sql-slog#Open) to use them.
 
 ```golang
-db, err := sqlslog.Open(ctx, "sqlite3", dsn, sqlslog.Logger(yourLogger))
+db, err := sqlslog.Open(ctx, "sqlite3", dsn, opts.Logger(yourLogger))
 ```
 
 ### Configurable Log Messages and Log Levels for Each Step
@@ -72,7 +72,7 @@ A step has three events: start, error, and complete.
 
 sqlslog provides a way to customize the log message and log level for each step event.
 
-You can customize them using functions that take [StepOptions](https://pkg.go.dev/github.com/akm/sql-slog#StepOptions) and return [Option](https://pkg.go.dev/github.com/akm/sql-slog#Option), like [ConnPrepareContext](https://pkg.go.dev/github.com/akm/sql-slog#ConnPrepareContext) or [StmtQueryContext](https://pkg.go.dev/github.com/akm/sql-slog#StmtQueryContext).
+You can customize them using functions that take [opts.StepOptions](https://pkg.go.dev/github.com/akm/sql-slog/opts#StepOptions) and return [opts.Option](https://pkg.go.dev/github.com/akm/sql-slog/opts#Option), like [opts.ConnPrepareContext](https://pkg.go.dev/github.com/akm/sql-slog/opts#ConnPrepareContext) or [opts.StmtQueryContext](https://pkg.go.dev/github.com/akm/sql-slog/opts#StmtQueryContext).
 
 ### Tests
 
