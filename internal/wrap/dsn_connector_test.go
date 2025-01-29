@@ -1,4 +1,4 @@
-package sqlslog
+package wrap
 
 import (
 	"context"
@@ -19,10 +19,10 @@ func (m *mockDriverForDsnConnector) Open(string) (driver.Conn, error) {
 
 func TestDsnConnector(t *testing.T) {
 	t.Parallel()
-	var d dsnConnector
+	var d DsnConnector
 	dsn := "dsn"
 	drv := &mockDriverForDsnConnector{}
-	d = dsnConnector{dsn: dsn, driver: drv}
+	d = DsnConnector{dsn: dsn, driver: drv}
 
 	t.Run("Connect", func(t *testing.T) {
 		t.Parallel()

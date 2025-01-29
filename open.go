@@ -69,7 +69,7 @@ func open(driverName, dsn string, logger *SqlLogger) (*sql.DB, error) {
 		}
 		origConnector = connector
 	} else {
-		origConnector = &dsnConnector{dsn: dsn, driver: drv}
+		origConnector = wrap.NewDsnConnector(dsn, drv)
 	}
 
 	return sql.OpenDB(wrap.WrapConnector(origConnector, logger)), nil
