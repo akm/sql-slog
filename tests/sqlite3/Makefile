@@ -4,7 +4,8 @@ GO_TEST_OPTIONS?=
 test:
 	go test $(GO_TEST_OPTIONS) ./...
 
-GO_COVERAGE_DIR=coverage/unit
+GO_COVERAGE_DIR_BASE=$(CURDIR)/coverage
+GO_COVERAGE_DIR=$(GO_COVERAGE_DIR_BASE)/unit
 $(GO_COVERAGE_DIR):
 	mkdir -p $(GO_COVERAGE_DIR)
 GO_COVERAGE_HTML?=coverage.html
@@ -12,10 +13,12 @@ GO_COVERAGE_PROFILE?=coverage.txt
 $(GO_COVERAGE_PROFILE):
 	$(MAKE) test-with-coverage
 
+GO_COVERAGE_PACKAGES=github.com/akm/sql-slog,github.com/akm/sql-slog/opts,github.com/akm/sql-slog/internal/wrap
+
 # See https://app.codecov.io/github/akm/go-requestid/new
 .PHONY: test-with-coverage
 test-with-coverage: $(GO_COVERAGE_DIR)
-	go test -cover -coverpkg=github.com/akm/sql-slog ./... -args -test.gocoverdir="$(GO_COVERAGE_DIR)"
+	go test -cover -coverpkg=$(GO_COVERAGE_PACKAGES) ./... -args -test.gocoverdir="$(GO_COVERAGE_DIR)"
 
 .PHONY: test-coverage
 test-coverage: $(GO_COVERAGE_PROFILE)
