@@ -5,6 +5,8 @@ import (
 	"database/sql/driver"
 	"fmt"
 	"log/slog"
+
+	"github.com/akm/sql-slog/internal/wrap"
 )
 
 func wrapConn(original driver.Conn, logger *SqlLogger) driver.Conn {
@@ -209,7 +211,7 @@ func (c *connWithContextWrapper) QueryContext(ctx context.Context, query string,
 	if err != nil {
 		return nil, err
 	}
-	return WrapRows(rows, c.logger), nil
+	return wrap.WrapRows(rows, c.logger), nil
 }
 
 // PrepareContext implements driver.ConnPrepareContext.

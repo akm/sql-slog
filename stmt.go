@@ -5,6 +5,8 @@ import (
 	"database/sql/driver"
 	"fmt"
 	"log/slog"
+
+	"github.com/akm/sql-slog/internal/wrap"
 )
 
 type stmtWrapper struct {
@@ -51,7 +53,7 @@ func (s *stmtWrapper) Query(args []driver.Value) (driver.Rows, error) {
 	if err != nil {
 		return nil, err
 	}
-	return WrapRows(rows, s.logger), nil
+	return wrap.WrapRows(rows, s.logger), nil
 }
 
 type stmtExecContextWrapperImpl struct {
@@ -95,7 +97,7 @@ func (s *stmtQueryContextWrapperImpl) QueryContext(ctx context.Context, args []d
 	if err != nil {
 		return nil, err
 	}
-	return WrapRows(rows, s.logger), nil
+	return wrap.WrapRows(rows, s.logger), nil
 }
 
 type stmtExecContextWrapper struct {

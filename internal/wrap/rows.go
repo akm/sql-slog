@@ -1,4 +1,4 @@
-package sqlslog
+package wrap
 
 import (
 	"database/sql/driver"
