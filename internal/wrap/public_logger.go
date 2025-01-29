@@ -7,7 +7,7 @@ type (
 )
 
 var (
-	NewSqlLogger = public.NewSqlLogger
+	NewSQLLogger = public.NewSQLLogger
 
 	IgnoreAttr  = public.IgnoreAttr
 	WithNilAttr = public.WithNilAttr

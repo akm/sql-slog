@@ -11,7 +11,7 @@ type SQLLogger struct {
 	Options *Options
 }
 
-func NewSqlLogger(rawLogger *slog.Logger, opts *Options) *SQLLogger {
+func NewSQLLogger(rawLogger *slog.Logger, opts *Options) *SQLLogger {
 	return &SQLLogger{
 		Logger:  rawLogger,
 		Options: opts,
@@ -19,7 +19,7 @@ func NewSqlLogger(rawLogger *slog.Logger, opts *Options) *SQLLogger {
 }
 
 func (x *SQLLogger) With(kv ...interface{}) *SQLLogger {
-	return NewSqlLogger(x.Logger.With(kv...), x.Options)
+	return NewSQLLogger(x.Logger.With(kv...), x.Options)
 }
 
 func (x *SQLLogger) StepWithoutContext(step *StepOptions, fn func() (*slog.Attr, error)) (*slog.Attr, error) {

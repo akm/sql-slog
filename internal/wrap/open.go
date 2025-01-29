@@ -32,7 +32,7 @@ See the following example for usage:
 */
 func Open(ctx context.Context, driverName, dsn string, opts ...public.Option) (*sql.DB, error) {
 	options := NewOptions(driverName, opts...)
-	logger := NewSqlLogger(options.Logger, options)
+	logger := NewSQLLogger(options.Logger, options)
 
 	lg := logger.With(
 		slog.String("driver", driverName),

@@ -34,7 +34,7 @@ func TestDriverContextWrapperOpenConnector(t *testing.T) {
 		buf := bytes.NewBuffer(nil)
 		logger := slog.New(public.NewTextHandler(buf, nil))
 		dw := WrapDriver(&mockErrorDiverContext{},
-			NewSqlLogger(logger, NewOptions("sqlite3")),
+			NewSQLLogger(logger, NewOptions("sqlite3")),
 		)
 		dwc, ok := dw.(driver.DriverContext)
 		if !ok {

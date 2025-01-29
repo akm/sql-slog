@@ -62,7 +62,7 @@ func TestWrapStmt(t *testing.T) {
 
 		buf := bytes.NewBuffer(nil)
 		logger := slog.New(NewJSONHandler(buf, nil))
-		wrapped := WrapStmt(mock, NewSqlLogger(logger, NewOptions("dummy")))
+		wrapped := WrapStmt(mock, NewSQLLogger(logger, NewOptions("dummy")))
 		_, err := wrapped.Query(nil) // nolint:staticcheck
 		if err == nil {
 			t.Fatal("Expected non-nil")
@@ -102,7 +102,7 @@ func TestWithMockErrorStmtWithContext(t *testing.T) {
 
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(NewJSONHandler(buf, nil))
-	wrapped := WrapStmt(mock, NewSqlLogger(logger, NewOptions("dummy")))
+	wrapped := WrapStmt(mock, NewSQLLogger(logger, NewOptions("dummy")))
 	stmtWithQueryContext, ok := wrapped.(driver.StmtQueryContext)
 	if !ok {
 		t.Fatal("Expected StmtQueryContext")
