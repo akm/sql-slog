@@ -37,55 +37,7 @@ func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB,
 	options := newOptions(driverName, opts...)
 	logger := newLogger(options.logger, durationAttrFunc(options.durationKey, options.durationType))
 
-	connOptions := &connOptions{
-		idGen:   options.idGen,
-		Begin:   &options.connBegin,
-		BeginTx: &options.connBeginTx,
-		txIDKey: options.txIDKey,
-		Tx: &txOptions{
-			Commit:   &options.txCommit,
-			Rollback: &options.txRollback,
-		},
-		Close:          &options.connClose,
-		Prepare:        &options.connPrepare,
-		PrepareContext: &options.connPrepareContext,
-		stmtIDKey:      options.stmtIDKey,
-		Stmt: &stmtOptions{
-			Close:        &options.stmtClose,
-			Exec:         &options.stmtExec,
-			Query:        &options.stmtQuery,
-			ExecContext:  &options.stmtExecContext,
-			QueryContext: &options.stmtQueryContext,
-			Rows: &rowsOptions{
-				Close:         &options.rowsClose,
-				Next:          &options.rowsNext,
-				NextResultSet: &options.rowsNextResultSet,
-			},
-		},
-		ResetSession: &options.connResetSession,
-		Ping:         &options.connPing,
-		ExecContext:  &options.connExecContext,
-		QueryContext: &options.connQueryContext,
-		Rows: &rowsOptions{
-			Close:         &options.rowsClose,
-			Next:          &options.rowsNext,
-			NextResultSet: &options.rowsNextResultSet,
-		},
-	}
-	openOptions := &openOptions{
-		Open: &options.sqlslogOpen,
-		Driver: &driverOptions{
-			IDGen:         options.idGen,
-			connIDKey:     options.connIDKey,
-			Open:          &options.driverOpen,
-			OpenConnector: &options.driverOpenConnector,
-			Conn:          connOptions,
-			Connector: &connectorOptions{
-				Connect: &options.connectorConnect,
-				Conn:    connOptions,
-			},
-		},
-	}
+	openOptions := buildOpenOptions(options)
 
 	lg := logger.With(
 		slog.String("driver", driverName),
@@ -124,4 +76,56 @@ func open(driverName, dsn string, logger *logger, options *openOptions) (*sql.DB
 	}
 
 	return sql.OpenDB(wrapConnector(origConnector, logger, options.Driver.Connector)), nil
+}
+
+func buildOpenOptions(options *options) *openOptions {
+	connOptions := &connOptions{
+		idGen:   options.idGen,
+		Begin:   &options.connBegin,
+		BeginTx: &options.connBeginTx,
+		txIDKey: options.txIDKey,
+		Tx: &txOptions{
+			Commit:   &options.txCommit,
+			Rollback: &options.txRollback,
+		},
+		Close:          &options.connClose,
+		Prepare:        &options.connPrepare,
+		PrepareContext: &options.connPrepareContext,
+		stmtIDKey:      options.stmtIDKey,
+		Stmt: &stmtOptions{
+			Close:        &options.stmtClose,
+			Exec:         &options.stmtExec,
+			Query:        &options.stmtQuery,
+			ExecContext:  &options.stmtExecContext,
+			QueryContext: &options.stmtQueryContext,
+			Rows: &rowsOptions{
+				Close:         &options.rowsClose,
+				Next:          &options.rowsNext,
+				NextResultSet: &options.rowsNextResultSet,
+			},
+		},
+		ResetSession: &options.connResetSession,
+		Ping:         &options.connPing,
+		ExecContext:  &options.connExecContext,
+		QueryContext: &options.connQueryContext,
+		Rows: &rowsOptions{
+			Close:         &options.rowsClose,
+			Next:          &options.rowsNext,
+			NextResultSet: &options.rowsNextResultSet,
+		},
+	}
+	return &openOptions{
+		Open: &options.sqlslogOpen,
+		Driver: &driverOptions{
+			IDGen:         options.idGen,
+			connIDKey:     options.connIDKey,
+			Open:          &options.driverOpen,
+			OpenConnector: &options.driverOpenConnector,
+			Conn:          connOptions,
+			Connector: &connectorOptions{
+				Connect: &options.connectorConnect,
+				Conn:    connOptions,
+			},
+		},
+	}
 }

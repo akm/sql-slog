@@ -143,41 +143,7 @@ func TestWithMockErrorConn(t *testing.T) {
 	t.Parallel()
 	opts := newOptions("sqlite3")
 	logger := newLogger(slog.Default(), durationAttrFunc(opts.durationKey, opts.durationType))
-	w := wrapConn(newMockErrConn(errors.New("unexpected error")), logger, &connOptions{
-		idGen:   opts.idGen,
-		Begin:   &opts.connBegin,
-		BeginTx: &opts.connBeginTx,
-		txIDKey: opts.txIDKey,
-		Tx: &txOptions{
-			Commit:   &opts.txCommit,
-			Rollback: &opts.txRollback,
-		},
-		Close:          &opts.connClose,
-		Prepare:        &opts.connPrepare,
-		PrepareContext: &opts.connPrepareContext,
-		stmtIDKey:      opts.stmtIDKey,
-		Stmt: &stmtOptions{
-			Close:        &opts.stmtClose,
-			Exec:         &opts.stmtExec,
-			Query:        &opts.stmtQuery,
-			ExecContext:  &opts.stmtExecContext,
-			QueryContext: &opts.stmtQueryContext,
-			Rows: &rowsOptions{
-				Close:         &opts.rowsClose,
-				Next:          &opts.rowsNext,
-				NextResultSet: &opts.rowsNextResultSet,
-			},
-		},
-		ResetSession: &opts.connResetSession,
-		Ping:         &opts.connPing,
-		ExecContext:  &opts.connExecContext,
-		QueryContext: &opts.connQueryContext,
-		Rows: &rowsOptions{
-			Close:         &opts.rowsClose,
-			Next:          &opts.rowsNext,
-			NextResultSet: &opts.rowsNextResultSet,
-		},
-	})
+	w := wrapConn(newMockErrConn(errors.New("unexpected error")), logger, buildOpenOptions(opts).Driver.Conn)
 	t.Run("Begin", func(t *testing.T) {
 		t.Parallel()
 		if _, err := w.Begin(); err == nil { //nolint:staticcheck
@@ -213,41 +179,7 @@ func TestPingInCase(t *testing.T) {
 		connWrapper: connWrapper{
 			original: conn,
 			logger:   logger,
-			options: &connOptions{
-				idGen:   opts.idGen,
-				Begin:   &opts.connBegin,
-				BeginTx: &opts.connBeginTx,
-				txIDKey: opts.txIDKey,
-				Tx: &txOptions{
-					Commit:   &opts.txCommit,
-					Rollback: &opts.txRollback,
-				},
-				Close:          &opts.connClose,
-				Prepare:        &opts.connPrepare,
-				PrepareContext: &opts.connPrepareContext,
-				stmtIDKey:      opts.stmtIDKey,
-				Stmt: &stmtOptions{
-					Close:        &opts.stmtClose,
-					Exec:         &opts.stmtExec,
-					Query:        &opts.stmtQuery,
-					ExecContext:  &opts.stmtExecContext,
-					QueryContext: &opts.stmtQueryContext,
-					Rows: &rowsOptions{
-						Close:         &opts.rowsClose,
-						Next:          &opts.rowsNext,
-						NextResultSet: &opts.rowsNextResultSet,
-					},
-				},
-				ResetSession: &opts.connResetSession,
-				Ping:         &opts.connPing,
-				ExecContext:  &opts.connExecContext,
-				QueryContext: &opts.connQueryContext,
-				Rows: &rowsOptions{
-					Close:         &opts.rowsClose,
-					Next:          &opts.rowsNext,
-					NextResultSet: &opts.rowsNextResultSet,
-				},
-			},
+			options:  buildOpenOptions(opts).Driver.Conn,
 		},
 		originalConn: conn,
 	}

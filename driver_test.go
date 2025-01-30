@@ -31,57 +31,12 @@ func TestDriverContextWrapperOpenConnector(t *testing.T) {
 	t.Run("unexpected error", func(t *testing.T) {
 		t.Parallel()
 		opts := newOptions("sqlite3")
-		connOptions := &connOptions{
-			idGen:   opts.idGen,
-			Begin:   &opts.connBegin,
-			BeginTx: &opts.connBeginTx,
-			txIDKey: opts.txIDKey,
-			Tx: &txOptions{
-				Commit:   &opts.txCommit,
-				Rollback: &opts.txRollback,
-			},
-			Close:          &opts.connClose,
-			Prepare:        &opts.connPrepare,
-			PrepareContext: &opts.connPrepareContext,
-			stmtIDKey:      opts.stmtIDKey,
-			Stmt: &stmtOptions{
-				Close:        &opts.stmtClose,
-				Exec:         &opts.stmtExec,
-				Query:        &opts.stmtQuery,
-				ExecContext:  &opts.stmtExecContext,
-				QueryContext: &opts.stmtQueryContext,
-				Rows: &rowsOptions{
-					Close:         &opts.rowsClose,
-					Next:          &opts.rowsNext,
-					NextResultSet: &opts.rowsNextResultSet,
-				},
-			},
-			ResetSession: &opts.connResetSession,
-			Ping:         &opts.connPing,
-			ExecContext:  &opts.connExecContext,
-			QueryContext: &opts.connQueryContext,
-			Rows: &rowsOptions{
-				Close:         &opts.rowsClose,
-				Next:          &opts.rowsNext,
-				NextResultSet: &opts.rowsNextResultSet,
-			},
-		}
-
+		openOptions := buildOpenOptions(opts)
 		buf := bytes.NewBuffer(nil)
 		logger := slog.New(NewTextHandler(buf, nil))
 		dw := wrapDriver(&mockErrorDiverContext{},
 			newLogger(logger, durationAttrFunc(opts.durationKey, opts.durationType)),
-			&driverOptions{
-				IDGen:         opts.idGen,
-				connIDKey:     opts.connIDKey,
-				Open:          &opts.driverOpen,
-				OpenConnector: &opts.driverOpenConnector,
-				Conn:          connOptions,
-				Connector: &connectorOptions{
-					Connect: &opts.connectorConnect,
-					Conn:    connOptions,
-				},
-			},
+			openOptions.Driver,
 		)
 		dwc, ok := dw.(driver.DriverContext)
 		if !ok {
