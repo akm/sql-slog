@@ -6,14 +6,29 @@ import (
 	"strings"
 )
 
-func wrapDriver(original driver.Driver, logger *logger) driver.Driver {
+type driverOptions struct {
+	IDGen         IDGen
+	connIDKey     string
+	Open          *StepOptions
+	OpenConnector *StepOptions
+
+	Conn      *connOptions
+	Connector *connectorOptions
+}
+
+func wrapDriver(original driver.Driver, logger *logger, options *driverOptions) driver.Driver {
+	r := driverWrapper{
+		original: original,
+		logger:   logger,
+		options:  options,
+	}
 	if dc, ok := original.(driver.DriverContext); ok {
 		return &driverContextWrapper{
-			driverWrapper: driverWrapper{original: original, logger: logger},
+			driverWrapper: r,
 			original:      dc,
 		}
 	}
-	return &driverWrapper{original: original, logger: logger}
+	return &r
 }
 
 // https://pkg.go.dev/database/sql/driver@go1.23.4#pkg-overview
@@ -22,6 +37,7 @@ func wrapDriver(original driver.Driver, logger *logger) driver.Driver {
 type driverWrapper struct {
 	original driver.Driver
 	logger   *logger
+	options  *driverOptions
 }
 
 var _ driver.Driver = (*driverWrapper)(nil)
@@ -29,13 +45,13 @@ var _ driver.Driver = (*driverWrapper)(nil)
 // Open implements driver.Driver.
 func (w *driverWrapper) Open(dsn string) (driver.Conn, error) {
 	var origConn driver.Conn
-	attr, err := w.logger.With(slog.String("dsn", dsn)).StepWithoutContext(&w.logger.options.driverOpen, func() (*slog.Attr, error) {
+	attr, err := w.logger.With(slog.String("dsn", dsn)).StepWithoutContext(w.options.Open, func() (*slog.Attr, error) {
 		var err error
 		origConn, err = w.original.Open(dsn)
 		if err != nil {
 			return nil, err
 		}
-		attrRaw := slog.String(w.logger.options.connIDKey, w.logger.options.idGen())
+		attrRaw := slog.String(w.options.connIDKey, w.options.IDGen())
 		return &attrRaw, err
 	})
 	if err != nil {
@@ -45,42 +61,7 @@ func (w *driverWrapper) Open(dsn string) (driver.Conn, error) {
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	opts := w.logger.options
-	return wrapConn(origConn, lg, &connOptions{
-		idGen:   opts.idGen,
-		Begin:   &opts.connBegin,
-		BeginTx: &opts.connBeginTx,
-		txIDKey: opts.txIDKey,
-		Tx: &txOptions{
-			Commit:   &opts.txCommit,
-			Rollback: &opts.txRollback,
-		},
-		Close:          &opts.connClose,
-		Prepare:        &opts.connPrepare,
-		PrepareContext: &opts.connPrepareContext,
-		stmtIDKey:      opts.stmtIDKey,
-		Stmt: &stmtOptions{
-			Close:        &opts.stmtClose,
-			Exec:         &opts.stmtExec,
-			Query:        &opts.stmtQuery,
-			ExecContext:  &opts.stmtExecContext,
-			QueryContext: &opts.stmtQueryContext,
-			Rows: &rowsOptions{
-				Close:         &opts.rowsClose,
-				Next:          &opts.rowsNext,
-				NextResultSet: &opts.rowsNextResultSet,
-			},
-		},
-		ResetSession: &opts.connResetSession,
-		Ping:         &opts.connPing,
-		ExecContext:  &opts.connExecContext,
-		QueryContext: &opts.connQueryContext,
-		Rows: &rowsOptions{
-			Close:         &opts.rowsClose,
-			Next:          &opts.rowsNext,
-			NextResultSet: &opts.rowsNextResultSet,
-		},
-	}), nil
+	return wrapConn(origConn, lg, w.options.Conn), nil
 }
 
 type driverContextWrapper struct {
@@ -98,13 +79,13 @@ var (
 // OpenConnector implements driver.DriverContext.
 func (w *driverContextWrapper) OpenConnector(dsn string) (driver.Connector, error) {
 	var origConnector driver.Connector
-	attr, err := w.logger.With(slog.String("dsn", dsn)).StepWithoutContext(&w.logger.options.driverOpenConnector, func() (*slog.Attr, error) {
+	attr, err := w.logger.With(slog.String("dsn", dsn)).StepWithoutContext(w.options.OpenConnector, func() (*slog.Attr, error) {
 		var err error
 		origConnector, err = w.original.OpenConnector(dsn)
 		if err != nil {
 			return nil, err
 		}
-		attrRaw := slog.String(w.logger.options.connIDKey, w.logger.options.idGen())
+		attrRaw := slog.String(w.options.connIDKey, w.options.IDGen())
 		return &attrRaw, err
 	})
 	if err != nil {
@@ -114,46 +95,7 @@ func (w *driverContextWrapper) OpenConnector(dsn string) (driver.Connector, erro
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	opts := w.logger.options
-	options := &connectorOptions{
-		Connect: &opts.connectorConnect,
-		Conn: &connOptions{
-			idGen:   opts.idGen,
-			Begin:   &opts.connBegin,
-			BeginTx: &opts.connBeginTx,
-			txIDKey: opts.txIDKey,
-			Tx: &txOptions{
-				Commit:   &opts.txCommit,
-				Rollback: &opts.txRollback,
-			},
-			Close:          &opts.connClose,
-			Prepare:        &opts.connPrepare,
-			PrepareContext: &opts.connPrepareContext,
-			stmtIDKey:      opts.stmtIDKey,
-			Stmt: &stmtOptions{
-				Close:        &opts.stmtClose,
-				Exec:         &opts.stmtExec,
-				Query:        &opts.stmtQuery,
-				ExecContext:  &opts.stmtExecContext,
-				QueryContext: &opts.stmtQueryContext,
-				Rows: &rowsOptions{
-					Close:         &opts.rowsClose,
-					Next:          &opts.rowsNext,
-					NextResultSet: &opts.rowsNextResultSet,
-				},
-			},
-			ResetSession: &opts.connResetSession,
-			Ping:         &opts.connPing,
-			ExecContext:  &opts.connExecContext,
-			QueryContext: &opts.connQueryContext,
-			Rows: &rowsOptions{
-				Close:         &opts.rowsClose,
-				Next:          &opts.rowsNext,
-				NextResultSet: &opts.rowsNextResultSet,
-			},
-		},
-	}
-	return wrapConnector(origConnector, lg, options), nil
+	return wrapConnector(origConnector, lg, w.options.Connector), nil
 }
 
 // DriverOpenErrorHandler returns a function that handles errors from driver.Driver.Open.
