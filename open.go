@@ -35,7 +35,7 @@ See the following example for usage:
 */
 func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB, error) {
 	options := newOptions(driverName, opts...)
-	logger := newLogger(options.logger, options)
+	logger := newLogger(options.logger, durationAttrFunc(options.durationKey, options.durationType), options)
 
 	connOptions := &connOptions{
 		idGen:   options.idGen,

@@ -36,7 +36,13 @@ func (m *mockRows) Next([]driver.Value) error {
 
 func TestWithMockRows(t *testing.T) {
 	t.Parallel()
-	wrapped := &rowsWrapper{original: &mockRows{}, logger: newLogger(slog.Default(), nil)}
+	wrapped := &rowsWrapper{
+		original: &mockRows{},
+		logger: newLogger(slog.Default(),
+			durationAttrFunc("duration", DurationNanoSeconds),
+			nil,
+		),
+	}
 	t.Run("ColumnTypeScanType", func(t *testing.T) {
 		t.Parallel()
 		res := wrapped.ColumnTypeScanType(0)
@@ -90,7 +96,7 @@ func TestRowsNextResultSet(t *testing.T) {
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(NewJSONHandler(buf, nil))
 	opts := newOptions("dummy")
-	wrapped := wrapRows(rows, newLogger(logger, opts), &rowsOptions{
+	wrapped := wrapRows(rows, newLogger(logger, durationAttrFunc(opts.durationKey, opts.durationType), opts), &rowsOptions{
 		Close:         &opts.rowsClose,
 		Next:          &opts.rowsNext,
 		NextResultSet: &opts.rowsNextResultSet,

@@ -142,7 +142,7 @@ var (
 func TestWithMockErrorConn(t *testing.T) {
 	t.Parallel()
 	opts := newOptions("sqlite3")
-	logger := newLogger(slog.Default(), opts)
+	logger := newLogger(slog.Default(), durationAttrFunc(opts.durationKey, opts.durationType), opts)
 	w := wrapConn(newMockErrConn(errors.New("unexpected error")), logger, &connOptions{
 		idGen:   opts.idGen,
 		Begin:   &opts.connBegin,
@@ -207,7 +207,7 @@ func TestWithMockErrorConn(t *testing.T) {
 func TestPingInCase(t *testing.T) {
 	t.Parallel()
 	opts := newOptions("sqlite3")
-	logger := newLogger(slog.Default(), opts)
+	logger := newLogger(slog.Default(), durationAttrFunc(opts.durationKey, opts.durationType), opts)
 	conn := newMockErrConn(nil)
 	w := &connWithContextWrapper{
 		connWrapper: connWrapper{

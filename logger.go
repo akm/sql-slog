@@ -8,18 +8,20 @@ import (
 
 type logger struct {
 	*slog.Logger
-	options *options
+	durationAttr func(d time.Duration) slog.Attr
+	options      *options
 }
 
-func newLogger(rawLogger *slog.Logger, opts *options) *logger {
+func newLogger(rawLogger *slog.Logger, durationAttr func(d time.Duration) slog.Attr, opts *options) *logger {
 	return &logger{
-		Logger:  rawLogger,
-		options: opts,
+		Logger:       rawLogger,
+		durationAttr: durationAttr,
+		options:      opts,
 	}
 }
 
 func (x *logger) With(kv ...interface{}) *logger {
-	return newLogger(x.Logger.With(kv...), x.options)
+	return newLogger(x.Logger.With(kv...), x.durationAttr, x.options)
 }
 
 func (x *logger) StepWithoutContext(step *StepOptions, fn func() (*slog.Attr, error)) (*slog.Attr, error) {
@@ -56,23 +58,23 @@ func (x *logger) Step(ctx context.Context, step *StepOptions, fn func() (*slog.A
 	return attr, err
 }
 
-func (x *logger) durationAttr(d time.Duration) slog.Attr {
-	key := x.options.durationKey
-	switch x.options.durationType {
-	case DurationNanoSeconds:
-		return slog.Int64(key, d.Nanoseconds())
-	case DurationMicroSeconds:
-		return slog.Int64(key, d.Microseconds())
-	case DurationMilliSeconds:
-		return slog.Int64(key, d.Milliseconds())
-	case DurationGoDuration:
-		return slog.Duration(key, d)
-	case DurationString:
-		return slog.String(key, d.String())
-	default:
-		return slog.Int64(key, d.Nanoseconds())
-	}
-}
+// func (x *logger) durationAttr(d time.Duration) slog.Attr {
+// 	key := x.options.durationKey
+// 	switch x.options.durationType {
+// 	case DurationNanoSeconds:
+// 		return slog.Int64(key, d.Nanoseconds())
+// 	case DurationMicroSeconds:
+// 		return slog.Int64(key, d.Microseconds())
+// 	case DurationMilliSeconds:
+// 		return slog.Int64(key, d.Milliseconds())
+// 	case DurationGoDuration:
+// 		return slog.Duration(key, d)
+// 	case DurationString:
+// 		return slog.String(key, d.String())
+// 	default:
+// 		return slog.Int64(key, d.Nanoseconds())
+// 	}
+// }
 
 func withNilAttr(f func() error) func() (*slog.Attr, error) {
 	return func() (*slog.Attr, error) {

@@ -76,7 +76,10 @@ func TestWrapStmt(t *testing.T) {
 
 		buf := bytes.NewBuffer(nil)
 		logger := slog.New(NewJSONHandler(buf, nil))
-		wrapped := wrapStmt(mock, newLogger(logger, newOptions("dummy")), stmtOptions)
+		wrapped := wrapStmt(mock,
+			newLogger(logger, durationAttrFunc(opts.durationKey, opts.durationType), opts),
+			stmtOptions,
+		)
 		_, err := wrapped.Query(nil) // nolint:staticcheck
 		if err == nil {
 			t.Fatal("Expected non-nil")
@@ -117,7 +120,7 @@ func TestWithMockErrorStmtWithContext(t *testing.T) {
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(NewJSONHandler(buf, nil))
 	opts := newOptions("dummy")
-	wrapped := wrapStmt(mock, newLogger(logger, newOptions("dummy")), &stmtOptions{
+	wrapped := wrapStmt(mock, newLogger(logger, durationAttrFunc(opts.durationKey, opts.durationType), opts), &stmtOptions{
 		Close:        &opts.stmtClose,
 		Exec:         &opts.stmtExec,
 		Query:        &opts.stmtQuery,
