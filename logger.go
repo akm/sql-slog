@@ -9,19 +9,17 @@ import (
 type logger struct {
 	*slog.Logger
 	durationAttr func(d time.Duration) slog.Attr
-	options      *options
 }
 
-func newLogger(rawLogger *slog.Logger, durationAttr func(d time.Duration) slog.Attr, opts *options) *logger {
+func newLogger(rawLogger *slog.Logger, durationAttr func(d time.Duration) slog.Attr) *logger {
 	return &logger{
 		Logger:       rawLogger,
 		durationAttr: durationAttr,
-		options:      opts,
 	}
 }
 
 func (x *logger) With(kv ...interface{}) *logger {
-	return newLogger(x.Logger.With(kv...), x.durationAttr, x.options)
+	return newLogger(x.Logger.With(kv...), x.durationAttr)
 }
 
 func (x *logger) StepWithoutContext(step *StepOptions, fn func() (*slog.Attr, error)) (*slog.Attr, error) {
