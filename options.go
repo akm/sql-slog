@@ -53,7 +53,7 @@ func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *option
 		default:
 			startLevel = LevelVerbose
 		}
-		return *newStepOptions(formatter, name, startLevel, LevelError, completeLevel)
+		return *NewStepOptions(formatter, name, startLevel, LevelError, completeLevel)
 	}
 
 	withErrorHandler := func(opts StepOptions, eh func(error) (bool, []slog.Attr)) StepOptions {
