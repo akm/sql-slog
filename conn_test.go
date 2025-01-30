@@ -31,7 +31,7 @@ func TestWrapConn(t *testing.T) {
 	t.Parallel()
 	t.Run("nil", func(t *testing.T) {
 		t.Parallel()
-		if wrapConn(nil, nil) != nil {
+		if wrapConn(nil, nil, nil) != nil {
 			t.Fatal("Expected nil")
 		}
 	})
@@ -39,7 +39,7 @@ func TestWrapConn(t *testing.T) {
 		t.Parallel()
 		mock := &mockConnForWrapConn{}
 		logger := &logger{}
-		conn := wrapConn(mock, logger)
+		conn := wrapConn(mock, logger, nil)
 		if conn == nil {
 			t.Fatal("Expected non-nil")
 		}
@@ -141,8 +141,43 @@ var (
 
 func TestWithMockErrorConn(t *testing.T) {
 	t.Parallel()
-	logger := newLogger(slog.Default(), newOptions("sqlite3"))
-	w := wrapConn(newMockErrConn(errors.New("unexpected error")), logger)
+	opts := newOptions("sqlite3")
+	logger := newLogger(slog.Default(), opts)
+	w := wrapConn(newMockErrConn(errors.New("unexpected error")), logger, &connOptions{
+		idGen:   opts.idGen,
+		Begin:   &opts.connBegin,
+		BeginTx: &opts.connBeginTx,
+		txIDKey: opts.txIDKey,
+		Tx: &txOptions{
+			Commit:   &opts.txCommit,
+			Rollback: &opts.txRollback,
+		},
+		Close:          &opts.connClose,
+		Prepare:        &opts.connPrepare,
+		PrepareContext: &opts.connPrepareContext,
+		stmtIDKey:      opts.stmtIDKey,
+		Stmt: &stmtOptions{
+			Close:        &opts.stmtClose,
+			Exec:         &opts.stmtExec,
+			Query:        &opts.stmtQuery,
+			ExecContext:  &opts.stmtExecContext,
+			QueryContext: &opts.stmtQueryContext,
+			Rows: &rowsOptions{
+				Close:         &opts.rowsClose,
+				Next:          &opts.rowsNext,
+				NextResultSet: &opts.rowsNextResultSet,
+			},
+		},
+		ResetSession: &opts.connResetSession,
+		Ping:         &opts.connPing,
+		ExecContext:  &opts.connExecContext,
+		QueryContext: &opts.connQueryContext,
+		Rows: &rowsOptions{
+			Close:         &opts.rowsClose,
+			Next:          &opts.rowsNext,
+			NextResultSet: &opts.rowsNextResultSet,
+		},
+	})
 	t.Run("Begin", func(t *testing.T) {
 		t.Parallel()
 		if _, err := w.Begin(); err == nil { //nolint:staticcheck
@@ -171,12 +206,48 @@ func TestWithMockErrorConn(t *testing.T) {
 
 func TestPingInCase(t *testing.T) {
 	t.Parallel()
-	logger := newLogger(slog.Default(), newOptions("sqlite3"))
+	opts := newOptions("sqlite3")
+	logger := newLogger(slog.Default(), opts)
 	conn := newMockErrConn(nil)
 	w := &connWithContextWrapper{
 		connWrapper: connWrapper{
 			original: conn,
 			logger:   logger,
+			options: &connOptions{
+				idGen:   opts.idGen,
+				Begin:   &opts.connBegin,
+				BeginTx: &opts.connBeginTx,
+				txIDKey: opts.txIDKey,
+				Tx: &txOptions{
+					Commit:   &opts.txCommit,
+					Rollback: &opts.txRollback,
+				},
+				Close:          &opts.connClose,
+				Prepare:        &opts.connPrepare,
+				PrepareContext: &opts.connPrepareContext,
+				stmtIDKey:      opts.stmtIDKey,
+				Stmt: &stmtOptions{
+					Close:        &opts.stmtClose,
+					Exec:         &opts.stmtExec,
+					Query:        &opts.stmtQuery,
+					ExecContext:  &opts.stmtExecContext,
+					QueryContext: &opts.stmtQueryContext,
+					Rows: &rowsOptions{
+						Close:         &opts.rowsClose,
+						Next:          &opts.rowsNext,
+						NextResultSet: &opts.rowsNextResultSet,
+					},
+				},
+				ResetSession: &opts.connResetSession,
+				Ping:         &opts.connPing,
+				ExecContext:  &opts.connExecContext,
+				QueryContext: &opts.connQueryContext,
+				Rows: &rowsOptions{
+					Close:         &opts.rowsClose,
+					Next:          &opts.rowsNext,
+					NextResultSet: &opts.rowsNextResultSet,
+				},
+			},
 		},
 		originalConn: conn,
 	}

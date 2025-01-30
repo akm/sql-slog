@@ -30,7 +30,42 @@ func (c *connector) Connect(ctx context.Context) (driver.Conn, error) {
 	if err != nil {
 		return nil, err
 	}
-	return wrapConn(origConn, c.logger), nil
+	opts := c.logger.options
+	return wrapConn(origConn, c.logger, &connOptions{
+		idGen:   opts.idGen,
+		Begin:   &opts.connBegin,
+		BeginTx: &opts.connBeginTx,
+		txIDKey: opts.txIDKey,
+		Tx: &txOptions{
+			Commit:   &opts.txCommit,
+			Rollback: &opts.txRollback,
+		},
+		Close:          &opts.connClose,
+		Prepare:        &opts.connPrepare,
+		PrepareContext: &opts.connPrepareContext,
+		stmtIDKey:      opts.stmtIDKey,
+		Stmt: &stmtOptions{
+			Close:        &opts.stmtClose,
+			Exec:         &opts.stmtExec,
+			Query:        &opts.stmtQuery,
+			ExecContext:  &opts.stmtExecContext,
+			QueryContext: &opts.stmtQueryContext,
+			Rows: &rowsOptions{
+				Close:         &opts.rowsClose,
+				Next:          &opts.rowsNext,
+				NextResultSet: &opts.rowsNextResultSet,
+			},
+		},
+		ResetSession: &opts.connResetSession,
+		Ping:         &opts.connPing,
+		ExecContext:  &opts.connExecContext,
+		QueryContext: &opts.connQueryContext,
+		Rows: &rowsOptions{
+			Close:         &opts.rowsClose,
+			Next:          &opts.rowsNext,
+			NextResultSet: &opts.rowsNextResultSet,
+		},
+	}), nil
 }
 
 // Driver implements driver.Connector.
