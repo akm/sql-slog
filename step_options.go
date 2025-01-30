@@ -31,7 +31,7 @@ func (pe *Event) String() string {
 }
 
 // StepLogMsgFormatter is the function type to format the step log message.
-type StepLogMsgFormatter func(name string, event Event) string
+type StepLogMsgFormatter = func(name string, event Event) string
 
 // StepLogMsgWithEventName returns the formatted step log message with the event name.
 func StepLogMsgWithEventName(name string, event Event) string {
