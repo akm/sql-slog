@@ -4,23 +4,29 @@ import (
 	"database/sql/driver"
 )
 
-func wrapTx(original driver.Tx, logger *logger) *txWrapper {
-	return &txWrapper{original: original, logger: logger}
+type txOptions struct {
+	Commit   *StepOptions
+	Rollback *StepOptions
+}
+
+func wrapTx(original driver.Tx, logger *logger, options *txOptions) *txWrapper {
+	return &txWrapper{original: original, logger: logger, options: options}
 }
 
 type txWrapper struct {
 	original driver.Tx
 	logger   *logger
+	options  *txOptions
 }
 
 var _ driver.Tx = (*txWrapper)(nil)
 
 // Commit implements driver.Tx.
 func (t *txWrapper) Commit() error {
-	return ignoreAttr(t.logger.StepWithoutContext(&t.logger.options.txCommit, withNilAttr(t.original.Commit)))
+	return ignoreAttr(t.logger.StepWithoutContext(t.options.Commit, withNilAttr(t.original.Commit)))
 }
 
 // Rollback implements driver.Tx.
 func (t *txWrapper) Rollback() error {
-	return ignoreAttr(t.logger.StepWithoutContext(&t.logger.options.txRollback, withNilAttr(t.original.Rollback)))
+	return ignoreAttr(t.logger.StepWithoutContext(t.options.Rollback, withNilAttr(t.original.Rollback)))
 }
