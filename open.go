@@ -7,6 +7,11 @@ import (
 	"log/slog"
 )
 
+type openOptions struct {
+	Open   *StepOptions
+	Driver *driverOptions
+}
+
 /*
 Open opens a database specified by its driver name and a driver-specific data source name,
 and returns a new database handle with logging capabilities.
@@ -32,15 +37,65 @@ func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB,
 	options := newOptions(driverName, opts...)
 	logger := newLogger(options.logger, options)
 
+	connOptions := &connOptions{
+		idGen:   options.idGen,
+		Begin:   &options.connBegin,
+		BeginTx: &options.connBeginTx,
+		txIDKey: options.txIDKey,
+		Tx: &txOptions{
+			Commit:   &options.txCommit,
+			Rollback: &options.txRollback,
+		},
+		Close:          &options.connClose,
+		Prepare:        &options.connPrepare,
+		PrepareContext: &options.connPrepareContext,
+		stmtIDKey:      options.stmtIDKey,
+		Stmt: &stmtOptions{
+			Close:        &options.stmtClose,
+			Exec:         &options.stmtExec,
+			Query:        &options.stmtQuery,
+			ExecContext:  &options.stmtExecContext,
+			QueryContext: &options.stmtQueryContext,
+			Rows: &rowsOptions{
+				Close:         &options.rowsClose,
+				Next:          &options.rowsNext,
+				NextResultSet: &options.rowsNextResultSet,
+			},
+		},
+		ResetSession: &options.connResetSession,
+		Ping:         &options.connPing,
+		ExecContext:  &options.connExecContext,
+		QueryContext: &options.connQueryContext,
+		Rows: &rowsOptions{
+			Close:         &options.rowsClose,
+			Next:          &options.rowsNext,
+			NextResultSet: &options.rowsNextResultSet,
+		},
+	}
+	openOptions := &openOptions{
+		Open: &options.sqlslogOpen,
+		Driver: &driverOptions{
+			IDGen:         options.idGen,
+			connIDKey:     options.connIDKey,
+			Open:          &options.driverOpen,
+			OpenConnector: &options.driverOpenConnector,
+			Conn:          connOptions,
+			Connector: &connectorOptions{
+				Connect: &options.connectorConnect,
+				Conn:    connOptions,
+			},
+		},
+	}
+
 	lg := logger.With(
 		slog.String("driver", driverName),
 		slog.String("dsn", dsn),
 	)
 
 	var db *sql.DB
-	err := ignoreAttr(lg.Step(ctx, &logger.options.sqlslogOpen, func() (*slog.Attr, error) {
+	err := ignoreAttr(lg.Step(ctx, openOptions.Open, func() (*slog.Attr, error) {
 		var err error
-		db, err = open(driverName, dsn, logger)
+		db, err = open(driverName, dsn, logger, openOptions)
 		return nil, err
 	}))
 	if err != nil {
@@ -49,62 +104,13 @@ func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB,
 	return db, nil
 }
 
-func open(driverName, dsn string, logger *logger) (*sql.DB, error) {
+func open(driverName, dsn string, logger *logger, options *openOptions) (*sql.DB, error) {
 	db, err := sql.Open(driverName, dsn)
 	if err != nil {
 		return nil, err
 	}
 	// This db is not used directly, but it is used to get the driver.
-
-	opts := logger.options
-	connOptions := &connOptions{
-		idGen:   opts.idGen,
-		Begin:   &opts.connBegin,
-		BeginTx: &opts.connBeginTx,
-		txIDKey: opts.txIDKey,
-		Tx: &txOptions{
-			Commit:   &opts.txCommit,
-			Rollback: &opts.txRollback,
-		},
-		Close:          &opts.connClose,
-		Prepare:        &opts.connPrepare,
-		PrepareContext: &opts.connPrepareContext,
-		stmtIDKey:      opts.stmtIDKey,
-		Stmt: &stmtOptions{
-			Close:        &opts.stmtClose,
-			Exec:         &opts.stmtExec,
-			Query:        &opts.stmtQuery,
-			ExecContext:  &opts.stmtExecContext,
-			QueryContext: &opts.stmtQueryContext,
-			Rows: &rowsOptions{
-				Close:         &opts.rowsClose,
-				Next:          &opts.rowsNext,
-				NextResultSet: &opts.rowsNextResultSet,
-			},
-		},
-		ResetSession: &opts.connResetSession,
-		Ping:         &opts.connPing,
-		ExecContext:  &opts.connExecContext,
-		QueryContext: &opts.connQueryContext,
-		Rows: &rowsOptions{
-			Close:         &opts.rowsClose,
-			Next:          &opts.rowsNext,
-			NextResultSet: &opts.rowsNextResultSet,
-		},
-	}
-
-	drv := wrapDriver(db.Driver(), logger, &driverOptions{
-		IDGen:         opts.idGen,
-		connIDKey:     opts.connIDKey,
-		Open:          &opts.driverOpen,
-		OpenConnector: &opts.driverOpenConnector,
-		Conn:          connOptions,
-		Connector: &connectorOptions{
-			Connect: &opts.connectorConnect,
-			Conn:    connOptions,
-		},
-	})
-
+	drv := wrapDriver(db.Driver(), logger, options.Driver)
 	var origConnector driver.Connector
 
 	if dc, ok := drv.(driver.DriverContext); ok {
@@ -117,8 +123,5 @@ func open(driverName, dsn string, logger *logger) (*sql.DB, error) {
 		origConnector = &dsnConnector{dsn: dsn, driver: drv}
 	}
 
-	return sql.OpenDB(wrapConnector(origConnector, logger, &connectorOptions{
-		Connect: &opts.connectorConnect,
-		Conn:    connOptions,
-	})), nil
+	return sql.OpenDB(wrapConnector(origConnector, logger, options.Driver.Connector)), nil
 }
