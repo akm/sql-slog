@@ -1,5 +1,10 @@
 package sqlslog
 
+import (
+	"log/slog"
+	"time"
+)
+
 type DurationType int
 
 const (
@@ -28,3 +33,20 @@ func DurationKey(key string) Option {
 
 // DurationKeyDefault is the default key for duration value in log.
 const DurationKeyDefault = "duration"
+
+func durationAttrFunc(key string, t DurationType) func(d time.Duration) slog.Attr {
+	switch t {
+	case DurationNanoSeconds:
+		return func(d time.Duration) slog.Attr { return slog.Int64(key, d.Nanoseconds()) }
+	case DurationMicroSeconds:
+		return func(d time.Duration) slog.Attr { return slog.Int64(key, d.Microseconds()) }
+	case DurationMilliSeconds:
+		return func(d time.Duration) slog.Attr { return slog.Int64(key, d.Milliseconds()) }
+	case DurationGoDuration:
+		return func(d time.Duration) slog.Attr { return slog.Duration(key, d) }
+	case DurationString:
+		return func(d time.Duration) slog.Attr { return slog.String(key, d.String()) }
+	default:
+		return func(d time.Duration) slog.Attr { return slog.Int64(key, d.Nanoseconds()) }
+	}
+}
