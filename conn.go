@@ -105,7 +105,18 @@ func (c *connWrapper) Prepare(query string) (driver.Stmt, error) {
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return wrapStmt(origStmt, lg), nil
+	return wrapStmt(origStmt, lg, &stmtOptions{
+		Close:        &c.logger.options.stmtClose,
+		Exec:         &c.logger.options.stmtExec,
+		Query:        &c.logger.options.stmtQuery,
+		ExecContext:  &c.logger.options.stmtExecContext,
+		QueryContext: &c.logger.options.stmtQueryContext,
+		Rows: &rowsOptions{
+			Close:         &c.logger.options.rowsClose,
+			Next:          &c.logger.options.rowsNext,
+			NextResultSet: &c.logger.options.rowsNextResultSet,
+		},
+	}), nil
 }
 
 // IsValid implements driver.Validator.
@@ -236,7 +247,18 @@ func (c *connWithContextWrapper) PrepareContext(ctx context.Context, query strin
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return wrapStmt(stmt, lg), nil
+	return wrapStmt(stmt, lg, &stmtOptions{
+		Close:        &c.logger.options.stmtClose,
+		Exec:         &c.logger.options.stmtExec,
+		Query:        &c.logger.options.stmtQuery,
+		ExecContext:  &c.logger.options.stmtExecContext,
+		QueryContext: &c.logger.options.stmtQueryContext,
+		Rows: &rowsOptions{
+			Close:         &c.logger.options.rowsClose,
+			Next:          &c.logger.options.rowsNext,
+			NextResultSet: &c.logger.options.rowsNextResultSet,
+		},
+	}), nil
 }
 
 // BeginTx implements driver.ConnBeginTx.

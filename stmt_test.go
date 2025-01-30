@@ -39,7 +39,7 @@ func TestWrapStmt(t *testing.T) {
 	t.Parallel()
 	t.Run("nil", func(t *testing.T) {
 		t.Parallel()
-		if wrapStmt(nil, nil) != nil {
+		if wrapStmt(nil, nil, nil) != nil {
 			t.Fatal("Expected nil")
 		}
 	})
@@ -47,7 +47,7 @@ func TestWrapStmt(t *testing.T) {
 		t.Parallel()
 		mock := &mockStmtForWrapStmt{}
 		logger := &logger{}
-		stmt := wrapStmt(mock, logger)
+		stmt := wrapStmt(mock, logger, nil)
 		if stmt == nil {
 			t.Fatal("Expected non-nil")
 		}
@@ -60,9 +60,23 @@ func TestWrapStmt(t *testing.T) {
 			error: dummyError,
 		}
 
+		opts := newOptions("dummy")
+		stmtOptions := &stmtOptions{
+			Close:        &opts.stmtClose,
+			Exec:         &opts.stmtExec,
+			Query:        &opts.stmtQuery,
+			ExecContext:  &opts.stmtExecContext,
+			QueryContext: &opts.stmtQueryContext,
+			Rows: &rowsOptions{
+				Close:         &opts.rowsClose,
+				Next:          &opts.rowsNext,
+				NextResultSet: &opts.rowsNextResultSet,
+			},
+		}
+
 		buf := bytes.NewBuffer(nil)
 		logger := slog.New(NewJSONHandler(buf, nil))
-		wrapped := wrapStmt(mock, newLogger(logger, newOptions("dummy")))
+		wrapped := wrapStmt(mock, newLogger(logger, newOptions("dummy")), stmtOptions)
 		_, err := wrapped.Query(nil) // nolint:staticcheck
 		if err == nil {
 			t.Fatal("Expected non-nil")
@@ -102,7 +116,19 @@ func TestWithMockErrorStmtWithContext(t *testing.T) {
 
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(NewJSONHandler(buf, nil))
-	wrapped := wrapStmt(mock, newLogger(logger, newOptions("dummy")))
+	opts := newOptions("dummy")
+	wrapped := wrapStmt(mock, newLogger(logger, newOptions("dummy")), &stmtOptions{
+		Close:        &opts.stmtClose,
+		Exec:         &opts.stmtExec,
+		Query:        &opts.stmtQuery,
+		ExecContext:  &opts.stmtExecContext,
+		QueryContext: &opts.stmtQueryContext,
+		Rows: &rowsOptions{
+			Close:         &opts.rowsClose,
+			Next:          &opts.rowsNext,
+			NextResultSet: &opts.rowsNextResultSet,
+		},
+	})
 	stmtWithQueryContext, ok := wrapped.(driver.StmtQueryContext)
 	if !ok {
 		t.Fatal("Expected StmtQueryContext")
