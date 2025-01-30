@@ -8,21 +8,28 @@ import (
 	"log/slog"
 )
 
+type connectorOptions struct {
+	Connect *StepOptions
+
+	Conn *connOptions
+}
+
 type connector struct {
 	original driver.Connector
 	logger   *logger
+	options  *connectorOptions
 }
 
 var _ driver.Connector = (*connector)(nil)
 
-func wrapConnector(original driver.Connector, logger *logger) driver.Connector {
-	return &connector{original: original, logger: logger}
+func wrapConnector(original driver.Connector, logger *logger, options *connectorOptions) driver.Connector {
+	return &connector{original: original, logger: logger, options: options}
 }
 
 // Connect implements driver.Connector.
 func (c *connector) Connect(ctx context.Context) (driver.Conn, error) {
 	var origConn driver.Conn
-	err := ignoreAttr(c.logger.Step(ctx, &c.logger.options.connectorConnect, func() (*slog.Attr, error) {
+	err := ignoreAttr(c.logger.Step(ctx, c.options.Connect, func() (*slog.Attr, error) {
 		var err error
 		origConn, err = c.original.Connect(ctx)
 		return nil, err
@@ -30,42 +37,7 @@ func (c *connector) Connect(ctx context.Context) (driver.Conn, error) {
 	if err != nil {
 		return nil, err
 	}
-	opts := c.logger.options
-	return wrapConn(origConn, c.logger, &connOptions{
-		idGen:   opts.idGen,
-		Begin:   &opts.connBegin,
-		BeginTx: &opts.connBeginTx,
-		txIDKey: opts.txIDKey,
-		Tx: &txOptions{
-			Commit:   &opts.txCommit,
-			Rollback: &opts.txRollback,
-		},
-		Close:          &opts.connClose,
-		Prepare:        &opts.connPrepare,
-		PrepareContext: &opts.connPrepareContext,
-		stmtIDKey:      opts.stmtIDKey,
-		Stmt: &stmtOptions{
-			Close:        &opts.stmtClose,
-			Exec:         &opts.stmtExec,
-			Query:        &opts.stmtQuery,
-			ExecContext:  &opts.stmtExecContext,
-			QueryContext: &opts.stmtQueryContext,
-			Rows: &rowsOptions{
-				Close:         &opts.rowsClose,
-				Next:          &opts.rowsNext,
-				NextResultSet: &opts.rowsNextResultSet,
-			},
-		},
-		ResetSession: &opts.connResetSession,
-		Ping:         &opts.connPing,
-		ExecContext:  &opts.connExecContext,
-		QueryContext: &opts.connQueryContext,
-		Rows: &rowsOptions{
-			Close:         &opts.rowsClose,
-			Next:          &opts.rowsNext,
-			NextResultSet: &opts.rowsNextResultSet,
-		},
-	}), nil
+	return wrapConn(origConn, c.logger, c.options.Conn), nil
 }
 
 // Driver implements driver.Connector.

@@ -114,7 +114,46 @@ func (w *driverContextWrapper) OpenConnector(dsn string) (driver.Connector, erro
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return wrapConnector(origConnector, lg), nil
+	opts := w.logger.options
+	options := &connectorOptions{
+		Connect: &opts.connectorConnect,
+		Conn: &connOptions{
+			idGen:   opts.idGen,
+			Begin:   &opts.connBegin,
+			BeginTx: &opts.connBeginTx,
+			txIDKey: opts.txIDKey,
+			Tx: &txOptions{
+				Commit:   &opts.txCommit,
+				Rollback: &opts.txRollback,
+			},
+			Close:          &opts.connClose,
+			Prepare:        &opts.connPrepare,
+			PrepareContext: &opts.connPrepareContext,
+			stmtIDKey:      opts.stmtIDKey,
+			Stmt: &stmtOptions{
+				Close:        &opts.stmtClose,
+				Exec:         &opts.stmtExec,
+				Query:        &opts.stmtQuery,
+				ExecContext:  &opts.stmtExecContext,
+				QueryContext: &opts.stmtQueryContext,
+				Rows: &rowsOptions{
+					Close:         &opts.rowsClose,
+					Next:          &opts.rowsNext,
+					NextResultSet: &opts.rowsNextResultSet,
+				},
+			},
+			ResetSession: &opts.connResetSession,
+			Ping:         &opts.connPing,
+			ExecContext:  &opts.connExecContext,
+			QueryContext: &opts.connQueryContext,
+			Rows: &rowsOptions{
+				Close:         &opts.rowsClose,
+				Next:          &opts.rowsNext,
+				NextResultSet: &opts.rowsNextResultSet,
+			},
+		},
+	}
+	return wrapConnector(origConnector, lg, options), nil
 }
 
 // DriverOpenErrorHandler returns a function that handles errors from driver.Driver.Open.

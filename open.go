@@ -70,5 +70,44 @@ func open(driverName, dsn string, logger *logger) (*sql.DB, error) {
 		origConnector = &dsnConnector{dsn: dsn, driver: drv}
 	}
 
-	return sql.OpenDB(wrapConnector(origConnector, logger)), nil
+	opts := logger.options
+	options := &connectorOptions{
+		Connect: &opts.connectorConnect,
+		Conn: &connOptions{
+			idGen:   opts.idGen,
+			Begin:   &opts.connBegin,
+			BeginTx: &opts.connBeginTx,
+			txIDKey: opts.txIDKey,
+			Tx: &txOptions{
+				Commit:   &opts.txCommit,
+				Rollback: &opts.txRollback,
+			},
+			Close:          &opts.connClose,
+			Prepare:        &opts.connPrepare,
+			PrepareContext: &opts.connPrepareContext,
+			stmtIDKey:      opts.stmtIDKey,
+			Stmt: &stmtOptions{
+				Close:        &opts.stmtClose,
+				Exec:         &opts.stmtExec,
+				Query:        &opts.stmtQuery,
+				ExecContext:  &opts.stmtExecContext,
+				QueryContext: &opts.stmtQueryContext,
+				Rows: &rowsOptions{
+					Close:         &opts.rowsClose,
+					Next:          &opts.rowsNext,
+					NextResultSet: &opts.rowsNextResultSet,
+				},
+			},
+			ResetSession: &opts.connResetSession,
+			Ping:         &opts.connPing,
+			ExecContext:  &opts.connExecContext,
+			QueryContext: &opts.connQueryContext,
+			Rows: &rowsOptions{
+				Close:         &opts.rowsClose,
+				Next:          &opts.rowsNext,
+				NextResultSet: &opts.rowsNextResultSet,
+			},
+		},
+	}
+	return sql.OpenDB(wrapConnector(origConnector, logger, options)), nil
 }
