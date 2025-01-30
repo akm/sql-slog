@@ -35,7 +35,7 @@ func TestDriverContextWrapperOpenConnector(t *testing.T) {
 		buf := bytes.NewBuffer(nil)
 		logger := slog.New(NewTextHandler(buf, nil))
 		dw := wrapDriver(&mockErrorDiverContext{},
-			newLogger(logger, durationAttrFunc(opts.durationKey, opts.durationType)),
+			newLogger(logger, DurationAttrFunc(opts.durationKey, opts.durationType)),
 			openOptions.Driver,
 		)
 		dwc, ok := dw.(driver.DriverContext)

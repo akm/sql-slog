@@ -77,7 +77,7 @@ func TestWrapStmt(t *testing.T) {
 		buf := bytes.NewBuffer(nil)
 		logger := slog.New(NewJSONHandler(buf, nil))
 		wrapped := wrapStmt(mock,
-			newLogger(logger, durationAttrFunc(opts.durationKey, opts.durationType)),
+			newLogger(logger, DurationAttrFunc(opts.durationKey, opts.durationType)),
 			stmtOptions,
 		)
 		_, err := wrapped.Query(nil) // nolint:staticcheck
@@ -120,7 +120,7 @@ func TestWithMockErrorStmtWithContext(t *testing.T) {
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(NewJSONHandler(buf, nil))
 	opts := newOptions("dummy")
-	wrapped := wrapStmt(mock, newLogger(logger, durationAttrFunc(opts.durationKey, opts.durationType)), &stmtOptions{
+	wrapped := wrapStmt(mock, newLogger(logger, DurationAttrFunc(opts.durationKey, opts.durationType)), &stmtOptions{
 		Close:        &opts.stmtClose,
 		Exec:         &opts.stmtExec,
 		Query:        &opts.stmtQuery,

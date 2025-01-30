@@ -39,7 +39,7 @@ func TestWithMockRows(t *testing.T) {
 	wrapped := &rowsWrapper{
 		original: &mockRows{},
 		logger: newLogger(slog.Default(),
-			durationAttrFunc("duration", DurationNanoSeconds),
+			DurationAttrFunc("duration", DurationNanoSeconds),
 		),
 	}
 	t.Run("ColumnTypeScanType", func(t *testing.T) {
@@ -95,7 +95,7 @@ func TestRowsNextResultSet(t *testing.T) {
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(NewJSONHandler(buf, nil))
 	opts := newOptions("dummy")
-	wrapped := wrapRows(rows, newLogger(logger, durationAttrFunc(opts.durationKey, opts.durationType)), &rowsOptions{
+	wrapped := wrapRows(rows, newLogger(logger, DurationAttrFunc(opts.durationKey, opts.durationType)), &rowsOptions{
 		Close:         &opts.rowsClose,
 		Next:          &opts.rowsNext,
 		NextResultSet: &opts.rowsNextResultSet,
