@@ -1,18 +1,19 @@
 package sqlslog
 
-import (
-	"log/slog"
-	"time"
-)
+import "github.com/akm/sql-slog/opts"
 
-type DurationType int
+type DurationType = opts.DurationType
 
 const (
-	DurationNanoSeconds  DurationType = iota // Duration in nanoseconds. Durations in log are expressed by slog.Int64
-	DurationMicroSeconds                     // Duration in microseconds. Durations in log are expressed by slog.Int64
-	DurationMilliSeconds                     // Duration in milliseconds. Durations in log are expressed by slog.Int64
-	DurationGoDuration                       // Values in log are expressed with slog.Duration
-	DurationString                           // Values in log are expressed with slog.String and time.Duration.String
+	DurationNanoSeconds  = opts.DurationNanoSeconds
+	DurationMicroSeconds = opts.DurationMicroSeconds
+	DurationMilliSeconds = opts.DurationMilliSeconds
+	DurationGoDuration   = opts.DurationGoDuration
+	DurationString       = opts.DurationString
+)
+
+var (
+	DurationAttrFunc = opts.DurationAttrFunc
 )
 
 // Duration is an option to specify duration value in log.
@@ -33,20 +34,3 @@ func DurationKey(key string) Option {
 
 // DurationKeyDefault is the default key for duration value in log.
 const DurationKeyDefault = "duration"
-
-func DurationAttrFunc(key string, t DurationType) func(d time.Duration) slog.Attr {
-	switch t {
-	case DurationNanoSeconds:
-		return func(d time.Duration) slog.Attr { return slog.Int64(key, d.Nanoseconds()) }
-	case DurationMicroSeconds:
-		return func(d time.Duration) slog.Attr { return slog.Int64(key, d.Microseconds()) }
-	case DurationMilliSeconds:
-		return func(d time.Duration) slog.Attr { return slog.Int64(key, d.Milliseconds()) }
-	case DurationGoDuration:
-		return func(d time.Duration) slog.Attr { return slog.Duration(key, d) }
-	case DurationString:
-		return func(d time.Duration) slog.Attr { return slog.String(key, d.String()) }
-	default:
-		return func(d time.Duration) slog.Attr { return slog.Int64(key, d.Nanoseconds()) }
-	}
-}
