@@ -7,7 +7,7 @@ import (
 	"log/slog"
 )
 
-type stmtOptions struct {
+type StmtOptions struct {
 	Close        *StepOptions
 	Exec         *StepOptions
 	Query        *StepOptions
@@ -20,7 +20,7 @@ type stmtOptions struct {
 type stmtWrapper struct {
 	original driver.Stmt
 	logger   *logger
-	options  *stmtOptions
+	options  *StmtOptions
 }
 
 var _ driver.Stmt = (*stmtWrapper)(nil)
@@ -68,7 +68,7 @@ func (s *stmtWrapper) Query(args []driver.Value) (driver.Rows, error) {
 type stmtExecContextWrapperImpl struct {
 	original driver.StmtExecContext
 	logger   *logger
-	options  *stmtOptions
+	options  *StmtOptions
 }
 
 var _ driver.StmtExecContext = (*stmtExecContextWrapperImpl)(nil)
@@ -91,7 +91,7 @@ func (s *stmtExecContextWrapperImpl) ExecContext(ctx context.Context, args []dri
 type stmtQueryContextWrapperImpl struct {
 	original driver.StmtQueryContext
 	logger   *logger
-	options  *stmtOptions
+	options  *StmtOptions
 }
 
 var _ driver.StmtQueryContext = (*stmtQueryContextWrapperImpl)(nil)
@@ -143,7 +143,7 @@ var (
 	_ driver.StmtQueryContext = (*stmtContextWrapper)(nil)
 )
 
-func wrapStmt(original driver.Stmt, logger *logger, options *stmtOptions) driver.Stmt {
+func WrapStmt(original driver.Stmt, logger *logger, options *StmtOptions) driver.Stmt {
 	if original == nil {
 		return nil
 	}

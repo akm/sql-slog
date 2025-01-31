@@ -39,7 +39,7 @@ func TestWrapStmt(t *testing.T) {
 	t.Parallel()
 	t.Run("nil", func(t *testing.T) {
 		t.Parallel()
-		if wrapStmt(nil, nil, nil) != nil {
+		if WrapStmt(nil, nil, nil) != nil {
 			t.Fatal("Expected nil")
 		}
 	})
@@ -47,7 +47,7 @@ func TestWrapStmt(t *testing.T) {
 		t.Parallel()
 		mock := &mockStmtForWrapStmt{}
 		logger := &logger{}
-		stmt := wrapStmt(mock, logger, nil)
+		stmt := WrapStmt(mock, logger, nil)
 		if stmt == nil {
 			t.Fatal("Expected non-nil")
 		}
@@ -61,7 +61,7 @@ func TestWrapStmt(t *testing.T) {
 		}
 
 		opts := newOptions("dummy")
-		stmtOptions := &stmtOptions{
+		stmtOptions := &StmtOptions{
 			Close:        &opts.stmtClose,
 			Exec:         &opts.stmtExec,
 			Query:        &opts.stmtQuery,
@@ -76,7 +76,7 @@ func TestWrapStmt(t *testing.T) {
 
 		buf := bytes.NewBuffer(nil)
 		logger := slog.New(NewJSONHandler(buf, nil))
-		wrapped := wrapStmt(mock,
+		wrapped := WrapStmt(mock,
 			newLogger(logger, DurationAttrFunc(opts.durationKey, opts.durationType)),
 			stmtOptions,
 		)
@@ -120,7 +120,7 @@ func TestWithMockErrorStmtWithContext(t *testing.T) {
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(NewJSONHandler(buf, nil))
 	opts := newOptions("dummy")
-	wrapped := wrapStmt(mock, newLogger(logger, DurationAttrFunc(opts.durationKey, opts.durationType)), &stmtOptions{
+	wrapped := WrapStmt(mock, newLogger(logger, DurationAttrFunc(opts.durationKey, opts.durationType)), &StmtOptions{
 		Close:        &opts.stmtClose,
 		Exec:         &opts.stmtExec,
 		Query:        &opts.stmtQuery,

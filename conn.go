@@ -21,7 +21,7 @@ type connOptions struct {
 	Prepare        *StepOptions
 	PrepareContext *StepOptions
 	stmtIDKey      string
-	Stmt           *stmtOptions
+	Stmt           *StmtOptions
 
 	ResetSession *StepOptions
 	Ping         *StepOptions
@@ -131,7 +131,7 @@ func (c *connWrapper) Prepare(query string) (driver.Stmt, error) {
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return wrapStmt(origStmt, lg, c.options.Stmt), nil
+	return WrapStmt(origStmt, lg, c.options.Stmt), nil
 }
 
 // IsValid implements driver.Validator.
@@ -258,7 +258,7 @@ func (c *connWithContextWrapper) PrepareContext(ctx context.Context, query strin
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return wrapStmt(stmt, lg, c.options.Stmt), nil
+	return WrapStmt(stmt, lg, c.options.Stmt), nil
 }
 
 // BeginTx implements driver.ConnBeginTx.

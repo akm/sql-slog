@@ -92,7 +92,7 @@ func buildOpenOptions(options *options) *openOptions {
 		Prepare:        &options.connPrepare,
 		PrepareContext: &options.connPrepareContext,
 		stmtIDKey:      options.stmtIDKey,
-		Stmt: &stmtOptions{
+		Stmt: &StmtOptions{
 			Close:        &options.stmtClose,
 			Exec:         &options.stmtExec,
 			Query:        &options.stmtQuery,
