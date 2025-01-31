@@ -14,7 +14,7 @@ type stmtOptions struct {
 	ExecContext  *StepOptions
 	QueryContext *StepOptions
 
-	Rows *rowsOptions
+	Rows *RowsOptions
 }
 
 type stmtWrapper struct {
@@ -62,7 +62,7 @@ func (s *stmtWrapper) Query(args []driver.Value) (driver.Rows, error) {
 	if err != nil {
 		return nil, err
 	}
-	return wrapRows(rows, s.logger, s.options.Rows), nil
+	return WrapRows(rows, s.logger, s.options.Rows), nil
 }
 
 type stmtExecContextWrapperImpl struct {
@@ -108,7 +108,7 @@ func (s *stmtQueryContextWrapperImpl) QueryContext(ctx context.Context, args []d
 	if err != nil {
 		return nil, err
 	}
-	return wrapRows(rows, s.logger, s.options.Rows), nil
+	return WrapRows(rows, s.logger, s.options.Rows), nil
 }
 
 type stmtExecContextWrapper struct {

@@ -8,13 +8,13 @@ import (
 	"reflect"
 )
 
-type rowsOptions struct {
+type RowsOptions struct {
 	Close         *StepOptions
 	Next          *StepOptions
 	NextResultSet *StepOptions
 }
 
-func wrapRows(original driver.Rows, logger *logger, options *rowsOptions) driver.Rows {
+func WrapRows(original driver.Rows, logger *logger, options *RowsOptions) driver.Rows {
 	if original == nil {
 		return nil
 	}
@@ -32,7 +32,7 @@ func wrapRows(original driver.Rows, logger *logger, options *rowsOptions) driver
 type rowsWrapper struct {
 	original driver.Rows
 	logger   *logger
-	options  *rowsOptions
+	options  *RowsOptions
 }
 
 var _ driver.Rows = (*rowsWrapper)(nil)

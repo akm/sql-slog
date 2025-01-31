@@ -98,7 +98,7 @@ func buildOpenOptions(options *options) *openOptions {
 			Query:        &options.stmtQuery,
 			ExecContext:  &options.stmtExecContext,
 			QueryContext: &options.stmtQueryContext,
-			Rows: &rowsOptions{
+			Rows: &RowsOptions{
 				Close:         &options.rowsClose,
 				Next:          &options.rowsNext,
 				NextResultSet: &options.rowsNextResultSet,
@@ -108,7 +108,7 @@ func buildOpenOptions(options *options) *openOptions {
 		Ping:         &options.connPing,
 		ExecContext:  &options.connExecContext,
 		QueryContext: &options.connQueryContext,
-		Rows: &rowsOptions{
+		Rows: &RowsOptions{
 			Close:         &options.rowsClose,
 			Next:          &options.rowsNext,
 			NextResultSet: &options.rowsNextResultSet,

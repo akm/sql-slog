@@ -10,7 +10,7 @@ import (
 
 func TestWrapRows(t *testing.T) {
 	t.Parallel()
-	if wrapRows(nil, nil, nil) != nil {
+	if WrapRows(nil, nil, nil) != nil {
 		t.Fatal("Expected nil")
 	}
 }
@@ -95,7 +95,7 @@ func TestRowsNextResultSet(t *testing.T) {
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(NewJSONHandler(buf, nil))
 	opts := newOptions("dummy")
-	wrapped := wrapRows(rows, newLogger(logger, DurationAttrFunc(opts.durationKey, opts.durationType)), &rowsOptions{
+	wrapped := WrapRows(rows, newLogger(logger, DurationAttrFunc(opts.durationKey, opts.durationType)), &RowsOptions{
 		Close:         &opts.rowsClose,
 		Next:          &opts.rowsNext,
 		NextResultSet: &opts.rowsNextResultSet,

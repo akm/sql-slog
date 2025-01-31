@@ -28,7 +28,7 @@ type connOptions struct {
 
 	ExecContext  *StepOptions
 	QueryContext *StepOptions
-	Rows         *rowsOptions
+	Rows         *RowsOptions
 }
 
 func wrapConn(original driver.Conn, logger *logger, options *connOptions) driver.Conn {
@@ -236,7 +236,7 @@ func (c *connWithContextWrapper) QueryContext(ctx context.Context, query string,
 	if err != nil {
 		return nil, err
 	}
-	return wrapRows(rows, c.logger, c.options.Rows), nil
+	return WrapRows(rows, c.logger, c.options.Rows), nil
 }
 
 // PrepareContext implements driver.ConnPrepareContext.

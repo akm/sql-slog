@@ -67,7 +67,7 @@ func TestWrapStmt(t *testing.T) {
 			Query:        &opts.stmtQuery,
 			ExecContext:  &opts.stmtExecContext,
 			QueryContext: &opts.stmtQueryContext,
-			Rows: &rowsOptions{
+			Rows: &RowsOptions{
 				Close:         &opts.rowsClose,
 				Next:          &opts.rowsNext,
 				NextResultSet: &opts.rowsNextResultSet,
@@ -126,7 +126,7 @@ func TestWithMockErrorStmtWithContext(t *testing.T) {
 		Query:        &opts.stmtQuery,
 		ExecContext:  &opts.stmtExecContext,
 		QueryContext: &opts.stmtQueryContext,
-		Rows: &rowsOptions{
+		Rows: &RowsOptions{
 			Close:         &opts.rowsClose,
 			Next:          &opts.rowsNext,
 			NextResultSet: &opts.rowsNextResultSet,
