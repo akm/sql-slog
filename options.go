@@ -42,22 +42,7 @@ type options struct {
 
 func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *options {
 	stepOpts := func(name string, completeLevel Level, errHandlers ...func(error) (bool, []slog.Attr)) StepOptions {
-		var startLevel Level
-		switch completeLevel { // nolint:exhaustive
-		case LevelError:
-			startLevel = LevelInfo
-		case LevelInfo:
-			startLevel = LevelDebug
-		case LevelDebug:
-			startLevel = LevelTrace
-		default:
-			startLevel = LevelVerbose
-		}
-		r := NewStepOptions(formatter, name, startLevel, LevelError, completeLevel)
-		if len(errHandlers) > 0 {
-			r.ErrorHandler = errHandlers[0]
-		}
-		return *r
+		return *DefaultStepOptions(formatter, name, completeLevel, errHandlers...)
 	}
 
 	return &options{
