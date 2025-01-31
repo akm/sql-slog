@@ -14,6 +14,14 @@ type RowsOptions struct {
 	NextResultSet *StepOptions
 }
 
+func DefaultRowsOptions(formatter StepLogMsgFormatter) *RowsOptions {
+	return &RowsOptions{
+		Close:         DefaultStepOptions(formatter, "Rows.Close", LevelDebug),
+		Next:          DefaultStepOptions(formatter, "Rows.Next", LevelDebug, HandleRowsNextError),
+		NextResultSet: DefaultStepOptions(formatter, "Rows.NextResultSet", LevelDebug),
+	}
+}
+
 func WrapRows(original driver.Rows, logger *logger, options *RowsOptions) driver.Rows {
 	if original == nil {
 		return nil

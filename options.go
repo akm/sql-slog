@@ -45,6 +45,8 @@ func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *option
 		return *DefaultStepOptions(formatter, name, completeLevel, errHandlers...)
 	}
 
+	rowsOptions := DefaultRowsOptions(formatter)
+
 	return &options{
 		logger:       slog.Default(),
 		durationKey:  DurationKeyDefault,
@@ -68,9 +70,9 @@ func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *option
 		driverOpen:          stepOpts("Driver.Open", LevelInfo, DriverOpenErrorHandler(driverName)),
 		driverOpenConnector: stepOpts("Driver.OpenConnector", LevelInfo),
 		sqlslogOpen:         stepOpts("sqlslog.Open", LevelInfo),
-		rowsClose:           stepOpts("Rows.Close", LevelDebug),
-		rowsNext:            stepOpts("Rows.Next", LevelDebug, HandleRowsNextError),
-		rowsNextResultSet:   stepOpts("Rows.NextResultSet", LevelDebug),
+		rowsClose:           *rowsOptions.Close,
+		rowsNext:            *rowsOptions.Next,
+		rowsNextResultSet:   *rowsOptions.NextResultSet,
 		stmtClose:           stepOpts("Stmt.Close", LevelInfo),
 		stmtExec:            stepOpts("Stmt.Exec", LevelInfo),
 		stmtQuery:           stepOpts("Stmt.Query", LevelInfo),
