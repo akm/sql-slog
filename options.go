@@ -45,6 +45,7 @@ func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *option
 		return *DefaultStepOptions(formatter, name, completeLevel, errHandlers...)
 	}
 
+	stmtOptions := DefaultStmtOptions(formatter)
 	rowsOptions := DefaultRowsOptions(formatter)
 
 	return &options{
@@ -73,11 +74,11 @@ func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *option
 		rowsClose:           *rowsOptions.Close,
 		rowsNext:            *rowsOptions.Next,
 		rowsNextResultSet:   *rowsOptions.NextResultSet,
-		stmtClose:           stepOpts("Stmt.Close", LevelInfo),
-		stmtExec:            stepOpts("Stmt.Exec", LevelInfo),
-		stmtQuery:           stepOpts("Stmt.Query", LevelInfo),
-		stmtExecContext:     stepOpts("Stmt.ExecContext", LevelInfo),
-		stmtQueryContext:    stepOpts("Stmt.QueryContext", LevelInfo),
+		stmtClose:           *stmtOptions.Close,
+		stmtExec:            *stmtOptions.Exec,
+		stmtQuery:           *stmtOptions.Query,
+		stmtExecContext:     *stmtOptions.ExecContext,
+		stmtQueryContext:    *stmtOptions.QueryContext,
 		txCommit:            stepOpts("Tx.Commit", LevelInfo),
 		txRollback:          stepOpts("Tx.Rollback", LevelInfo),
 	}
