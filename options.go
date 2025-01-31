@@ -41,7 +41,7 @@ type options struct {
 }
 
 func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *options {
-	stepOpts := func(name string, completeLevel Level) StepOptions {
+	stepOpts := func(name string, completeLevel Level, errHandlers ...func(error) (bool, []slog.Attr)) StepOptions {
 		var startLevel Level
 		switch completeLevel { // nolint:exhaustive
 		case LevelError:
@@ -53,13 +53,11 @@ func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *option
 		default:
 			startLevel = LevelVerbose
 		}
-		return *NewStepOptions(formatter, name, startLevel, LevelError, completeLevel)
-	}
-
-	withErrorHandler := func(opts StepOptions, eh func(error) (bool, []slog.Attr)) StepOptions {
-		r := opts
-		r.ErrorHandler = eh
-		return r
+		r := NewStepOptions(formatter, name, startLevel, LevelError, completeLevel)
+		if len(errHandlers) > 0 {
+			r.ErrorHandler = errHandlers[0]
+		}
+		return *r
 	}
 
 	return &options{
@@ -77,16 +75,16 @@ func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *option
 		connPrepare:         stepOpts("Conn.Prepare", LevelInfo),
 		connResetSession:    stepOpts("Conn.ResetSession", LevelTrace),
 		connPing:            stepOpts("Conn.Ping", LevelTrace),
-		connExecContext:     withErrorHandler(stepOpts("Conn.ExecContext", LevelInfo), ConnExecContextErrorHandler(driverName)),
-		connQueryContext:    withErrorHandler(stepOpts("Conn.QueryContext", LevelInfo), ConnQueryContextErrorHandler(driverName)),
+		connExecContext:     stepOpts("Conn.ExecContext", LevelInfo, ConnExecContextErrorHandler(driverName)),
+		connQueryContext:    stepOpts("Conn.QueryContext", LevelInfo, ConnQueryContextErrorHandler(driverName)),
 		connPrepareContext:  stepOpts("Conn.PrepareContext", LevelInfo),
 		connBeginTx:         stepOpts("Conn.BeginTx", LevelInfo),
-		connectorConnect:    withErrorHandler(stepOpts("Connector.Connect", LevelInfo), ConnectorConnectErrorHandler(driverName)),
-		driverOpen:          withErrorHandler(stepOpts("Driver.Open", LevelInfo), DriverOpenErrorHandler(driverName)),
+		connectorConnect:    stepOpts("Connector.Connect", LevelInfo, ConnectorConnectErrorHandler(driverName)),
+		driverOpen:          stepOpts("Driver.Open", LevelInfo, DriverOpenErrorHandler(driverName)),
 		driverOpenConnector: stepOpts("Driver.OpenConnector", LevelInfo),
 		sqlslogOpen:         stepOpts("sqlslog.Open", LevelInfo),
 		rowsClose:           stepOpts("Rows.Close", LevelDebug),
-		rowsNext:            withErrorHandler(stepOpts("Rows.Next", LevelDebug), HandleRowsNextError),
+		rowsNext:            stepOpts("Rows.Next", LevelDebug, HandleRowsNextError),
 		rowsNextResultSet:   stepOpts("Rows.NextResultSet", LevelDebug),
 		stmtClose:           stepOpts("Stmt.Close", LevelInfo),
 		stmtExec:            stepOpts("Stmt.Exec", LevelInfo),
