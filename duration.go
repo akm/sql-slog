@@ -12,9 +12,7 @@ const (
 	DurationString       = opts.DurationString
 )
 
-var (
-	DurationAttrFunc = opts.DurationAttrFunc
-)
+var DurationAttrFunc = opts.DurationAttrFunc
 
 // Duration is an option to specify duration value in log.
 // The default is DurationNanoSeconds.
