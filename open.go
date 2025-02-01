@@ -84,7 +84,7 @@ func buildOpenOptions(options *options) *openOptions {
 		Begin:   &options.connBegin,
 		BeginTx: &options.connBeginTx,
 		txIDKey: options.txIDKey,
-		Tx: &txOptions{
+		Tx: &TxOptions{
 			Commit:   &options.txCommit,
 			Rollback: &options.txRollback,
 		},

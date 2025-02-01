@@ -4,19 +4,19 @@ import (
 	"database/sql/driver"
 )
 
-type txOptions struct {
+type TxOptions struct {
 	Commit   *StepOptions
 	Rollback *StepOptions
 }
 
-func wrapTx(original driver.Tx, logger *logger, options *txOptions) *txWrapper {
+func WrapTx(original driver.Tx, logger *logger, options *TxOptions) *txWrapper {
 	return &txWrapper{original: original, logger: logger, options: options}
 }
 
 type txWrapper struct {
 	original driver.Tx
 	logger   *logger
-	options  *txOptions
+	options  *TxOptions
 }
 
 var _ driver.Tx = (*txWrapper)(nil)

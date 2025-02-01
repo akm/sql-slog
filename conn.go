@@ -14,7 +14,7 @@ type connOptions struct {
 	Begin   *StepOptions
 	BeginTx *StepOptions
 	txIDKey string
-	Tx      *txOptions
+	Tx      *TxOptions
 
 	Close *StepOptions
 
@@ -104,7 +104,7 @@ func (c *connWrapper) Begin() (driver.Tx, error) {
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return wrapTx(origTx, lg, c.options.Tx), nil
+	return WrapTx(origTx, lg, c.options.Tx), nil
 }
 
 // Close implements driver.Conn.
@@ -280,7 +280,7 @@ func (c *connWithContextWrapper) BeginTx(ctx context.Context, opts driver.TxOpti
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return wrapTx(tx, lg, c.options.Tx), nil
+	return WrapTx(tx, lg, c.options.Tx), nil
 }
 
 func ConnExecContextErrorHandler(driverName string) func(err error) (bool, []slog.Attr) {
