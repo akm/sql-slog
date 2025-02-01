@@ -14,6 +14,13 @@ type ConnectorOptions struct {
 	Conn *ConnOptions
 }
 
+func DefaultConnectorOptions(driverName string, formatter StepLogMsgFormatter) *ConnectorOptions {
+	return &ConnectorOptions{
+		Connect: DefaultStepOptions(formatter, "Connector.Connect", LevelInfo, ConnectorConnectErrorHandler(driverName)),
+		Conn:    DefaultConnOptions(driverName, formatter),
+	}
+}
+
 type connector struct {
 	original driver.Connector
 	logger   *logger
