@@ -47,6 +47,7 @@ func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *option
 
 	stmtOptions := DefaultStmtOptions(formatter)
 	rowsOptions := DefaultRowsOptions(formatter)
+	txOptions := DefaultTxOptions(formatter)
 
 	return &options{
 		logger:       slog.Default(),
@@ -79,8 +80,8 @@ func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *option
 		stmtQuery:           *stmtOptions.Query,
 		stmtExecContext:     *stmtOptions.ExecContext,
 		stmtQueryContext:    *stmtOptions.QueryContext,
-		txCommit:            stepOpts("Tx.Commit", LevelInfo),
-		txRollback:          stepOpts("Tx.Rollback", LevelInfo),
+		txCommit:            *txOptions.Commit,
+		txRollback:          *txOptions.Rollback,
 	}
 }
 

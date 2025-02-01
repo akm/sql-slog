@@ -9,6 +9,13 @@ type TxOptions struct {
 	Rollback *StepOptions
 }
 
+func DefaultTxOptions(formatter StepLogMsgFormatter) *TxOptions {
+	return &TxOptions{
+		Commit:   DefaultStepOptions(formatter, "Tx.Commit", LevelInfo),
+		Rollback: DefaultStepOptions(formatter, "Tx.Rollback", LevelInfo),
+	}
+}
+
 func WrapTx(original driver.Tx, logger *logger, options *TxOptions) driver.Tx {
 	return &txWrapper{original: original, logger: logger, options: options}
 }
