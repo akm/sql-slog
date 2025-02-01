@@ -23,20 +23,20 @@ func DefaultConnectorOptions(driverName string, formatter StepLogMsgFormatter) *
 
 type connector struct {
 	original driver.Connector
-	logger   *logger
+	logger   *StepLogger
 	options  *ConnectorOptions
 }
 
 var _ driver.Connector = (*connector)(nil)
 
-func WrapConnector(original driver.Connector, logger *logger, options *ConnectorOptions) driver.Connector {
+func WrapConnector(original driver.Connector, logger *StepLogger, options *ConnectorOptions) driver.Connector {
 	return &connector{original: original, logger: logger, options: options}
 }
 
 // Connect implements driver.Connector.
 func (c *connector) Connect(ctx context.Context) (driver.Conn, error) {
 	var origConn driver.Conn
-	err := ignoreAttr(c.logger.Step(ctx, c.options.Connect, func() (*slog.Attr, error) {
+	err := IgnoreAttr(c.logger.Step(ctx, c.options.Connect, func() (*slog.Attr, error) {
 		var err error
 		origConn, err = c.original.Connect(ctx)
 		return nil, err

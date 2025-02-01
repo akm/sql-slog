@@ -6,27 +6,27 @@ import (
 	"time"
 )
 
-type logger struct {
+type StepLogger struct {
 	*slog.Logger
 	durationAttr func(d time.Duration) slog.Attr
 }
 
-func newLogger(rawLogger *slog.Logger, durationAttr func(d time.Duration) slog.Attr) *logger {
-	return &logger{
+func NewStepLogger(rawLogger *slog.Logger, durationAttr func(d time.Duration) slog.Attr) *StepLogger {
+	return &StepLogger{
 		Logger:       rawLogger,
 		durationAttr: durationAttr,
 	}
 }
 
-func (x *logger) With(kv ...interface{}) *logger {
-	return newLogger(x.Logger.With(kv...), x.durationAttr)
+func (x *StepLogger) With(kv ...interface{}) *StepLogger {
+	return NewStepLogger(x.Logger.With(kv...), x.durationAttr)
 }
 
-func (x *logger) StepWithoutContext(step *StepOptions, fn func() (*slog.Attr, error)) (*slog.Attr, error) {
+func (x *StepLogger) StepWithoutContext(step *StepOptions, fn func() (*slog.Attr, error)) (*slog.Attr, error) {
 	return x.Step(context.Background(), step, fn)
 }
 
-func (x *logger) Step(ctx context.Context, step *StepOptions, fn func() (*slog.Attr, error)) (*slog.Attr, error) {
+func (x *StepLogger) Step(ctx context.Context, step *StepOptions, fn func() (*slog.Attr, error)) (*slog.Attr, error) {
 	x.Log(ctx, slog.Level(step.Start.Level), step.Start.Msg)
 	t0 := time.Now()
 	attr, err := fn()
@@ -56,12 +56,12 @@ func (x *logger) Step(ctx context.Context, step *StepOptions, fn func() (*slog.A
 	return attr, err
 }
 
-func withNilAttr(f func() error) func() (*slog.Attr, error) {
+func WithNilAttr(f func() error) func() (*slog.Attr, error) {
 	return func() (*slog.Attr, error) {
 		return nil, f()
 	}
 }
 
-func ignoreAttr(_ *slog.Attr, err error) error {
+func IgnoreAttr(_ *slog.Attr, err error) error {
 	return err
 }

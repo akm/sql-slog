@@ -42,7 +42,7 @@ See the following example for usage:
 */
 func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB, error) {
 	options := NewOptions(driverName, opts...)
-	logger := newLogger(options.logger, DurationAttrFunc(options.durationKey, options.durationType))
+	logger := NewStepLogger(options.logger, DurationAttrFunc(options.durationKey, options.durationType))
 
 	openOptions := buildOpenOptions(options)
 
@@ -52,7 +52,7 @@ func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB,
 	)
 
 	var db *sql.DB
-	err := ignoreAttr(lg.Step(ctx, openOptions.Open, func() (*slog.Attr, error) {
+	err := IgnoreAttr(lg.Step(ctx, openOptions.Open, func() (*slog.Attr, error) {
 		var err error
 		db, err = open(driverName, dsn, logger, openOptions)
 		return nil, err
@@ -63,7 +63,7 @@ func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB,
 	return db, nil
 }
 
-func open(driverName, dsn string, logger *logger, options *OpenOptions) (*sql.DB, error) {
+func open(driverName, dsn string, logger *StepLogger, options *OpenOptions) (*sql.DB, error) {
 	db, err := sql.Open(driverName, dsn)
 	if err != nil {
 		return nil, err

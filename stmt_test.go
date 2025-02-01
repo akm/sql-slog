@@ -46,7 +46,7 @@ func TestWrapStmt(t *testing.T) {
 	t.Run("implements driver.Stmt but not stmtWithContext", func(t *testing.T) {
 		t.Parallel()
 		mock := &mockStmtForWrapStmt{}
-		logger := &logger{}
+		logger := &StepLogger{}
 		stmt := WrapStmt(mock, logger, nil)
 		if stmt == nil {
 			t.Fatal("Expected non-nil")
@@ -77,7 +77,7 @@ func TestWrapStmt(t *testing.T) {
 		buf := bytes.NewBuffer(nil)
 		logger := slog.New(NewJSONHandler(buf, nil))
 		wrapped := WrapStmt(mock,
-			newLogger(logger, DurationAttrFunc(opts.durationKey, opts.durationType)),
+			NewStepLogger(logger, DurationAttrFunc(opts.durationKey, opts.durationType)),
 			stmtOptions,
 		)
 		_, err := wrapped.Query(nil) // nolint:staticcheck
@@ -120,7 +120,7 @@ func TestWithMockErrorStmtWithContext(t *testing.T) {
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(NewJSONHandler(buf, nil))
 	opts := NewOptions("dummy")
-	wrapped := WrapStmt(mock, newLogger(logger, DurationAttrFunc(opts.durationKey, opts.durationType)), &StmtOptions{
+	wrapped := WrapStmt(mock, NewStepLogger(logger, DurationAttrFunc(opts.durationKey, opts.durationType)), &StmtOptions{
 		Close:        &opts.stmtClose,
 		Exec:         &opts.stmtExec,
 		Query:        &opts.stmtQuery,

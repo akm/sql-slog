@@ -30,7 +30,7 @@ func DefaultDriverOptions(driverName string, formatter StepLogMsgFormatter) *Dri
 	}
 }
 
-func WrapDriver(original driver.Driver, logger *logger, options *DriverOptions) driver.Driver {
+func WrapDriver(original driver.Driver, logger *StepLogger, options *DriverOptions) driver.Driver {
 	r := driverWrapper{
 		original: original,
 		logger:   logger,
@@ -50,7 +50,7 @@ func WrapDriver(original driver.Driver, logger *logger, options *DriverOptions) 
 // should implement Connector and DriverContext interfaces.
 type driverWrapper struct {
 	original driver.Driver
-	logger   *logger
+	logger   *StepLogger
 	options  *DriverOptions
 }
 

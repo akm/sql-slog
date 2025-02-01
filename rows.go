@@ -22,7 +22,7 @@ func DefaultRowsOptions(formatter StepLogMsgFormatter) *RowsOptions {
 	}
 }
 
-func WrapRows(original driver.Rows, logger *logger, options *RowsOptions) driver.Rows {
+func WrapRows(original driver.Rows, logger *StepLogger, options *RowsOptions) driver.Rows {
 	if original == nil {
 		return nil
 	}
@@ -39,7 +39,7 @@ func WrapRows(original driver.Rows, logger *logger, options *RowsOptions) driver
 
 type rowsWrapper struct {
 	original driver.Rows
-	logger   *logger
+	logger   *StepLogger
 	options  *RowsOptions
 }
 
@@ -47,7 +47,7 @@ var _ driver.Rows = (*rowsWrapper)(nil)
 
 // Close implements driver.Rows.
 func (r *rowsWrapper) Close() error {
-	return ignoreAttr(r.logger.StepWithoutContext(r.options.Close, withNilAttr(r.original.Close)))
+	return IgnoreAttr(r.logger.StepWithoutContext(r.options.Close, WithNilAttr(r.original.Close)))
 }
 
 // Columns implements driver.Rows.
@@ -57,7 +57,7 @@ func (r *rowsWrapper) Columns() []string {
 
 // Next implements driver.Rows.
 func (r *rowsWrapper) Next(dest []driver.Value) error {
-	return ignoreAttr(r.logger.StepWithoutContext(r.options.Next, func() (*slog.Attr, error) {
+	return IgnoreAttr(r.logger.StepWithoutContext(r.options.Next, func() (*slog.Attr, error) {
 		return nil, r.original.Next(dest)
 	}))
 }
@@ -137,10 +137,10 @@ func (r *rowsNextResultSetWrapper) HasNextResultSet() bool {
 
 // NextResultSet implements driver.RowsNextResultSet.
 func (r *rowsNextResultSetWrapper) NextResultSet() error {
-	return ignoreAttr(
+	return IgnoreAttr(
 		r.logger.StepWithoutContext(
 			r.options.NextResultSet,
-			withNilAttr(r.original.NextResultSet),
+			WithNilAttr(r.original.NextResultSet),
 		),
 	)
 }

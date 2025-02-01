@@ -38,7 +38,7 @@ func TestWithMockRows(t *testing.T) {
 	t.Parallel()
 	wrapped := &rowsWrapper{
 		original: &mockRows{},
-		logger: newLogger(slog.Default(),
+		logger: NewStepLogger(slog.Default(),
 			DurationAttrFunc("duration", DurationNanoSeconds),
 		),
 	}
@@ -95,7 +95,7 @@ func TestRowsNextResultSet(t *testing.T) {
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(NewJSONHandler(buf, nil))
 	opts := NewOptions("dummy")
-	wrapped := WrapRows(rows, newLogger(logger, DurationAttrFunc(opts.durationKey, opts.durationType)), &RowsOptions{
+	wrapped := WrapRows(rows, NewStepLogger(logger, DurationAttrFunc(opts.durationKey, opts.durationType)), &RowsOptions{
 		Close:         &opts.rowsClose,
 		Next:          &opts.rowsNext,
 		NextResultSet: &opts.rowsNextResultSet,

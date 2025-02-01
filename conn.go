@@ -61,7 +61,7 @@ func DefaultConnOptions(driverName string, formatter StepLogMsgFormatter) *ConnO
 	}
 }
 
-func WrapConn(original driver.Conn, logger *logger, options *ConnOptions) driver.Conn {
+func WrapConn(original driver.Conn, logger *StepLogger, options *ConnOptions) driver.Conn {
 	if original == nil {
 		return nil
 	}
@@ -97,7 +97,7 @@ func WrapConn(original driver.Conn, logger *logger, options *ConnOptions) driver
 
 type connWrapper struct {
 	original driver.Conn
-	logger   *logger
+	logger   *StepLogger
 	options  *ConnOptions
 }
 
@@ -139,7 +139,7 @@ func (c *connWrapper) Begin() (driver.Tx, error) {
 
 // Close implements driver.Conn.
 func (c *connWrapper) Close() error {
-	return ignoreAttr(c.logger.StepWithoutContext(c.options.Close, withNilAttr(c.original.Close)))
+	return IgnoreAttr(c.logger.StepWithoutContext(c.options.Close, WithNilAttr(c.original.Close)))
 }
 
 // Prepare implements driver.Conn.
@@ -213,7 +213,7 @@ var (
 
 // ResetSession implements driver.SessionResetter.
 func (c *connWithContextWrapper) ResetSession(ctx context.Context) error {
-	return ignoreAttr(c.logger.Step(ctx, c.options.ResetSession, func() (*slog.Attr, error) {
+	return IgnoreAttr(c.logger.Step(ctx, c.options.ResetSession, func() (*slog.Attr, error) {
 		// https://cs.opensource.google/go/go/+/master:src/database/sql/sql.go;l=603-606
 		if v, ok := c.original.(driver.SessionResetter); ok {
 			return nil, v.ResetSession(ctx)
@@ -224,7 +224,7 @@ func (c *connWithContextWrapper) ResetSession(ctx context.Context) error {
 
 // Ping implements driver.Pinger.
 func (c *connWithContextWrapper) Ping(ctx context.Context) error {
-	return ignoreAttr(c.logger.Step(ctx, c.options.Ping, func() (*slog.Attr, error) {
+	return IgnoreAttr(c.logger.Step(ctx, c.options.Ping, func() (*slog.Attr, error) {
 		// https://cs.opensource.google/go/go/+/master:src/database/sql/sql.go;l=882-891
 		if p, ok := c.original.(driver.Pinger); ok {
 			return nil, p.Ping(ctx)
@@ -240,7 +240,7 @@ func (c *connWithContextWrapper) ExecContext(ctx context.Context, query string, 
 		slog.String("query", query),
 		slog.String("args", fmt.Sprintf("%+v", args)),
 	)
-	err := ignoreAttr(lg.Step(ctx, c.options.ExecContext, func() (*slog.Attr, error) {
+	err := IgnoreAttr(lg.Step(ctx, c.options.ExecContext, func() (*slog.Attr, error) {
 		var err error
 		result, err = c.originalConn.ExecContext(ctx, query, args)
 		return nil, err
@@ -258,7 +258,7 @@ func (c *connWithContextWrapper) QueryContext(ctx context.Context, query string,
 		slog.String("query", query),
 		slog.String("args", fmt.Sprintf("%+v", args)),
 	)
-	err := ignoreAttr(lg.Step(ctx, c.options.QueryContext, func() (*slog.Attr, error) {
+	err := IgnoreAttr(lg.Step(ctx, c.options.QueryContext, func() (*slog.Attr, error) {
 		var err error
 		rows, err = c.originalConn.QueryContext(ctx, query, args)
 		return nil, err
