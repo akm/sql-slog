@@ -1,4 +1,4 @@
-package sqlslog
+package opts
 
 import (
 	cryptoRand "crypto/rand"
