@@ -16,6 +16,18 @@ type DriverOptions struct {
 	Connector *ConnectorOptions
 }
 
+func DefaultDriverOptions(driverName string, formatter StepLogMsgFormatter) *DriverOptions {
+	return &DriverOptions{
+		IDGen:         IDGeneratorDefault,
+		connIDKey:     ConnIDKeyDefault,
+		Open:          DefaultStepOptions(formatter, "Driver.Open", LevelInfo, DriverOpenErrorHandler(driverName)),
+		OpenConnector: DefaultStepOptions(formatter, "Driver.OpenConnector", LevelInfo),
+
+		Conn:      DefaultConnOptions(driverName, formatter),
+		Connector: DefaultConnectorOptions(driverName, formatter),
+	}
+}
+
 func WrapDriver(original driver.Driver, logger *logger, options *DriverOptions) driver.Driver {
 	r := driverWrapper{
 		original: original,

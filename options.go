@@ -45,7 +45,8 @@ func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *option
 		return *DefaultStepOptions(formatter, name, LevelInfo, errHandlers...)
 	}
 
-	connectorOptions := DefaultConnectorOptions(driverName, formatter)
+	driverOptions := DefaultDriverOptions(driverName, formatter)
+	connectorOptions := driverOptions.Connector
 	connOptions := connectorOptions.Conn
 	stmtOptions := connOptions.Stmt
 	rowsOptions := stmtOptions.Rows
@@ -71,8 +72,8 @@ func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *option
 		connPrepareContext:  *connOptions.PrepareContext,
 		connBeginTx:         *connOptions.BeginTx,
 		connectorConnect:    *connectorOptions.Connect,
-		driverOpen:          stepOpts("Driver.Open", DriverOpenErrorHandler(driverName)),
-		driverOpenConnector: stepOpts("Driver.OpenConnector"),
+		driverOpen:          *driverOptions.Open,
+		driverOpenConnector: *driverOptions.OpenConnector,
 		sqlslogOpen:         stepOpts("sqlslog.Open"),
 		rowsClose:           *rowsOptions.Close,
 		rowsNext:            *rowsOptions.Next,
