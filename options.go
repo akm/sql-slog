@@ -1,201 +1,45 @@
 package sqlslog
 
-import (
-	"log/slog"
+import "github.com/akm/sql-slog/opts"
+
+type (
+	Option  = opts.Option
+	Options = opts.Options
 )
 
-type Options struct {
-	Logger *slog.Logger
+var (
+	NewOptions = opts.NewOptions
 
-	DurationKey  string
-	DurationType DurationType
+	Logger                 = opts.Logger
+	SetStepLogMsgFormatter = opts.SetStepLogMsgFormatter
 
-	IDGen     IDGen
-	ConnIDKey string
-	TxIDKey   string
-	StmtIDKey string
+	ConnBegin          = opts.ConnBegin
+	ConnClose          = opts.ConnClose
+	ConnPrepare        = opts.ConnPrepare
+	ConnResetSession   = opts.ConnResetSession
+	ConnPing           = opts.ConnPing
+	ConnExecContext    = opts.ConnExecContext
+	ConnQueryContext   = opts.ConnQueryContext
+	ConnPrepareContext = opts.ConnPrepareContext
+	ConnBeginTx        = opts.ConnBeginTx
 
-	ConnBegin           StepOptions
-	ConnClose           StepOptions
-	ConnPrepare         StepOptions
-	ConnResetSession    StepOptions
-	ConnPing            StepOptions
-	ConnExecContext     StepOptions
-	ConnQueryContext    StepOptions
-	ConnPrepareContext  StepOptions
-	ConnBeginTx         StepOptions
-	ConnectorConnect    StepOptions
-	DriverOpen          StepOptions
-	DriverOpenConnector StepOptions
-	SqlslogOpen         StepOptions
-	RowsClose           StepOptions
-	RowsNext            StepOptions
-	RowsNextResultSet   StepOptions
-	StmtClose           StepOptions
-	StmtExec            StepOptions
-	StmtQuery           StepOptions
-	StmtExecContext     StepOptions
-	StmtQueryContext    StepOptions
-	TxCommit            StepOptions
-	TxRollback          StepOptions
-}
+	ConnectorConnect = opts.ConnectorConnect
 
-func NewDefaultOptions(driverName string, formatter StepLogMsgFormatter) *Options {
-	openOptions := DefaultOpenOptions(driverName, formatter)
-	driverOptions := openOptions.Driver
-	connectorOptions := driverOptions.Connector
-	connOptions := connectorOptions.Conn
-	stmtOptions := connOptions.Stmt
-	rowsOptions := stmtOptions.Rows
-	txOptions := connOptions.Tx
+	DriverOpen          = opts.DriverOpen
+	DriverOpenConnector = opts.DriverOpenConnector
 
-	return &Options{
-		Logger:       slog.Default(),
-		DurationKey:  DurationKeyDefault,
-		DurationType: DurationNanoSeconds,
+	SqlslogOpen = opts.SqlslogOpen
 
-		IDGen:     connOptions.IDGen, // IDGeneratorDefault,
-		ConnIDKey: driverOptions.ConnIDKey,
-		TxIDKey:   connOptions.TxIDKey,
-		StmtIDKey: connOptions.StmtIDKey,
+	RowsClose         = opts.RowsClose
+	RowsNext          = opts.RowsNext
+	RowsNextResultSet = opts.RowsNextResultSet
 
-		ConnBegin:           *connOptions.Begin,
-		ConnClose:           *connOptions.Close,
-		ConnPrepare:         *connOptions.Prepare,
-		ConnResetSession:    *connOptions.ResetSession,
-		ConnPing:            *connOptions.Ping,
-		ConnExecContext:     *connOptions.ExecContext,
-		ConnQueryContext:    *connOptions.QueryContext,
-		ConnPrepareContext:  *connOptions.PrepareContext,
-		ConnBeginTx:         *connOptions.BeginTx,
-		ConnectorConnect:    *connectorOptions.Connect,
-		DriverOpen:          *driverOptions.Open,
-		DriverOpenConnector: *driverOptions.OpenConnector,
-		SqlslogOpen:         *openOptions.Open,
-		RowsClose:           *rowsOptions.Close,
-		RowsNext:            *rowsOptions.Next,
-		RowsNextResultSet:   *rowsOptions.NextResultSet,
-		StmtClose:           *stmtOptions.Close,
-		StmtExec:            *stmtOptions.Exec,
-		StmtQuery:           *stmtOptions.Query,
-		StmtExecContext:     *stmtOptions.ExecContext,
-		StmtQueryContext:    *stmtOptions.QueryContext,
-		TxCommit:            *txOptions.Commit,
-		TxRollback:          *txOptions.Rollback,
-	}
-}
+	StmtClose        = opts.StmtClose
+	StmtExec         = opts.StmtExec
+	StmtQuery        = opts.StmtQuery
+	StmtExecContext  = opts.StmtExecContext
+	StmtQueryContext = opts.StmtQueryContext
 
-// DurationKeyDefault is the default key for duration value in log.
-const DurationKeyDefault = "duration"
-
-// Option is a function that sets an option on the options struct.
-type Option func(*Options)
-
-var stepLogMsgFormatter = StepLogMsgWithoutEventName
-
-// SetStepLogMsgFormatter sets the formatter for the step name used in logs.
-// If not set, the default is StepLogMsgWithEventName.
-func SetStepLogMsgFormatter(f StepLogMsgFormatter) { stepLogMsgFormatter = f }
-
-func NewOptions(driverName string, opts ...Option) *Options {
-	o := NewDefaultOptions(driverName, stepLogMsgFormatter)
-	for _, opt := range opts {
-		opt(o)
-	}
-	return o
-}
-
-// Logger sets the slog.Logger to be used.
-// If not set, the default is slog.Default().
-func Logger(logger *slog.Logger) Option {
-	return func(o *Options) {
-		o.Logger = logger
-	}
-}
-
-// Set the options for Conn.Begin.
-func ConnBegin(f func(*StepOptions)) Option { return func(o *Options) { f(&o.ConnBegin) } }
-
-// Set the options for Conn.Close.
-func ConnClose(f func(*StepOptions)) Option { return func(o *Options) { f(&o.ConnClose) } }
-
-// Set the options for Conn.Prepare.
-func ConnPrepare(f func(*StepOptions)) Option { return func(o *Options) { f(&o.ConnPrepare) } }
-
-// Set the options for Conn.ResetSession.
-func ConnResetSession(f func(*StepOptions)) Option {
-	return func(o *Options) { f(&o.ConnResetSession) }
-}
-
-// Set the options for Conn.Ping.
-func ConnPing(f func(*StepOptions)) Option { return func(o *Options) { f(&o.ConnPing) } }
-
-// Set the options for Conn.ExecContext.
-func ConnExecContext(f func(*StepOptions)) Option {
-	return func(o *Options) { f(&o.ConnExecContext) }
-}
-
-// Set the options for Conn.QueryContext.
-func ConnQueryContext(f func(*StepOptions)) Option {
-	return func(o *Options) { f(&o.ConnQueryContext) }
-}
-
-// Set the options for Conn.PrepareContext.
-func ConnPrepareContext(f func(*StepOptions)) Option {
-	return func(o *Options) { f(&o.ConnPrepareContext) }
-}
-
-// Set the options for Conn.BeginTx.
-func ConnBeginTx(f func(*StepOptions)) Option { return func(o *Options) { f(&o.ConnBeginTx) } }
-
-// Set the options for Connector.Connect.
-func ConnectorConnect(f func(*StepOptions)) Option {
-	return func(o *Options) { f(&o.ConnectorConnect) }
-}
-
-// Set the options for Driver.Open.
-func DriverOpen(f func(*StepOptions)) Option { return func(o *Options) { f(&o.DriverOpen) } }
-
-// Set the options for Driver.OpenConnector.
-func DriverOpenConnector(f func(*StepOptions)) Option {
-	return func(o *Options) { f(&o.DriverOpenConnector) }
-}
-
-// Set the options for sqlslog.Open.
-func SqlslogOpen(f func(*StepOptions)) Option { return func(o *Options) { f(&o.SqlslogOpen) } } // nolint:revive
-
-// Set the options for Rows.Close.
-func RowsClose(f func(*StepOptions)) Option { return func(o *Options) { f(&o.RowsClose) } }
-
-// Set the options for Rows.Next.
-func RowsNext(f func(*StepOptions)) Option { return func(o *Options) { f(&o.RowsNext) } }
-
-// Set the options for Rows.NextResultSet.
-func RowsNextResultSet(f func(*StepOptions)) Option {
-	return func(o *Options) { f(&o.RowsNextResultSet) }
-}
-
-// Set the options for Stmt.Close.
-func StmtClose(f func(*StepOptions)) Option { return func(o *Options) { f(&o.StmtClose) } }
-
-// Set the options for Stmt.Exec.
-func StmtExec(f func(*StepOptions)) Option { return func(o *Options) { f(&o.StmtExec) } }
-
-// Set the options for Stmt.Query.
-func StmtQuery(f func(*StepOptions)) Option { return func(o *Options) { f(&o.StmtQuery) } }
-
-// Set the options for Stmt.ExecContext.
-func StmtExecContext(f func(*StepOptions)) Option {
-	return func(o *Options) { f(&o.StmtExecContext) }
-}
-
-// Set the options for Stmt.QueryContext.
-func StmtQueryContext(f func(*StepOptions)) Option {
-	return func(o *Options) { f(&o.StmtQueryContext) }
-}
-
-// Set the options for Tx.Commit.
-func TxCommit(f func(*StepOptions)) Option { return func(o *Options) { f(&o.TxCommit) } }
-
-// Set the options for Tx.Rollback.
-func TxRollback(f func(*StepOptions)) Option { return func(o *Options) { f(&o.TxRollback) } }
+	TxCommit   = opts.TxCommit
+	TxRollback = opts.TxRollback
+)
