@@ -7,7 +7,7 @@ import (
 	"log/slog"
 )
 
-type openOptions struct {
+type OpenOptions struct {
 	Open   *StepOptions
 	Driver *DriverOptions
 }
@@ -56,7 +56,7 @@ func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB,
 	return db, nil
 }
 
-func open(driverName, dsn string, logger *logger, options *openOptions) (*sql.DB, error) {
+func open(driverName, dsn string, logger *logger, options *OpenOptions) (*sql.DB, error) {
 	db, err := sql.Open(driverName, dsn)
 	if err != nil {
 		return nil, err
@@ -78,7 +78,7 @@ func open(driverName, dsn string, logger *logger, options *openOptions) (*sql.DB
 	return sql.OpenDB(WrapConnector(origConnector, logger, options.Driver.Connector)), nil
 }
 
-func buildOpenOptions(options *options) *openOptions {
+func buildOpenOptions(options *options) *OpenOptions {
 	connOptions := &ConnOptions{
 		idGen:   options.idGen,
 		Begin:   &options.connBegin,
@@ -114,7 +114,7 @@ func buildOpenOptions(options *options) *openOptions {
 			NextResultSet: &options.rowsNextResultSet,
 		},
 	}
-	return &openOptions{
+	return &OpenOptions{
 		Open: &options.sqlslogOpen,
 		Driver: &DriverOptions{
 			IDGen:         options.idGen,
