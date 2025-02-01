@@ -41,10 +41,11 @@ type options struct {
 }
 
 func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *options {
-	stepOpts := func(name string, completeLevel Level, errHandlers ...func(error) (bool, []slog.Attr)) StepOptions {
-		return *DefaultStepOptions(formatter, name, completeLevel, errHandlers...)
+	stepOpts := func(name string, errHandlers ...func(error) (bool, []slog.Attr)) StepOptions {
+		return *DefaultStepOptions(formatter, name, LevelInfo, errHandlers...)
 	}
 
+	connOptions := DefaultConnOptions(driverName, formatter)
 	stmtOptions := DefaultStmtOptions(formatter)
 	rowsOptions := DefaultRowsOptions(formatter)
 	txOptions := DefaultTxOptions(formatter)
@@ -54,24 +55,24 @@ func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *option
 		durationKey:  DurationKeyDefault,
 		durationType: DurationNanoSeconds,
 
-		idGen:     IDGeneratorDefault,
+		idGen:     connOptions.idGen, // IDGeneratorDefault,
 		connIDKey: ConnIDKeyDefault,
-		txIDKey:   TxIDKeyDefault,
-		stmtIDKey: StmtIDKeyDefault,
+		txIDKey:   connOptions.txIDKey,
+		stmtIDKey: connOptions.stmtIDKey,
 
-		connBegin:           stepOpts("Conn.Begin", LevelInfo),
-		connClose:           stepOpts("Conn.Close", LevelInfo),
-		connPrepare:         stepOpts("Conn.Prepare", LevelInfo),
-		connResetSession:    stepOpts("Conn.ResetSession", LevelTrace),
-		connPing:            stepOpts("Conn.Ping", LevelTrace),
-		connExecContext:     stepOpts("Conn.ExecContext", LevelInfo, ConnExecContextErrorHandler(driverName)),
-		connQueryContext:    stepOpts("Conn.QueryContext", LevelInfo, ConnQueryContextErrorHandler(driverName)),
-		connPrepareContext:  stepOpts("Conn.PrepareContext", LevelInfo),
-		connBeginTx:         stepOpts("Conn.BeginTx", LevelInfo),
-		connectorConnect:    stepOpts("Connector.Connect", LevelInfo, ConnectorConnectErrorHandler(driverName)),
-		driverOpen:          stepOpts("Driver.Open", LevelInfo, DriverOpenErrorHandler(driverName)),
-		driverOpenConnector: stepOpts("Driver.OpenConnector", LevelInfo),
-		sqlslogOpen:         stepOpts("sqlslog.Open", LevelInfo),
+		connBegin:           *connOptions.Begin,
+		connClose:           *connOptions.Close,
+		connPrepare:         *connOptions.Prepare,
+		connResetSession:    *connOptions.ResetSession,
+		connPing:            *connOptions.Ping,
+		connExecContext:     *connOptions.ExecContext,
+		connQueryContext:    *connOptions.QueryContext,
+		connPrepareContext:  *connOptions.PrepareContext,
+		connBeginTx:         *connOptions.BeginTx,
+		connectorConnect:    stepOpts("Connector.Connect", ConnectorConnectErrorHandler(driverName)),
+		driverOpen:          stepOpts("Driver.Open", DriverOpenErrorHandler(driverName)),
+		driverOpenConnector: stepOpts("Driver.OpenConnector"),
+		sqlslogOpen:         stepOpts("sqlslog.Open"),
 		rowsClose:           *rowsOptions.Close,
 		rowsNext:            *rowsOptions.Next,
 		rowsNextResultSet:   *rowsOptions.NextResultSet,

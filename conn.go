@@ -31,6 +31,31 @@ type ConnOptions struct {
 	Rows         *RowsOptions
 }
 
+func DefaultConnOptions(driverName string, formatter StepLogMsgFormatter) *ConnOptions {
+	return &ConnOptions{
+		idGen: IDGeneratorDefault,
+
+		Begin:   DefaultStepOptions(formatter, "Conn.Begin", LevelInfo),
+		BeginTx: DefaultStepOptions(formatter, "Conn.BeginTx", LevelInfo),
+		txIDKey: TxIDKeyDefault,
+		Tx:      DefaultTxOptions(formatter),
+
+		Close: DefaultStepOptions(formatter, "Conn.Close", LevelInfo),
+
+		Prepare:        DefaultStepOptions(formatter, "Conn.Prepare", LevelInfo),
+		PrepareContext: DefaultStepOptions(formatter, "Conn.PrepareContext", LevelInfo),
+		stmtIDKey:      StmtIDKeyDefault,
+		Stmt:           DefaultStmtOptions(formatter),
+
+		ResetSession: DefaultStepOptions(formatter, "Conn.ResetSession", LevelTrace),
+		Ping:         DefaultStepOptions(formatter, "Conn.Ping", LevelTrace),
+
+		ExecContext:  DefaultStepOptions(formatter, "Conn.ExecContext", LevelInfo, ConnExecContextErrorHandler(driverName)),
+		QueryContext: DefaultStepOptions(formatter, "Conn.QueryContext", LevelInfo, ConnQueryContextErrorHandler(driverName)),
+		Rows:         DefaultRowsOptions(formatter),
+	}
+}
+
 func WrapConn(original driver.Conn, logger *logger, options *ConnOptions) driver.Conn {
 	if original == nil {
 		return nil
