@@ -16,6 +16,8 @@ type DriverOptions struct {
 	Connector *ConnectorOptions
 }
 
+const ConnIDKeyDefault = "conn_id"
+
 func DefaultDriverOptions(driverName string, formatter StepLogMsgFormatter) *DriverOptions {
 	return &DriverOptions{
 		IDGen:         IDGeneratorDefault,

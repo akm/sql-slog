@@ -15,7 +15,6 @@ const defaultIDLength = 16
 var IDGeneratorDefault = NewChaCha8IDGenerator(defaultIDLength).Generate
 
 const (
-	ConnIDKeyDefault = "conn_id"
 	TxIDKeyDefault   = "tx_id"
 	StmtIDKeyDefault = "stmt_id"
 )
