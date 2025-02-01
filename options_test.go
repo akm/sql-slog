@@ -3,6 +3,8 @@ package sqlslog
 import "testing"
 
 func TestSetStepLogMsgFormatter(t *testing.T) {
+	SetStepLogMsgFormatter(StepLogMsgWithoutEventName)
+
 	t.Parallel()
 	t.Run("defaultOptions", func(t *testing.T) {
 		t.Parallel()
