@@ -9,7 +9,7 @@ type TxOptions struct {
 	Rollback *StepOptions
 }
 
-func WrapTx(original driver.Tx, logger *logger, options *TxOptions) *txWrapper {
+func WrapTx(original driver.Tx, logger *logger, options *TxOptions) driver.Tx {
 	return &txWrapper{original: original, logger: logger, options: options}
 }
 
