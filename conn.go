@@ -9,18 +9,18 @@ import (
 )
 
 type ConnOptions struct {
-	idGen IDGen
+	IDGen IDGen
 
 	Begin   *StepOptions
 	BeginTx *StepOptions
-	txIDKey string
+	TxIDKey string
 	Tx      *TxOptions
 
 	Close *StepOptions
 
 	Prepare        *StepOptions
 	PrepareContext *StepOptions
-	stmtIDKey      string
+	StmtIDKey      string
 	Stmt           *StmtOptions
 
 	ResetSession *StepOptions
@@ -38,18 +38,18 @@ const (
 
 func DefaultConnOptions(driverName string, formatter StepLogMsgFormatter) *ConnOptions {
 	return &ConnOptions{
-		idGen: IDGeneratorDefault,
+		IDGen: IDGeneratorDefault,
 
 		Begin:   DefaultStepOptions(formatter, "Conn.Begin", LevelInfo),
 		BeginTx: DefaultStepOptions(formatter, "Conn.BeginTx", LevelInfo),
-		txIDKey: TxIDKeyDefault,
+		TxIDKey: TxIDKeyDefault,
 		Tx:      DefaultTxOptions(formatter),
 
 		Close: DefaultStepOptions(formatter, "Conn.Close", LevelInfo),
 
 		Prepare:        DefaultStepOptions(formatter, "Conn.Prepare", LevelInfo),
 		PrepareContext: DefaultStepOptions(formatter, "Conn.PrepareContext", LevelInfo),
-		stmtIDKey:      StmtIDKeyDefault,
+		StmtIDKey:      StmtIDKeyDefault,
 		Stmt:           DefaultStmtOptions(formatter),
 
 		ResetSession: DefaultStepOptions(formatter, "Conn.ResetSession", LevelTrace),
@@ -124,7 +124,7 @@ func (c *connWrapper) Begin() (driver.Tx, error) {
 		if err != nil {
 			return nil, err
 		}
-		attrRaw := slog.String(c.options.txIDKey, c.options.idGen())
+		attrRaw := slog.String(c.options.TxIDKey, c.options.IDGen())
 		return &attrRaw, nil
 	})
 	if err != nil {
@@ -151,7 +151,7 @@ func (c *connWrapper) Prepare(query string) (driver.Stmt, error) {
 		if err != nil {
 			return nil, err
 		}
-		attrRaw := slog.String(c.options.stmtIDKey, c.options.idGen())
+		attrRaw := slog.String(c.options.StmtIDKey, c.options.IDGen())
 		return &attrRaw, nil
 	})
 	if err != nil {
@@ -278,7 +278,7 @@ func (c *connWithContextWrapper) PrepareContext(ctx context.Context, query strin
 		if err != nil {
 			return nil, err
 		}
-		attrRaw := slog.String(c.options.stmtIDKey, c.options.idGen())
+		attrRaw := slog.String(c.options.StmtIDKey, c.options.IDGen())
 		return &attrRaw, nil
 	})
 	if err != nil {
@@ -300,7 +300,7 @@ func (c *connWithContextWrapper) BeginTx(ctx context.Context, opts driver.TxOpti
 		if err != nil {
 			return nil, err
 		}
-		attrRaw := slog.String(c.options.txIDKey, c.options.idGen())
+		attrRaw := slog.String(c.options.TxIDKey, c.options.IDGen())
 		return &attrRaw, nil
 	})
 	if err != nil {

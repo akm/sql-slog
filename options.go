@@ -54,10 +54,10 @@ func NewDefaultOptions(driverName string, formatter StepLogMsgFormatter) *Option
 		DurationKey:  DurationKeyDefault,
 		DurationType: DurationNanoSeconds,
 
-		IDGen:     connOptions.idGen, // IDGeneratorDefault,
+		IDGen:     connOptions.IDGen, // IDGeneratorDefault,
 		ConnIDKey: driverOptions.connIDKey,
-		TxIDKey:   connOptions.txIDKey,
-		StmtIDKey: connOptions.stmtIDKey,
+		TxIDKey:   connOptions.TxIDKey,
+		StmtIDKey: connOptions.StmtIDKey,
 
 		ConnBegin:           *connOptions.Begin,
 		ConnClose:           *connOptions.Close,

@@ -87,10 +87,10 @@ func open(driverName, dsn string, logger *StepLogger, options *OpenOptions) (*sq
 
 func buildOpenOptions(options *Options) *OpenOptions {
 	connOptions := &ConnOptions{
-		idGen:   options.IDGen,
+		IDGen:   options.IDGen,
 		Begin:   &options.ConnBegin,
 		BeginTx: &options.ConnBeginTx,
-		txIDKey: options.TxIDKey,
+		TxIDKey: options.TxIDKey,
 		Tx: &TxOptions{
 			Commit:   &options.TxCommit,
 			Rollback: &options.TxRollback,
@@ -98,7 +98,7 @@ func buildOpenOptions(options *Options) *OpenOptions {
 		Close:          &options.ConnClose,
 		Prepare:        &options.ConnPrepare,
 		PrepareContext: &options.ConnPrepareContext,
-		stmtIDKey:      options.StmtIDKey,
+		StmtIDKey:      options.StmtIDKey,
 		Stmt: &StmtOptions{
 			Close:        &options.StmtClose,
 			Exec:         &options.StmtExec,
