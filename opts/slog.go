@@ -1,4 +1,4 @@
-package sqlslog
+package opts
 
 import (
 	"io"
@@ -55,4 +55,14 @@ func MergeReplaceAttrs(funcs ...ReplaceAttrFunc) ReplaceAttrFunc {
 		}
 		return a
 	}
+}
+
+// ReplaceLevelAttr replaces the log level as sqlslog.Level with its string representation.
+func ReplaceLevelAttr(_ []string, a slog.Attr) slog.Attr {
+	// https://go.dev/src/log/slog/example_custom_levels_test.go
+	if a.Key == slog.LevelKey {
+		level := Level(a.Value.Any().(slog.Level)) //nolint:forcetypeassert
+		a.Value = slog.StringValue(level.String())
+	}
+	return a
 }
