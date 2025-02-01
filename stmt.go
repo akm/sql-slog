@@ -5,28 +5,13 @@ import (
 	"database/sql/driver"
 	"fmt"
 	"log/slog"
+
+	"github.com/akm/sql-slog/opts"
 )
 
-type StmtOptions struct {
-	Close        *StepOptions
-	Exec         *StepOptions
-	Query        *StepOptions
-	ExecContext  *StepOptions
-	QueryContext *StepOptions
+type StmtOptions = opts.StmtOptions
 
-	Rows *RowsOptions
-}
-
-func DefaultStmtOptions(formatter StepLogMsgFormatter) *StmtOptions {
-	return &StmtOptions{
-		Close:        DefaultStepOptions(formatter, "Stmt.Close", LevelInfo),
-		Exec:         DefaultStepOptions(formatter, "Stmt.Exec", LevelInfo),
-		Query:        DefaultStepOptions(formatter, "Stmt.Query", LevelInfo),
-		ExecContext:  DefaultStepOptions(formatter, "Stmt.ExecContext", LevelInfo),
-		QueryContext: DefaultStepOptions(formatter, "Stmt.QueryContext", LevelInfo),
-		Rows:         DefaultRowsOptions(formatter),
-	}
-}
+var DefaultStmtOptions = opts.DefaultStmtOptions
 
 type stmtWrapper struct {
 	original driver.Stmt
