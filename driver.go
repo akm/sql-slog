@@ -3,32 +3,16 @@ package sqlslog
 import (
 	"database/sql/driver"
 	"log/slog"
-	"strings"
+
+	"github.com/akm/sql-slog/opts"
 )
 
-type DriverOptions struct {
-	IDGen         IDGen
-	ConnIDKey     string
-	Open          *StepOptions
-	OpenConnector *StepOptions
+type DriverOptions = opts.DriverOptions
 
-	Conn      *ConnOptions
-	Connector *ConnectorOptions
-}
-
-const ConnIDKeyDefault = "conn_id"
-
-func DefaultDriverOptions(driverName string, formatter StepLogMsgFormatter) *DriverOptions {
-	return &DriverOptions{
-		IDGen:         IDGeneratorDefault,
-		ConnIDKey:     ConnIDKeyDefault,
-		Open:          DefaultStepOptions(formatter, "Driver.Open", LevelInfo, DriverOpenErrorHandler(driverName)),
-		OpenConnector: DefaultStepOptions(formatter, "Driver.OpenConnector", LevelInfo),
-
-		Conn:      DefaultConnOptions(driverName, formatter),
-		Connector: DefaultConnectorOptions(driverName, formatter),
-	}
-}
+var (
+	DefaultDriverOptions   = opts.DefaultDriverOptions
+	DriverOpenErrorHandler = opts.DriverOpenErrorHandler
+)
 
 func WrapDriver(original driver.Driver, logger *StepLogger, options *DriverOptions) driver.Driver {
 	r := driverWrapper{
@@ -110,28 +94,4 @@ func (w *driverContextWrapper) OpenConnector(dsn string) (driver.Connector, erro
 		lg = lg.With(*attr)
 	}
 	return WrapConnector(origConnector, lg, w.options.Connector), nil
-}
-
-// DriverOpenErrorHandler returns a function that handles errors from driver.Driver.Open.
-// The function returns a boolean indicating completion and a slice of slog.Attr.
-//
-// # For Postgres:
-// If err is nil, it returns true and a slice of slog.Attr{slog.Bool("success", true)}.
-// If err is io.EOF, it returns true and a slice of slog.Attr{slog.Bool("success", false)}.
-// Otherwise, it returns false and nil.
-func DriverOpenErrorHandler(driverName string) func(err error) (bool, []slog.Attr) {
-	switch driverName {
-	case "postgres":
-		return func(err error) (bool, []slog.Attr) {
-			if err == nil {
-				return true, []slog.Attr{slog.Bool("success", true)}
-			}
-			if strings.ToUpper(err.Error()) == "EOF" {
-				return true, []slog.Attr{slog.Bool("success", false)}
-			}
-			return false, nil
-		}
-	default:
-		return nil
-	}
 }
