@@ -11,6 +11,7 @@ import (
 	"time"
 
 	sqlslog "github.com/akm/sql-slog"
+	"github.com/akm/sql-slog/opts"
 	"github.com/akm/sql-slog/tests/testhelper"
 	_ "github.com/lib/pq"
 	"github.com/stretchr/testify/assert"
@@ -35,7 +36,7 @@ func TestLowLevelWithContext(t *testing.T) {
 
 	buf := bytes.NewBuffer(nil)
 	logs := testhelper.NewLogAssertion(buf)
-	logger := slog.New(sqlslog.NewJSONHandler(buf, &slog.HandlerOptions{Level: sqlslog.LevelVerbose}))
+	logger := slog.New(opts.NewJSONHandler(buf, &slog.HandlerOptions{Level: sqlslog.LevelVerbose}))
 
 	seqIdGen := testhelper.NewSeqIDGenerator()
 	connIDKey := "conn_id"

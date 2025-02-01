@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	sqlslog "github.com/akm/sql-slog"
+	"github.com/akm/sql-slog/opts"
 	"github.com/akm/sql-slog/tests/testhelper"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/stretchr/testify/assert"
@@ -88,7 +89,7 @@ func TestDuration(t *testing.T) {
 		t.Run(tc.durationKey, func(t *testing.T) {
 			buf := bytes.NewBuffer(nil)
 			logs := testhelper.NewLogAssertion(buf)
-			logger := slog.New(sqlslog.NewJSONHandler(buf, &slog.HandlerOptions{Level: sqlslog.LevelVerbose}))
+			logger := slog.New(opts.NewJSONHandler(buf, &slog.HandlerOptions{Level: sqlslog.LevelVerbose}))
 			db, err := sqlslog.Open(ctx, "sqlite3", dsn,
 				append(
 					testhelper.StepEventMsgOptions,
