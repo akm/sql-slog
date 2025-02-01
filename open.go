@@ -5,19 +5,13 @@ import (
 	"database/sql"
 	"database/sql/driver"
 	"log/slog"
+
+	"github.com/akm/sql-slog/opts"
 )
 
-type OpenOptions struct {
-	Open   *StepOptions
-	Driver *DriverOptions
-}
+type OpenOptions = opts.OpenOptions
 
-func DefaultOpenOptions(driverName string, formatter StepLogMsgFormatter) *OpenOptions {
-	return &OpenOptions{
-		Open:   DefaultStepOptions(formatter, "Open", LevelInfo),
-		Driver: DefaultDriverOptions(driverName, formatter),
-	}
-}
+var DefaultOpenOptions = opts.DefaultOpenOptions
 
 /*
 Open opens a database specified by its driver name and a driver-specific data source name,
