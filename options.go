@@ -41,11 +41,8 @@ type options struct {
 }
 
 func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *options {
-	stepOpts := func(name string, errHandlers ...func(error) (bool, []slog.Attr)) StepOptions {
-		return *DefaultStepOptions(formatter, name, LevelInfo, errHandlers...)
-	}
-
-	driverOptions := DefaultDriverOptions(driverName, formatter)
+	openOptions := DefaultOpenOptions(driverName, formatter)
+	driverOptions := openOptions.Driver
 	connectorOptions := driverOptions.Connector
 	connOptions := connectorOptions.Conn
 	stmtOptions := connOptions.Stmt
@@ -74,7 +71,7 @@ func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *option
 		connectorConnect:    *connectorOptions.Connect,
 		driverOpen:          *driverOptions.Open,
 		driverOpenConnector: *driverOptions.OpenConnector,
-		sqlslogOpen:         stepOpts("sqlslog.Open"),
+		sqlslogOpen:         *openOptions.Open,
 		rowsClose:           *rowsOptions.Close,
 		rowsNext:            *rowsOptions.Next,
 		rowsNextResultSet:   *rowsOptions.NextResultSet,

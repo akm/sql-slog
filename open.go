@@ -12,6 +12,13 @@ type OpenOptions struct {
 	Driver *DriverOptions
 }
 
+func DefaultOpenOptions(driverName string, formatter StepLogMsgFormatter) *OpenOptions {
+	return &OpenOptions{
+		Open:   DefaultStepOptions(formatter, "Open", LevelInfo),
+		Driver: DefaultDriverOptions(driverName, formatter),
+	}
+}
+
 /*
 Open opens a database specified by its driver name and a driver-specific data source name,
 and returns a new database handle with logging capabilities.
