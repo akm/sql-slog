@@ -105,14 +105,6 @@ func NewOptions(driverName string, opts ...Option) *Options {
 	return o
 }
 
-// Logger sets the slog.Logger to be used.
-// If not set, the default is slog.Default().
-func Logger(logger *slog.Logger) Option {
-	return func(o *Options) {
-		o.Logger = logger
-	}
-}
-
 // Set the options for Conn.Begin.
 func ConnBegin(f func(*StepOptions)) Option { return func(o *Options) { f(&o.ConnBegin) } }
 

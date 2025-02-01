@@ -5,6 +5,14 @@ import (
 	"log/slog"
 )
 
+// Logger sets the slog.Logger to be used.
+// If not set, the default is slog.Default().
+func Logger(logger *slog.Logger) Option {
+	return func(o *Options) {
+		o.Logger = logger
+	}
+}
+
 // NewJSONHandler returns a new JSON handler using [slog.NewJSONHandler]
 // with custom options for sqlslog.
 // See [WrapHandlerOptions] for details on the options.
