@@ -14,11 +14,6 @@ const defaultIDLength = 16
 // IDGeneratorDefault is the default ID generator.
 var IDGeneratorDefault = NewChaCha8IDGenerator(defaultIDLength).Generate
 
-const (
-	TxIDKeyDefault   = "tx_id"
-	StmtIDKeyDefault = "stmt_id"
-)
-
 // ConnIDKey sets the key for the connection ID.
 // The default is ConnIDKeyDefault.
 func ConnIDKey(key string) Option { return func(o *options) { o.connIDKey = key } }

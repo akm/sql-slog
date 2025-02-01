@@ -31,6 +31,11 @@ type ConnOptions struct {
 	Rows         *RowsOptions
 }
 
+const (
+	TxIDKeyDefault   = "tx_id"
+	StmtIDKeyDefault = "stmt_id"
+)
+
 func DefaultConnOptions(driverName string, formatter StepLogMsgFormatter) *ConnOptions {
 	return &ConnOptions{
 		idGen: IDGeneratorDefault,
