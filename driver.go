@@ -8,7 +8,7 @@ import (
 
 type DriverOptions struct {
 	IDGen         IDGen
-	connIDKey     string
+	ConnIDKey     string
 	Open          *StepOptions
 	OpenConnector *StepOptions
 
@@ -21,7 +21,7 @@ const ConnIDKeyDefault = "conn_id"
 func DefaultDriverOptions(driverName string, formatter StepLogMsgFormatter) *DriverOptions {
 	return &DriverOptions{
 		IDGen:         IDGeneratorDefault,
-		connIDKey:     ConnIDKeyDefault,
+		ConnIDKey:     ConnIDKeyDefault,
 		Open:          DefaultStepOptions(formatter, "Driver.Open", LevelInfo, DriverOpenErrorHandler(driverName)),
 		OpenConnector: DefaultStepOptions(formatter, "Driver.OpenConnector", LevelInfo),
 
@@ -65,7 +65,7 @@ func (w *driverWrapper) Open(dsn string) (driver.Conn, error) {
 		if err != nil {
 			return nil, err
 		}
-		attrRaw := slog.String(w.options.connIDKey, w.options.IDGen())
+		attrRaw := slog.String(w.options.ConnIDKey, w.options.IDGen())
 		return &attrRaw, err
 	})
 	if err != nil {
@@ -99,7 +99,7 @@ func (w *driverContextWrapper) OpenConnector(dsn string) (driver.Connector, erro
 		if err != nil {
 			return nil, err
 		}
-		attrRaw := slog.String(w.options.connIDKey, w.options.IDGen())
+		attrRaw := slog.String(w.options.ConnIDKey, w.options.IDGen())
 		return &attrRaw, err
 	})
 	if err != nil {

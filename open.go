@@ -125,7 +125,7 @@ func buildOpenOptions(options *Options) *OpenOptions {
 		Open: &options.SqlslogOpen,
 		Driver: &DriverOptions{
 			IDGen:         options.IDGen,
-			connIDKey:     options.ConnIDKey,
+			ConnIDKey:     options.ConnIDKey,
 			Open:          &options.DriverOpen,
 			OpenConnector: &options.DriverOpenConnector,
 			Conn:          connOptions,
