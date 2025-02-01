@@ -29,6 +29,3 @@ func DurationKey(key string) Option {
 		o.durationKey = key
 	}
 }
-
-// DurationKeyDefault is the default key for duration value in log.
-const DurationKeyDefault = "duration"

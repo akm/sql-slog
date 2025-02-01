@@ -85,6 +85,9 @@ func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *option
 	}
 }
 
+// DurationKeyDefault is the default key for duration value in log.
+const DurationKeyDefault = "duration"
+
 // Option is a function that sets an option on the options struct.
 type Option func(*options)
 
