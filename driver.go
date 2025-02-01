@@ -12,7 +12,7 @@ type driverOptions struct {
 	Open          *StepOptions
 	OpenConnector *StepOptions
 
-	Conn      *connOptions
+	Conn      *ConnOptions
 	Connector *connectorOptions
 }
 
@@ -61,7 +61,7 @@ func (w *driverWrapper) Open(dsn string) (driver.Conn, error) {
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return wrapConn(origConn, lg, w.options.Conn), nil
+	return WrapConn(origConn, lg, w.options.Conn), nil
 }
 
 type driverContextWrapper struct {

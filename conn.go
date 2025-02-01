@@ -8,7 +8,7 @@ import (
 	"log/slog"
 )
 
-type connOptions struct {
+type ConnOptions struct {
 	idGen IDGen
 
 	Begin   *StepOptions
@@ -31,7 +31,7 @@ type connOptions struct {
 	Rows         *RowsOptions
 }
 
-func wrapConn(original driver.Conn, logger *logger, options *connOptions) driver.Conn {
+func WrapConn(original driver.Conn, logger *logger, options *ConnOptions) driver.Conn {
 	if original == nil {
 		return nil
 	}
@@ -68,7 +68,7 @@ func wrapConn(original driver.Conn, logger *logger, options *connOptions) driver
 type connWrapper struct {
 	original driver.Conn
 	logger   *logger
-	options  *connOptions
+	options  *ConnOptions
 }
 
 // Deprecated interfaces, not implemented.

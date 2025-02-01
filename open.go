@@ -79,7 +79,7 @@ func open(driverName, dsn string, logger *logger, options *openOptions) (*sql.DB
 }
 
 func buildOpenOptions(options *options) *openOptions {
-	connOptions := &connOptions{
+	connOptions := &ConnOptions{
 		idGen:   options.idGen,
 		Begin:   &options.connBegin,
 		BeginTx: &options.connBeginTx,

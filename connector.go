@@ -11,7 +11,7 @@ import (
 type connectorOptions struct {
 	Connect *StepOptions
 
-	Conn *connOptions
+	Conn *ConnOptions
 }
 
 type connector struct {
@@ -37,7 +37,7 @@ func (c *connector) Connect(ctx context.Context) (driver.Conn, error) {
 	if err != nil {
 		return nil, err
 	}
-	return wrapConn(origConn, c.logger, c.options.Conn), nil
+	return WrapConn(origConn, c.logger, c.options.Conn), nil
 }
 
 // Driver implements driver.Connector.
