@@ -41,7 +41,7 @@ See the following example for usage:
 [sql.Open]: https://pkg.go.dev/database/sql#Open
 */
 func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB, error) {
-	options := newOptions(driverName, opts...)
+	options := NewOptions(driverName, opts...)
 	logger := newLogger(options.logger, DurationAttrFunc(options.durationKey, options.durationType))
 
 	openOptions := buildOpenOptions(options)
@@ -85,7 +85,7 @@ func open(driverName, dsn string, logger *logger, options *OpenOptions) (*sql.DB
 	return sql.OpenDB(WrapConnector(origConnector, logger, options.Driver.Connector)), nil
 }
 
-func buildOpenOptions(options *options) *OpenOptions {
+func buildOpenOptions(options *Options) *OpenOptions {
 	connOptions := &ConnOptions{
 		idGen:   options.idGen,
 		Begin:   &options.connBegin,

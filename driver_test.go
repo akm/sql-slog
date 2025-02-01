@@ -30,7 +30,7 @@ func TestDriverContextWrapperOpenConnector(t *testing.T) {
 	t.Parallel()
 	t.Run("unexpected error", func(t *testing.T) {
 		t.Parallel()
-		opts := newOptions("sqlite3")
+		opts := NewOptions("sqlite3")
 		openOptions := buildOpenOptions(opts)
 		buf := bytes.NewBuffer(nil)
 		logger := slog.New(NewTextHandler(buf, nil))

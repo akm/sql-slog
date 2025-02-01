@@ -94,7 +94,7 @@ func TestRowsNextResultSet(t *testing.T) {
 	}
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(NewJSONHandler(buf, nil))
-	opts := newOptions("dummy")
+	opts := NewOptions("dummy")
 	wrapped := WrapRows(rows, newLogger(logger, DurationAttrFunc(opts.durationKey, opts.durationType)), &RowsOptions{
 		Close:         &opts.rowsClose,
 		Next:          &opts.rowsNext,

@@ -60,7 +60,7 @@ func TestWrapStmt(t *testing.T) {
 			error: dummyError,
 		}
 
-		opts := newOptions("dummy")
+		opts := NewOptions("dummy")
 		stmtOptions := &StmtOptions{
 			Close:        &opts.stmtClose,
 			Exec:         &opts.stmtExec,
@@ -119,7 +119,7 @@ func TestWithMockErrorStmtWithContext(t *testing.T) {
 
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(NewJSONHandler(buf, nil))
-	opts := newOptions("dummy")
+	opts := NewOptions("dummy")
 	wrapped := WrapStmt(mock, newLogger(logger, DurationAttrFunc(opts.durationKey, opts.durationType)), &StmtOptions{
 		Close:        &opts.stmtClose,
 		Exec:         &opts.stmtExec,
