@@ -62,22 +62,22 @@ func TestWrapStmt(t *testing.T) {
 
 		opts := NewOptions("dummy")
 		stmtOptions := &StmtOptions{
-			Close:        &opts.stmtClose,
-			Exec:         &opts.stmtExec,
-			Query:        &opts.stmtQuery,
-			ExecContext:  &opts.stmtExecContext,
-			QueryContext: &opts.stmtQueryContext,
+			Close:        &opts.StmtClose,
+			Exec:         &opts.StmtExec,
+			Query:        &opts.StmtQuery,
+			ExecContext:  &opts.StmtExecContext,
+			QueryContext: &opts.StmtQueryContext,
 			Rows: &RowsOptions{
-				Close:         &opts.rowsClose,
-				Next:          &opts.rowsNext,
-				NextResultSet: &opts.rowsNextResultSet,
+				Close:         &opts.RowsClose,
+				Next:          &opts.RowsNext,
+				NextResultSet: &opts.RowsNextResultSet,
 			},
 		}
 
 		buf := bytes.NewBuffer(nil)
 		logger := slog.New(NewJSONHandler(buf, nil))
 		wrapped := WrapStmt(mock,
-			NewStepLogger(logger, DurationAttrFunc(opts.durationKey, opts.durationType)),
+			NewStepLogger(logger, DurationAttrFunc(opts.DurationKey, opts.DurationType)),
 			stmtOptions,
 		)
 		_, err := wrapped.Query(nil) // nolint:staticcheck
@@ -120,16 +120,16 @@ func TestWithMockErrorStmtWithContext(t *testing.T) {
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(NewJSONHandler(buf, nil))
 	opts := NewOptions("dummy")
-	wrapped := WrapStmt(mock, NewStepLogger(logger, DurationAttrFunc(opts.durationKey, opts.durationType)), &StmtOptions{
-		Close:        &opts.stmtClose,
-		Exec:         &opts.stmtExec,
-		Query:        &opts.stmtQuery,
-		ExecContext:  &opts.stmtExecContext,
-		QueryContext: &opts.stmtQueryContext,
+	wrapped := WrapStmt(mock, NewStepLogger(logger, DurationAttrFunc(opts.DurationKey, opts.DurationType)), &StmtOptions{
+		Close:        &opts.StmtClose,
+		Exec:         &opts.StmtExec,
+		Query:        &opts.StmtQuery,
+		ExecContext:  &opts.StmtExecContext,
+		QueryContext: &opts.StmtQueryContext,
 		Rows: &RowsOptions{
-			Close:         &opts.rowsClose,
-			Next:          &opts.rowsNext,
-			NextResultSet: &opts.rowsNextResultSet,
+			Close:         &opts.RowsClose,
+			Next:          &opts.RowsNext,
+			NextResultSet: &opts.RowsNextResultSet,
 		},
 	})
 	stmtWithQueryContext, ok := wrapped.(driver.StmtQueryContext)

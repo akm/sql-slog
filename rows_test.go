@@ -95,10 +95,10 @@ func TestRowsNextResultSet(t *testing.T) {
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(NewJSONHandler(buf, nil))
 	opts := NewOptions("dummy")
-	wrapped := WrapRows(rows, NewStepLogger(logger, DurationAttrFunc(opts.durationKey, opts.durationType)), &RowsOptions{
-		Close:         &opts.rowsClose,
-		Next:          &opts.rowsNext,
-		NextResultSet: &opts.rowsNextResultSet,
+	wrapped := WrapRows(rows, NewStepLogger(logger, DurationAttrFunc(opts.DurationKey, opts.DurationType)), &RowsOptions{
+		Close:         &opts.RowsClose,
+		Next:          &opts.RowsNext,
+		NextResultSet: &opts.RowsNextResultSet,
 	})
 	wrappedRNRS, ok := wrapped.(driver.RowsNextResultSet)
 	if !ok {

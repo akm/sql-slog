@@ -42,7 +42,7 @@ See the following example for usage:
 */
 func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB, error) {
 	options := NewOptions(driverName, opts...)
-	logger := NewStepLogger(options.logger, DurationAttrFunc(options.durationKey, options.durationType))
+	logger := NewStepLogger(options.Logger, DurationAttrFunc(options.DurationKey, options.DurationType))
 
 	openOptions := buildOpenOptions(options)
 
@@ -87,50 +87,50 @@ func open(driverName, dsn string, logger *StepLogger, options *OpenOptions) (*sq
 
 func buildOpenOptions(options *Options) *OpenOptions {
 	connOptions := &ConnOptions{
-		idGen:   options.idGen,
-		Begin:   &options.connBegin,
-		BeginTx: &options.connBeginTx,
-		txIDKey: options.txIDKey,
+		idGen:   options.IDGen,
+		Begin:   &options.ConnBegin,
+		BeginTx: &options.ConnBeginTx,
+		txIDKey: options.TxIDKey,
 		Tx: &TxOptions{
-			Commit:   &options.txCommit,
-			Rollback: &options.txRollback,
+			Commit:   &options.TxCommit,
+			Rollback: &options.TxRollback,
 		},
-		Close:          &options.connClose,
-		Prepare:        &options.connPrepare,
-		PrepareContext: &options.connPrepareContext,
-		stmtIDKey:      options.stmtIDKey,
+		Close:          &options.ConnClose,
+		Prepare:        &options.ConnPrepare,
+		PrepareContext: &options.ConnPrepareContext,
+		stmtIDKey:      options.StmtIDKey,
 		Stmt: &StmtOptions{
-			Close:        &options.stmtClose,
-			Exec:         &options.stmtExec,
-			Query:        &options.stmtQuery,
-			ExecContext:  &options.stmtExecContext,
-			QueryContext: &options.stmtQueryContext,
+			Close:        &options.StmtClose,
+			Exec:         &options.StmtExec,
+			Query:        &options.StmtQuery,
+			ExecContext:  &options.StmtExecContext,
+			QueryContext: &options.StmtQueryContext,
 			Rows: &RowsOptions{
-				Close:         &options.rowsClose,
-				Next:          &options.rowsNext,
-				NextResultSet: &options.rowsNextResultSet,
+				Close:         &options.RowsClose,
+				Next:          &options.RowsNext,
+				NextResultSet: &options.RowsNextResultSet,
 			},
 		},
-		ResetSession: &options.connResetSession,
-		Ping:         &options.connPing,
-		ExecContext:  &options.connExecContext,
-		QueryContext: &options.connQueryContext,
+		ResetSession: &options.ConnResetSession,
+		Ping:         &options.ConnPing,
+		ExecContext:  &options.ConnExecContext,
+		QueryContext: &options.ConnQueryContext,
 		Rows: &RowsOptions{
-			Close:         &options.rowsClose,
-			Next:          &options.rowsNext,
-			NextResultSet: &options.rowsNextResultSet,
+			Close:         &options.RowsClose,
+			Next:          &options.RowsNext,
+			NextResultSet: &options.RowsNextResultSet,
 		},
 	}
 	return &OpenOptions{
-		Open: &options.sqlslogOpen,
+		Open: &options.SqlslogOpen,
 		Driver: &DriverOptions{
-			IDGen:         options.idGen,
-			connIDKey:     options.connIDKey,
-			Open:          &options.driverOpen,
-			OpenConnector: &options.driverOpenConnector,
+			IDGen:         options.IDGen,
+			connIDKey:     options.ConnIDKey,
+			Open:          &options.DriverOpen,
+			OpenConnector: &options.DriverOpenConnector,
 			Conn:          connOptions,
 			Connector: &ConnectorOptions{
-				Connect: &options.connectorConnect,
+				Connect: &options.ConnectorConnect,
 				Conn:    connOptions,
 			},
 		},
