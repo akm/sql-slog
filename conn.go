@@ -308,6 +308,10 @@ func (c *connWithContextWrapper) BeginTx(ctx context.Context, opts driver.TxOpti
 	return WrapTx(tx, lg, c.options.Tx), nil
 }
 
+const (
+	driverNameMysql = "mysql"
+)
+
 func ConnExecContextErrorHandler(driverName string) func(err error) (bool, []slog.Attr) {
 	switch driverName {
 	case driverNameMysql:
