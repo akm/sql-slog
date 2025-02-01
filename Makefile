@@ -47,11 +47,11 @@ test: test-unit sqlite3-test postgres-test mysql-test
 test-unit:
 	go test $(GO_TEST_OPTIONS) ./...
 
-GO_COVERAGE_DIR=coverage/unit
+GO_COVERAGE_DIR=$(CURDIR)/coverage/unit
 $(GO_COVERAGE_DIR):
 	mkdir -p $(GO_COVERAGE_DIR)
 
-GO_COVERAGE_MERGED_DIR=coverage/merged
+GO_COVERAGE_MERGED_DIR=$(CURDIR)/coverage/merged
 $(GO_COVERAGE_MERGED_DIR):
 	mkdir -p $(GO_COVERAGE_MERGED_DIR)
 
