@@ -98,3 +98,38 @@ func ConnQueryContextErrorHandler(driverName string) func(err error) (bool, []sl
 		return nil
 	}
 }
+
+// Set the options for Conn.Begin.
+func ConnBegin(f func(*StepOptions)) Option { return func(o *Options) { f(&o.ConnBegin) } }
+
+// Set the options for Conn.Close.
+func ConnClose(f func(*StepOptions)) Option { return func(o *Options) { f(&o.ConnClose) } }
+
+// Set the options for Conn.Prepare.
+func ConnPrepare(f func(*StepOptions)) Option { return func(o *Options) { f(&o.ConnPrepare) } }
+
+// Set the options for Conn.ResetSession.
+func ConnResetSession(f func(*StepOptions)) Option {
+	return func(o *Options) { f(&o.ConnResetSession) }
+}
+
+// Set the options for Conn.Ping.
+func ConnPing(f func(*StepOptions)) Option { return func(o *Options) { f(&o.ConnPing) } }
+
+// Set the options for Conn.ExecContext.
+func ConnExecContext(f func(*StepOptions)) Option {
+	return func(o *Options) { f(&o.ConnExecContext) }
+}
+
+// Set the options for Conn.QueryContext.
+func ConnQueryContext(f func(*StepOptions)) Option {
+	return func(o *Options) { f(&o.ConnQueryContext) }
+}
+
+// Set the options for Conn.PrepareContext.
+func ConnPrepareContext(f func(*StepOptions)) Option {
+	return func(o *Options) { f(&o.ConnPrepareContext) }
+}
+
+// Set the options for Conn.BeginTx.
+func ConnBeginTx(f func(*StepOptions)) Option { return func(o *Options) { f(&o.ConnBeginTx) } }

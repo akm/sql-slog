@@ -52,3 +52,8 @@ func ConnectorConnectErrorHandler(driverName string) func(err error) (bool, []sl
 		return nil
 	}
 }
+
+// Set the options for Connector.Connect.
+func ConnectorConnect(f func(*StepOptions)) Option {
+	return func(o *Options) { f(&o.ConnectorConnect) }
+}

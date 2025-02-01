@@ -20,3 +20,22 @@ func DefaultStmtOptions(formatter StepLogMsgFormatter) *StmtOptions {
 		Rows:         DefaultRowsOptions(formatter),
 	}
 }
+
+// Set the options for Stmt.Close.
+func StmtClose(f func(*StepOptions)) Option { return func(o *Options) { f(&o.StmtClose) } }
+
+// Set the options for Stmt.Exec.
+func StmtExec(f func(*StepOptions)) Option { return func(o *Options) { f(&o.StmtExec) } }
+
+// Set the options for Stmt.Query.
+func StmtQuery(f func(*StepOptions)) Option { return func(o *Options) { f(&o.StmtQuery) } }
+
+// Set the options for Stmt.ExecContext.
+func StmtExecContext(f func(*StepOptions)) Option {
+	return func(o *Options) { f(&o.StmtExecContext) }
+}
+
+// Set the options for Stmt.QueryContext.
+func StmtQueryContext(f func(*StepOptions)) Option {
+	return func(o *Options) { f(&o.StmtQueryContext) }
+}

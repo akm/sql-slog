@@ -33,3 +33,14 @@ func HandleRowsNextError(err error) (bool, []slog.Attr) {
 	}
 	return false, nil
 }
+
+// Set the options for Rows.Close.
+func RowsClose(f func(*StepOptions)) Option { return func(o *Options) { f(&o.RowsClose) } }
+
+// Set the options for Rows.Next.
+func RowsNext(f func(*StepOptions)) Option { return func(o *Options) { f(&o.RowsNext) } }
+
+// Set the options for Rows.NextResultSet.
+func RowsNextResultSet(f func(*StepOptions)) Option {
+	return func(o *Options) { f(&o.RowsNextResultSet) }
+}

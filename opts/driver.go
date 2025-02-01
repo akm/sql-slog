@@ -52,3 +52,11 @@ func DriverOpenErrorHandler(driverName string) func(err error) (bool, []slog.Att
 		return nil
 	}
 }
+
+// Set the options for Driver.Open.
+func DriverOpen(f func(*StepOptions)) Option { return func(o *Options) { f(&o.DriverOpen) } }
+
+// Set the options for Driver.OpenConnector.
+func DriverOpenConnector(f func(*StepOptions)) Option {
+	return func(o *Options) { f(&o.DriverOpenConnector) }
+}
