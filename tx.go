@@ -2,19 +2,13 @@ package sqlslog
 
 import (
 	"database/sql/driver"
+
+	"github.com/akm/sql-slog/opts"
 )
 
-type TxOptions struct {
-	Commit   *StepOptions
-	Rollback *StepOptions
-}
+type TxOptions = opts.TxOptions
 
-func DefaultTxOptions(formatter StepLogMsgFormatter) *TxOptions {
-	return &TxOptions{
-		Commit:   DefaultStepOptions(formatter, "Tx.Commit", LevelInfo),
-		Rollback: DefaultStepOptions(formatter, "Tx.Rollback", LevelInfo),
-	}
-}
+var DefaultTxOptions = opts.DefaultTxOptions
 
 func WrapTx(original driver.Tx, logger *StepLogger, options *TxOptions) driver.Tx {
 	return &txWrapper{original: original, logger: logger, options: options}
