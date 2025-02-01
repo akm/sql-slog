@@ -75,7 +75,7 @@ func open(driverName, dsn string, logger *logger, options *openOptions) (*sql.DB
 		origConnector = &dsnConnector{dsn: dsn, driver: drv}
 	}
 
-	return sql.OpenDB(wrapConnector(origConnector, logger, options.Driver.Connector)), nil
+	return sql.OpenDB(WrapConnector(origConnector, logger, options.Driver.Connector)), nil
 }
 
 func buildOpenOptions(options *options) *openOptions {
@@ -122,7 +122,7 @@ func buildOpenOptions(options *options) *openOptions {
 			Open:          &options.driverOpen,
 			OpenConnector: &options.driverOpenConnector,
 			Conn:          connOptions,
-			Connector: &connectorOptions{
+			Connector: &ConnectorOptions{
 				Connect: &options.connectorConnect,
 				Conn:    connOptions,
 			},

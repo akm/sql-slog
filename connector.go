@@ -8,7 +8,7 @@ import (
 	"log/slog"
 )
 
-type connectorOptions struct {
+type ConnectorOptions struct {
 	Connect *StepOptions
 
 	Conn *ConnOptions
@@ -17,12 +17,12 @@ type connectorOptions struct {
 type connector struct {
 	original driver.Connector
 	logger   *logger
-	options  *connectorOptions
+	options  *ConnectorOptions
 }
 
 var _ driver.Connector = (*connector)(nil)
 
-func wrapConnector(original driver.Connector, logger *logger, options *connectorOptions) driver.Connector {
+func WrapConnector(original driver.Connector, logger *logger, options *ConnectorOptions) driver.Connector {
 	return &connector{original: original, logger: logger, options: options}
 }
 

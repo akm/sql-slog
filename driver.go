@@ -13,7 +13,7 @@ type driverOptions struct {
 	OpenConnector *StepOptions
 
 	Conn      *ConnOptions
-	Connector *connectorOptions
+	Connector *ConnectorOptions
 }
 
 func wrapDriver(original driver.Driver, logger *logger, options *driverOptions) driver.Driver {
@@ -95,7 +95,7 @@ func (w *driverContextWrapper) OpenConnector(dsn string) (driver.Connector, erro
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return wrapConnector(origConnector, lg, w.options.Connector), nil
+	return WrapConnector(origConnector, lg, w.options.Connector), nil
 }
 
 // DriverOpenErrorHandler returns a function that handles errors from driver.Driver.Open.
