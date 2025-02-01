@@ -9,7 +9,7 @@ import (
 
 type openOptions struct {
 	Open   *StepOptions
-	Driver *driverOptions
+	Driver *DriverOptions
 }
 
 /*
@@ -62,7 +62,7 @@ func open(driverName, dsn string, logger *logger, options *openOptions) (*sql.DB
 		return nil, err
 	}
 	// This db is not used directly, but it is used to get the driver.
-	drv := wrapDriver(db.Driver(), logger, options.Driver)
+	drv := WrapDriver(db.Driver(), logger, options.Driver)
 	var origConnector driver.Connector
 
 	if dc, ok := drv.(driver.DriverContext); ok {
@@ -116,7 +116,7 @@ func buildOpenOptions(options *options) *openOptions {
 	}
 	return &openOptions{
 		Open: &options.sqlslogOpen,
-		Driver: &driverOptions{
+		Driver: &DriverOptions{
 			IDGen:         options.idGen,
 			connIDKey:     options.connIDKey,
 			Open:          &options.driverOpen,

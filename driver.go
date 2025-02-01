@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-type driverOptions struct {
+type DriverOptions struct {
 	IDGen         IDGen
 	connIDKey     string
 	Open          *StepOptions
@@ -16,7 +16,7 @@ type driverOptions struct {
 	Connector *ConnectorOptions
 }
 
-func wrapDriver(original driver.Driver, logger *logger, options *driverOptions) driver.Driver {
+func WrapDriver(original driver.Driver, logger *logger, options *DriverOptions) driver.Driver {
 	r := driverWrapper{
 		original: original,
 		logger:   logger,
@@ -37,7 +37,7 @@ func wrapDriver(original driver.Driver, logger *logger, options *driverOptions) 
 type driverWrapper struct {
 	original driver.Driver
 	logger   *logger
-	options  *driverOptions
+	options  *DriverOptions
 }
 
 var _ driver.Driver = (*driverWrapper)(nil)
