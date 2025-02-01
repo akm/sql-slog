@@ -12,10 +12,12 @@ GO_COVERAGE_PROFILE?=coverage.txt
 $(GO_COVERAGE_PROFILE):
 	$(MAKE) test-with-coverage
 
+GO_COVERAGE_PACKAGES=github.com/akm/sql-slog,github.com/akm/sql-slog/opts
+
 # See https://app.codecov.io/github/akm/go-requestid/new
 .PHONY: test-with-coverage
 test-with-coverage: $(GO_COVERAGE_DIR)
-	go test -cover -coverpkg=github.com/akm/sql-slog ./... -args -test.gocoverdir="$(GO_COVERAGE_DIR)"
+	go test -cover -coverpkg=$(GO_COVERAGE_PACKAGES) ./... -args -test.gocoverdir="$(GO_COVERAGE_DIR)"
 
 .PHONY: test-coverage
 test-coverage: $(GO_COVERAGE_PROFILE)
