@@ -1,10 +1,14 @@
 package wrap
 
 import (
+	"bytes"
+	"context"
 	"database/sql/driver"
 	"errors"
 	"log/slog"
 	"testing"
+
+	"github.com/akm/sql-slog/internal/opts"
 )
 
 type errorDriverContext struct {
@@ -28,6 +32,19 @@ func (e *errorDriverContext) OpenConnector(string) (driver.Connector, error) {
 // Open implements driver.Driver.
 func (e *errorDriverContext) Open(string) (driver.Conn, error) {
 	return nil, e.error
+}
+
+func TestOpen(t *testing.T) {
+	t.Parallel()
+	t.Run("invalid driver", func(t *testing.T) {
+		t.Parallel()
+		buf := bytes.NewBuffer(nil)
+		stepLogger := NewStepLogger(slog.New(slog.NewJSONHandler(buf, nil)), opts.DurationAttrFunc(opts.DurationKeyDefault, opts.DurationNanoSeconds))
+		_, err := Open(context.TODO(), "invalid-driver", "invalid-dsn", stepLogger, DefaultOpenOptions("invalid-driver", opts.StepLogMsgWithoutEventName))
+		if err == nil {
+			t.Fatal("Expected error")
+		}
+	})
 }
 
 func TestOpenWithDriver(t *testing.T) {
