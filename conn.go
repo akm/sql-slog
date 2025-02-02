@@ -78,7 +78,10 @@ func (c *connWrapper) Begin() (driver.Tx, error) {
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return wrapTx(origTx, lg), nil
+	return wrapTx(origTx, lg, &txOptions{
+		Commit:   c.logger.options.txCommit,
+		Rollback: c.logger.options.txRollback,
+	}), nil
 }
 
 // Close implements driver.Conn.
@@ -258,7 +261,10 @@ func (c *connWithContextWrapper) BeginTx(ctx context.Context, opts driver.TxOpti
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return wrapTx(tx, lg), nil
+	return wrapTx(tx, lg, &txOptions{
+		Commit:   c.logger.options.txCommit,
+		Rollback: c.logger.options.txRollback,
+	}), nil
 }
 
 func ConnExecContextErrorHandler(driverName string) func(err error) (bool, []slog.Attr) {
