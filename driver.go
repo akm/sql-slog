@@ -102,7 +102,7 @@ var (
 // var _ driver.Connector = (*driverWrapper)(nil)
 
 // OpenConnector implements driver.DriverContext.
-func (w *driverContextWrapper) OpenConnector(dsn string) (driver.Connector, error) {
+func (w *driverContextWrapper) OpenConnector(dsn string) (driver.Connector, error) { // nolint:funlen
 	var origConnector driver.Connector
 	attr, err := w.logger.With(slog.String("dsn", dsn)).StepWithoutContext(&w.logger.options.driverOpenConnector, func() (*slog.Attr, error) {
 		var err error
@@ -120,7 +120,52 @@ func (w *driverContextWrapper) OpenConnector(dsn string) (driver.Connector, erro
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return wrapConnector(origConnector, lg), nil
+
+	txOptions := &txOptions{
+		Commit:   w.logger.options.txCommit,
+		Rollback: w.logger.options.txRollback,
+	}
+	rowOptions := &rowsOptions{
+		Close:         w.logger.options.rowsClose,
+		Next:          w.logger.options.rowsNext,
+		NextResultSet: w.logger.options.rowsNextResultSet,
+	}
+	stmtOptions := &stmtOptions{
+		Close:        w.logger.options.stmtClose,
+		Exec:         w.logger.options.stmtExec,
+		Query:        w.logger.options.stmtQuery,
+		ExecContext:  w.logger.options.stmtExecContext,
+		QueryContext: w.logger.options.stmtQueryContext,
+		Rows:         rowOptions,
+	}
+	connOptions := &connOptions{
+		IDGen: w.logger.options.idGen,
+
+		Begin:     w.logger.options.connBegin,
+		BeginTx:   w.logger.options.connBeginTx,
+		TxIDKey:   w.logger.options.txIDKey,
+		TxOptions: txOptions,
+
+		Close: w.logger.options.connClose,
+
+		Prepare:        w.logger.options.connPrepare,
+		PrepareContext: w.logger.options.connPrepareContext,
+		StmtIDKey:      w.logger.options.stmtIDKey,
+		StmtOptions:    stmtOptions,
+
+		ResetSession: w.logger.options.connResetSession,
+		Ping:         w.logger.options.connPing,
+
+		ExecContext: w.logger.options.connExecContext,
+
+		QueryContext: w.logger.options.connQueryContext,
+		RowsOptions:  rowOptions,
+	}
+	connectorOptions := &connectorOptions{
+		Connect:     w.logger.options.connectorConnect,
+		ConnOptions: connOptions,
+	}
+	return wrapConnector(origConnector, lg, connectorOptions), nil
 }
 
 // DriverOpenErrorHandler returns a function that handles errors from driver.Driver.Open.

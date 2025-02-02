@@ -179,6 +179,7 @@ func TestPingInCase(t *testing.T) {
 		connWrapper: connWrapper{
 			original: conn,
 			logger:   logger,
+			options:  defaultConnOptions("sqlite3", StepLogMsgWithoutEventName),
 		},
 		originalConn: conn,
 	}

@@ -57,7 +57,8 @@ func TestConnectorDriver(t *testing.T) {
 	t.Parallel()
 	mock := &mockConnectorForWrapConnector{}
 	logger := &stepLogger{}
-	conn := wrapConnector(mock, logger)
+	connectorOptions := defaultConnectorOptions("dummy", StepLogMsgWithoutEventName)
+	conn := wrapConnector(mock, logger, connectorOptions)
 	if conn.Driver() != nil {
 		t.Fatal("Expected nil")
 	}
