@@ -8,11 +8,25 @@ import (
 	"reflect"
 )
 
-func wrapRows(original driver.Rows, logger *stepLogger) driver.Rows {
+type rowsOptions struct {
+	Close         StepOptions
+	Next          StepOptions
+	NextResultSet StepOptions
+}
+
+func defaultRowsOptions(formatter StepLogMsgFormatter) *rowsOptions {
+	return &rowsOptions{
+		Close:         *defaultStepOptions(formatter, "Rows.Close", LevelDebug),
+		Next:          *defaultStepOptions(formatter, "Rows.Next", LevelDebug, HandleRowsNextError),
+		NextResultSet: *defaultStepOptions(formatter, "Rows.NextResultSet", LevelDebug),
+	}
+}
+
+func wrapRows(original driver.Rows, logger *stepLogger, options *rowsOptions) driver.Rows {
 	if original == nil {
 		return nil
 	}
-	rw := rowsWrapper{original, logger}
+	rw := rowsWrapper{original: original, logger: logger, options: options}
 	if rnrs, ok := original.(driver.RowsNextResultSet); ok {
 		return &rowsNextResultSetWrapper{rw, rnrs}
 	}
@@ -22,13 +36,14 @@ func wrapRows(original driver.Rows, logger *stepLogger) driver.Rows {
 type rowsWrapper struct {
 	original driver.Rows
 	logger   *stepLogger
+	options  *rowsOptions
 }
 
 var _ driver.Rows = (*rowsWrapper)(nil)
 
 // Close implements driver.Rows.
 func (r *rowsWrapper) Close() error {
-	return ignoreAttr(r.logger.StepWithoutContext(&r.logger.options.rowsClose, withNilAttr(r.original.Close)))
+	return ignoreAttr(r.logger.StepWithoutContext(&r.options.Close, withNilAttr(r.original.Close)))
 }
 
 // Columns implements driver.Rows.
@@ -38,7 +53,7 @@ func (r *rowsWrapper) Columns() []string {
 
 // Next implements driver.Rows.
 func (r *rowsWrapper) Next(dest []driver.Value) error {
-	return ignoreAttr(r.logger.StepWithoutContext(&r.logger.options.rowsNext, func() (*slog.Attr, error) {
+	return ignoreAttr(r.logger.StepWithoutContext(&r.options.Next, func() (*slog.Attr, error) {
 		return nil, r.original.Next(dest)
 	}))
 }
@@ -120,7 +135,7 @@ func (r *rowsNextResultSetWrapper) HasNextResultSet() bool {
 func (r *rowsNextResultSetWrapper) NextResultSet() error {
 	return ignoreAttr(
 		r.logger.StepWithoutContext(
-			&r.logger.options.rowsNextResultSet,
+			&r.options.NextResultSet,
 			withNilAttr(r.original.NextResultSet),
 		),
 	)
