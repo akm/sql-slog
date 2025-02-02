@@ -5,7 +5,7 @@ import (
 	"log/slog"
 	"reflect"
 
-	"github.com/akm/sql-slog/opts"
+	"github.com/akm/sql-slog/internal/opts"
 )
 
 type RowsOptions = opts.RowsOptions

@@ -6,7 +6,7 @@ import (
 	"database/sql/driver"
 	"log/slog"
 
-	"github.com/akm/sql-slog/opts"
+	"github.com/akm/sql-slog/internal/opts"
 )
 
 type OpenOptions = opts.OpenOptions

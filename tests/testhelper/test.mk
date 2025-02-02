@@ -12,7 +12,7 @@ GO_COVERAGE_PROFILE?=coverage.txt
 $(GO_COVERAGE_PROFILE):
 	$(MAKE) test-with-coverage
 
-GO_COVERAGE_PACKAGES=github.com/akm/sql-slog,github.com/akm/sql-slog/opts,github.com/akm/sql-slog/internal/...
+GO_COVERAGE_PACKAGES=github.com/akm/sql-slog,github.com/akm/sql-slog/internal/opts,github.com/akm/sql-slog/internal/...
 
 # See https://app.codecov.io/github/akm/go-requestid/new
 .PHONY: test-with-coverage

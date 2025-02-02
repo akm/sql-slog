@@ -1,7 +1,7 @@
 package sqlslog
 
 import (
-	"github.com/akm/sql-slog/opts"
+	"github.com/akm/sql-slog/internal/opts"
 )
 
 type Level = opts.Level

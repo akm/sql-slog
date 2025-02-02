@@ -1,6 +1,6 @@
 package sqlslog
 
-import "github.com/akm/sql-slog/opts"
+import "github.com/akm/sql-slog/internal/opts"
 
 // IDGen is a function that generates an ID string.
 type IDGen = opts.IDGen

@@ -3,7 +3,7 @@ package wrap
 import (
 	"database/sql/driver"
 
-	"github.com/akm/sql-slog/opts"
+	"github.com/akm/sql-slog/internal/opts"
 )
 
 type TxOptions = opts.TxOptions
