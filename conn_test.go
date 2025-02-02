@@ -31,7 +31,7 @@ func TestWrapConn(t *testing.T) {
 	t.Parallel()
 	t.Run("nil", func(t *testing.T) {
 		t.Parallel()
-		if wrapConn(nil, nil) != nil {
+		if wrapConn(nil, nil, nil) != nil {
 			t.Fatal("Expected nil")
 		}
 	})
@@ -39,7 +39,8 @@ func TestWrapConn(t *testing.T) {
 		t.Parallel()
 		mock := &mockConnForWrapConn{}
 		logger := &stepLogger{}
-		conn := wrapConn(mock, logger)
+		connOptions := defaultConnOptions("dummy", StepLogMsgWithoutEventName)
+		conn := wrapConn(mock, logger, connOptions)
 		if conn == nil {
 			t.Fatal("Expected non-nil")
 		}
@@ -142,7 +143,8 @@ var (
 func TestWithMockErrorConn(t *testing.T) {
 	t.Parallel()
 	logger := newStepLogger(slog.Default(), newOptions("sqlite3"))
-	w := wrapConn(newMockErrConn(errors.New("unexpected error")), logger)
+	connOptions := defaultConnOptions("sqlite3", StepLogMsgWithoutEventName)
+	w := wrapConn(newMockErrConn(errors.New("unexpected error")), logger, connOptions)
 	t.Run("Begin", func(t *testing.T) {
 		t.Parallel()
 		if _, err := w.Begin(); err == nil { //nolint:staticcheck

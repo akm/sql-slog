@@ -45,7 +45,48 @@ func (w *driverWrapper) Open(dsn string) (driver.Conn, error) {
 	if attr != nil {
 		lg = lg.With(*attr)
 	}
-	return wrapConn(origConn, lg), nil
+
+	txOptions := &txOptions{
+		Commit:   w.logger.options.txCommit,
+		Rollback: w.logger.options.txRollback,
+	}
+	rowOptions := &rowsOptions{
+		Close:         w.logger.options.rowsClose,
+		Next:          w.logger.options.rowsNext,
+		NextResultSet: w.logger.options.rowsNextResultSet,
+	}
+	stmtOptions := &stmtOptions{
+		Close:        w.logger.options.stmtClose,
+		Exec:         w.logger.options.stmtExec,
+		Query:        w.logger.options.stmtQuery,
+		ExecContext:  w.logger.options.stmtExecContext,
+		QueryContext: w.logger.options.stmtQueryContext,
+		Rows:         rowOptions,
+	}
+	connOptions := &connOptions{
+		IDGen: w.logger.options.idGen,
+
+		Begin:     w.logger.options.connBegin,
+		BeginTx:   w.logger.options.connBeginTx,
+		TxIDKey:   w.logger.options.txIDKey,
+		TxOptions: txOptions,
+
+		Close: w.logger.options.connClose,
+
+		Prepare:        w.logger.options.connPrepare,
+		PrepareContext: w.logger.options.connPrepareContext,
+		StmtIDKey:      w.logger.options.stmtIDKey,
+		StmtOptions:    stmtOptions,
+
+		ResetSession: w.logger.options.connResetSession,
+		Ping:         w.logger.options.connPing,
+
+		ExecContext: w.logger.options.connExecContext,
+
+		QueryContext: w.logger.options.connQueryContext,
+		RowsOptions:  rowOptions,
+	}
+	return wrapConn(origConn, lg, connOptions), nil
 }
 
 type driverContextWrapper struct {
