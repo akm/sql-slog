@@ -9,11 +9,6 @@ import (
 
 type DriverOptions = opts.DriverOptions
 
-var (
-	DefaultDriverOptions   = opts.DefaultDriverOptions
-	DriverOpenErrorHandler = opts.DriverOpenErrorHandler
-)
-
 func WrapDriver(original driver.Driver, logger *StepLogger, options *DriverOptions) driver.Driver {
 	r := driverWrapper{
 		original: original,

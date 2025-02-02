@@ -8,8 +8,6 @@ import (
 
 type TxOptions = opts.TxOptions
 
-var DefaultTxOptions = opts.DefaultTxOptions
-
 func WrapTx(original driver.Tx, logger *StepLogger, options *TxOptions) driver.Tx {
 	return &txWrapper{original: original, logger: logger, options: options}
 }

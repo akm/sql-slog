@@ -10,11 +10,3 @@ type (
 
 	StepLogMsgFormatter = opts.StepLogMsgFormatter
 )
-
-var (
-	NewStepOptions     = opts.NewStepOptions
-	DefaultStepOptions = opts.DefaultStepOptions
-
-	StepLogMsgWithEventName    = opts.StepLogMsgWithEventName
-	StepLogMsgWithoutEventName = opts.StepLogMsgWithoutEventName
-)

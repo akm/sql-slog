@@ -10,11 +10,6 @@ import (
 
 type ConnectorOptions = opts.ConnectorOptions
 
-var (
-	DefaultConnectorOptions      = opts.DefaultConnectorOptions
-	ConnectorConnectErrorHandler = opts.ConnectorConnectErrorHandler
-)
-
 type connector struct {
 	original driver.Connector
 	logger   *StepLogger

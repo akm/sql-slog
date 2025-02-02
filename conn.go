@@ -11,12 +11,6 @@ import (
 
 type ConnOptions = opts.ConnOptions
 
-var (
-	DefaultConnOptions           = opts.DefaultConnOptions
-	ConnExecContextErrorHandler  = opts.ConnExecContextErrorHandler
-	ConnQueryContextErrorHandler = opts.ConnQueryContextErrorHandler
-)
-
 func WrapConn(original driver.Conn, logger *StepLogger, options *ConnOptions) driver.Conn {
 	if original == nil {
 		return nil

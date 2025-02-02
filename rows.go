@@ -10,11 +10,6 @@ import (
 
 type RowsOptions = opts.RowsOptions
 
-var (
-	DefaultRowsOptions  = opts.DefaultRowsOptions
-	HandleRowsNextError = opts.HandleRowsNextError
-)
-
 func WrapRows(original driver.Rows, logger *StepLogger, options *RowsOptions) driver.Rows {
 	if original == nil {
 		return nil

@@ -11,8 +11,6 @@ import (
 
 type StmtOptions = opts.StmtOptions
 
-var DefaultStmtOptions = opts.DefaultStmtOptions
-
 type stmtWrapper struct {
 	original driver.Stmt
 	logger   *StepLogger
