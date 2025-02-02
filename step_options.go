@@ -76,7 +76,7 @@ func newStepOptions(f StepLogMsgFormatter, name string, startLevel, errorLevel, 
 	}
 }
 
-func defaultStepOptions(formatter StepLogMsgFormatter, name string, completeLevel Level, errHandlers ...func(error) (bool, []slog.Attr)) *StepOptions {
+func defaultStepOptions(formatter StepLogMsgFormatter, name string, completeLevel Level, errHandlers ...func(error) (bool, []slog.Attr)) *StepOptions { // nolint:unparam
 	var startLevel Level
 	switch completeLevel { // nolint:exhaustive
 	case LevelError:
