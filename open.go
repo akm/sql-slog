@@ -93,7 +93,7 @@ func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB,
 	var db *sql.DB
 	err := ignoreAttr(lg.Step(ctx, &logger.options.sqlslogOpen, func() (*slog.Attr, error) {
 		var err error
-		db, err = open(driverName, dsn, logger, driverOptions)
+		db, err = openWithDriver(driverName, dsn, logger, driverOptions)
 		return nil, err
 	}))
 	if err != nil {
@@ -102,7 +102,7 @@ func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB,
 	return db, nil
 }
 
-func open(driverName, dsn string, logger *stepLogger, driverOptions *driverOptions) (*sql.DB, error) {
+func openWithDriver(driverName, dsn string, logger *stepLogger, driverOptions *driverOptions) (*sql.DB, error) {
 	db, err := sql.Open(driverName, dsn)
 	if err != nil {
 		return nil, err
