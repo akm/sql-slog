@@ -1,31 +1,7 @@
 package sqlslog
 
-import (
-	"database/sql/driver"
+import "github.com/akm/sql-slog/internal/wrap"
 
-	"github.com/akm/sql-slog/opts"
-)
+type TxOptions = wrap.TxOptions
 
-type TxOptions = opts.TxOptions
-
-func WrapTx(original driver.Tx, logger *StepLogger, options *TxOptions) driver.Tx {
-	return &txWrapper{original: original, logger: logger, options: options}
-}
-
-type txWrapper struct {
-	original driver.Tx
-	logger   *StepLogger
-	options  *TxOptions
-}
-
-var _ driver.Tx = (*txWrapper)(nil)
-
-// Commit implements driver.Tx.
-func (t *txWrapper) Commit() error {
-	return IgnoreAttr(t.logger.StepWithoutContext(t.options.Commit, WithNilAttr(t.original.Commit)))
-}
-
-// Rollback implements driver.Tx.
-func (t *txWrapper) Rollback() error {
-	return IgnoreAttr(t.logger.StepWithoutContext(t.options.Rollback, WithNilAttr(t.original.Rollback)))
-}
+var WrapTx = wrap.WrapTx
