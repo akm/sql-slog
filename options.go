@@ -8,7 +8,6 @@ type (
 )
 
 var (
-	Logger                 = opts.Logger
 	SetStepLogMsgFormatter = opts.SetStepLogMsgFormatter
 
 	ConnBegin          = opts.ConnBegin
