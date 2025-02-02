@@ -10,12 +10,6 @@ type (
 )
 
 var (
-	StmtClose        = opts.StmtClose
-	StmtExec         = opts.StmtExec
-	StmtQuery        = opts.StmtQuery
-	StmtExecContext  = opts.StmtExecContext
-	StmtQueryContext = opts.StmtQueryContext
-
 	TxCommit   = opts.TxCommit
 	TxRollback = opts.TxRollback
 )
