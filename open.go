@@ -7,6 +7,19 @@ import (
 	"log/slog"
 )
 
+type sqlslogOptions struct {
+	Open          StepOptions
+	DriverOptions *driverOptions
+}
+
+func defaultSqlslogOptions(driverName string, formatter StepLogMsgFormatter) *sqlslogOptions { // nolint:unused
+	driverOptions := defaultDriverOptions(driverName, formatter)
+	return &sqlslogOptions{
+		Open:          *defaultStepOptions(formatter, "Open", LevelInfo),
+		DriverOptions: driverOptions,
+	}
+}
+
 /*
 Open opens a database specified by its driver name and a driver-specific data source name,
 and returns a new database handle with logging capabilities.
@@ -84,16 +97,24 @@ func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB,
 		ConnOptions:      connOptions,
 		ConnectorOptions: connectorOptions,
 	}
+	sqlslogOptions := &sqlslogOptions{
+		Open:          options.sqlslogOpen,
+		DriverOptions: driverOptions,
+	}
 
+	return open(ctx, driverName, dsn, logger, sqlslogOptions)
+}
+
+func open(ctx context.Context, driverName, dsn string, logger *stepLogger, options *sqlslogOptions) (*sql.DB, error) {
 	lg := logger.With(
 		slog.String("driver", driverName),
 		slog.String("dsn", dsn),
 	)
 
 	var db *sql.DB
-	err := ignoreAttr(lg.Step(ctx, &logger.options.sqlslogOpen, func() (*slog.Attr, error) {
+	err := ignoreAttr(lg.Step(ctx, &options.Open, func() (*slog.Attr, error) {
 		var err error
-		db, err = openWithDriver(driverName, dsn, logger, driverOptions)
+		db, err = openWithDriver(driverName, dsn, logger, options.DriverOptions)
 		return nil, err
 	}))
 	if err != nil {
