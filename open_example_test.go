@@ -52,32 +52,3 @@ func ExampleLogger() {
 	db, _ := sqlslog.Open(ctx, "sqlite3", dsn, sqlslog.Logger(logger))
 	defer db.Close()
 }
-
-func ExampleNewJSONHandler() {
-	dsn := "file::memory:?cache=shared"
-	ctx := context.TODO()
-	logger := slog.New(sqlslog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
-		Level: slog.LevelDebug,
-	}))
-	db, _ := sqlslog.Open(ctx, "sqlite3", dsn, sqlslog.Logger(logger))
-	defer db.Close()
-}
-
-func ExampleNewTextHandler() {
-	dsn := "file::memory:?cache=shared"
-	ctx := context.TODO()
-	logger := slog.New(sqlslog.NewTextHandler(os.Stdout, nil))
-	db, _ := sqlslog.Open(ctx, "sqlite3", dsn, sqlslog.Logger(logger))
-	defer db.Close()
-}
-
-func ExampleSetStepLogMsgFormatter() {
-	sqlslog.SetStepLogMsgFormatter(func(name string, event sqlslog.Event) string {
-		return name + "/" + event.String()
-	})
-	dsn := "file::memory:?cache=shared"
-	ctx := context.TODO()
-	logger := slog.New(sqlslog.NewJSONHandler(os.Stdout, nil))
-	db, _ := sqlslog.Open(ctx, "sqlite3", dsn, sqlslog.Logger(logger))
-	defer db.Close()
-}
