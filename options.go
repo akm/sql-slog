@@ -10,8 +10,6 @@ type (
 )
 
 var (
-	SetStepLogMsgFormatter = opts.SetStepLogMsgFormatter
-
 	ConnBegin          = opts.ConnBegin
 	ConnClose          = opts.ConnClose
 	ConnPrepare        = opts.ConnPrepare
