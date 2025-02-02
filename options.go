@@ -10,10 +10,6 @@ type (
 )
 
 var (
-	RowsClose         = opts.RowsClose
-	RowsNext          = opts.RowsNext
-	RowsNextResultSet = opts.RowsNextResultSet
-
 	StmtClose        = opts.StmtClose
 	StmtExec         = opts.StmtExec
 	StmtQuery        = opts.StmtQuery
