@@ -64,8 +64,11 @@ func open(driverName, dsn string, logger *StepLogger, options *OpenOptions) (*sq
 	}
 	// This db is not used directly, but it is used to get the driver.
 	drv := WrapDriver(db.Driver(), logger, options.Driver)
-	var origConnector driver.Connector
+	return openWithDriver(drv, dsn, logger, options.Driver.Connector)
+}
 
+func openWithDriver(drv driver.Driver, dsn string, logger *StepLogger, connectorOptions *ConnectorOptions) (*sql.DB, error) {
+	var origConnector driver.Connector
 	if dc, ok := drv.(driver.DriverContext); ok {
 		connector, err := dc.OpenConnector(dsn)
 		if err != nil {
@@ -75,8 +78,7 @@ func open(driverName, dsn string, logger *StepLogger, options *OpenOptions) (*sq
 	} else {
 		origConnector = &dsnConnector{dsn: dsn, driver: drv}
 	}
-
-	return sql.OpenDB(WrapConnector(origConnector, logger, options.Driver.Connector)), nil
+	return sql.OpenDB(WrapConnector(origConnector, logger, connectorOptions)), nil
 }
 
 func buildOpenOptions(options *Options) *OpenOptions {
