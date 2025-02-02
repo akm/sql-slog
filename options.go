@@ -10,8 +10,6 @@ type (
 )
 
 var (
-	ConnectorConnect = opts.ConnectorConnect
-
 	DriverOpen          = opts.DriverOpen
 	DriverOpenConnector = opts.DriverOpenConnector
 
