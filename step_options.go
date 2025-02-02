@@ -75,3 +75,22 @@ func newStepOptions(f StepLogMsgFormatter, name string, startLevel, errorLevel, 
 		Complete: EventOptions{Msg: f(name, EventComplete), Level: completeLevel},
 	}
 }
+
+func defaultStepOptions(formatter StepLogMsgFormatter, name string, completeLevel Level, errHandlers ...func(error) (bool, []slog.Attr)) *StepOptions {
+	var startLevel Level
+	switch completeLevel { // nolint:exhaustive
+	case LevelError:
+		startLevel = LevelInfo
+	case LevelInfo:
+		startLevel = LevelDebug
+	case LevelDebug:
+		startLevel = LevelTrace
+	default:
+		startLevel = LevelVerbose
+	}
+	r := newStepOptions(formatter, name, startLevel, LevelError, completeLevel)
+	if len(errHandlers) > 0 {
+		r.ErrorHandler = errHandlers[0]
+	}
+	return r
+}
