@@ -111,6 +111,10 @@ func open(driverName, dsn string, logger *stepLogger, driverOptions *driverOptio
 
 	drv := wrapDriver(db.Driver(), logger, driverOptions)
 
+	return openWithWrappedDriver(drv, dsn, logger, driverOptions)
+}
+
+func openWithWrappedDriver(drv driver.Driver, dsn string, logger *stepLogger, driverOptions *driverOptions) (*sql.DB, error) {
 	var origConnector driver.Connector
 
 	if dc, ok := drv.(driver.DriverContext); ok {
