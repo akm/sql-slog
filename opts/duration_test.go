@@ -7,11 +7,14 @@ import (
 )
 
 func TestDurationAttrFunc(t *testing.T) {
+	t.Parallel()
 	t.Run("unexpected DurationType", func(t *testing.T) {
-		f := DurationAttrFunc("key", DurationType(999))
+		t.Parallel()
+		const testKey = "testKey"
+		f := DurationAttrFunc(testKey, DurationType(999))
 		attr := f(123 * time.Nanosecond)
-		if attr.Key != "key" {
-			t.Errorf("expected: key, but got %s", attr.Key)
+		if attr.Key != testKey {
+			t.Errorf("expected: %s, but got %s", testKey, attr.Key)
 		}
 		if attr.Value.Kind() != slog.KindInt64 {
 			t.Errorf("expected: KindInt64, but got %s", attr.Value.Kind())
