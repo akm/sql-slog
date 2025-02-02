@@ -7,8 +7,8 @@ func TestSetStepLogMsgFormatter(t *testing.T) {
 	t.Run("defaultOptions", func(t *testing.T) {
 		t.Parallel()
 		opts := newOptions("dummy")
-		if opts.connBegin.Complete.Msg != "Conn.Begin" {
-			t.Errorf("unexpected default value: %s", opts.connBegin.Complete.Msg)
+		if opts.DriverOptions.ConnOptions.Begin.Complete.Msg != "Conn.Begin" {
+			t.Errorf("unexpected default value: %s", opts.DriverOptions.ConnOptions.Begin.Complete.Msg)
 		}
 	})
 
@@ -18,8 +18,8 @@ func TestSetStepLogMsgFormatter(t *testing.T) {
 		SetStepLogMsgFormatter(formatter)
 		defer SetStepLogMsgFormatter(backup)
 		opts := newOptions("dummy")
-		if opts.connBegin.Complete.Msg != "Conn.Begin Complete" {
-			t.Errorf("unexpected default value: %s", opts.connBegin.Complete.Msg)
+		if opts.DriverOptions.ConnOptions.Begin.Complete.Msg != "Conn.Begin Complete" {
+			t.Errorf("unexpected default value: %s", opts.DriverOptions.ConnOptions.Begin.Complete.Msg)
 		}
 	})
 }

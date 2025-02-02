@@ -10,91 +10,16 @@ type options struct {
 	durationKey  string
 	durationType DurationType
 
-	idGen     IDGen
-	connIDKey string
-	txIDKey   string
-	stmtIDKey string
-
-	connBegin           StepOptions
-	connClose           StepOptions
-	connPrepare         StepOptions
-	connResetSession    StepOptions
-	connPing            StepOptions
-	connExecContext     StepOptions
-	connQueryContext    StepOptions
-	connPrepareContext  StepOptions
-	connBeginTx         StepOptions
-	connectorConnect    StepOptions
-	driverOpen          StepOptions
-	driverOpenConnector StepOptions
-	sqlslogOpen         StepOptions
-	rowsClose           StepOptions
-	rowsNext            StepOptions
-	rowsNextResultSet   StepOptions
-	stmtClose           StepOptions
-	stmtExec            StepOptions
-	stmtQuery           StepOptions
-	stmtExecContext     StepOptions
-	stmtQueryContext    StepOptions
-	txCommit            StepOptions
-	txRollback          StepOptions
+	sqlslogOptions
 }
 
 func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *options {
-	stepOpts := func(name string, completeLevel Level) StepOptions {
-		var startLevel Level
-		switch completeLevel { // nolint:exhaustive
-		case LevelError:
-			startLevel = LevelInfo
-		case LevelInfo:
-			startLevel = LevelDebug
-		case LevelDebug:
-			startLevel = LevelTrace
-		default:
-			startLevel = LevelVerbose
-		}
-		return *newStepOptions(formatter, name, startLevel, LevelError, completeLevel)
-	}
-
-	withErrorHandler := func(opts StepOptions, eh func(error) (bool, []slog.Attr)) StepOptions {
-		r := opts
-		r.ErrorHandler = eh
-		return r
-	}
-
 	return &options{
 		logger:       slog.Default(),
 		durationKey:  DurationKeyDefault,
 		durationType: DurationNanoSeconds,
 
-		idGen:     IDGeneratorDefault,
-		connIDKey: ConnIDKeyDefault,
-		txIDKey:   TxIDKeyDefault,
-		stmtIDKey: StmtIDKeyDefault,
-
-		connBegin:           stepOpts("Conn.Begin", LevelInfo),
-		connClose:           stepOpts("Conn.Close", LevelInfo),
-		connPrepare:         stepOpts("Conn.Prepare", LevelInfo),
-		connResetSession:    stepOpts("Conn.ResetSession", LevelTrace),
-		connPing:            stepOpts("Conn.Ping", LevelTrace),
-		connExecContext:     withErrorHandler(stepOpts("Conn.ExecContext", LevelInfo), ConnExecContextErrorHandler(driverName)),
-		connQueryContext:    withErrorHandler(stepOpts("Conn.QueryContext", LevelInfo), ConnQueryContextErrorHandler(driverName)),
-		connPrepareContext:  stepOpts("Conn.PrepareContext", LevelInfo),
-		connBeginTx:         stepOpts("Conn.BeginTx", LevelInfo),
-		connectorConnect:    withErrorHandler(stepOpts("Connector.Connect", LevelInfo), ConnectorConnectErrorHandler(driverName)),
-		driverOpen:          withErrorHandler(stepOpts("Driver.Open", LevelInfo), DriverOpenErrorHandler(driverName)),
-		driverOpenConnector: stepOpts("Driver.OpenConnector", LevelInfo),
-		sqlslogOpen:         stepOpts("sqlslog.Open", LevelInfo),
-		rowsClose:           stepOpts("Rows.Close", LevelDebug),
-		rowsNext:            withErrorHandler(stepOpts("Rows.Next", LevelDebug), HandleRowsNextError),
-		rowsNextResultSet:   stepOpts("Rows.NextResultSet", LevelDebug),
-		stmtClose:           stepOpts("Stmt.Close", LevelInfo),
-		stmtExec:            stepOpts("Stmt.Exec", LevelInfo),
-		stmtQuery:           stepOpts("Stmt.Query", LevelInfo),
-		stmtExecContext:     stepOpts("Stmt.ExecContext", LevelInfo),
-		stmtQueryContext:    stepOpts("Stmt.QueryContext", LevelInfo),
-		txCommit:            stepOpts("Tx.Commit", LevelInfo),
-		txRollback:          stepOpts("Tx.Rollback", LevelInfo),
+		sqlslogOptions: *defaultSqlslogOptions(driverName, formatter),
 	}
 }
 
@@ -124,88 +49,112 @@ func Logger(logger *slog.Logger) Option {
 }
 
 // Set the options for Conn.Begin.
-func ConnBegin(f func(*StepOptions)) Option { return func(o *options) { f(&o.connBegin) } }
+func ConnBegin(f func(*StepOptions)) Option {
+	return func(o *options) { f(&o.DriverOptions.ConnOptions.Begin) }
+}
 
 // Set the options for Conn.Close.
-func ConnClose(f func(*StepOptions)) Option { return func(o *options) { f(&o.connClose) } }
+func ConnClose(f func(*StepOptions)) Option {
+	return func(o *options) { f(&o.DriverOptions.ConnOptions.Close) }
+}
 
 // Set the options for Conn.Prepare.
-func ConnPrepare(f func(*StepOptions)) Option { return func(o *options) { f(&o.connPrepare) } }
+func ConnPrepare(f func(*StepOptions)) Option {
+	return func(o *options) { f(&o.DriverOptions.ConnOptions.Prepare) }
+}
 
 // Set the options for Conn.ResetSession.
 func ConnResetSession(f func(*StepOptions)) Option {
-	return func(o *options) { f(&o.connResetSession) }
+	return func(o *options) { f(&o.DriverOptions.ConnOptions.ResetSession) }
 }
 
 // Set the options for Conn.Ping.
-func ConnPing(f func(*StepOptions)) Option { return func(o *options) { f(&o.connPing) } }
+func ConnPing(f func(*StepOptions)) Option {
+	return func(o *options) { f(&o.DriverOptions.ConnOptions.Ping) }
+}
 
 // Set the options for Conn.ExecContext.
 func ConnExecContext(f func(*StepOptions)) Option {
-	return func(o *options) { f(&o.connExecContext) }
+	return func(o *options) { f(&o.DriverOptions.ConnOptions.ExecContext) }
 }
 
 // Set the options for Conn.QueryContext.
 func ConnQueryContext(f func(*StepOptions)) Option {
-	return func(o *options) { f(&o.connQueryContext) }
+	return func(o *options) { f(&o.DriverOptions.ConnOptions.QueryContext) }
 }
 
 // Set the options for Conn.PrepareContext.
 func ConnPrepareContext(f func(*StepOptions)) Option {
-	return func(o *options) { f(&o.connPrepareContext) }
+	return func(o *options) { f(&o.DriverOptions.ConnOptions.PrepareContext) }
 }
 
 // Set the options for Conn.BeginTx.
-func ConnBeginTx(f func(*StepOptions)) Option { return func(o *options) { f(&o.connBeginTx) } }
+func ConnBeginTx(f func(*StepOptions)) Option {
+	return func(o *options) { f(&o.DriverOptions.ConnOptions.BeginTx) }
+}
 
 // Set the options for Connector.Connect.
 func ConnectorConnect(f func(*StepOptions)) Option {
-	return func(o *options) { f(&o.connectorConnect) }
+	return func(o *options) { f(&o.DriverOptions.ConnectorOptions.Connect) }
 }
 
 // Set the options for Driver.Open.
-func DriverOpen(f func(*StepOptions)) Option { return func(o *options) { f(&o.driverOpen) } }
+func DriverOpen(f func(*StepOptions)) Option { return func(o *options) { f(&o.DriverOptions.Open) } }
 
 // Set the options for Driver.OpenConnector.
 func DriverOpenConnector(f func(*StepOptions)) Option {
-	return func(o *options) { f(&o.driverOpenConnector) }
+	return func(o *options) { f(&o.DriverOptions.OpenConnector) }
 }
 
 // Set the options for sqlslog.Open.
-func SqlslogOpen(f func(*StepOptions)) Option { return func(o *options) { f(&o.sqlslogOpen) } } // nolint:revive
+func SqlslogOpen(f func(*StepOptions)) Option { return func(o *options) { f(&o.Open) } } // nolint:revive
 
 // Set the options for Rows.Close.
-func RowsClose(f func(*StepOptions)) Option { return func(o *options) { f(&o.rowsClose) } }
+func RowsClose(f func(*StepOptions)) Option {
+	return func(o *options) { f(&o.DriverOptions.ConnOptions.RowsOptions.Close) }
+}
 
 // Set the options for Rows.Next.
-func RowsNext(f func(*StepOptions)) Option { return func(o *options) { f(&o.rowsNext) } }
+func RowsNext(f func(*StepOptions)) Option {
+	return func(o *options) { f(&o.DriverOptions.ConnOptions.RowsOptions.Next) }
+}
 
 // Set the options for Rows.NextResultSet.
 func RowsNextResultSet(f func(*StepOptions)) Option {
-	return func(o *options) { f(&o.rowsNextResultSet) }
+	return func(o *options) { f(&o.DriverOptions.ConnOptions.RowsOptions.NextResultSet) }
 }
 
 // Set the options for Stmt.Close.
-func StmtClose(f func(*StepOptions)) Option { return func(o *options) { f(&o.stmtClose) } }
+func StmtClose(f func(*StepOptions)) Option {
+	return func(o *options) { f(&o.DriverOptions.ConnOptions.StmtOptions.Close) }
+}
 
 // Set the options for Stmt.Exec.
-func StmtExec(f func(*StepOptions)) Option { return func(o *options) { f(&o.stmtExec) } }
+func StmtExec(f func(*StepOptions)) Option {
+	return func(o *options) { f(&o.DriverOptions.ConnOptions.StmtOptions.Exec) }
+}
 
 // Set the options for Stmt.Query.
-func StmtQuery(f func(*StepOptions)) Option { return func(o *options) { f(&o.stmtQuery) } }
+func StmtQuery(f func(*StepOptions)) Option {
+	return func(o *options) { f(&o.DriverOptions.ConnOptions.StmtOptions.Query) }
+}
 
 // Set the options for Stmt.ExecContext.
 func StmtExecContext(f func(*StepOptions)) Option {
-	return func(o *options) { f(&o.stmtExecContext) }
+	return func(o *options) { f(&o.DriverOptions.ConnOptions.StmtOptions.ExecContext) }
 }
 
 // Set the options for Stmt.QueryContext.
 func StmtQueryContext(f func(*StepOptions)) Option {
-	return func(o *options) { f(&o.stmtQueryContext) }
+	return func(o *options) { f(&o.DriverOptions.ConnOptions.StmtOptions.QueryContext) }
 }
 
 // Set the options for Tx.Commit.
-func TxCommit(f func(*StepOptions)) Option { return func(o *options) { f(&o.txCommit) } }
+func TxCommit(f func(*StepOptions)) Option {
+	return func(o *options) { f(&o.DriverOptions.ConnOptions.TxOptions.Commit) }
+}
 
 // Set the options for Tx.Rollback.
-func TxRollback(f func(*StepOptions)) Option { return func(o *options) { f(&o.txRollback) } }
+func TxRollback(f func(*StepOptions)) Option {
+	return func(o *options) { f(&o.DriverOptions.ConnOptions.TxOptions.Rollback) }
+}
