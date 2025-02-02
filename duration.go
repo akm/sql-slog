@@ -12,8 +12,6 @@ const (
 	DurationString       = opts.DurationString
 )
 
-var DurationAttrFunc = opts.DurationAttrFunc
-
 // Duration is an option to specify duration value in log.
 // The default is DurationNanoSeconds.
 func Duration(v DurationType) Option { return opts.Duration(v) }
