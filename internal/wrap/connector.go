@@ -1,4 +1,4 @@
-package sqlslog
+package wrap
 
 import (
 	"context"
@@ -18,7 +18,7 @@ type connector struct {
 
 var _ driver.Connector = (*connector)(nil)
 
-func WrapConnector(original driver.Connector, logger *StepLogger, options *ConnectorOptions) driver.Connector {
+func WrapConnector(original driver.Connector, logger *StepLogger, options *ConnectorOptions) driver.Connector { //nolint:revive
 	return &connector{original: original, logger: logger, options: options}
 }
 

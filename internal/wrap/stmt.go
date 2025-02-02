@@ -137,7 +137,7 @@ var (
 	_ driver.StmtQueryContext = (*stmtContextWrapper)(nil)
 )
 
-func WrapStmt(original driver.Stmt, logger *StepLogger, options *StmtOptions) driver.Stmt {
+func WrapStmt(original driver.Stmt, logger *StepLogger, options *StmtOptions) driver.Stmt { // nolint:revive
 	if original == nil {
 		return nil
 	}

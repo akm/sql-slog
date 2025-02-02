@@ -1,4 +1,4 @@
-package sqlslog
+package wrap
 
 import (
 	"database/sql/driver"
@@ -9,7 +9,7 @@ import (
 
 type DriverOptions = opts.DriverOptions
 
-func WrapDriver(original driver.Driver, logger *StepLogger, options *DriverOptions) driver.Driver {
+func WrapDriver(original driver.Driver, logger *StepLogger, options *DriverOptions) driver.Driver { // nolint:revive
 	r := driverWrapper{
 		original: original,
 		logger:   logger,

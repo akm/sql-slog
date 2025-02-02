@@ -1,4 +1,4 @@
-package sqlslog
+package wrap
 
 import (
 	"context"
@@ -11,7 +11,7 @@ import (
 
 type ConnOptions = opts.ConnOptions
 
-func WrapConn(original driver.Conn, logger *StepLogger, options *ConnOptions) driver.Conn {
+func WrapConn(original driver.Conn, logger *StepLogger, options *ConnOptions) driver.Conn { // nolint:revive
 	if original == nil {
 		return nil
 	}

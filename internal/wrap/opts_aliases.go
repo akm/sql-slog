@@ -2,4 +2,16 @@ package wrap
 
 import "github.com/akm/sql-slog/opts"
 
-type StepOptions = opts.StepOptions
+type (
+	Option      = opts.Option
+	Options     = opts.Options
+	StepOptions = opts.StepOptions
+)
+
+var (
+	NewOptions       = opts.NewOptions
+	NewTextHandler   = opts.NewTextHandler
+	DurationAttrFunc = opts.DurationAttrFunc
+
+	Logger = opts.Logger
+)
