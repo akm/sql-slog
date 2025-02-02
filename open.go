@@ -76,6 +76,14 @@ func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB,
 		Connect:     options.connectorConnect,
 		ConnOptions: connOptions,
 	}
+	driverOptions := &driverOptions{
+		IDGen:            options.idGen,
+		ConnIDKey:        options.connIDKey,
+		Open:             options.driverOpen,
+		OpenConnector:    options.driverOpenConnector,
+		ConnOptions:      connOptions,
+		ConnectorOptions: connectorOptions,
+	}
 
 	lg := logger.With(
 		slog.String("driver", driverName),
@@ -85,7 +93,7 @@ func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB,
 	var db *sql.DB
 	err := ignoreAttr(lg.Step(ctx, &logger.options.sqlslogOpen, func() (*slog.Attr, error) {
 		var err error
-		db, err = open(driverName, dsn, logger, connectorOptions)
+		db, err = open(driverName, dsn, logger, driverOptions)
 		return nil, err
 	}))
 	if err != nil {
@@ -94,14 +102,14 @@ func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB,
 	return db, nil
 }
 
-func open(driverName, dsn string, logger *stepLogger, connectorOptions *connectorOptions) (*sql.DB, error) {
+func open(driverName, dsn string, logger *stepLogger, driverOptions *driverOptions) (*sql.DB, error) {
 	db, err := sql.Open(driverName, dsn)
 	if err != nil {
 		return nil, err
 	}
 	// This db is not used directly, but it is used to get the driver.
 
-	drv := wrapDriver(db.Driver(), logger)
+	drv := wrapDriver(db.Driver(), logger, driverOptions)
 
 	var origConnector driver.Connector
 
@@ -115,5 +123,5 @@ func open(driverName, dsn string, logger *stepLogger, connectorOptions *connecto
 		origConnector = &dsnConnector{dsn: dsn, driver: drv}
 	}
 
-	return sql.OpenDB(wrapConnector(origConnector, logger, connectorOptions)), nil
+	return sql.OpenDB(wrapConnector(origConnector, logger, driverOptions.ConnectorOptions)), nil
 }
