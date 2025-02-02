@@ -6,6 +6,8 @@ import (
 	"errors"
 	"log/slog"
 	"testing"
+
+	"github.com/akm/sql-slog/internal/opts"
 )
 
 type mockErrorDiverContext struct{}
@@ -29,7 +31,7 @@ func TestDriverContextWrapperOpenConnector(t *testing.T) {
 	t.Parallel()
 	t.Run("unexpected error", func(t *testing.T) {
 		t.Parallel()
-		opts := NewOptions("sqlite3")
+		opts := opts.NewDefaultOptions("sqlite3", opts.StepLogMsgWithoutEventName)
 		openOptions := buildOpenOptions(opts)
 		buf := bytes.NewBuffer(nil)
 		logger := slog.New(NewTextHandler(buf, nil))

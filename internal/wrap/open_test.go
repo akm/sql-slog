@@ -1,31 +1,11 @@
 package wrap
 
 import (
-	"bytes"
-	"context"
 	"database/sql/driver"
 	"errors"
 	"log/slog"
 	"testing"
 )
-
-func TestOpen(t *testing.T) {
-	t.Parallel()
-	ctx := context.TODO()
-	buf := bytes.NewBuffer(nil)
-	logger := slog.New(slog.NewJSONHandler(buf, &slog.HandlerOptions{Level: slog.LevelDebug}))
-
-	db, err := Open(ctx, "invalid-driver", "", Logger(logger))
-	if err == nil {
-		t.Fatal("Expected error")
-	}
-	if err.Error() != "sql: unknown driver \"invalid-driver\" (forgotten import?)" {
-		t.Fatalf("Unexpected error: %v", err)
-	}
-	if db != nil {
-		t.Fatal("Expected nil db")
-	}
-}
 
 type errorDriverContext struct {
 	error error
@@ -63,4 +43,56 @@ func TestOpenWithDriver(t *testing.T) {
 			}
 		})
 	})
+}
+
+func buildOpenOptions(options *Options) *OpenOptions {
+	connOptions := &ConnOptions{
+		IDGen:   options.IDGen,
+		Begin:   &options.ConnBegin,
+		BeginTx: &options.ConnBeginTx,
+		TxIDKey: options.TxIDKey,
+		Tx: &TxOptions{
+			Commit:   &options.TxCommit,
+			Rollback: &options.TxRollback,
+		},
+		Close:          &options.ConnClose,
+		Prepare:        &options.ConnPrepare,
+		PrepareContext: &options.ConnPrepareContext,
+		StmtIDKey:      options.StmtIDKey,
+		Stmt: &StmtOptions{
+			Close:        &options.StmtClose,
+			Exec:         &options.StmtExec,
+			Query:        &options.StmtQuery,
+			ExecContext:  &options.StmtExecContext,
+			QueryContext: &options.StmtQueryContext,
+			Rows: &RowsOptions{
+				Close:         &options.RowsClose,
+				Next:          &options.RowsNext,
+				NextResultSet: &options.RowsNextResultSet,
+			},
+		},
+		ResetSession: &options.ConnResetSession,
+		Ping:         &options.ConnPing,
+		ExecContext:  &options.ConnExecContext,
+		QueryContext: &options.ConnQueryContext,
+		Rows: &RowsOptions{
+			Close:         &options.RowsClose,
+			Next:          &options.RowsNext,
+			NextResultSet: &options.RowsNextResultSet,
+		},
+	}
+	return &OpenOptions{
+		Open: &options.SqlslogOpen,
+		Driver: &DriverOptions{
+			IDGen:         options.IDGen,
+			ConnIDKey:     options.ConnIDKey,
+			Open:          &options.DriverOpen,
+			OpenConnector: &options.DriverOpenConnector,
+			Conn:          connOptions,
+			Connector: &ConnectorOptions{
+				Connect: &options.ConnectorConnect,
+				Conn:    connOptions,
+			},
+		},
+	}
 }
