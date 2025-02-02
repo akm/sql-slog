@@ -12,4 +12,8 @@ const (
 	DurationString       = opts.DurationString
 )
 
-var DurationAttrFunc = opts.DurationAttrFunc
+var (
+	DurationAttrFunc = opts.DurationAttrFunc
+	NewOptions       = opts.NewOptions
+	NewJSONHandler   = opts.NewJSONHandler
+)
