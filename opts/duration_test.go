@@ -1,9 +1,26 @@
 package opts
 
 import (
+	"log/slog"
 	"testing"
 	"time"
 )
+
+func TestDurationAttrFunc(t *testing.T) {
+	t.Run("unexpected DurationType", func(t *testing.T) {
+		f := DurationAttrFunc("key", DurationType(999))
+		attr := f(123 * time.Nanosecond)
+		if attr.Key != "key" {
+			t.Errorf("expected: key, but got %s", attr.Key)
+		}
+		if attr.Value.Kind() != slog.KindInt64 {
+			t.Errorf("expected: KindInt64, but got %s", attr.Value.Kind())
+		}
+		if attr.Value.Int64() != 123 {
+			t.Errorf("expected: 123, but got %d", attr.Value.Int64())
+		}
+	})
+}
 
 func TestDurationString(t *testing.T) {
 	t.Parallel()
