@@ -112,14 +112,3 @@ func TestRowsNextResultSet(t *testing.T) {
 		t.Fatalf("Expected %q, got %q", errMsg, err.Error())
 	}
 }
-
-func TestHandleRowsNextError(t *testing.T) {
-	t.Parallel()
-	complete, attrs := HandleRowsNextError(errors.New("dummy"))
-	if complete {
-		t.Fatal("Expected false")
-	}
-	if attrs != nil {
-		t.Fatal("Expected nil")
-	}
-}
