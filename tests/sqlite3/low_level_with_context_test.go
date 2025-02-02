@@ -513,7 +513,7 @@ func TestLowLevelWithContext(t *testing.T) {
 			logs.Start()
 			err := conn.Raw(func(driverConn interface{}) error {
 				logs.Assert(t, []map[string]interface{}{})
-				assert.Equal(t, "*sqlslog.connWithContextWrapper", fmt.Sprintf("%T", driverConn))
+				assert.Equal(t, "*wrap.connWithContextWrapper", fmt.Sprintf("%T", driverConn))
 				if assert.Implements(t, (*driver.Conn)(nil), driverConn) {
 					dConn := driverConn.(driver.Conn)
 
