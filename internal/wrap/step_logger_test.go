@@ -1,4 +1,4 @@
-package sqlslog
+package wrap
 
 import (
 	"log/slog"
