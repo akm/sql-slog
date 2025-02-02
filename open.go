@@ -12,7 +12,7 @@ type sqlslogOptions struct {
 	DriverOptions *driverOptions
 }
 
-func defaultSqlslogOptions(driverName string, formatter StepLogMsgFormatter) *sqlslogOptions { // nolint:unused
+func defaultSqlslogOptions(driverName string, formatter StepLogMsgFormatter) *sqlslogOptions {
 	driverOptions := defaultDriverOptions(driverName, formatter)
 	return &sqlslogOptions{
 		Open:          *defaultStepOptions(formatter, "Open", LevelInfo),

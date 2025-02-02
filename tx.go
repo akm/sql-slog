@@ -9,7 +9,7 @@ type txOptions struct {
 	Rollback StepOptions
 }
 
-func defaultTxOptions(formatter StepLogMsgFormatter) *txOptions { // nolint:unused
+func defaultTxOptions(formatter StepLogMsgFormatter) *txOptions {
 	return &txOptions{
 		Commit:   *defaultStepOptions(formatter, "Tx.Commit", LevelInfo),
 		Rollback: *defaultStepOptions(formatter, "Tx.Rollback", LevelInfo),
