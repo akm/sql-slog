@@ -10,9 +10,6 @@ type (
 )
 
 var (
-	DriverOpen          = opts.DriverOpen
-	DriverOpenConnector = opts.DriverOpenConnector
-
 	SqlslogOpen = opts.SqlslogOpen
 
 	RowsClose         = opts.RowsClose
