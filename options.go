@@ -10,16 +10,6 @@ type (
 )
 
 var (
-	ConnBegin          = opts.ConnBegin
-	ConnClose          = opts.ConnClose
-	ConnPrepare        = opts.ConnPrepare
-	ConnResetSession   = opts.ConnResetSession
-	ConnPing           = opts.ConnPing
-	ConnExecContext    = opts.ConnExecContext
-	ConnQueryContext   = opts.ConnQueryContext
-	ConnPrepareContext = opts.ConnPrepareContext
-	ConnBeginTx        = opts.ConnBeginTx
-
 	ConnectorConnect = opts.ConnectorConnect
 
 	DriverOpen          = opts.DriverOpen
