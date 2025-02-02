@@ -8,7 +8,7 @@ import (
 	"log/slog"
 )
 
-func wrapConn(original driver.Conn, logger *logger) driver.Conn {
+func wrapConn(original driver.Conn, logger *stepLogger) driver.Conn {
 	if original == nil {
 		return nil
 	}
@@ -42,7 +42,7 @@ func wrapConn(original driver.Conn, logger *logger) driver.Conn {
 
 type connWrapper struct {
 	original driver.Conn
-	logger   *logger
+	logger   *stepLogger
 }
 
 // Deprecated interfaces, not implemented.

@@ -10,12 +10,12 @@ import (
 
 type connector struct {
 	original driver.Connector
-	logger   *logger
+	logger   *stepLogger
 }
 
 var _ driver.Connector = (*connector)(nil)
 
-func wrapConnector(original driver.Connector, logger *logger) driver.Connector {
+func wrapConnector(original driver.Connector, logger *stepLogger) driver.Connector {
 	return &connector{original: original, logger: logger}
 }
 

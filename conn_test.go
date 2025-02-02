@@ -38,7 +38,7 @@ func TestWrapConn(t *testing.T) {
 	t.Run("implements driver.Conn but not connWithContext", func(t *testing.T) {
 		t.Parallel()
 		mock := &mockConnForWrapConn{}
-		logger := &logger{}
+		logger := &stepLogger{}
 		conn := wrapConn(mock, logger)
 		if conn == nil {
 			t.Fatal("Expected non-nil")
@@ -141,7 +141,7 @@ var (
 
 func TestWithMockErrorConn(t *testing.T) {
 	t.Parallel()
-	logger := newLogger(slog.Default(), newOptions("sqlite3"))
+	logger := newStepLogger(slog.Default(), newOptions("sqlite3"))
 	w := wrapConn(newMockErrConn(errors.New("unexpected error")), logger)
 	t.Run("Begin", func(t *testing.T) {
 		t.Parallel()
@@ -171,7 +171,7 @@ func TestWithMockErrorConn(t *testing.T) {
 
 func TestPingInCase(t *testing.T) {
 	t.Parallel()
-	logger := newLogger(slog.Default(), newOptions("sqlite3"))
+	logger := newStepLogger(slog.Default(), newOptions("sqlite3"))
 	conn := newMockErrConn(nil)
 	w := &connWithContextWrapper{
 		connWrapper: connWrapper{
