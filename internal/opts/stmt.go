@@ -22,20 +22,20 @@ func DefaultStmtOptions(formatter StepLogMsgFormatter) *StmtOptions {
 }
 
 // Set the options for Stmt.Close.
-func StmtClose(f func(*StepOptions)) Option { return func(o *Options) { f(&o.StmtClose) } }
+func StmtClose(f func(*StepOptions)) Option { return func(o *Options) { f(o.Driver.Conn.Stmt.Close) } }
 
 // Set the options for Stmt.Exec.
-func StmtExec(f func(*StepOptions)) Option { return func(o *Options) { f(&o.StmtExec) } }
+func StmtExec(f func(*StepOptions)) Option { return func(o *Options) { f(o.Driver.Conn.Stmt.Exec) } }
 
 // Set the options for Stmt.Query.
-func StmtQuery(f func(*StepOptions)) Option { return func(o *Options) { f(&o.StmtQuery) } }
+func StmtQuery(f func(*StepOptions)) Option { return func(o *Options) { f(o.Driver.Conn.Stmt.Query) } }
 
 // Set the options for Stmt.ExecContext.
 func StmtExecContext(f func(*StepOptions)) Option {
-	return func(o *Options) { f(&o.StmtExecContext) }
+	return func(o *Options) { f(o.Driver.Conn.Stmt.ExecContext) }
 }
 
 // Set the options for Stmt.QueryContext.
 func StmtQueryContext(f func(*StepOptions)) Option {
-	return func(o *Options) { f(&o.StmtQueryContext) }
+	return func(o *Options) { f(o.Driver.Conn.Stmt.QueryContext) }
 }

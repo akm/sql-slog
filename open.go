@@ -32,62 +32,7 @@ See the following example for usage:
 func Open(ctx context.Context, driverName, dsn string, options ...Option) (*sql.DB, error) {
 	gOptions := opts.NewOptions(driverName, options...)
 	stepLogger := wrap.NewStepLogger(gOptions.Logger, wrap.DurationAttrFunc(gOptions.DurationKey, gOptions.DurationType))
-
-	openOptions := buildOpenOptions(gOptions)
-
-	return wrap.Open(ctx, driverName, dsn, stepLogger, openOptions)
-}
-
-func buildOpenOptions(options *Options) *wrap.OpenOptions {
-	connOptions := &wrap.ConnOptions{
-		IDGen:   options.IDGen,
-		Begin:   &options.ConnBegin,
-		BeginTx: &options.ConnBeginTx,
-		TxIDKey: options.TxIDKey,
-		Tx: &wrap.TxOptions{
-			Commit:   &options.TxCommit,
-			Rollback: &options.TxRollback,
-		},
-		Close:          &options.ConnClose,
-		Prepare:        &options.ConnPrepare,
-		PrepareContext: &options.ConnPrepareContext,
-		StmtIDKey:      options.StmtIDKey,
-		Stmt: &wrap.StmtOptions{
-			Close:        &options.StmtClose,
-			Exec:         &options.StmtExec,
-			Query:        &options.StmtQuery,
-			ExecContext:  &options.StmtExecContext,
-			QueryContext: &options.StmtQueryContext,
-			Rows: &wrap.RowsOptions{
-				Close:         &options.RowsClose,
-				Next:          &options.RowsNext,
-				NextResultSet: &options.RowsNextResultSet,
-			},
-		},
-		ResetSession: &options.ConnResetSession,
-		Ping:         &options.ConnPing,
-		ExecContext:  &options.ConnExecContext,
-		QueryContext: &options.ConnQueryContext,
-		Rows: &wrap.RowsOptions{
-			Close:         &options.RowsClose,
-			Next:          &options.RowsNext,
-			NextResultSet: &options.RowsNextResultSet,
-		},
-	}
-	return &wrap.OpenOptions{
-		Open: &options.SqlslogOpen,
-		Driver: &wrap.DriverOptions{
-			IDGen:         options.IDGen,
-			ConnIDKey:     options.ConnIDKey,
-			Open:          &options.DriverOpen,
-			OpenConnector: &options.DriverOpenConnector,
-			Conn:          connOptions,
-			Connector: &wrap.ConnectorOptions{
-				Connect: &options.ConnectorConnect,
-				Conn:    connOptions,
-			},
-		},
-	}
+	return wrap.Open(ctx, driverName, dsn, stepLogger, &gOptions.OpenOptions)
 }
 
 // Set the options for sqlslog.Open.

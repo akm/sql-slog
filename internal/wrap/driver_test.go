@@ -31,13 +31,13 @@ func TestDriverContextWrapperOpenConnector(t *testing.T) {
 	t.Parallel()
 	t.Run("unexpected error", func(t *testing.T) {
 		t.Parallel()
-		opts := opts.NewDefaultOptions("sqlite3", opts.StepLogMsgWithoutEventName)
-		openOptions := buildOpenOptions(opts)
+
+		driverOptions := opts.DefaultDriverOptions("sqlite3", opts.StepLogMsgWithoutEventName)
 		buf := bytes.NewBuffer(nil)
 		logger := slog.New(NewTextHandler(buf, nil))
 		dw := WrapDriver(&mockErrorDiverContext{},
-			NewStepLogger(logger, DurationAttrFunc(opts.DurationKey, opts.DurationType)),
-			openOptions.Driver,
+			NewStepLogger(logger, DurationAttrFunc(opts.DurationKeyDefault, opts.DurationNanoSeconds)),
+			driverOptions,
 		)
 		dwc, ok := dw.(driver.DriverContext)
 		if !ok {

@@ -35,6 +35,9 @@ const (
 )
 
 func DefaultConnOptions(driverName string, formatter StepLogMsgFormatter) *ConnOptions {
+	stmtOptions := DefaultStmtOptions(formatter)
+	rowsOptions := stmtOptions.Rows
+
 	return &ConnOptions{
 		IDGen: IDGeneratorDefault,
 
@@ -48,14 +51,14 @@ func DefaultConnOptions(driverName string, formatter StepLogMsgFormatter) *ConnO
 		Prepare:        DefaultStepOptions(formatter, "Conn.Prepare", LevelInfo),
 		PrepareContext: DefaultStepOptions(formatter, "Conn.PrepareContext", LevelInfo),
 		StmtIDKey:      StmtIDKeyDefault,
-		Stmt:           DefaultStmtOptions(formatter),
+		Stmt:           stmtOptions,
 
 		ResetSession: DefaultStepOptions(formatter, "Conn.ResetSession", LevelTrace),
 		Ping:         DefaultStepOptions(formatter, "Conn.Ping", LevelTrace),
 
 		ExecContext:  DefaultStepOptions(formatter, "Conn.ExecContext", LevelInfo, ConnExecContextErrorHandler(driverName)),
 		QueryContext: DefaultStepOptions(formatter, "Conn.QueryContext", LevelInfo, ConnQueryContextErrorHandler(driverName)),
-		Rows:         DefaultRowsOptions(formatter),
+		Rows:         rowsOptions,
 	}
 }
 
@@ -100,36 +103,36 @@ func ConnQueryContextErrorHandler(driverName string) func(err error) (bool, []sl
 }
 
 // Set the options for Conn.Begin.
-func ConnBegin(f func(*StepOptions)) Option { return func(o *Options) { f(&o.ConnBegin) } }
+func ConnBegin(f func(*StepOptions)) Option { return func(o *Options) { f(o.Driver.Conn.Begin) } }
 
 // Set the options for Conn.Close.
-func ConnClose(f func(*StepOptions)) Option { return func(o *Options) { f(&o.ConnClose) } }
+func ConnClose(f func(*StepOptions)) Option { return func(o *Options) { f(o.Driver.Conn.Close) } }
 
 // Set the options for Conn.Prepare.
-func ConnPrepare(f func(*StepOptions)) Option { return func(o *Options) { f(&o.ConnPrepare) } }
+func ConnPrepare(f func(*StepOptions)) Option { return func(o *Options) { f(o.Driver.Conn.Prepare) } }
 
 // Set the options for Conn.ResetSession.
 func ConnResetSession(f func(*StepOptions)) Option {
-	return func(o *Options) { f(&o.ConnResetSession) }
+	return func(o *Options) { f(o.Driver.Conn.ResetSession) }
 }
 
 // Set the options for Conn.Ping.
-func ConnPing(f func(*StepOptions)) Option { return func(o *Options) { f(&o.ConnPing) } }
+func ConnPing(f func(*StepOptions)) Option { return func(o *Options) { f(o.Driver.Conn.Ping) } }
 
 // Set the options for Conn.ExecContext.
 func ConnExecContext(f func(*StepOptions)) Option {
-	return func(o *Options) { f(&o.ConnExecContext) }
+	return func(o *Options) { f(o.Driver.Conn.ExecContext) }
 }
 
 // Set the options for Conn.QueryContext.
 func ConnQueryContext(f func(*StepOptions)) Option {
-	return func(o *Options) { f(&o.ConnQueryContext) }
+	return func(o *Options) { f(o.Driver.Conn.QueryContext) }
 }
 
 // Set the options for Conn.PrepareContext.
 func ConnPrepareContext(f func(*StepOptions)) Option {
-	return func(o *Options) { f(&o.ConnPrepareContext) }
+	return func(o *Options) { f(o.Driver.Conn.PrepareContext) }
 }
 
 // Set the options for Conn.BeginTx.
-func ConnBeginTx(f func(*StepOptions)) Option { return func(o *Options) { f(&o.ConnBeginTx) } }
+func ConnBeginTx(f func(*StepOptions)) Option { return func(o *Options) { f(o.Driver.Conn.BeginTx) } }

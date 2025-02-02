@@ -6,6 +6,8 @@ import (
 	"errors"
 	"log/slog"
 	"testing"
+
+	"github.com/akm/sql-slog/internal/opts"
 )
 
 type mockConnForWrapConn struct{}
@@ -101,9 +103,9 @@ var (
 
 func TestWithMockErrorConn(t *testing.T) {
 	t.Parallel()
-	opts := NewOptions("sqlite3")
-	logger := NewStepLogger(slog.Default(), DurationAttrFunc(opts.DurationKey, opts.DurationType))
-	w := WrapConn(newMockErrConn(errors.New("unexpected error")), logger, buildOpenOptions(opts).Driver.Conn)
+	connOptions := opts.DefaultConnOptions("sqlite3", opts.StepLogMsgWithoutEventName)
+	logger := NewStepLogger(slog.Default(), DurationAttrFunc(opts.DurationKeyDefault, opts.DurationNanoSeconds))
+	w := WrapConn(newMockErrConn(errors.New("unexpected error")), logger, connOptions)
 	t.Run("Begin", func(t *testing.T) {
 		t.Parallel()
 		if _, err := w.Begin(); err == nil { //nolint:staticcheck
@@ -132,14 +134,14 @@ func TestWithMockErrorConn(t *testing.T) {
 
 func TestPingInCase(t *testing.T) {
 	t.Parallel()
-	opts := NewOptions("sqlite3")
-	logger := NewStepLogger(slog.Default(), DurationAttrFunc(opts.DurationKey, opts.DurationType))
+	connOptions := opts.DefaultConnOptions("sqlite3", opts.StepLogMsgWithoutEventName)
+	logger := NewStepLogger(slog.Default(), DurationAttrFunc(opts.DurationKeyDefault, opts.DurationNanoSeconds))
 	conn := newMockErrConn(nil)
 	w := &connWithContextWrapper{
 		connWrapper: connWrapper{
 			original: conn,
 			logger:   logger,
-			options:  buildOpenOptions(opts).Driver.Conn,
+			options:  connOptions,
 		},
 		originalConn: conn,
 	}

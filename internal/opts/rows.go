@@ -35,12 +35,25 @@ func HandleRowsNextError(err error) (bool, []slog.Attr) {
 }
 
 // Set the options for Rows.Close.
-func RowsClose(f func(*StepOptions)) Option { return func(o *Options) { f(&o.RowsClose) } }
+func RowsClose(f func(*StepOptions)) Option {
+	return func(o *Options) {
+		f(o.Driver.Conn.Rows.Close)
+		f(o.Driver.Conn.Stmt.Rows.Close)
+	}
+}
 
 // Set the options for Rows.Next.
-func RowsNext(f func(*StepOptions)) Option { return func(o *Options) { f(&o.RowsNext) } }
+func RowsNext(f func(*StepOptions)) Option {
+	return func(o *Options) {
+		f(o.Driver.Conn.Rows.Next)
+		f(o.Driver.Conn.Stmt.Rows.Next)
+	}
+}
 
 // Set the options for Rows.NextResultSet.
 func RowsNextResultSet(f func(*StepOptions)) Option {
-	return func(o *Options) { f(&o.RowsNextResultSet) }
+	return func(o *Options) {
+		f(o.Driver.Conn.Rows.NextResultSet)
+		f(o.Driver.Conn.Stmt.Rows.NextResultSet)
+	}
 }

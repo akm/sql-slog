@@ -10,78 +10,24 @@ type Options struct {
 	DurationKey  string
 	DurationType DurationType
 
-	IDGen     IDGen
-	ConnIDKey string
-	TxIDKey   string
-	StmtIDKey string
-
-	ConnBegin           StepOptions
-	ConnClose           StepOptions
-	ConnPrepare         StepOptions
-	ConnResetSession    StepOptions
-	ConnPing            StepOptions
-	ConnExecContext     StepOptions
-	ConnQueryContext    StepOptions
-	ConnPrepareContext  StepOptions
-	ConnBeginTx         StepOptions
-	ConnectorConnect    StepOptions
-	DriverOpen          StepOptions
-	DriverOpenConnector StepOptions
-	SqlslogOpen         StepOptions
-	RowsClose           StepOptions
-	RowsNext            StepOptions
-	RowsNextResultSet   StepOptions
-	StmtClose           StepOptions
-	StmtExec            StepOptions
-	StmtQuery           StepOptions
-	StmtExecContext     StepOptions
-	StmtQueryContext    StepOptions
-	TxCommit            StepOptions
-	TxRollback          StepOptions
+	OpenOptions
 }
 
 func NewDefaultOptions(driverName string, formatter StepLogMsgFormatter) *Options {
 	openOptions := DefaultOpenOptions(driverName, formatter)
-	driverOptions := openOptions.Driver
-	connectorOptions := driverOptions.Connector
-	connOptions := connectorOptions.Conn
-	stmtOptions := connOptions.Stmt
-	rowsOptions := stmtOptions.Rows
-	txOptions := connOptions.Tx
+	// driverOptions := openOptions.Driver
+	// connectorOptions := driverOptions.Connector
+	// connOptions := connectorOptions.Conn
+	// stmtOptions := connOptions.Stmt
+	// rowsOptions := stmtOptions.Rows
+	// txOptions := connOptions.Tx
 
 	return &Options{
 		Logger:       slog.Default(),
 		DurationKey:  DurationKeyDefault,
 		DurationType: DurationNanoSeconds,
 
-		IDGen:     connOptions.IDGen, // IDGeneratorDefault,
-		ConnIDKey: driverOptions.ConnIDKey,
-		TxIDKey:   connOptions.TxIDKey,
-		StmtIDKey: connOptions.StmtIDKey,
-
-		ConnBegin:           *connOptions.Begin,
-		ConnClose:           *connOptions.Close,
-		ConnPrepare:         *connOptions.Prepare,
-		ConnResetSession:    *connOptions.ResetSession,
-		ConnPing:            *connOptions.Ping,
-		ConnExecContext:     *connOptions.ExecContext,
-		ConnQueryContext:    *connOptions.QueryContext,
-		ConnPrepareContext:  *connOptions.PrepareContext,
-		ConnBeginTx:         *connOptions.BeginTx,
-		ConnectorConnect:    *connectorOptions.Connect,
-		DriverOpen:          *driverOptions.Open,
-		DriverOpenConnector: *driverOptions.OpenConnector,
-		SqlslogOpen:         *openOptions.Open,
-		RowsClose:           *rowsOptions.Close,
-		RowsNext:            *rowsOptions.Next,
-		RowsNextResultSet:   *rowsOptions.NextResultSet,
-		StmtClose:           *stmtOptions.Close,
-		StmtExec:            *stmtOptions.Exec,
-		StmtQuery:           *stmtOptions.Query,
-		StmtExecContext:     *stmtOptions.ExecContext,
-		StmtQueryContext:    *stmtOptions.QueryContext,
-		TxCommit:            *txOptions.Commit,
-		TxRollback:          *txOptions.Rollback,
+		OpenOptions: *openOptions,
 	}
 }
 

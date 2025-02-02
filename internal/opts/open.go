@@ -13,4 +13,4 @@ func DefaultOpenOptions(driverName string, formatter StepLogMsgFormatter) *OpenO
 }
 
 // Set the options for sqlslog.Open.
-func SqlslogOpen(f func(*StepOptions)) Option { return func(o *Options) { f(&o.SqlslogOpen) } } // nolint:revive
+func SqlslogOpen(f func(*StepOptions)) Option { return func(o *Options) { f(o.OpenOptions.Open) } } // nolint:revive

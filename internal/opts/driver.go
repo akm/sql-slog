@@ -18,14 +18,16 @@ type DriverOptions struct {
 const ConnIDKeyDefault = "conn_id"
 
 func DefaultDriverOptions(driverName string, formatter StepLogMsgFormatter) *DriverOptions {
+	connectorOptions := DefaultConnectorOptions(driverName, formatter)
+	connOptions := connectorOptions.Conn
 	return &DriverOptions{
 		IDGen:         IDGeneratorDefault,
 		ConnIDKey:     ConnIDKeyDefault,
 		Open:          DefaultStepOptions(formatter, "Driver.Open", LevelInfo, DriverOpenErrorHandler(driverName)),
 		OpenConnector: DefaultStepOptions(formatter, "Driver.OpenConnector", LevelInfo),
 
-		Conn:      DefaultConnOptions(driverName, formatter),
-		Connector: DefaultConnectorOptions(driverName, formatter),
+		Conn:      connOptions,
+		Connector: connectorOptions,
 	}
 }
 
@@ -54,9 +56,9 @@ func DriverOpenErrorHandler(driverName string) func(err error) (bool, []slog.Att
 }
 
 // Set the options for Driver.Open.
-func DriverOpen(f func(*StepOptions)) Option { return func(o *Options) { f(&o.DriverOpen) } }
+func DriverOpen(f func(*StepOptions)) Option { return func(o *Options) { f(o.Driver.Open) } }
 
 // Set the options for Driver.OpenConnector.
 func DriverOpenConnector(f func(*StepOptions)) Option {
-	return func(o *Options) { f(&o.DriverOpenConnector) }
+	return func(o *Options) { f(o.Driver.OpenConnector) }
 }

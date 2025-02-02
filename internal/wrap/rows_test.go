@@ -6,6 +6,8 @@ import (
 	"errors"
 	"log/slog"
 	"testing"
+
+	"github.com/akm/sql-slog/internal/opts"
 )
 
 func TestWrapRows(t *testing.T) {
@@ -94,12 +96,10 @@ func TestRowsNextResultSet(t *testing.T) {
 	}
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(NewJSONHandler(buf, nil))
+
+	rowsOptions := opts.DefaultRowsOptions(opts.StepLogMsgWithoutEventName)
 	opts := NewOptions("dummy")
-	wrapped := WrapRows(rows, NewStepLogger(logger, DurationAttrFunc(opts.DurationKey, opts.DurationType)), &RowsOptions{
-		Close:         &opts.RowsClose,
-		Next:          &opts.RowsNext,
-		NextResultSet: &opts.RowsNextResultSet,
-	})
+	wrapped := WrapRows(rows, NewStepLogger(logger, DurationAttrFunc(opts.DurationKey, opts.DurationType)), rowsOptions)
 	wrappedRNRS, ok := wrapped.(driver.RowsNextResultSet)
 	if !ok {
 		t.Fatal("Expected true")

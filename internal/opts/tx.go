@@ -13,7 +13,9 @@ func DefaultTxOptions(formatter StepLogMsgFormatter) *TxOptions {
 }
 
 // Set the options for Tx.Commit.
-func TxCommit(f func(*StepOptions)) Option { return func(o *Options) { f(&o.TxCommit) } }
+func TxCommit(f func(*StepOptions)) Option { return func(o *Options) { f(o.Driver.Conn.Tx.Commit) } }
 
 // Set the options for Tx.Rollback.
-func TxRollback(f func(*StepOptions)) Option { return func(o *Options) { f(&o.TxRollback) } }
+func TxRollback(f func(*StepOptions)) Option {
+	return func(o *Options) { f(o.Driver.Conn.Tx.Rollback) }
+}

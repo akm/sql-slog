@@ -7,6 +7,8 @@ import (
 	"errors"
 	"log/slog"
 	"testing"
+
+	"github.com/akm/sql-slog/internal/opts"
 )
 
 type mockStmtForWrapStmt struct {
@@ -60,24 +62,12 @@ func TestWrapStmt(t *testing.T) {
 			error: dummyError,
 		}
 
-		opts := NewOptions("dummy")
-		stmtOptions := &StmtOptions{
-			Close:        &opts.StmtClose,
-			Exec:         &opts.StmtExec,
-			Query:        &opts.StmtQuery,
-			ExecContext:  &opts.StmtExecContext,
-			QueryContext: &opts.StmtQueryContext,
-			Rows: &RowsOptions{
-				Close:         &opts.RowsClose,
-				Next:          &opts.RowsNext,
-				NextResultSet: &opts.RowsNextResultSet,
-			},
-		}
+		stmtOptions := opts.DefaultStmtOptions(opts.StepLogMsgWithoutEventName)
 
 		buf := bytes.NewBuffer(nil)
 		logger := slog.New(NewJSONHandler(buf, nil))
 		wrapped := WrapStmt(mock,
-			NewStepLogger(logger, DurationAttrFunc(opts.DurationKey, opts.DurationType)),
+			NewStepLogger(logger, DurationAttrFunc(opts.DurationKeyDefault, opts.DurationNanoSeconds)),
 			stmtOptions,
 		)
 		_, err := wrapped.Query(nil) // nolint:staticcheck
@@ -119,19 +109,11 @@ func TestWithMockErrorStmtWithContext(t *testing.T) {
 
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(NewJSONHandler(buf, nil))
+
+	stmtOptions := opts.DefaultStmtOptions(opts.StepLogMsgWithoutEventName)
+
 	opts := NewOptions("dummy")
-	wrapped := WrapStmt(mock, NewStepLogger(logger, DurationAttrFunc(opts.DurationKey, opts.DurationType)), &StmtOptions{
-		Close:        &opts.StmtClose,
-		Exec:         &opts.StmtExec,
-		Query:        &opts.StmtQuery,
-		ExecContext:  &opts.StmtExecContext,
-		QueryContext: &opts.StmtQueryContext,
-		Rows: &RowsOptions{
-			Close:         &opts.RowsClose,
-			Next:          &opts.RowsNext,
-			NextResultSet: &opts.RowsNextResultSet,
-		},
-	})
+	wrapped := WrapStmt(mock, NewStepLogger(logger, DurationAttrFunc(opts.DurationKey, opts.DurationType)), stmtOptions)
 	stmtWithQueryContext, ok := wrapped.(driver.StmtQueryContext)
 	if !ok {
 		t.Fatal("Expected StmtQueryContext")
