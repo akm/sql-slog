@@ -8,8 +8,3 @@ type (
 
 	Options = opts.Options
 )
-
-var (
-	TxCommit   = opts.TxCommit
-	TxRollback = opts.TxRollback
-)
