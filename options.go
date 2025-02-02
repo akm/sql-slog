@@ -10,8 +10,6 @@ type (
 )
 
 var (
-	SqlslogOpen = opts.SqlslogOpen
-
 	RowsClose         = opts.RowsClose
 	RowsNext          = opts.RowsNext
 	RowsNextResultSet = opts.RowsNextResultSet
