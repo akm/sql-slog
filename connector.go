@@ -8,21 +8,34 @@ import (
 	"log/slog"
 )
 
+type connectorOptions struct {
+	Connect     StepOptions
+	ConnOptions *connOptions
+}
+
+func defaultConnectorOptions(driver string, formatter StepLogMsgFormatter) *connectorOptions {
+	return &connectorOptions{
+		Connect:     *defaultStepOptions(formatter, "Connector.Connect", LevelInfo),
+		ConnOptions: defaultConnOptions(driver, formatter),
+	}
+}
+
 type connector struct {
 	original driver.Connector
-	logger   *logger
+	logger   *stepLogger
+	options  *connectorOptions
 }
 
 var _ driver.Connector = (*connector)(nil)
 
-func wrapConnector(original driver.Connector, logger *logger) driver.Connector {
-	return &connector{original: original, logger: logger}
+func wrapConnector(original driver.Connector, logger *stepLogger, options *connectorOptions) driver.Connector {
+	return &connector{original: original, logger: logger, options: options}
 }
 
 // Connect implements driver.Connector.
 func (c *connector) Connect(ctx context.Context) (driver.Conn, error) {
 	var origConn driver.Conn
-	err := ignoreAttr(c.logger.Step(ctx, &c.logger.options.connectorConnect, func() (*slog.Attr, error) {
+	err := ignoreAttr(c.logger.Step(ctx, &c.options.Connect, func() (*slog.Attr, error) {
 		var err error
 		origConn, err = c.original.Connect(ctx)
 		return nil, err
@@ -30,7 +43,8 @@ func (c *connector) Connect(ctx context.Context) (driver.Conn, error) {
 	if err != nil {
 		return nil, err
 	}
-	return wrapConn(origConn, c.logger), nil
+
+	return wrapConn(origConn, c.logger, c.options.ConnOptions), nil
 }
 
 // Driver implements driver.Connector.

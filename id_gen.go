@@ -5,7 +5,12 @@ type IDGen = func() string
 
 // IDGenerator returns an Option that sets the ID generator.
 // The default is IDGeneratorDefault.
-func IDGenerator(idGen IDGen) Option { return func(o *options) { o.idGen = idGen } }
+func IDGenerator(idGen IDGen) Option {
+	return func(o *options) {
+		o.DriverOptions.IDGen = idGen
+		o.DriverOptions.ConnOptions.IDGen = idGen
+	}
+}
 
 const defaultIDLength = 16
 
@@ -20,12 +25,20 @@ const (
 
 // ConnIDKey sets the key for the connection ID.
 // The default is ConnIDKeyDefault.
-func ConnIDKey(key string) Option { return func(o *options) { o.connIDKey = key } }
+func ConnIDKey(key string) Option {
+	return func(o *options) {
+		o.DriverOptions.ConnIDKey = key
+	}
+}
 
 // TxIDKey sets the key for the transaction ID.
 // The default is TxIDKeyDefault.
-func TxIDKey(key string) Option { return func(o *options) { o.txIDKey = key } }
+func TxIDKey(key string) Option {
+	return func(o *options) { o.DriverOptions.ConnOptions.TxIDKey = key }
+}
 
 // StmtIDKey sets the key for the statement ID.
 // The default is StmtIDKeyDefault.
-func StmtIDKey(key string) Option { return func(o *options) { o.stmtIDKey = key } }
+func StmtIDKey(key string) Option {
+	return func(o *options) { o.DriverOptions.ConnOptions.StmtIDKey = key }
+}

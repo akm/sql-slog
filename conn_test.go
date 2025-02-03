@@ -31,15 +31,16 @@ func TestWrapConn(t *testing.T) {
 	t.Parallel()
 	t.Run("nil", func(t *testing.T) {
 		t.Parallel()
-		if wrapConn(nil, nil) != nil {
+		if wrapConn(nil, nil, nil) != nil {
 			t.Fatal("Expected nil")
 		}
 	})
 	t.Run("implements driver.Conn but not connWithContext", func(t *testing.T) {
 		t.Parallel()
 		mock := &mockConnForWrapConn{}
-		logger := &logger{}
-		conn := wrapConn(mock, logger)
+		logger := &stepLogger{}
+		connOptions := defaultConnOptions("dummy", StepLogMsgWithoutEventName)
+		conn := wrapConn(mock, logger, connOptions)
 		if conn == nil {
 			t.Fatal("Expected non-nil")
 		}
@@ -141,8 +142,9 @@ var (
 
 func TestWithMockErrorConn(t *testing.T) {
 	t.Parallel()
-	logger := newLogger(slog.Default(), newOptions("sqlite3"))
-	w := wrapConn(newMockErrConn(errors.New("unexpected error")), logger)
+	logger := newStepLogger(slog.Default(), newOptions("sqlite3"))
+	connOptions := defaultConnOptions("sqlite3", StepLogMsgWithoutEventName)
+	w := wrapConn(newMockErrConn(errors.New("unexpected error")), logger, connOptions)
 	t.Run("Begin", func(t *testing.T) {
 		t.Parallel()
 		if _, err := w.Begin(); err == nil { //nolint:staticcheck
@@ -171,12 +173,13 @@ func TestWithMockErrorConn(t *testing.T) {
 
 func TestPingInCase(t *testing.T) {
 	t.Parallel()
-	logger := newLogger(slog.Default(), newOptions("sqlite3"))
+	logger := newStepLogger(slog.Default(), newOptions("sqlite3"))
 	conn := newMockErrConn(nil)
 	w := &connWithContextWrapper{
 		connWrapper: connWrapper{
 			original: conn,
 			logger:   logger,
+			options:  defaultConnOptions("sqlite3", StepLogMsgWithoutEventName),
 		},
 		originalConn: conn,
 	}

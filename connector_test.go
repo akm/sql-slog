@@ -15,16 +15,28 @@ func TestConnectorConnectErrorHandler(t *testing.T) {
 		"postgres",
 	}
 	for _, driverName := range testcases {
+		errHandler := ConnectorConnectErrorHandler(driverName)
 		t.Run(driverName, func(t *testing.T) {
 			t.Parallel()
-			errHandler := ConnectorConnectErrorHandler(driverName)
-			complete, attrs := errHandler(errors.New("dummy"))
-			if complete {
-				t.Fatal("Expected false")
-			}
-			if attrs != nil {
-				t.Fatal("Expected nil")
-			}
+			t.Run("no error", func(t *testing.T) {
+				complete, attrs := errHandler(nil)
+				if !complete {
+					t.Error("Expected true")
+				}
+				if len(attrs) < 1 {
+					t.Error("Expected non-empty")
+				}
+			})
+			t.Run("unexpected error", func(t *testing.T) {
+				t.Parallel()
+				complete, attrs := errHandler(errors.New("unexpected-error"))
+				if complete {
+					t.Fatal("Expected false")
+				}
+				if attrs != nil {
+					t.Fatal("Expected nil")
+				}
+			})
 		})
 	}
 
@@ -37,6 +49,24 @@ func TestConnectorConnectErrorHandler(t *testing.T) {
 		}
 		if attrs == nil {
 			t.Fatal("Expected non-nil")
+		}
+	})
+	t.Run("mysql driver: bad connection", func(t *testing.T) {
+		t.Parallel()
+		errHandler := ConnectorConnectErrorHandler("mysql")
+		complete, attrs := errHandler(errors.New("driver: bad connection"))
+		if !complete {
+			t.Fatal("Expected true")
+		}
+		if attrs == nil {
+			t.Fatal("Expected non-nil")
+		}
+	})
+	t.Run("sqlite3", func(t *testing.T) {
+		t.Parallel()
+		errHandler := ConnectorConnectErrorHandler("sqlite3")
+		if errHandler != nil {
+			t.Fatal("Expected nil")
 		}
 	})
 }
@@ -56,8 +86,9 @@ func (m *mockConnectorForWrapConnector) Driver() driver.Driver {
 func TestConnectorDriver(t *testing.T) {
 	t.Parallel()
 	mock := &mockConnectorForWrapConnector{}
-	logger := &logger{}
-	conn := wrapConnector(mock, logger)
+	logger := &stepLogger{}
+	connectorOptions := defaultConnectorOptions("dummy", StepLogMsgWithoutEventName)
+	conn := wrapConnector(mock, logger, connectorOptions)
 	if conn.Driver() != nil {
 		t.Fatal("Expected nil")
 	}

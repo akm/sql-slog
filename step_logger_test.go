@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func TestLoggerDurationAttr(t *testing.T) {
+func TestStepLoggerDurationAttr(t *testing.T) {
 	t.Parallel()
 	key := "duration"
 	testcases := []struct {
@@ -88,7 +88,7 @@ func TestLoggerDurationAttr(t *testing.T) {
 	for _, tc := range testcases {
 		t.Run(tc.value.String(), func(t *testing.T) {
 			t.Parallel()
-			attr := newLogger(nil, &options{durationKey: key, durationType: tc.durationType}).durationAttr(tc.value)
+			attr := newStepLogger(nil, &options{durationKey: key, durationType: tc.durationType}).durationAttr(tc.value)
 			tc.expected(t, attr)
 		})
 	}
