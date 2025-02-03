@@ -51,6 +51,17 @@ func TestDriverOpenErrorHandler(t *testing.T) {
 	t.Parallel()
 	t.Run("postgres", func(t *testing.T) {
 		t.Parallel()
+		t.Run("no error", func(t *testing.T) {
+			t.Parallel()
+			eh := DriverOpenErrorHandler("postgres")
+			completed, attrs := eh(nil)
+			if !completed {
+				t.Error("expected completed to be false")
+			}
+			if attrs == nil {
+				t.Error("expected attrs not to be nil")
+			}
+		})
 		t.Run("unexpected error", func(t *testing.T) {
 			t.Parallel()
 			eh := DriverOpenErrorHandler("postgres")
@@ -73,5 +84,12 @@ func TestDriverOpenErrorHandler(t *testing.T) {
 				t.Error("expected attrs to be non-nil")
 			}
 		})
+	})
+	t.Run("mysql", func(t *testing.T) {
+		t.Parallel()
+		eh := DriverOpenErrorHandler("mysql")
+		if eh != nil {
+			t.Error("expected to be nil")
+		}
 	})
 }
