@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql/driver"
 	"errors"
-	"log/slog"
 	"testing"
 )
 
@@ -142,7 +141,7 @@ var (
 
 func TestWithMockErrorConn(t *testing.T) {
 	t.Parallel()
-	logger := newStepLogger(slog.Default(), nil)
+	logger := newStepLogger(nil)
 	connOptions := defaultConnOptions("sqlite3", StepLogMsgWithoutEventName)
 	w := wrapConn(newMockErrConn(errors.New("unexpected error")), logger, connOptions)
 	t.Run("Begin", func(t *testing.T) {
@@ -173,7 +172,7 @@ func TestWithMockErrorConn(t *testing.T) {
 
 func TestPingInCase(t *testing.T) {
 	t.Parallel()
-	logger := newStepLogger(slog.Default(), nil)
+	logger := newStepLogger(nil)
 	conn := newMockErrConn(nil)
 	w := &connWithContextWrapper{
 		connWrapper: connWrapper{

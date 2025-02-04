@@ -43,7 +43,8 @@ See the following example for usage:
 */
 func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB, error) { // nolint:funlen
 	options := newOptions(driverName, opts...)
-	logger := newStepLogger(options.logger, &stepLoggerOptions{
+	logger := newStepLogger(&stepLoggerOptions{
+		logger:       options.logger,
 		durationKey:  options.durationKey,
 		durationType: options.durationType,
 	})

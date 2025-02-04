@@ -7,12 +7,14 @@ import (
 )
 
 type stepLoggerOptions struct {
+	logger       *slog.Logger
 	durationKey  string
 	durationType DurationType
 }
 
-func newStepLoggerOptions() *stepLoggerOptions {
+func newStepLoggerOptions(logger *slog.Logger) *stepLoggerOptions {
 	return &stepLoggerOptions{
+		logger:       logger,
 		durationKey:  DurationKeyDefault,
 		durationType: DurationNanoSeconds,
 	}
@@ -20,13 +22,16 @@ func newStepLoggerOptions() *stepLoggerOptions {
 
 type stepLogger struct {
 	*slog.Logger
-
 	durationAttr func(d time.Duration) slog.Attr
 }
 
-func newStepLogger(rawLogger *slog.Logger, opts *stepLoggerOptions) *stepLogger {
+func newStepLogger(opts *stepLoggerOptions) *stepLogger {
 	if opts == nil {
-		opts = newStepLoggerOptions()
+		opts = newStepLoggerOptions(nil)
+	}
+	rawLogger := opts.logger
+	if rawLogger == nil {
+		rawLogger = slog.Default()
 	}
 	return &stepLogger{
 		Logger:       rawLogger,
