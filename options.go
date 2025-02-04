@@ -5,20 +5,17 @@ import (
 )
 
 type options struct {
-	logger *slog.Logger
-
-	durationKey  string
-	durationType DurationType
-
+	stepLoggerOptions
 	sqlslogOptions
 }
 
 func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *options {
 	return &options{
-		logger:       slog.Default(),
-		durationKey:  DurationKeyDefault,
-		durationType: DurationNanoSeconds,
-
+		stepLoggerOptions: stepLoggerOptions{
+			logger:       slog.Default(),
+			durationKey:  DurationKeyDefault,
+			durationType: DurationNanoSeconds,
+		},
 		sqlslogOptions: *defaultSqlslogOptions(driverName, formatter),
 	}
 }
@@ -44,7 +41,7 @@ func newOptions(driverName string, opts ...Option) *options {
 // If not set, the default is slog.Default().
 func Logger(logger *slog.Logger) Option {
 	return func(o *options) {
-		o.logger = logger
+		o.stepLoggerOptions.logger = logger
 	}
 }
 
