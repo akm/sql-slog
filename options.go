@@ -41,7 +41,7 @@ func newOptions(driverName string, opts ...Option) *options {
 // If not set, the default is slog.Default().
 func Logger(logger *slog.Logger) Option {
 	return func(o *options) {
-		o.logger = logger
+		o.stepLoggerOptions.logger = logger
 	}
 }
 

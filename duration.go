@@ -14,7 +14,7 @@ const (
 // The default is DurationNanoSeconds.
 func Duration(v DurationType) Option {
 	return func(o *options) {
-		o.durationType = v
+		o.stepLoggerOptions.durationType = v
 	}
 }
 
@@ -22,7 +22,7 @@ func Duration(v DurationType) Option {
 // The default is specified by DurationKeyDefault.
 func DurationKey(key string) Option {
 	return func(o *options) {
-		o.durationKey = key
+		o.stepLoggerOptions.durationKey = key
 	}
 }
 
