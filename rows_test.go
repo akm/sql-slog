@@ -90,7 +90,7 @@ func TestRowsNextResultSet(t *testing.T) {
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(NewJSONHandler(buf, nil))
 	rowsOptions := defaultRowsOptions(StepLogMsgWithoutEventName)
-	wrapped := wrapRows(rows, newStepLogger(logger, newOptions("dummy")), rowsOptions)
+	wrapped := wrapRows(rows, newStepLogger(logger, nil), rowsOptions)
 	wrappedRNRS, ok := wrapped.(driver.RowsNextResultSet)
 	if !ok {
 		t.Fatal("Expected true")

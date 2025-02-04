@@ -6,29 +6,39 @@ import (
 	"time"
 )
 
+type stepLoggerOptions struct {
+	durationKey  string
+	durationType DurationType
+}
+
+func newStepLoggerOptions() *stepLoggerOptions {
+	return &stepLoggerOptions{
+		durationKey:  DurationKeyDefault,
+		durationType: DurationNanoSeconds,
+	}
+}
+
 type stepLogger struct {
 	*slog.Logger
-	options *options
 
 	durationAttr func(d time.Duration) slog.Attr
 }
 
-func newStepLogger(rawLogger *slog.Logger, opts *options) *stepLogger {
-	durationKey := DurationKeyDefault
-	durationType := DurationNanoSeconds
-	if opts != nil {
-		durationKey = opts.durationKey
-		durationType = opts.durationType
+func newStepLogger(rawLogger *slog.Logger, opts *stepLoggerOptions) *stepLogger {
+	if opts == nil {
+		opts = newStepLoggerOptions()
 	}
 	return &stepLogger{
 		Logger:       rawLogger,
-		options:      opts,
-		durationAttr: durationAttrFunc(durationKey, durationType),
+		durationAttr: durationAttrFunc(opts.durationKey, opts.durationType),
 	}
 }
 
 func (x *stepLogger) With(kv ...interface{}) *stepLogger {
-	return newStepLogger(x.Logger.With(kv...), x.options)
+	return &stepLogger{
+		Logger:       x.Logger.With(kv...),
+		durationAttr: x.durationAttr,
+	}
 }
 
 func (x *stepLogger) StepWithoutContext(step *StepOptions, fn func() (*slog.Attr, error)) (*slog.Attr, error) {
