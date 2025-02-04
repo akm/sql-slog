@@ -9,12 +9,21 @@ import (
 type stepLogger struct {
 	*slog.Logger
 	options *options
+
+	durationAttr func(d time.Duration) slog.Attr
 }
 
 func newStepLogger(rawLogger *slog.Logger, opts *options) *stepLogger {
+	durationKey := DurationKeyDefault
+	durationType := DurationNanoSeconds
+	if opts != nil {
+		durationKey = opts.durationKey
+		durationType = opts.durationType
+	}
 	return &stepLogger{
-		Logger:  rawLogger,
-		options: opts,
+		Logger:       rawLogger,
+		options:      opts,
+		durationAttr: durationAttrFunc(durationKey, durationType),
 	}
 }
 
@@ -56,21 +65,20 @@ func (x *stepLogger) Step(ctx context.Context, step *StepOptions, fn func() (*sl
 	return attr, err
 }
 
-func (x *stepLogger) durationAttr(d time.Duration) slog.Attr {
-	key := x.options.durationKey
-	switch x.options.durationType {
+func durationAttrFunc(key string, dt DurationType) func(d time.Duration) slog.Attr {
+	switch dt {
 	case DurationNanoSeconds:
-		return slog.Int64(key, d.Nanoseconds())
+		return func(d time.Duration) slog.Attr { return slog.Int64(key, d.Nanoseconds()) }
 	case DurationMicroSeconds:
-		return slog.Int64(key, d.Microseconds())
+		return func(d time.Duration) slog.Attr { return slog.Int64(key, d.Microseconds()) }
 	case DurationMilliSeconds:
-		return slog.Int64(key, d.Milliseconds())
+		return func(d time.Duration) slog.Attr { return slog.Int64(key, d.Milliseconds()) }
 	case DurationGoDuration:
-		return slog.Duration(key, d)
+		return func(d time.Duration) slog.Attr { return slog.Duration(key, d) }
 	case DurationString:
-		return slog.String(key, d.String())
+		return func(d time.Duration) slog.Attr { return slog.String(key, d.String()) }
 	default:
-		return slog.Int64(key, d.Nanoseconds())
+		return func(d time.Duration) slog.Attr { return slog.Int64(key, d.Nanoseconds()) }
 	}
 }
 
