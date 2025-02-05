@@ -2,6 +2,7 @@ package sqlslog
 
 import (
 	cryptorand "crypto/rand"
+	"errors"
 	"fmt"
 	"math/rand/v2"
 	"os"
@@ -82,7 +83,8 @@ func TestRandIntIDGenerator(t *testing.T) {
 	}
 }
 
-func TestRandReadGenerator(t *testing.T) {
+func TestRandReadGenerator(t *testing.T) { // nolint:gocognit
+	t.Parallel()
 	t.Run("valid case", func(t *testing.T) {
 		t.Parallel()
 		idGenAttempts := idGenAttemptsFromEnv(t)
@@ -127,8 +129,9 @@ func TestRandReadGenerator(t *testing.T) {
 	})
 
 	t.Run("with error", func(t *testing.T) {
+		t.Parallel()
 		idGen := RandReadIDGenerator(
-			func([]byte) (int, error) { return 0, fmt.Errorf("unexpected error") },
+			func([]byte) (int, error) { return 0, errors.New("unexpected error") },
 			defaultIDLetters,
 			defaultIDLength,
 		)
@@ -138,19 +141,20 @@ func TestRandReadGenerator(t *testing.T) {
 			}
 		})
 		t.Run("with suppressor", func(t *testing.T) {
+			suppressedStr := "suppressed"
 			t.Run("error", func(t *testing.T) {
 				suppressedIDGen := IDGenErrorSuppressor(idGen,
-					func(err error) string { return "suppressed" },
+					func(error) string { return suppressedStr },
 				)
 				id := suppressedIDGen()
-				if id != "suppressed" {
-					t.Errorf("id = %q, want %q", id, "suppressed")
+				if id != suppressedStr {
+					t.Errorf("id = %q, want %q", id, suppressedStr)
 				}
 			})
 			t.Run("no error", func(t *testing.T) {
 				suppressedIDGen := IDGenErrorSuppressor(
 					func() (string, error) { return "generated", nil },
-					func(err error) string { return "suppressed" },
+					func(error) string { return "suppressed" },
 				)
 				id := suppressedIDGen()
 				if id != "generated" {
