@@ -79,11 +79,11 @@ func RandReadIDGenerator(
 
 // IDGenErrorSuppressor returns an ID generator that suppresses errors.
 // If an error occurs, the recover function is called with the error and the result is returned.
-func IDGenErrorSuppressor(idGen func() (string, error), recover func(error) string) IDGen {
+func IDGenErrorSuppressor(idGen func() (string, error), recoveryFunc func(error) string) IDGen {
 	return func() string {
 		id, err := idGen()
 		if err != nil {
-			return recover(err)
+			return recoveryFunc(err)
 		}
 		return id
 	}
