@@ -40,6 +40,8 @@ func StmtIDKey(key string) Option {
 	return func(o *options) { o.DriverOptions.ConnOptions.StmtIDKey = key }
 }
 
+// Returns a random ID generator that generates a string of length characters
+// using randInt to generate random integers such as Int function from math/rand/v2 package.
 func RandIntIDGenerator(
 	randInt func() int,
 	letters []byte,
@@ -55,6 +57,8 @@ func RandIntIDGenerator(
 	}
 }
 
+// Returns a random ID generator that generates a string of length characters
+// using randRead to generate random bytes such as Read function from crypto/rand package.
 func RandReadGenerator(
 	randRead func(b []byte) (n int, err error),
 	letters []byte,
@@ -73,6 +77,8 @@ func RandReadGenerator(
 	}
 }
 
+// IDGenErrorSuppressor returns an ID generator that suppresses errors.
+// If an error occurs, the recover function is called with the error and the result is returned.
 func IDGenErrorSuppressor(idGen func() (string, error), recover func(error) string) IDGen {
 	return func() string {
 		id, err := idGen()
