@@ -99,7 +99,7 @@ func TestRandReadGenerator(t *testing.T) {
 		for _, tc := range testCases {
 			t.Run(fmt.Sprintf("length %d", tc.length), func(t *testing.T) {
 				t.Parallel()
-				idGen := RandReadGenerator(
+				idGen := RandReadIDGenerator(
 					cryptorand.Read, // Use rand.Read from crypto/rand
 					defaultIDLetters,
 					tc.length,
@@ -127,7 +127,7 @@ func TestRandReadGenerator(t *testing.T) {
 	})
 
 	t.Run("with error", func(t *testing.T) {
-		idGen := RandReadGenerator(
+		idGen := RandReadIDGenerator(
 			func([]byte) (int, error) { return 0, fmt.Errorf("unexpected error") },
 			defaultIDLetters,
 			defaultIDLength,

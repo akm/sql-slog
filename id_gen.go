@@ -59,7 +59,7 @@ func RandIntIDGenerator(
 
 // Returns a random ID generator that generates a string of length characters
 // using randRead to generate random bytes such as Read function from crypto/rand package.
-func RandReadGenerator(
+func RandReadIDGenerator(
 	randRead func(b []byte) (n int, err error),
 	letters []byte,
 	length int,
