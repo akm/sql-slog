@@ -137,16 +137,26 @@ func TestRandReadGenerator(t *testing.T) {
 				t.Error("err = nil, want error")
 			}
 		})
-		t.Run("suppress error", func(t *testing.T) {
-			suppressedIDGen := IDGenErrorSuppressor(idGen,
-				func(err error) string {
-					return "suppressed"
-				},
-			)
-			id := suppressedIDGen()
-			if id != "suppressed" {
-				t.Errorf("id = %q, want %q", id, "suppressed")
-			}
+		t.Run("with suppressor", func(t *testing.T) {
+			t.Run("error", func(t *testing.T) {
+				suppressedIDGen := IDGenErrorSuppressor(idGen,
+					func(err error) string { return "suppressed" },
+				)
+				id := suppressedIDGen()
+				if id != "suppressed" {
+					t.Errorf("id = %q, want %q", id, "suppressed")
+				}
+			})
+			t.Run("no error", func(t *testing.T) {
+				suppressedIDGen := IDGenErrorSuppressor(
+					func() (string, error) { return "generated", nil },
+					func(err error) string { return "suppressed" },
+				)
+				id := suppressedIDGen()
+				if id != "generated" {
+					t.Errorf("id = %q, want %q", id, "generated")
+				}
+			})
 		})
 	})
 }
