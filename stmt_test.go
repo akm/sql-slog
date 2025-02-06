@@ -47,7 +47,7 @@ func TestWrapStmt(t *testing.T) {
 		t.Parallel()
 		mock := &mockStmtForWrapStmt{}
 		logger := &stepLogger{}
-		stmt := wrapStmt(mock, logger, defaultStmtOptions(StepLogMsgWithoutEventName))
+		stmt := wrapStmt(mock, logger, defaultStmtOptions(StepEventMsgWithoutEventName))
 		if stmt == nil {
 			t.Fatal("Expected non-nil")
 		}
@@ -62,7 +62,7 @@ func TestWrapStmt(t *testing.T) {
 
 		buf := bytes.NewBuffer(nil)
 		logger := slog.New(NewJSONHandler(buf, nil))
-		wrapped := wrapStmt(mock, newStepLogger(newStepLoggerOptions(logger)), defaultStmtOptions(StepLogMsgWithoutEventName))
+		wrapped := wrapStmt(mock, newStepLogger(newStepLoggerOptions(logger)), defaultStmtOptions(StepEventMsgWithoutEventName))
 		_, err := wrapped.Query(nil) // nolint:staticcheck
 		if err == nil {
 			t.Fatal("Expected non-nil")
@@ -102,7 +102,7 @@ func TestWithMockErrorStmtWithContext(t *testing.T) {
 
 	buf := bytes.NewBuffer(nil)
 	logger := slog.New(NewJSONHandler(buf, nil))
-	wrapped := wrapStmt(mock, newStepLogger(newStepLoggerOptions(logger)), defaultStmtOptions(StepLogMsgWithoutEventName))
+	wrapped := wrapStmt(mock, newStepLogger(newStepLoggerOptions(logger)), defaultStmtOptions(StepEventMsgWithoutEventName))
 	stmtWithQueryContext, ok := wrapped.(driver.StmtQueryContext)
 	if !ok {
 		t.Fatal("Expected StmtQueryContext")

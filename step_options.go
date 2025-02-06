@@ -15,8 +15,8 @@ func StepEventMsgWithEventName(step Step, event Event) string {
 	return step.String() + " " + event.String()
 }
 
-// StepLogMsgWithoutEventName returns the formatted step log message without the event name.
-func StepLogMsgWithoutEventName(step Step, _ Event) string {
+// StepEventMsgWithoutEventName returns the formatted step log message without the event name.
+func StepEventMsgWithoutEventName(step Step, _ Event) string {
 	return step.String()
 }
 
