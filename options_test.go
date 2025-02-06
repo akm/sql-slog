@@ -2,7 +2,7 @@ package sqlslog
 
 import "testing"
 
-func TestSetStepLogMsgFormatter(t *testing.T) {
+func TestSetStepEventMsgBuilder(t *testing.T) {
 	t.Parallel()
 	t.Run("defaultOptions", func(t *testing.T) {
 		t.Parallel()
@@ -12,11 +12,11 @@ func TestSetStepLogMsgFormatter(t *testing.T) {
 		}
 	})
 
-	t.Run("CustomStepLogMsgFormatter", func(t *testing.T) {
+	t.Run("CustomStepEventMsgBuilder", func(t *testing.T) {
 		t.Parallel()
-		formatter, backup := StepEventMsgWithEventName, stepLogMsgFormatter
-		SetStepLogMsgFormatter(formatter)
-		defer SetStepLogMsgFormatter(backup)
+		builder, backup := StepEventMsgWithEventName, stepEventMsgBuilder
+		SetStepEventMsgBuilder(builder)
+		defer SetStepEventMsgBuilder(backup)
 		opts := newOptions("dummy")
 		if opts.DriverOptions.ConnOptions.Begin.Complete.Msg != "Conn.Begin Complete" {
 			t.Errorf("unexpected default value: %s", opts.DriverOptions.ConnOptions.Begin.Complete.Msg)

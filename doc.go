@@ -36,10 +36,10 @@ A [StepOptions] is a set of options for logging a [Step] and has [EventOptions] 
 sqlslog provides a way to customize the log message and log [Level] for each step event.
 You can customize them by using functions that take [StepOptions] and return [Option], like [ConnPrepareContext] or [StmtQueryContext].
 
-# Default Step Log Message Formatter
+# DefaultStepEventMsgBuilder
 
-The default step log message formatter is [StepEventMsgWithEventName].
-You can change the default step log message formatter by calling [SetStepLogMsgFormatter].
+The default step event message builder is [StepEventMsgWithEventName].
+You can change the default step event message builder by calling [SetStepEventMsgBuilder].
 
 # Tracking ID
 

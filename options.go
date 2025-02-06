@@ -23,14 +23,14 @@ func newDefaultOptions(driverName string, formatter StepEventMsgBuilder) *option
 // Option is a function that sets an option on the options struct.
 type Option func(*options)
 
-var stepLogMsgFormatter = StepEventMsgWithoutEventName
+var stepEventMsgBuilder = StepEventMsgWithoutEventName
 
-// SetStepLogMsgFormatter sets the formatter for the step name used in logs.
+// SetStepEventMsgBuilder sets the formatter for the step name used in logs.
 // If not set, the default is StepLogMsgWithEventName.
-func SetStepLogMsgFormatter(f StepEventMsgBuilder) { stepLogMsgFormatter = f }
+func SetStepEventMsgBuilder(f StepEventMsgBuilder) { stepEventMsgBuilder = f }
 
 func newOptions(driverName string, opts ...Option) *options {
-	o := newDefaultOptions(driverName, stepLogMsgFormatter)
+	o := newDefaultOptions(driverName, stepEventMsgBuilder)
 	for _, opt := range opts {
 		opt(o)
 	}
