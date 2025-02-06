@@ -21,6 +21,9 @@ func defaultDriverOptions(driverName string, formatter StepLogMsgFormatter) *dri
 	connectorOptions := defaultConnectorOptions(driverName, formatter)
 	connOptions := connectorOptions.ConnOptions
 	return &driverOptions{
+		IDGen:     IDGeneratorDefault,
+		ConnIDKey: "conn_id",
+
 		Open:          *defaultStepOptions(formatter, "Driver.Open", LevelInfo),
 		OpenConnector: *defaultStepOptions(formatter, "Driver.OpenConnector", LevelInfo),
 
