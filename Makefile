@@ -28,20 +28,17 @@ godoc: $(GODOC_CLI)
 	@echo "Open http://localhost:6060/pkg/github.com/akm/sql-slog"
 	godoc -http=:6060
 
-mysql-%:
-	$(MAKE) -C tests/mysql $*
+# examples-logs-gen
+examples-%:
+	$(MAKE) -C examples $*
 
-postgres-%:
-	$(MAKE) -C tests/postgres $*
-
-sqlite3-%:
-	$(MAKE) -C tests/sqlite3 $*
-
+tests-%:
+	$(MAKE) -C tests $*
 
 GO_TEST_OPTIONS?=
 
 .PHONY: test
-test: test-unit sqlite3-test postgres-test mysql-test
+test: test-unit tests-run
 
 .PHONY: test-unit
 test-unit:
@@ -60,7 +57,7 @@ GO_COVERAGE_PROFILE?=coverage.txt
 $(GO_COVERAGE_PROFILE):
 	$(MAKE) test-coverage-profile
 
-test-with-coverage: test-with-coverage-unit sqlite3-test-with-coverage postgres-test-with-coverage mysql-test-with-coverage
+test-with-coverage: test-with-coverage-unit tests-run-with-coverage 
 
 # See https://app.codecov.io/github/akm/go-requestid/new
 .PHONY: test-with-coverage-unit
@@ -79,9 +76,6 @@ test-coverage: test-coverage-profile
 	go tool cover -html=$(GO_COVERAGE_PROFILE) -o $(GO_COVERAGE_HTML)
 	@command -v open && open $(GO_COVERAGE_HTML) || echo "open $(GO_COVERAGE_HTML)"
 
-.PHONY: demo-logs-gen
-demo-logs-gen: sqlite3-demo-logs-gen postgres-demo-logs-gen mysql-demo-logs-gen
-
 METADATA_YAML=.project.yaml
 $(METADATA_YAML): metadata-gen
 
@@ -91,10 +85,10 @@ metadata-gen:
 	@echo "linters: $(METADATA_LINTERS)" > $(METADATA_YAML)
 
 .PHONY: clean
-clean: mysql-clean postgres-clean sqlite3-clean
+clean: tests-clean examples-clean
 	rm -rf coverage
 	rm -f $(GO_COVERAGE_HTML) $(GO_COVERAGE_PROFILE)
 
 .PHONY: clobber
-clobber: clean
+clobber: tests-clobber examples-clobber clean
 	rm -f $(METADATA_YAML)
