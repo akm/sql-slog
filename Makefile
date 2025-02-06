@@ -28,6 +28,10 @@ godoc: $(GODOC_CLI)
 	@echo "Open http://localhost:6060/pkg/github.com/akm/sql-slog"
 	godoc -http=:6060
 
+# examples-logs-gen
+examples-%:
+	$(MAKE) -C examples $*
+
 mysql-%:
 	$(MAKE) -C tests/mysql $*
 
@@ -78,9 +82,6 @@ test-coverage-profile: $(GO_COVERAGE_DIR) $(GO_COVERAGE_MERGED_DIR)
 test-coverage: test-coverage-profile
 	go tool cover -html=$(GO_COVERAGE_PROFILE) -o $(GO_COVERAGE_HTML)
 	@command -v open && open $(GO_COVERAGE_HTML) || echo "open $(GO_COVERAGE_HTML)"
-
-.PHONY: demo-logs-gen
-demo-logs-gen: sqlite3-demo-logs-gen postgres-demo-logs-gen mysql-demo-logs-gen
 
 METADATA_YAML=.project.yaml
 $(METADATA_YAML): metadata-gen
