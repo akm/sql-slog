@@ -17,7 +17,7 @@ type stmtOptions struct {
 	Rows *rowsOptions
 }
 
-func defaultStmtOptions(formatter StepLogMsgFormatter) *stmtOptions {
+func defaultStmtOptions(formatter StepEventMsgBuilder) *stmtOptions {
 	return &stmtOptions{
 		Close:        *defaultStepOptions(formatter, StepStmtClose, LevelInfo),
 		Exec:         *defaultStepOptions(formatter, StepStmtExec, LevelInfo),

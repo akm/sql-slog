@@ -14,7 +14,7 @@ type rowsOptions struct {
 	NextResultSet StepOptions
 }
 
-func defaultRowsOptions(formatter StepLogMsgFormatter) *rowsOptions {
+func defaultRowsOptions(formatter StepEventMsgBuilder) *rowsOptions {
 	return &rowsOptions{
 		Close:         *defaultStepOptions(formatter, StepRowsClose, LevelDebug),
 		Next:          *defaultStepOptions(formatter, StepRowsNext, LevelDebug, HandleRowsNextError),

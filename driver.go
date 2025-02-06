@@ -17,7 +17,7 @@ type driverOptions struct {
 	ConnectorOptions *connectorOptions
 }
 
-func defaultDriverOptions(driverName string, formatter StepLogMsgFormatter) *driverOptions {
+func defaultDriverOptions(driverName string, formatter StepEventMsgBuilder) *driverOptions {
 	connectorOptions := defaultConnectorOptions(driverName, formatter)
 	connOptions := connectorOptions.ConnOptions
 	return &driverOptions{

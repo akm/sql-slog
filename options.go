@@ -9,7 +9,7 @@ type options struct {
 	sqlslogOptions
 }
 
-func newDefaultOptions(driverName string, formatter StepLogMsgFormatter) *options {
+func newDefaultOptions(driverName string, formatter StepEventMsgBuilder) *options {
 	return &options{
 		stepLoggerOptions: stepLoggerOptions{
 			logger:       slog.Default(),
@@ -27,7 +27,7 @@ var stepLogMsgFormatter = StepLogMsgWithoutEventName
 
 // SetStepLogMsgFormatter sets the formatter for the step name used in logs.
 // If not set, the default is StepLogMsgWithEventName.
-func SetStepLogMsgFormatter(f StepLogMsgFormatter) { stepLogMsgFormatter = f }
+func SetStepLogMsgFormatter(f StepEventMsgBuilder) { stepLogMsgFormatter = f }
 
 func newOptions(driverName string, opts ...Option) *options {
 	o := newDefaultOptions(driverName, stepLogMsgFormatter)

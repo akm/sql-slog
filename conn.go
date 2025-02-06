@@ -32,7 +32,7 @@ type connOptions struct {
 	RowsOptions  *rowsOptions
 }
 
-func defaultConnOptions(driverName string, formatter StepLogMsgFormatter) *connOptions {
+func defaultConnOptions(driverName string, formatter StepEventMsgBuilder) *connOptions {
 	stmtOptions := defaultStmtOptions(formatter)
 	rowsOptions := stmtOptions.Rows
 

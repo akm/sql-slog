@@ -7,8 +7,8 @@ type EventOptions struct {
 	Level Level
 }
 
-// StepLogMsgFormatter is the function type to format the step log message.
-type StepLogMsgFormatter func(step Step, event Event) string
+// StepEventMsgBuilder is the function type to format the step log message.
+type StepEventMsgBuilder func(step Step, event Event) string
 
 // StepLogMsgWithEventName returns the formatted step log message with the event name.
 func StepLogMsgWithEventName(step Step, event Event) string {
@@ -45,7 +45,7 @@ func (o *StepOptions) compare(other *StepOptions) bool {
 		o.Complete.Level == other.Complete.Level
 }
 
-func newStepOptions(f StepLogMsgFormatter, step Step, startLevel, errorLevel, completeLevel Level) *StepOptions {
+func newStepOptions(f StepEventMsgBuilder, step Step, startLevel, errorLevel, completeLevel Level) *StepOptions {
 	return &StepOptions{
 		Start:    EventOptions{Msg: f(step, EventStart), Level: startLevel},
 		Error:    EventOptions{Msg: f(step, EventError), Level: errorLevel},
@@ -53,7 +53,7 @@ func newStepOptions(f StepLogMsgFormatter, step Step, startLevel, errorLevel, co
 	}
 }
 
-func defaultStepOptions(formatter StepLogMsgFormatter, step Step, completeLevel Level, errHandlers ...func(error) (bool, []slog.Attr)) *StepOptions { // nolint:unparam
+func defaultStepOptions(formatter StepEventMsgBuilder, step Step, completeLevel Level, errHandlers ...func(error) (bool, []slog.Attr)) *StepOptions { // nolint:unparam
 	var startLevel Level
 	switch completeLevel { // nolint:exhaustive
 	case LevelError:
