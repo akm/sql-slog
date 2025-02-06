@@ -18,8 +18,8 @@ func ExampleLogger() {
 }
 
 func ExampleSetStepLogMsgFormatter() {
-	sqlslog.SetStepLogMsgFormatter(func(name string, event sqlslog.Event) string {
-		return name + "/" + event.String()
+	sqlslog.SetStepLogMsgFormatter(func(step sqlslog.Step, event sqlslog.Event) string {
+		return step.String() + "/" + event.String()
 	})
 	dsn := "file::memory:?cache=shared"
 	ctx := context.TODO()
