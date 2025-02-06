@@ -82,7 +82,19 @@ test-coverage: test-coverage-profile
 .PHONY: demo-logs-gen
 demo-logs-gen: sqlite3-demo-logs-gen postgres-demo-logs-gen mysql-demo-logs-gen
 
+METADATA_YAML=.project.yaml
+$(METADATA_YAML): metadata-gen
+
+METADATA_LINTERS=$(shell cat .golangci.yml | yq '... comments="" | .linters.enable | length')
+.PHONY: metadata-gen
+metadata-gen: 
+	@echo "linters: $(METADATA_LINTERS)" > $(METADATA_YAML)
+
 .PHONY: clean
 clean: mysql-clean postgres-clean sqlite3-clean
 	rm -rf coverage
 	rm -f $(GO_COVERAGE_HTML) $(GO_COVERAGE_PROFILE)
+
+.PHONY: clobber
+clobber: clean
+	rm -f $(METADATA_YAML)
