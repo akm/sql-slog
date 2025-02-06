@@ -85,10 +85,10 @@ metadata-gen:
 	@echo "linters: $(METADATA_LINTERS)" > $(METADATA_YAML)
 
 .PHONY: clean
-clean: tests-clean
+clean: tests-clean examples-clean
 	rm -rf coverage
 	rm -f $(GO_COVERAGE_HTML) $(GO_COVERAGE_PROFILE)
 
 .PHONY: clobber
-clobber: tests-clobber clean
+clobber: tests-clobber examples-clobber clean
 	rm -f $(METADATA_YAML)
