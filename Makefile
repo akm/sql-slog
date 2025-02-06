@@ -32,20 +32,13 @@ godoc: $(GODOC_CLI)
 examples-%:
 	$(MAKE) -C examples $*
 
-mysql-%:
-	$(MAKE) -C tests/mysql $*
-
-postgres-%:
-	$(MAKE) -C tests/postgres $*
-
-sqlite3-%:
-	$(MAKE) -C tests/sqlite3 $*
-
+tests-%:
+	$(MAKE) -C tests $*
 
 GO_TEST_OPTIONS?=
 
 .PHONY: test
-test: test-unit sqlite3-test postgres-test mysql-test
+test: test-unit tests-run
 
 .PHONY: test-unit
 test-unit:
@@ -64,7 +57,7 @@ GO_COVERAGE_PROFILE?=coverage.txt
 $(GO_COVERAGE_PROFILE):
 	$(MAKE) test-coverage-profile
 
-test-with-coverage: test-with-coverage-unit sqlite3-test-with-coverage postgres-test-with-coverage mysql-test-with-coverage
+test-with-coverage: test-with-coverage-unit tests-run-with-coverage 
 
 # See https://app.codecov.io/github/akm/go-requestid/new
 .PHONY: test-with-coverage-unit
@@ -92,10 +85,10 @@ metadata-gen:
 	@echo "linters: $(METADATA_LINTERS)" > $(METADATA_YAML)
 
 .PHONY: clean
-clean: mysql-clean postgres-clean sqlite3-clean
+clean: tests-clean
 	rm -rf coverage
 	rm -f $(GO_COVERAGE_HTML) $(GO_COVERAGE_PROFILE)
 
 .PHONY: clobber
-clobber: clean
+clobber: tests-clobber clean
 	rm -f $(METADATA_YAML)
