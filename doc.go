@@ -28,20 +28,17 @@ sqlslog has 6 log levels: [LevelVerbose], [LevelTrace], [LevelDebug], [LevelInfo
 [LevelVerbose] and [LevelTrace] are extra log levels for sqlslog.
 [LevelVerbose] is the lowest log level, and [LevelTrace] is the second lowest log level.
 
-# Step
+# Step and Event
 
-In sqlslog terms, a step is a logical operation in the database driver, such as a query, a ping, a prepare, etc.
-
-A step has three events: start, error, and complete.
-
-sqlslog provides a way to customize the log message and log level for each step event.
-
+A [Step] is a logical operation in the database driver, such as a query, a ping, a prepare, etc.
+An [Event] is an event that occurs during a [Step], such as [EventStart], [EventError], and [EventComplete].
+A [StepOptions] is a set of options for logging a [Step] and has [EventOptions] for each event.
+sqlslog provides a way to customize the log message and log [Level] for each step event.
 You can customize them by using functions that take [StepOptions] and return [Option], like [ConnPrepareContext] or [StmtQueryContext].
 
 # Default Step Log Message Formatter
 
 The default step log message formatter is [StepLogMsgWithEventName].
-
 You can change the default step log message formatter by calling [SetStepLogMsgFormatter].
 
 # Tracking ID
