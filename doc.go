@@ -21,6 +21,13 @@ The logger from slog.Default() does not have options for the log levels [LevelTr
 You can create a [slog.Handler] by using [sqlslog.NewTextHandler] or [sqlslog.NewJSONHandler] customized for sqlslog [Level].
 See examples for [NewTextHandler] and [NewJSONHandler] for more details.
 
+# Level
+
+sqlslog has 6 log levels: [LevelVerbose], [LevelTrace], [LevelDebug], [LevelInfo], [LevelWarn], and [LevelError].
+[LevelDebug], [LevelInfo], [LevelWarn], and [LevelError] are the same as slog's log levels.
+[LevelVerbose] and [LevelTrace] are extra log levels for sqlslog.
+[LevelVerbose] is the lowest log level, and [LevelTrace] is the second lowest log level.
+
 # Step
 
 In sqlslog terms, a step is a logical operation in the database driver, such as a query, a ping, a prepare, etc.
