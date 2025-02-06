@@ -10,8 +10,8 @@ type EventOptions struct {
 // StepEventMsgBuilder is the function type to format the step log message.
 type StepEventMsgBuilder func(step Step, event Event) string
 
-// StepLogMsgWithEventName returns the formatted step log message with the event name.
-func StepLogMsgWithEventName(step Step, event Event) string {
+// StepEventMsgWithEventName returns the formatted step log message with the event name.
+func StepEventMsgWithEventName(step Step, event Event) string {
 	return step.String() + " " + event.String()
 }
 

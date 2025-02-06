@@ -38,7 +38,7 @@ You can customize them by using functions that take [StepOptions] and return [Op
 
 # Default Step Log Message Formatter
 
-The default step log message formatter is [StepLogMsgWithEventName].
+The default step log message formatter is [StepEventMsgWithEventName].
 You can change the default step log message formatter by calling [SetStepLogMsgFormatter].
 
 # Tracking ID

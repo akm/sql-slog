@@ -14,7 +14,7 @@ func TestSetStepLogMsgFormatter(t *testing.T) {
 
 	t.Run("CustomStepLogMsgFormatter", func(t *testing.T) {
 		t.Parallel()
-		formatter, backup := StepLogMsgWithEventName, stepLogMsgFormatter
+		formatter, backup := StepEventMsgWithEventName, stepLogMsgFormatter
 		SetStepLogMsgFormatter(formatter)
 		defer SetStepLogMsgFormatter(backup)
 		opts := newOptions("dummy")
