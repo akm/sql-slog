@@ -53,7 +53,7 @@ func newStepOptions(f StepEventMsgBuilder, step Step, startLevel, errorLevel, co
 	}
 }
 
-func defaultStepOptions(formatter StepEventMsgBuilder, step Step, completeLevel Level, errHandlers ...func(error) (bool, []slog.Attr)) *StepOptions { // nolint:unparam
+func defaultStepOptions(msgb StepEventMsgBuilder, step Step, completeLevel Level, errHandlers ...func(error) (bool, []slog.Attr)) *StepOptions { // nolint:unparam
 	var startLevel Level
 	switch completeLevel { // nolint:exhaustive
 	case LevelError:
@@ -65,7 +65,7 @@ func defaultStepOptions(formatter StepEventMsgBuilder, step Step, completeLevel 
 	default:
 		startLevel = LevelVerbose
 	}
-	r := newStepOptions(formatter, step, startLevel, LevelError, completeLevel)
+	r := newStepOptions(msgb, step, startLevel, LevelError, completeLevel)
 	if len(errHandlers) > 0 {
 		r.ErrorHandler = errHandlers[0]
 	}

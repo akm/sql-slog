@@ -9,14 +9,14 @@ type options struct {
 	sqlslogOptions
 }
 
-func newDefaultOptions(driverName string, formatter StepEventMsgBuilder) *options {
+func newDefaultOptions(driverName string, msgb StepEventMsgBuilder) *options {
 	return &options{
 		stepLoggerOptions: stepLoggerOptions{
 			logger:       slog.Default(),
 			durationKey:  DurationKeyDefault,
 			durationType: DurationNanoSeconds,
 		},
-		sqlslogOptions: *defaultSqlslogOptions(driverName, formatter),
+		sqlslogOptions: *defaultSqlslogOptions(driverName, msgb),
 	}
 }
 
@@ -25,7 +25,7 @@ type Option func(*options)
 
 var stepEventMsgBuilder = StepEventMsgWithoutEventName
 
-// SetStepEventMsgBuilder sets the formatter for the step name used in logs.
+// SetStepEventMsgBuilder sets the builder for the step event message used in logs.
 // If not set, the default is StepLogMsgWithEventName.
 func SetStepEventMsgBuilder(f StepEventMsgBuilder) { stepEventMsgBuilder = f }
 

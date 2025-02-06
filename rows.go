@@ -14,11 +14,11 @@ type rowsOptions struct {
 	NextResultSet StepOptions
 }
 
-func defaultRowsOptions(formatter StepEventMsgBuilder) *rowsOptions {
+func defaultRowsOptions(msgb StepEventMsgBuilder) *rowsOptions {
 	return &rowsOptions{
-		Close:         *defaultStepOptions(formatter, StepRowsClose, LevelDebug),
-		Next:          *defaultStepOptions(formatter, StepRowsNext, LevelDebug, HandleRowsNextError),
-		NextResultSet: *defaultStepOptions(formatter, StepRowsNextResultSet, LevelDebug),
+		Close:         *defaultStepOptions(msgb, StepRowsClose, LevelDebug),
+		Next:          *defaultStepOptions(msgb, StepRowsNext, LevelDebug, HandleRowsNextError),
+		NextResultSet: *defaultStepOptions(msgb, StepRowsNextResultSet, LevelDebug),
 	}
 }
 

@@ -32,31 +32,31 @@ type connOptions struct {
 	RowsOptions  *rowsOptions
 }
 
-func defaultConnOptions(driverName string, formatter StepEventMsgBuilder) *connOptions {
-	stmtOptions := defaultStmtOptions(formatter)
+func defaultConnOptions(driverName string, msgb StepEventMsgBuilder) *connOptions {
+	stmtOptions := defaultStmtOptions(msgb)
 	rowsOptions := stmtOptions.Rows
 
 	return &connOptions{
 		IDGen: IDGeneratorDefault,
 
-		Begin:     *defaultStepOptions(formatter, StepConnBegin, LevelInfo),
-		BeginTx:   *defaultStepOptions(formatter, StepConnBeginTx, LevelInfo),
+		Begin:     *defaultStepOptions(msgb, StepConnBegin, LevelInfo),
+		BeginTx:   *defaultStepOptions(msgb, StepConnBeginTx, LevelInfo),
 		TxIDKey:   TxIDKeyDefault,
-		TxOptions: defaultTxOptions(formatter),
+		TxOptions: defaultTxOptions(msgb),
 
-		Close: *defaultStepOptions(formatter, StepConnClose, LevelInfo),
+		Close: *defaultStepOptions(msgb, StepConnClose, LevelInfo),
 
-		Prepare:        *defaultStepOptions(formatter, StepConnPrepare, LevelInfo),
-		PrepareContext: *defaultStepOptions(formatter, StepConnPrepareContext, LevelInfo),
+		Prepare:        *defaultStepOptions(msgb, StepConnPrepare, LevelInfo),
+		PrepareContext: *defaultStepOptions(msgb, StepConnPrepareContext, LevelInfo),
 		StmtIDKey:      StmtIDKeyDefault,
 		StmtOptions:    stmtOptions,
 
-		ResetSession: *defaultStepOptions(formatter, StepConnResetSession, LevelTrace),
-		Ping:         *defaultStepOptions(formatter, StepConnPing, LevelTrace),
+		ResetSession: *defaultStepOptions(msgb, StepConnResetSession, LevelTrace),
+		Ping:         *defaultStepOptions(msgb, StepConnPing, LevelTrace),
 
-		ExecContext: *defaultStepOptions(formatter, StepConnExecContext, LevelInfo, ConnExecContextErrorHandler(driverName)),
+		ExecContext: *defaultStepOptions(msgb, StepConnExecContext, LevelInfo, ConnExecContextErrorHandler(driverName)),
 
-		QueryContext: *defaultStepOptions(formatter, StepConnQueryContext, LevelInfo, ConnQueryContextErrorHandler(driverName)),
+		QueryContext: *defaultStepOptions(msgb, StepConnQueryContext, LevelInfo, ConnQueryContextErrorHandler(driverName)),
 		RowsOptions:  rowsOptions,
 	}
 }

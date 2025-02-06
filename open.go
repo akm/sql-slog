@@ -12,10 +12,10 @@ type sqlslogOptions struct {
 	DriverOptions *driverOptions
 }
 
-func defaultSqlslogOptions(driverName string, formatter StepEventMsgBuilder) *sqlslogOptions {
-	driverOptions := defaultDriverOptions(driverName, formatter)
+func defaultSqlslogOptions(driverName string, msgb StepEventMsgBuilder) *sqlslogOptions {
+	driverOptions := defaultDriverOptions(driverName, msgb)
 	return &sqlslogOptions{
-		Open:          *defaultStepOptions(formatter, StepSqlslogOpen, LevelInfo),
+		Open:          *defaultStepOptions(msgb, StepSqlslogOpen, LevelInfo),
 		DriverOptions: driverOptions,
 	}
 }
@@ -37,7 +37,7 @@ See the following example for usage:
 
 [StepOptions]: sets the options for logging behavior.
 
-[SetStepLogMsgFormatter]: sets the function to format the step name.
+[SetStepEventMsgBuilder]: sets the function to format the step name.
 
 [sql.Open]: https://pkg.go.dev/database/sql#Open
 */

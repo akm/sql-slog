@@ -13,10 +13,10 @@ type connectorOptions struct {
 	ConnOptions *connOptions
 }
 
-func defaultConnectorOptions(driver string, formatter StepEventMsgBuilder) *connectorOptions {
+func defaultConnectorOptions(driver string, msgb StepEventMsgBuilder) *connectorOptions {
 	return &connectorOptions{
-		Connect:     *defaultStepOptions(formatter, StepConnectorConnect, LevelInfo),
-		ConnOptions: defaultConnOptions(driver, formatter),
+		Connect:     *defaultStepOptions(msgb, StepConnectorConnect, LevelInfo),
+		ConnOptions: defaultConnOptions(driver, msgb),
 	}
 }
 
