@@ -15,7 +15,7 @@ type connectorOptions struct {
 
 func defaultConnectorOptions(driver string, formatter StepLogMsgFormatter) *connectorOptions {
 	return &connectorOptions{
-		Connect:     *defaultStepOptions(formatter, "Connector.Connect", LevelInfo),
+		Connect:     *defaultStepOptions(formatter, StepConnectorConnect, LevelInfo),
 		ConnOptions: defaultConnOptions(driver, formatter),
 	}
 }

@@ -39,24 +39,24 @@ func defaultConnOptions(driverName string, formatter StepLogMsgFormatter) *connO
 	return &connOptions{
 		IDGen: IDGeneratorDefault,
 
-		Begin:     *defaultStepOptions(formatter, "Conn.Begin", LevelInfo),
-		BeginTx:   *defaultStepOptions(formatter, "Conn.BeginTx", LevelInfo),
+		Begin:     *defaultStepOptions(formatter, StepConnBegin, LevelInfo),
+		BeginTx:   *defaultStepOptions(formatter, StepConnBeginTx, LevelInfo),
 		TxIDKey:   TxIDKeyDefault,
 		TxOptions: defaultTxOptions(formatter),
 
-		Close: *defaultStepOptions(formatter, "Conn.Close", LevelInfo),
+		Close: *defaultStepOptions(formatter, StepConnClose, LevelInfo),
 
-		Prepare:        *defaultStepOptions(formatter, "Conn.Prepare", LevelInfo),
-		PrepareContext: *defaultStepOptions(formatter, "Conn.PrepareContext", LevelInfo),
+		Prepare:        *defaultStepOptions(formatter, StepConnPrepare, LevelInfo),
+		PrepareContext: *defaultStepOptions(formatter, StepConnPrepareContext, LevelInfo),
 		StmtIDKey:      StmtIDKeyDefault,
 		StmtOptions:    stmtOptions,
 
-		ResetSession: *defaultStepOptions(formatter, "Conn.ResetSession", LevelTrace),
-		Ping:         *defaultStepOptions(formatter, "Conn.Ping", LevelTrace),
+		ResetSession: *defaultStepOptions(formatter, StepConnResetSession, LevelTrace),
+		Ping:         *defaultStepOptions(formatter, StepConnPing, LevelTrace),
 
-		ExecContext: *defaultStepOptions(formatter, "Conn.ExecContext", LevelInfo, ConnExecContextErrorHandler(driverName)),
+		ExecContext: *defaultStepOptions(formatter, StepConnExecContext, LevelInfo, ConnExecContextErrorHandler(driverName)),
 
-		QueryContext: *defaultStepOptions(formatter, "Conn.QueryContext", LevelInfo, ConnQueryContextErrorHandler(driverName)),
+		QueryContext: *defaultStepOptions(formatter, StepConnQueryContext, LevelInfo, ConnQueryContextErrorHandler(driverName)),
 		RowsOptions:  rowsOptions,
 	}
 }

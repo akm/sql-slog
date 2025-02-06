@@ -19,11 +19,11 @@ type stmtOptions struct {
 
 func defaultStmtOptions(formatter StepLogMsgFormatter) *stmtOptions {
 	return &stmtOptions{
-		Close:        *defaultStepOptions(formatter, "Stmt.Close", LevelInfo),
-		Exec:         *defaultStepOptions(formatter, "Stmt.Exec", LevelInfo),
-		Query:        *defaultStepOptions(formatter, "Stmt.Query", LevelInfo),
-		ExecContext:  *defaultStepOptions(formatter, "Stmt.ExecContext", LevelInfo),
-		QueryContext: *defaultStepOptions(formatter, "Stmt.QueryContext", LevelInfo),
+		Close:        *defaultStepOptions(formatter, StepStmtClose, LevelInfo),
+		Exec:         *defaultStepOptions(formatter, StepStmtExec, LevelInfo),
+		Query:        *defaultStepOptions(formatter, StepStmtQuery, LevelInfo),
+		ExecContext:  *defaultStepOptions(formatter, StepStmtExecContext, LevelInfo),
+		QueryContext: *defaultStepOptions(formatter, StepStmtQueryContext, LevelInfo),
 		Rows:         defaultRowsOptions(formatter),
 	}
 }

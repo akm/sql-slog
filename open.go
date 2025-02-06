@@ -15,7 +15,7 @@ type sqlslogOptions struct {
 func defaultSqlslogOptions(driverName string, formatter StepLogMsgFormatter) *sqlslogOptions {
 	driverOptions := defaultDriverOptions(driverName, formatter)
 	return &sqlslogOptions{
-		Open:          *defaultStepOptions(formatter, "Open", LevelInfo),
+		Open:          *defaultStepOptions(formatter, StepSqlslogOpen, LevelInfo),
 		DriverOptions: driverOptions,
 	}
 }

@@ -16,9 +16,9 @@ type rowsOptions struct {
 
 func defaultRowsOptions(formatter StepLogMsgFormatter) *rowsOptions {
 	return &rowsOptions{
-		Close:         *defaultStepOptions(formatter, "Rows.Close", LevelDebug),
-		Next:          *defaultStepOptions(formatter, "Rows.Next", LevelDebug, HandleRowsNextError),
-		NextResultSet: *defaultStepOptions(formatter, "Rows.NextResultSet", LevelDebug),
+		Close:         *defaultStepOptions(formatter, StepRowsClose, LevelDebug),
+		Next:          *defaultStepOptions(formatter, StepRowsNext, LevelDebug, HandleRowsNextError),
+		NextResultSet: *defaultStepOptions(formatter, StepRowsNextResultSet, LevelDebug),
 	}
 }
 

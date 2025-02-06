@@ -11,8 +11,8 @@ type txOptions struct {
 
 func defaultTxOptions(formatter StepLogMsgFormatter) *txOptions {
 	return &txOptions{
-		Commit:   *defaultStepOptions(formatter, "Tx.Commit", LevelInfo),
-		Rollback: *defaultStepOptions(formatter, "Tx.Rollback", LevelInfo),
+		Commit:   *defaultStepOptions(formatter, StepTxCommit, LevelInfo),
+		Rollback: *defaultStepOptions(formatter, StepTxRollback, LevelInfo),
 	}
 }
 
