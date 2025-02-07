@@ -17,9 +17,9 @@ func ExampleLogger() {
 	defer db.Close()
 }
 
-func ExampleSetStepLogMsgFormatter() {
-	sqlslog.SetStepLogMsgFormatter(func(name string, event sqlslog.Event) string {
-		return name + "/" + event.String()
+func ExampleSetStepEventMsgBuilder() {
+	sqlslog.SetStepEventMsgBuilder(func(step sqlslog.Step, event sqlslog.Event) string {
+		return step.String() + "/" + event.String()
 	})
 	dsn := "file::memory:?cache=shared"
 	ctx := context.TODO()

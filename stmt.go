@@ -17,14 +17,14 @@ type stmtOptions struct {
 	Rows *rowsOptions
 }
 
-func defaultStmtOptions(formatter StepLogMsgFormatter) *stmtOptions {
+func defaultStmtOptions(msgb StepEventMsgBuilder) *stmtOptions {
 	return &stmtOptions{
-		Close:        *defaultStepOptions(formatter, "Stmt.Close", LevelInfo),
-		Exec:         *defaultStepOptions(formatter, "Stmt.Exec", LevelInfo),
-		Query:        *defaultStepOptions(formatter, "Stmt.Query", LevelInfo),
-		ExecContext:  *defaultStepOptions(formatter, "Stmt.ExecContext", LevelInfo),
-		QueryContext: *defaultStepOptions(formatter, "Stmt.QueryContext", LevelInfo),
-		Rows:         defaultRowsOptions(formatter),
+		Close:        *defaultStepOptions(msgb, StepStmtClose, LevelInfo),
+		Exec:         *defaultStepOptions(msgb, StepStmtExec, LevelInfo),
+		Query:        *defaultStepOptions(msgb, StepStmtQuery, LevelInfo),
+		ExecContext:  *defaultStepOptions(msgb, StepStmtExecContext, LevelInfo),
+		QueryContext: *defaultStepOptions(msgb, StepStmtQueryContext, LevelInfo),
+		Rows:         defaultRowsOptions(msgb),
 	}
 }
 

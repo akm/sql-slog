@@ -17,15 +17,15 @@ type driverOptions struct {
 	ConnectorOptions *connectorOptions
 }
 
-func defaultDriverOptions(driverName string, formatter StepLogMsgFormatter) *driverOptions {
-	connectorOptions := defaultConnectorOptions(driverName, formatter)
+func defaultDriverOptions(driverName string, msgb StepEventMsgBuilder) *driverOptions {
+	connectorOptions := defaultConnectorOptions(driverName, msgb)
 	connOptions := connectorOptions.ConnOptions
 	return &driverOptions{
 		IDGen:     IDGeneratorDefault,
 		ConnIDKey: "conn_id",
 
-		Open:          *defaultStepOptions(formatter, "Driver.Open", LevelInfo),
-		OpenConnector: *defaultStepOptions(formatter, "Driver.OpenConnector", LevelInfo),
+		Open:          *defaultStepOptions(msgb, StepDriverOpen, LevelInfo),
+		OpenConnector: *defaultStepOptions(msgb, StepDriverOpenConnector, LevelInfo),
 
 		ConnOptions:      connOptions,
 		ConnectorOptions: connectorOptions,

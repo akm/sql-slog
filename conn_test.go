@@ -38,7 +38,7 @@ func TestWrapConn(t *testing.T) {
 		t.Parallel()
 		mock := &mockConnForWrapConn{}
 		logger := &stepLogger{}
-		connOptions := defaultConnOptions("dummy", StepLogMsgWithoutEventName)
+		connOptions := defaultConnOptions("dummy", StepEventMsgWithoutEventName)
 		conn := wrapConn(mock, logger, connOptions)
 		if conn == nil {
 			t.Fatal("Expected non-nil")
@@ -142,7 +142,7 @@ var (
 func TestWithMockErrorConn(t *testing.T) {
 	t.Parallel()
 	logger := newStepLogger(nil)
-	connOptions := defaultConnOptions("sqlite3", StepLogMsgWithoutEventName)
+	connOptions := defaultConnOptions("sqlite3", StepEventMsgWithoutEventName)
 	w := wrapConn(newMockErrConn(errors.New("unexpected error")), logger, connOptions)
 	t.Run("Begin", func(t *testing.T) {
 		t.Parallel()
@@ -178,7 +178,7 @@ func TestPingInCase(t *testing.T) {
 		connWrapper: connWrapper{
 			original: conn,
 			logger:   logger,
-			options:  defaultConnOptions("sqlite3", StepLogMsgWithoutEventName),
+			options:  defaultConnOptions("sqlite3", StepEventMsgWithoutEventName),
 		},
 		originalConn: conn,
 	}

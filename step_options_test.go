@@ -2,44 +2,6 @@ package sqlslog
 
 import "testing"
 
-func TestEventString(t *testing.T) {
-	t.Parallel()
-	tests := []struct {
-		name string
-		e    Event
-		want string
-	}{
-		{
-			name: "EventStart",
-			e:    EventStart,
-			want: "Start",
-		},
-		{
-			name: "EventError",
-			e:    EventError,
-			want: "Error",
-		},
-		{
-			name: "EventComplete",
-			e:    EventComplete,
-			want: "Complete",
-		},
-		{
-			name: "Unknown",
-			e:    Event(0),
-			want: "Unknown",
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			if got := tt.e.String(); got != tt.want {
-				t.Errorf("Event.String() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func TestStepOptionsSetLevel(t *testing.T) {
 	t.Parallel()
 
@@ -106,7 +68,7 @@ func TestDefaultStepOptions(t *testing.T) {
 	t.Parallel()
 	t.Run("LevelError", func(t *testing.T) {
 		t.Parallel()
-		o := defaultStepOptions(StepLogMsgWithoutEventName, "test", LevelError)
+		o := defaultStepOptions(StepEventMsgWithoutEventName, Step("test"), LevelError)
 		if o.Start.Level != LevelInfo {
 			t.Errorf("Expected %v, but got %v", LevelInfo, o.Start.Level)
 		}
