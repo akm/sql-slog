@@ -8,14 +8,22 @@ import (
 // NewJSONHandler returns a new JSON handler using [slog.NewJSONHandler]
 // with custom options for sqlslog.
 // See [WrapHandlerOptions] for details on the options.
-func NewJSONHandler(w io.Writer, opts *slog.HandlerOptions) *slog.JSONHandler {
+func NewJSONHandler(w io.Writer, opts *slog.HandlerOptions) slog.Handler {
+	return newJSONHandler(w, opts)
+}
+
+func newJSONHandler(w io.Writer, opts *slog.HandlerOptions) *slog.JSONHandler {
 	return slog.NewJSONHandler(w, WrapHandlerOptions(opts))
 }
 
 // NewTextHandler returns a new Text handler using [slog.NewTextHandler]
 // with custom options for sqlslog.
 // See [WrapHandlerOptions] for details on the options.
-func NewTextHandler(w io.Writer, opts *slog.HandlerOptions) *slog.TextHandler {
+func NewTextHandler(w io.Writer, opts *slog.HandlerOptions) slog.Handler {
+	return newTextHandler(w, opts)
+}
+
+func newTextHandler(w io.Writer, opts *slog.HandlerOptions) *slog.TextHandler {
 	return slog.NewTextHandler(w, WrapHandlerOptions(opts))
 }
 
