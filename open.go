@@ -5,14 +5,14 @@ import (
 	"database/sql"
 )
 
-type sqlslogOptions struct {
+type factoryOptions struct {
 	Open          StepOptions
 	DriverOptions *driverOptions
 }
 
-func defaultSqlslogOptions(driverName string, msgb StepEventMsgBuilder) *sqlslogOptions {
+func defaultFactoryOptions(driverName string, msgb StepEventMsgBuilder) *factoryOptions {
 	driverOptions := defaultDriverOptions(driverName, msgb)
-	return &sqlslogOptions{
+	return &factoryOptions{
 		Open:          *defaultStepOptions(msgb, StepSqlslogOpen, LevelInfo),
 		DriverOptions: driverOptions,
 	}

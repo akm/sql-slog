@@ -6,7 +6,7 @@ import (
 
 type options struct {
 	stepLoggerOptions
-	sqlslogOptions
+	factoryOptions
 }
 
 func newDefaultOptions(driverName string, msgb StepEventMsgBuilder) *options {
@@ -16,7 +16,7 @@ func newDefaultOptions(driverName string, msgb StepEventMsgBuilder) *options {
 			durationKey:  DurationKeyDefault,
 			durationType: DurationNanoSeconds,
 		},
-		sqlslogOptions: *defaultSqlslogOptions(driverName, msgb),
+		factoryOptions: *defaultFactoryOptions(driverName, msgb),
 	}
 }
 
