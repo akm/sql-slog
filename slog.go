@@ -21,13 +21,6 @@ func defaultSlogOptions() *slogOptions {
 	}
 }
 
-func (o *slogOptions) newHandler() slog.Handler {
-	if o.handler != nil {
-		return o.handler
-	}
-	return o.handlerFunc(o.logWriter, WrapHandlerOptions(o.handlerOptions))
-}
-
 // Handler sets the slog.Handler to be used.
 // If not set, the default is created by HandlerFunc, Writer, SlogOptions.
 func Handler(handler slog.Handler) Option {

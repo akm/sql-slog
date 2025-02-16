@@ -26,9 +26,14 @@ func New(driverName, dsn string, opts ...Option) *Factory {
 	}
 }
 
+func (f *Factory) newHandler() slog.Handler {
+	o := f.options.SlogOptions
+	return o.handlerFunc(o.logWriter, WrapHandlerOptions(o.handlerOptions))
+}
+
 func (f *Factory) Handler() slog.Handler {
 	if f.handler == nil {
-		f.handler = f.options.SlogOptions.newHandler()
+		f.handler = f.newHandler()
 	}
 	return f.handler
 }
