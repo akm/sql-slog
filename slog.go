@@ -32,6 +32,8 @@ func Handler(handler slog.Handler) Option {
 
 // HandlerFunc sets the function to create the slog.Handler.
 // If not set, the default is [NewTextHandler].
+// WARNING: Unless given handlerFunc considers ReplaceAttr options like [NewJSONHandler] or [NewTextHandler] of sqlslog package,
+// LevelTrace and LevelVerbose will be logged as DEBUG-4 and DEBUG-8.
 func HandlerFunc(handlerFunc func(io.Writer, *slog.HandlerOptions) slog.Handler) Option {
 	return func(o *options) { o.SlogOptions.handlerFunc = handlerFunc }
 }
