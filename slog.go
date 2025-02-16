@@ -7,17 +7,17 @@ import (
 )
 
 type slogOptions struct {
-	handler        slog.Handler
-	handlerFunc    func(io.Writer, *slog.HandlerOptions) slog.Handler
-	logWriter      io.Writer
-	handlerOptions *slog.HandlerOptions
+	slog.HandlerOptions
+	handler     slog.Handler
+	handlerFunc func(io.Writer, *slog.HandlerOptions) slog.Handler
+	logWriter   io.Writer
 }
 
 func defaultSlogOptions() *slogOptions {
 	return &slogOptions{
 		handlerFunc:    NewTextHandler,
 		logWriter:      os.Stdout,
-		handlerOptions: &slog.HandlerOptions{},
+		HandlerOptions: slog.HandlerOptions{},
 	}
 }
 
@@ -42,7 +42,12 @@ func LogWriter(w io.Writer) Option {
 // HandlerOptions sets the options to be used for the slog.Handler.
 // If not set, the default is an empty [slog.HandlerOptions].
 func HandlerOptions(opts *slog.HandlerOptions) Option {
-	return func(o *options) { o.SlogOptions.handlerOptions = opts }
+	return func(o *options) {
+		if opts == nil {
+			opts = &slog.HandlerOptions{}
+		}
+		o.SlogOptions.HandlerOptions = *opts
+	}
 }
 
 // NewJSONHandler returns a new JSON handler using [slog.NewJSONHandler]
