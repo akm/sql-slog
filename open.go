@@ -42,14 +42,7 @@ See the following example for usage:
 [sql.Open]: https://pkg.go.dev/database/sql#Open
 */
 func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB, error) { // nolint:funlen
-	options := newOptions(driverName, opts...)
-	logger := newStepLogger(&stepLoggerOptions{
-		logger:       options.logger,
-		durationKey:  options.durationKey,
-		durationType: options.durationType,
-	})
-
-	return open(ctx, driverName, dsn, logger, &options.sqlslogOptions)
+	return New(driverName, dsn, opts...).Open(ctx)
 }
 
 func open(ctx context.Context, driverName, dsn string, logger *stepLogger, options *sqlslogOptions) (*sql.DB, error) {
