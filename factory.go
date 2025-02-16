@@ -41,12 +41,7 @@ func (f *Factory) Logger() *slog.Logger {
 }
 
 func (f *Factory) Open(ctx context.Context) (*sql.DB, error) {
-	logger := f.Logger()
-	stepLogger := newStepLogger(&stepLoggerOptions{
-		logger:       logger,
-		durationKey:  f.options.durationKey,
-		durationType: f.options.durationType,
-	})
+	stepLogger := newStepLogger(f.Logger(), &f.options.stepLoggerOptions)
 	return open(ctx, f.driverName, f.dsn, stepLogger, f.options)
 }
 

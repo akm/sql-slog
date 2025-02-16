@@ -1,9 +1,5 @@
 package sqlslog
 
-import (
-	"log/slog"
-)
-
 type options struct {
 	stepLoggerOptions
 	DriverOptions *driverOptions
@@ -14,7 +10,6 @@ type options struct {
 func newDefaultOptions(driverName string, msgb StepEventMsgBuilder) *options {
 	return &options{
 		stepLoggerOptions: stepLoggerOptions{
-			logger:       slog.Default(),
 			durationKey:  DurationKeyDefault,
 			durationType: DurationNanoSeconds,
 		},
@@ -39,14 +34,6 @@ func newOptions(driverName string, opts ...Option) *options {
 		opt(o)
 	}
 	return o
-}
-
-// Logger sets the slog.Logger to be used.
-// If not set, the default is slog.Default().
-func Logger(logger *slog.Logger) Option {
-	return func(o *options) {
-		o.stepLoggerOptions.logger = logger
-	}
 }
 
 // Set the options for Conn.Begin.
