@@ -50,6 +50,21 @@ func HandlerOptions(opts *slog.HandlerOptions) Option {
 	}
 }
 
+// AddSource sets whether to add the source to the log.
+func AddSource(v bool) Option {
+	return func(o *options) { o.SlogOptions.AddSource = v }
+}
+
+// LogLevel sets the log level to be used.
+func LogLevel(v slog.Leveler) Option {
+	return func(o *options) { o.SlogOptions.Level = v }
+}
+
+// ReplaceAttr sets the function to replace the attributes.
+func LogReplaceAttr(f func([]string, slog.Attr) slog.Attr) Option {
+	return func(o *options) { o.SlogOptions.ReplaceAttr = f }
+}
+
 // NewJSONHandler returns a new JSON handler using [slog.NewJSONHandler]
 // with custom options for sqlslog.
 // See [WrapHandlerOptions] for details on the options.
