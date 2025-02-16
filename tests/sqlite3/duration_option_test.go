@@ -3,7 +3,6 @@ package main_test
 import (
 	"bytes"
 	"context"
-	"log/slog"
 	"os"
 	"strings"
 	"testing"
@@ -93,7 +92,7 @@ func TestDuration(t *testing.T) {
 					testhelper.StepEventMsgOptions,
 					sqlslog.HandlerFunc(sqlslog.NewJSONHandler),
 					sqlslog.LogWriter(buf),
-					sqlslog.HandlerOptions(&slog.HandlerOptions{Level: sqlslog.LevelVerbose}),
+					sqlslog.LogLevel(sqlslog.LevelVerbose),
 					sqlslog.DurationKey(tc.durationKey),
 					sqlslog.Duration(tc.durationType),
 				)...,

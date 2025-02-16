@@ -2,7 +2,6 @@ package sqlslog_test
 
 import (
 	"context"
-	"log/slog"
 
 	sqlslog "github.com/akm/sql-slog"
 	// _ "github.com/mattn/go-sqlite3"
@@ -25,7 +24,7 @@ func ExampleOpen_withLevel() {
 	ctx := context.TODO()
 	db, _, _ := sqlslog.Open(ctx, "sqlite3", dsn,
 		sqlslog.HandlerFunc(sqlslog.NewJSONHandler),
-		sqlslog.HandlerOptions(&slog.HandlerOptions{Level: sqlslog.LevelTrace}),
+		sqlslog.LogLevel(sqlslog.LevelTrace),
 	)
 	defer db.Close()
 }
@@ -35,7 +34,7 @@ func ExampleOpen_withStmtQueryContext() {
 	ctx := context.TODO()
 	db, _, _ := sqlslog.Open(ctx, "sqlite3", dsn,
 		sqlslog.HandlerFunc(sqlslog.NewJSONHandler),
-		sqlslog.HandlerOptions(&slog.HandlerOptions{Level: sqlslog.LevelTrace}),
+		sqlslog.LogLevel(sqlslog.LevelTrace),
 		sqlslog.StmtQueryContext(func(o *sqlslog.StepOptions) {
 			o.SetLevel(sqlslog.LevelDebug)
 		}),

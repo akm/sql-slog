@@ -5,7 +5,6 @@ import (
 	"context"
 	"database/sql/driver"
 	"fmt"
-	"log/slog"
 	"os"
 	"testing"
 	"time"
@@ -36,7 +35,7 @@ func TestLowLevelWithContext(t *testing.T) {
 			testhelper.StepEventMsgOptions,
 			sqlslog.HandlerFunc(sqlslog.NewJSONHandler),
 			sqlslog.LogWriter(buf),
-			sqlslog.HandlerOptions(&slog.HandlerOptions{Level: sqlslog.LevelVerbose}),
+			sqlslog.LogLevel(sqlslog.LevelVerbose),
 			sqlslog.IDGenerator(seqIdGen.Generate),
 			sqlslog.ConnIDKey(connIDKey),
 			sqlslog.StmtIDKey(stmtIDKey),
