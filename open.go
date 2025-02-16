@@ -3,6 +3,7 @@ package sqlslog
 import (
 	"context"
 	"database/sql"
+	"log/slog"
 )
 
 /*
@@ -26,6 +27,11 @@ See the following example for usage:
 
 [sql.Open]: https://pkg.go.dev/database/sql#Open
 */
-func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB, error) { // nolint:funlen
-	return New(driverName, dsn, opts...).Open(ctx)
+func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB, *slog.Logger, error) { // nolint:funlen
+	factory := New(driverName, dsn, opts...)
+	db, err := factory.Open(ctx)
+	if err != nil {
+		return nil, nil, err
+	}
+	return db, factory.Logger(), nil
 }

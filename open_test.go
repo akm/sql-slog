@@ -1,7 +1,6 @@
 package sqlslog
 
 import (
-	"bytes"
 	"context"
 	"database/sql/driver"
 	"errors"
@@ -12,10 +11,8 @@ import (
 func TestOpen(t *testing.T) {
 	t.Parallel()
 	ctx := context.TODO()
-	buf := bytes.NewBuffer(nil)
-	logger := slog.New(slog.NewJSONHandler(buf, &slog.HandlerOptions{Level: slog.LevelDebug}))
 
-	db, err := Open(ctx, "invalid-driver", "", Logger(logger))
+	db, _, err := Open(ctx, "invalid-driver", "")
 	if err == nil {
 		t.Fatal("Expected error")
 	}

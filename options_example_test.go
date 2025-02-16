@@ -2,19 +2,19 @@ package sqlslog_test
 
 import (
 	"context"
-	"log/slog"
-	"os"
 
 	sqlslog "github.com/akm/sql-slog"
 	// _ "github.com/mattn/go-sqlite3"
 )
 
-func ExampleLogger() {
+func ExampleHandlerFunc() {
 	dsn := "file::memory:?cache=shared"
 	ctx := context.TODO()
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	db, _ := sqlslog.Open(ctx, "sqlite3", dsn, sqlslog.Logger(logger))
+	db, logger, _ := sqlslog.Open(ctx, "sqlite3", dsn,
+		sqlslog.HandlerFunc(sqlslog.NewJSONHandler),
+	)
 	defer db.Close()
+	logger.InfoContext(ctx, "Hello, World!")
 }
 
 func ExampleSetStepEventMsgBuilder() {
@@ -23,7 +23,8 @@ func ExampleSetStepEventMsgBuilder() {
 	})
 	dsn := "file::memory:?cache=shared"
 	ctx := context.TODO()
-	logger := slog.New(sqlslog.NewJSONHandler(os.Stdout, nil))
-	db, _ := sqlslog.Open(ctx, "sqlite3", dsn, sqlslog.Logger(logger))
+	db, _, _ := sqlslog.Open(ctx, "sqlite3", dsn,
+		sqlslog.HandlerFunc(sqlslog.NewJSONHandler),
+	)
 	defer db.Close()
 }
