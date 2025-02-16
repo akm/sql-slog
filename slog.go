@@ -7,17 +7,17 @@ import (
 )
 
 type slogOptions struct {
-	handler     slog.Handler
-	handlerFunc func(io.Writer, *slog.HandlerOptions) slog.Handler
-	writer      io.Writer
-	opts        *slog.HandlerOptions
+	handler        slog.Handler
+	handlerFunc    func(io.Writer, *slog.HandlerOptions) slog.Handler
+	logWriter      io.Writer
+	handlerOptions *slog.HandlerOptions
 }
 
 func defaultSlogOptions() *slogOptions {
 	return &slogOptions{
-		handlerFunc: NewTextHandler,
-		writer:      os.Stdout,
-		opts:        &slog.HandlerOptions{},
+		handlerFunc:    NewTextHandler,
+		logWriter:      os.Stdout,
+		handlerOptions: &slog.HandlerOptions{},
 	}
 }
 
@@ -25,7 +25,31 @@ func (o *slogOptions) newHandler() slog.Handler {
 	if o.handler != nil {
 		return o.handler
 	}
-	return o.handlerFunc(o.writer, WrapHandlerOptions(o.opts))
+	return o.handlerFunc(o.logWriter, WrapHandlerOptions(o.handlerOptions))
+}
+
+// Handler sets the slog.Handler to be used.
+// If not set, the default is created by HandlerFunc, Writer, SlogOptions.
+func Handler(handler slog.Handler) Option {
+	return func(o *options) { o.SlogOptions.handler = handler }
+}
+
+// HandlerFunc sets the function to create the slog.Handler.
+// If not set, the default is [NewTextHandler].
+func HandlerFunc(handlerFunc func(io.Writer, *slog.HandlerOptions) slog.Handler) Option {
+	return func(o *options) { o.SlogOptions.handlerFunc = handlerFunc }
+}
+
+// LogWriter sets the writer to be used for the slog.Handler.
+// If not set, the default is os.Stdout.
+func LogWriter(w io.Writer) Option {
+	return func(o *options) { o.SlogOptions.logWriter = w }
+}
+
+// HandlerOptions sets the options to be used for the slog.Handler.
+// If not set, the default is an empty [slog.HandlerOptions].
+func HandlerOptions(opts *slog.HandlerOptions) Option {
+	return func(o *options) { o.SlogOptions.handlerOptions = opts }
 }
 
 // NewJSONHandler returns a new JSON handler using [slog.NewJSONHandler]
