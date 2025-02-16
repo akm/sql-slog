@@ -7,6 +7,19 @@ import (
 	"log/slog"
 )
 
+type factoryOptions struct {
+	Open          StepOptions
+	DriverOptions *driverOptions
+}
+
+func defaultFactoryOptions(driverName string, msgb StepEventMsgBuilder) *factoryOptions {
+	driverOptions := defaultDriverOptions(driverName, msgb)
+	return &factoryOptions{
+		Open:          *defaultStepOptions(msgb, StepSqlslogOpen, LevelInfo),
+		DriverOptions: driverOptions,
+	}
+}
+
 type Factory struct {
 	options    *options
 	driverName string

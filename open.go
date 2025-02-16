@@ -5,19 +5,6 @@ import (
 	"database/sql"
 )
 
-type factoryOptions struct {
-	Open          StepOptions
-	DriverOptions *driverOptions
-}
-
-func defaultFactoryOptions(driverName string, msgb StepEventMsgBuilder) *factoryOptions {
-	driverOptions := defaultDriverOptions(driverName, msgb)
-	return &factoryOptions{
-		Open:          *defaultStepOptions(msgb, StepSqlslogOpen, LevelInfo),
-		DriverOptions: driverOptions,
-	}
-}
-
 /*
 Open opens a database specified by its driver name and a driver-specific data source name,
 and returns a new database handle with logging capabilities.
