@@ -1,7 +1,7 @@
 package sqlslog
 
 type options struct {
-	stepLoggerOptions
+	*stepLoggerOptions
 	DriverOptions *driverOptions
 	SlogOptions   *slogOptions
 	Open          StepOptions
@@ -9,13 +9,10 @@ type options struct {
 
 func newDefaultOptions(driverName string, msgb StepEventMsgBuilder) *options {
 	return &options{
-		stepLoggerOptions: stepLoggerOptions{
-			durationKey:  DurationKeyDefault,
-			durationType: DurationNanoSeconds,
-		},
-		DriverOptions: defaultDriverOptions(driverName, msgb),
-		SlogOptions:   defaultSlogOptions(),
-		Open:          *defaultStepOptions(msgb, StepSqlslogOpen, LevelInfo),
+		stepLoggerOptions: defaultStepLoggerOptions(),
+		DriverOptions:     defaultDriverOptions(driverName, msgb),
+		SlogOptions:       defaultSlogOptions(),
+		Open:              *defaultStepOptions(msgb, StepSqlslogOpen, LevelInfo),
 	}
 }
 

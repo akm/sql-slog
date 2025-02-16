@@ -53,7 +53,7 @@ func TestOpenWithDriver(t *testing.T) {
 		t.Parallel()
 		t.Run("DriverContext", func(t *testing.T) {
 			drv := newErrorDriverContext(errors.New("unknown error"))
-			stepLogger := newStepLogger(slog.New(slog.NewJSONHandler(nil, nil)), newStepLoggerOptions())
+			stepLogger := newStepLogger(slog.New(slog.NewJSONHandler(nil, nil)), defaultStepLoggerOptions())
 			if _, err := openWithWrappedDriver(drv, "invalid-dsn", stepLogger, nil); err == nil {
 				t.Fatal("Expected error")
 			}
