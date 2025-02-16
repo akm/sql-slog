@@ -7,21 +7,6 @@ import (
 	"log/slog"
 )
 
-type factoryOptions struct {
-	Open          StepOptions
-	DriverOptions *driverOptions
-	SlogOptions   *slogOptions
-}
-
-func defaultFactoryOptions(driverName string, msgb StepEventMsgBuilder) *factoryOptions {
-	driverOptions := defaultDriverOptions(driverName, msgb)
-	return &factoryOptions{
-		Open:          *defaultStepOptions(msgb, StepSqlslogOpen, LevelInfo),
-		DriverOptions: driverOptions,
-		SlogOptions:   defaultSlogOptions(),
-	}
-}
-
 type Factory struct {
 	options    *options
 	driverName string
@@ -38,7 +23,7 @@ func New(driverName, dsn string, opts ...Option) *Factory {
 
 func (f *Factory) Handler() slog.Handler {
 	if f.handler == nil {
-		f.handler = f.options.factoryOptions.SlogOptions.newHandler()
+		f.handler = f.options.SlogOptions.newHandler()
 	}
 	return f.handler
 }
@@ -56,10 +41,10 @@ func (f *Factory) Open(ctx context.Context) (*sql.DB, error) {
 		durationKey:  f.options.durationKey,
 		durationType: f.options.durationType,
 	})
-	return open(ctx, f.driverName, f.dsn, logger, &f.options.factoryOptions)
+	return open(ctx, f.driverName, f.dsn, logger, f.options)
 }
 
-func open(ctx context.Context, driverName, dsn string, logger *stepLogger, options *factoryOptions) (*sql.DB, error) {
+func open(ctx context.Context, driverName, dsn string, logger *stepLogger, options *options) (*sql.DB, error) {
 	lg := logger.With(
 		slog.String("driver", driverName),
 		slog.String("dsn", dsn),

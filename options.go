@@ -6,7 +6,9 @@ import (
 
 type options struct {
 	stepLoggerOptions
-	factoryOptions
+	DriverOptions *driverOptions
+	SlogOptions   *slogOptions
+	Open          StepOptions
 }
 
 func newDefaultOptions(driverName string, msgb StepEventMsgBuilder) *options {
@@ -16,7 +18,9 @@ func newDefaultOptions(driverName string, msgb StepEventMsgBuilder) *options {
 			durationKey:  DurationKeyDefault,
 			durationType: DurationNanoSeconds,
 		},
-		factoryOptions: *defaultFactoryOptions(driverName, msgb),
+		DriverOptions: defaultDriverOptions(driverName, msgb),
+		SlogOptions:   defaultSlogOptions(),
+		Open:          *defaultStepOptions(msgb, StepSqlslogOpen, LevelInfo),
 	}
 }
 
