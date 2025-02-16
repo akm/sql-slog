@@ -88,7 +88,7 @@ func TestStepLoggerDurationAttr(t *testing.T) {
 	for _, tc := range testcases {
 		t.Run(tc.value.String(), func(t *testing.T) {
 			t.Parallel()
-			attr := newStepLogger(slog.Default(), &stepLoggerOptions{durationKey: key, durationType: tc.durationType}).durationAttr(tc.value)
+			attr := newStepLogger(slog.Default(), stepLoggerOptions{durationKey: key, durationType: tc.durationType}).durationAttr(tc.value)
 			tc.expected(t, attr)
 		})
 	}

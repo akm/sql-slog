@@ -36,7 +36,7 @@ func (m *mockRows) Next([]driver.Value) error {
 
 func TestWithMockRows(t *testing.T) {
 	t.Parallel()
-	wrapped := &rowsWrapper{original: &mockRows{}, logger: newStepLogger(slog.Default(), nil)}
+	wrapped := &rowsWrapper{original: &mockRows{}, logger: newStepLogger(slog.Default(), defaultStepLoggerOptions())}
 	t.Run("ColumnTypeScanType", func(t *testing.T) {
 		t.Parallel()
 		res := wrapped.ColumnTypeScanType(0)

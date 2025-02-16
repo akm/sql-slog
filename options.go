@@ -1,7 +1,7 @@
 package sqlslog
 
 type options struct {
-	*stepLoggerOptions
+	stepLoggerOptions
 	DriverOptions *driverOptions
 	SlogOptions   *slogOptions
 	Open          StepOptions
