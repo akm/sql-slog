@@ -23,6 +23,9 @@ func defaultSlogOptions() *slogOptions {
 
 // Handler sets the slog.Handler to be used.
 // If not set, the default is created by HandlerFunc, Writer, SlogOptions.
+// If you set this option, HandlerFunc, Writer, SlogOptions will be ignored.
+// WARNING: If given handler is created without ReplaceAttr options,
+// LevelTrace and LevelVerbose will be logged as DEBUG-4 and DEBUG-8.
 func Handler(handler slog.Handler) Option {
 	return func(o *options) { o.SlogOptions.handler = handler }
 }
@@ -69,14 +72,14 @@ func LogReplaceAttr(f func([]string, slog.Attr) slog.Attr) Option {
 // with custom options for sqlslog.
 // See [WrapHandlerOptions] for details on the options.
 func NewJSONHandler(w io.Writer, opts *slog.HandlerOptions) slog.Handler {
-	return slog.NewJSONHandler(w, opts)
+	return slog.NewJSONHandler(w, WrapHandlerOptions(opts))
 }
 
 // NewTextHandler returns a new Text handler using [slog.NewTextHandler]
 // with custom options for sqlslog.
 // See [WrapHandlerOptions] for details on the options.
 func NewTextHandler(w io.Writer, opts *slog.HandlerOptions) slog.Handler {
-	return slog.NewTextHandler(w, opts)
+	return slog.NewTextHandler(w, WrapHandlerOptions(opts))
 }
 
 // WrapHandlerOptions wraps the options with custom options for sqlslog.
