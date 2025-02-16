@@ -10,6 +10,7 @@ import (
 type factoryOptions struct {
 	Open          StepOptions
 	DriverOptions *driverOptions
+	SlogOptions   *slogOptions
 }
 
 func defaultFactoryOptions(driverName string, msgb StepEventMsgBuilder) *factoryOptions {
@@ -17,6 +18,7 @@ func defaultFactoryOptions(driverName string, msgb StepEventMsgBuilder) *factory
 	return &factoryOptions{
 		Open:          *defaultStepOptions(msgb, StepSqlslogOpen, LevelInfo),
 		DriverOptions: driverOptions,
+		SlogOptions:   defaultSlogOptions(),
 	}
 }
 
@@ -24,6 +26,9 @@ type Factory struct {
 	options    *options
 	driverName string
 	dsn        string
+
+	handler slog.Handler
+	logger  *slog.Logger
 }
 
 func New(driverName, dsn string, opts ...Option) *Factory {
@@ -31,8 +36,18 @@ func New(driverName, dsn string, opts ...Option) *Factory {
 	return &Factory{driverName: driverName, dsn: dsn, options: options}
 }
 
+func (f *Factory) Handler() slog.Handler {
+	if f.handler == nil {
+		f.handler = f.options.factoryOptions.SlogOptions.newHandler()
+	}
+	return f.handler
+}
+
 func (f *Factory) Logger() *slog.Logger {
-	return f.options.logger
+	if f.logger == nil {
+		f.logger = slog.New(f.Handler())
+	}
+	return f.logger
 }
 
 func (f *Factory) Open(ctx context.Context) (*sql.DB, error) {

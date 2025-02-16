@@ -3,7 +3,30 @@ package sqlslog
 import (
 	"io"
 	"log/slog"
+	"os"
 )
+
+type slogOptions struct {
+	handler     slog.Handler
+	handlerFunc func(io.Writer, *slog.HandlerOptions) slog.Handler
+	writer      io.Writer
+	opts        *slog.HandlerOptions
+}
+
+func defaultSlogOptions() *slogOptions {
+	return &slogOptions{
+		handlerFunc: NewTextHandler,
+		writer:      os.Stdout,
+		opts:        &slog.HandlerOptions{},
+	}
+}
+
+func (o *slogOptions) newHandler() slog.Handler {
+	if o.handler != nil {
+		return o.handler
+	}
+	return o.handlerFunc(o.writer, WrapHandlerOptions(o.opts))
+}
 
 // NewJSONHandler returns a new JSON handler using [slog.NewJSONHandler]
 // with custom options for sqlslog.
