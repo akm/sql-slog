@@ -60,7 +60,7 @@ func NewJSONHandler(w io.Writer, opts *slog.HandlerOptions) slog.Handler {
 }
 
 func newJSONHandler(w io.Writer, opts *slog.HandlerOptions) *slog.JSONHandler {
-	return slog.NewJSONHandler(w, WrapHandlerOptions(opts))
+	return slog.NewJSONHandler(w, opts)
 }
 
 // NewTextHandler returns a new Text handler using [slog.NewTextHandler]
@@ -71,7 +71,7 @@ func NewTextHandler(w io.Writer, opts *slog.HandlerOptions) slog.Handler {
 }
 
 func newTextHandler(w io.Writer, opts *slog.HandlerOptions) *slog.TextHandler {
-	return slog.NewTextHandler(w, WrapHandlerOptions(opts))
+	return slog.NewTextHandler(w, opts)
 }
 
 // WrapHandlerOptions wraps the options with custom options for sqlslog.
