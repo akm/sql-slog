@@ -36,12 +36,12 @@ func (f *Factory) Logger() *slog.Logger {
 }
 
 func (f *Factory) Open(ctx context.Context) (*sql.DB, error) {
-	logger := newStepLogger(&stepLoggerOptions{
+	stepLogger := newStepLogger(&stepLoggerOptions{
 		logger:       f.options.logger,
 		durationKey:  f.options.durationKey,
 		durationType: f.options.durationType,
 	})
-	return open(ctx, f.driverName, f.dsn, logger, f.options)
+	return open(ctx, f.driverName, f.dsn, stepLogger, f.options)
 }
 
 func open(ctx context.Context, driverName, dsn string, logger *stepLogger, options *options) (*sql.DB, error) {
