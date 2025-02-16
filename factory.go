@@ -18,7 +18,12 @@ type Factory struct {
 
 func New(driverName, dsn string, opts ...Option) *Factory {
 	options := newOptions(driverName, opts...)
-	return &Factory{driverName: driverName, dsn: dsn, options: options}
+	return &Factory{
+		driverName: driverName,
+		dsn:        dsn,
+		options:    options,
+		handler:    options.SlogOptions.handler,
+	}
 }
 
 func (f *Factory) Handler() slog.Handler {
