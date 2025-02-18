@@ -94,3 +94,35 @@ func TestMergeReplaceAttrs(t *testing.T) {
 		}
 	})
 }
+
+func TestHandlerOptions(t *testing.T) {
+	t.Parallel()
+	t.Run("nil parameter", func(t *testing.T) {
+		t.Parallel()
+		o := HandlerOptions(nil)
+		if o == nil {
+			t.Errorf("want not nil, got nil")
+		}
+		opts := &options{SlogOptions: defaultSlogOptions()}
+		o(opts)
+	})
+	t.Run("one parameter", func(t *testing.T) {
+		t.Parallel()
+		o := HandlerOptions(&slog.HandlerOptions{})
+		if o == nil {
+			t.Errorf("want not nil, got nil")
+		}
+		opts := &options{SlogOptions: defaultSlogOptions()}
+		o(opts)
+	})
+}
+
+func TestAddSource(t *testing.T) {
+	t.Parallel()
+	o := AddSource(true)
+	if o == nil {
+		t.Errorf("want not nil, got nil")
+	}
+	opts := &options{SlogOptions: defaultSlogOptions()}
+	o(opts)
+}
