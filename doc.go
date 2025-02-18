@@ -4,22 +4,21 @@ sqlslog uses [*slog.Logger] to log SQL database driver operations.
 
 # How to use
 
-	ctx := context.TODO() // or a context.Context
-	db, err := sqlslog.Open(ctx, "mysql", dsn)
+	db, logger, err := sqlslog.Open(ctx, "mysql", dsn)
 
 You can also use options to customize the logger's behavior.
 
 [Open] takes [Option] s to customize the logging behavior.
-[Option] is created by using functions like [Logger], [ConnPrepareContext], [StmtQueryContext], etc.
+[Option] is created by using functions like [HandlerFunc], [ConnPrepareContext], [StmtQueryContext], etc.
 
-# Logger
+# HandlerFunc / Handler
 
-[Logger] sets the slog.Logger to be used. If not set, the default is slog.Default().
+[HandlerFunc] sets the function to create a [slog.Handler] for the logger.
+slogslog provides [NewTextHandler] and [NewJSONHandler] to create a [slog.Handler] for sqlslog.
 
-The logger from slog.Default() does not have options for the log levels [LevelTrace] and [LevelVerbose].
-
-You can create a [slog.Handler] by using [sqlslog.NewTextHandler] or [sqlslog.NewJSONHandler] customized for sqlslog [Level].
-See examples for [NewTextHandler] and [NewJSONHandler] for more details.
+You can also use your own [slog.Handler] by using [Handler] with your [slog.Handler].
+But your own [slog.Handler] should know how to log [LevelTrace] and [LevelVerbose] log levels.
+So you should use [sqlslog.ReplaceLevelAttr] with your [slog.Handler].
 
 # Level
 
