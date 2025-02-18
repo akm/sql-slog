@@ -16,7 +16,7 @@ gen-text-logs: gen-text-logs-info gen-text-logs-debug gen-text-logs-trace gen-te
 gen-json-logs: gen-json-logs-info gen-json-logs-debug gen-json-logs-trace gen-json-logs-verbose
 
 .PHONY: gen
-gen: gen-text-logs gen-json-logs
+gen: gen-text-logs gen-json-logs-verbose
 
 .PHONY: clean
 clean:
