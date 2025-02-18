@@ -116,6 +116,7 @@ issues:
     - path: _test\.go
       linters:
         - err113
+        - forcetypeassert
         - funlen
 linters-settings:
   cyclop:
