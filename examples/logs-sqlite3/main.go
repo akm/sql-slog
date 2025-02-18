@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"io"
 	"log/slog"
 	"os"
 	"slices"
@@ -11,32 +12,22 @@ import (
 )
 
 func main() {
-	var logLevel sqlslog.Level
-	if slices.Contains(os.Args, "debug") {
-		logLevel = sqlslog.LevelDebug
-	} else if slices.Contains(os.Args, "trace") {
-		logLevel = sqlslog.LevelTrace
-	} else if slices.Contains(os.Args, "verbose") {
-		logLevel = sqlslog.LevelVerbose
-	} else {
-		logLevel = sqlslog.LevelInfo
-	}
-	opts := &slog.HandlerOptions{Level: logLevel}
+	logLevel := sqlslog.ParseLevelWithDefault(os.Args[1], sqlslog.LevelInfo)
 
-	var handler slog.Handler
+	var handlerFunc func(io.Writer, *slog.HandlerOptions) slog.Handler
 	if slices.Contains(os.Args, "json") {
-		handler = sqlslog.NewJSONHandler(os.Stdout, opts)
+		handlerFunc = sqlslog.NewJSONHandler
 	} else {
-		handler = sqlslog.NewTextHandler(os.Stdout, opts)
+		handlerFunc = sqlslog.NewTextHandler
 	}
-	logger := slog.New(handler)
 
 	ctx := context.Background()
 	dsn := "file::memory:?cache=shared"
 
 	// Open a database
-	db, err := sqlslog.Open(ctx, "sqlite3", dsn,
-		sqlslog.Logger(logger),
+	db, logger, err := sqlslog.Open(ctx, "sqlite3", dsn,
+		sqlslog.LogLevel(logLevel),
+		sqlslog.HandlerFunc(handlerFunc),
 		sqlslog.ConnQueryContext(func(o *sqlslog.StepOptions) {
 			o.SetLevel(sqlslog.LevelDebug)
 		}),
