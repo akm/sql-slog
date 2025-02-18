@@ -1,6 +1,6 @@
 .PHONY: run
 run:
-	go run . ${LOG_LEVEL} ${LOG_FORMAT}
+	@go run . ${LOG_LEVEL} ${LOG_FORMAT}
 
 RESULTS_DIR=results
 $(RESULTS_DIR):
