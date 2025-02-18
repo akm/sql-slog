@@ -1,26 +1,25 @@
-go run . debug text
-time=2025-02-19T07:59:55.490+09:00 level=DEBUG msg=Open driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
-time=2025-02-19T07:59:55.490+09:00 level=INFO msg=Open driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=70834
-time=2025-02-19T07:59:55.490+09:00 level=DEBUG msg=Connector.Connect
-time=2025-02-19T07:59:55.490+09:00 level=DEBUG msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
-time=2025-02-19T07:59:55.491+09:00 level=ERROR msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=864959 error=EOF
-time=2025-02-19T07:59:55.491+09:00 level=ERROR msg=Connector.Connect duration=909000 error=EOF
-time=2025-02-19T07:59:57.492+09:00 level=DEBUG msg=Connector.Connect
-time=2025-02-19T07:59:57.492+09:00 level=DEBUG msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
-time=2025-02-19T07:59:57.505+09:00 level=INFO msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=13117417 conn_id=hOzyjw0zwydOBKVT
-time=2025-02-19T07:59:57.506+09:00 level=INFO msg=Connector.Connect duration=13414375
-time=2025-02-19T07:59:57.506+09:00 level=DEBUG msg=Conn.ExecContext conn_id=hOzyjw0zwydOBKVT query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[]
-time=2025-02-19T07:59:57.511+09:00 level=INFO msg=Conn.ExecContext conn_id=hOzyjw0zwydOBKVT query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=4425750
-time=2025-02-19T07:59:57.512+09:00 level=DEBUG msg=Conn.BeginTx conn_id=hOzyjw0zwydOBKVT
-time=2025-02-19T07:59:57.513+09:00 level=INFO msg=Conn.BeginTx conn_id=hOzyjw0zwydOBKVT duration=922834 tx_id=fBfLAIrONtgJOYGw
-time=2025-02-19T07:59:57.514+09:00 level=DEBUG msg=Conn.ExecContext conn_id=hOzyjw0zwydOBKVT query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]"
-time=2025-02-19T07:59:57.516+09:00 level=INFO msg=Conn.ExecContext conn_id=hOzyjw0zwydOBKVT query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=2355250
-time=2025-02-19T07:59:57.516+09:00 level=DEBUG msg=Tx.Commit conn_id=hOzyjw0zwydOBKVT tx_id=fBfLAIrONtgJOYGw
-time=2025-02-19T07:59:57.517+09:00 level=INFO msg=Tx.Commit conn_id=hOzyjw0zwydOBKVT tx_id=fBfLAIrONtgJOYGw duration=1325042
-time=2025-02-19T07:59:57.518+09:00 level=DEBUG msg=Conn.QueryContext conn_id=hOzyjw0zwydOBKVT query="SELECT * FROM test1" args=[] duration=712250
-time=2025-02-19T07:59:57.518+09:00 level=DEBUG msg=Rows.Next conn_id=hOzyjw0zwydOBKVT duration=3667 eof=false
-time=2025-02-19T07:59:57.518+09:00 level=INFO msg=Record id=1 name=Alice
-time=2025-02-19T07:59:57.518+09:00 level=DEBUG msg=Rows.Next conn_id=hOzyjw0zwydOBKVT duration=1750 eof=true
-time=2025-02-19T07:59:57.518+09:00 level=DEBUG msg=Rows.Close conn_id=hOzyjw0zwydOBKVT duration=458
-time=2025-02-19T07:59:57.519+09:00 level=DEBUG msg=Conn.Close conn_id=hOzyjw0zwydOBKVT
-time=2025-02-19T07:59:57.519+09:00 level=INFO msg=Conn.Close conn_id=hOzyjw0zwydOBKVT duration=94500
+time=2025-02-19T08:24:40.817+09:00 level=DEBUG msg=Open driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
+time=2025-02-19T08:24:40.817+09:00 level=INFO msg=Open driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=45083
+time=2025-02-19T08:24:40.817+09:00 level=DEBUG msg=Connector.Connect
+time=2025-02-19T08:24:40.817+09:00 level=DEBUG msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
+time=2025-02-19T08:24:40.818+09:00 level=ERROR msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=954417 error=EOF
+time=2025-02-19T08:24:40.818+09:00 level=ERROR msg=Connector.Connect duration=1010458 error=EOF
+time=2025-02-19T08:24:42.819+09:00 level=DEBUG msg=Connector.Connect
+time=2025-02-19T08:24:42.820+09:00 level=DEBUG msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
+time=2025-02-19T08:24:42.833+09:00 level=INFO msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=12936959 conn_id=61Ugc1c8J8pgxWj8
+time=2025-02-19T08:24:42.833+09:00 level=INFO msg=Connector.Connect duration=13163125
+time=2025-02-19T08:24:42.833+09:00 level=DEBUG msg=Conn.ExecContext conn_id=61Ugc1c8J8pgxWj8 query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[]
+time=2025-02-19T08:24:42.838+09:00 level=INFO msg=Conn.ExecContext conn_id=61Ugc1c8J8pgxWj8 query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=4154125
+time=2025-02-19T08:24:42.838+09:00 level=DEBUG msg=Conn.BeginTx conn_id=61Ugc1c8J8pgxWj8
+time=2025-02-19T08:24:42.839+09:00 level=INFO msg=Conn.BeginTx conn_id=61Ugc1c8J8pgxWj8 duration=617709 tx_id=IalT4gLBWJxi4jbm
+time=2025-02-19T08:24:42.839+09:00 level=DEBUG msg=Conn.ExecContext conn_id=61Ugc1c8J8pgxWj8 query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]"
+time=2025-02-19T08:24:42.841+09:00 level=INFO msg=Conn.ExecContext conn_id=61Ugc1c8J8pgxWj8 query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=1545375
+time=2025-02-19T08:24:42.841+09:00 level=DEBUG msg=Tx.Commit conn_id=61Ugc1c8J8pgxWj8 tx_id=IalT4gLBWJxi4jbm
+time=2025-02-19T08:24:42.842+09:00 level=INFO msg=Tx.Commit conn_id=61Ugc1c8J8pgxWj8 tx_id=IalT4gLBWJxi4jbm duration=990375
+time=2025-02-19T08:24:42.843+09:00 level=DEBUG msg=Conn.QueryContext conn_id=61Ugc1c8J8pgxWj8 query="SELECT * FROM test1" args=[] duration=631292
+time=2025-02-19T08:24:42.843+09:00 level=DEBUG msg=Rows.Next conn_id=61Ugc1c8J8pgxWj8 duration=2792 eof=false
+time=2025-02-19T08:24:42.843+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-02-19T08:24:42.843+09:00 level=DEBUG msg=Rows.Next conn_id=61Ugc1c8J8pgxWj8 duration=1209 eof=true
+time=2025-02-19T08:24:42.843+09:00 level=DEBUG msg=Rows.Close conn_id=61Ugc1c8J8pgxWj8 duration=250
+time=2025-02-19T08:24:42.843+09:00 level=DEBUG msg=Conn.Close conn_id=61Ugc1c8J8pgxWj8
+time=2025-02-19T08:24:42.843+09:00 level=INFO msg=Conn.Close conn_id=61Ugc1c8J8pgxWj8 duration=86708

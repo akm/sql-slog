@@ -1,10 +1,9 @@
-go run . info text
-time=2025-02-19T07:59:51.124+09:00 level=INFO msg=Open driver=sqlite3 dsn="file::memory:?cache=shared" duration=62917
-time=2025-02-19T07:59:51.125+09:00 level=INFO msg=Driver.Open dsn="file::memory:?cache=shared" duration=616375 conn_id=N0rX3I8QwgShUKGW
-time=2025-02-19T07:59:51.125+09:00 level=INFO msg=Connector.Connect duration=625708
-time=2025-02-19T07:59:51.125+09:00 level=INFO msg=Conn.ExecContext conn_id=N0rX3I8QwgShUKGW query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=75209
-time=2025-02-19T07:59:51.125+09:00 level=INFO msg=Conn.BeginTx conn_id=N0rX3I8QwgShUKGW duration=2959 tx_id=FvZR7PquqD76XE8F
-time=2025-02-19T07:59:51.125+09:00 level=INFO msg=Conn.ExecContext conn_id=N0rX3I8QwgShUKGW query="INSERT INTO test1 (name) VALUES (?)" args="[{Name: Ordinal:1 Value:Alice}]" duration=7292
-time=2025-02-19T07:59:51.125+09:00 level=INFO msg=Tx.Commit conn_id=N0rX3I8QwgShUKGW tx_id=FvZR7PquqD76XE8F duration=3084
-time=2025-02-19T07:59:51.125+09:00 level=INFO msg=Record id=1 name=Alice
-time=2025-02-19T07:59:51.125+09:00 level=INFO msg=Conn.Close conn_id=N0rX3I8QwgShUKGW duration=11834
+time=2025-02-19T08:24:35.795+09:00 level=INFO msg=Open driver=sqlite3 dsn="file::memory:?cache=shared" duration=83541
+time=2025-02-19T08:24:35.796+09:00 level=INFO msg=Driver.Open dsn="file::memory:?cache=shared" duration=775542 conn_id=ADzZnA7LF2v5b3mP
+time=2025-02-19T08:24:35.796+09:00 level=INFO msg=Connector.Connect duration=792917
+time=2025-02-19T08:24:35.796+09:00 level=INFO msg=Conn.ExecContext conn_id=ADzZnA7LF2v5b3mP query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=104083
+time=2025-02-19T08:24:35.796+09:00 level=INFO msg=Conn.BeginTx conn_id=ADzZnA7LF2v5b3mP duration=4000 tx_id=vLGluRMv1qL1tBJV
+time=2025-02-19T08:24:35.796+09:00 level=INFO msg=Conn.ExecContext conn_id=ADzZnA7LF2v5b3mP query="INSERT INTO test1 (name) VALUES (?)" args="[{Name: Ordinal:1 Value:Alice}]" duration=11417
+time=2025-02-19T08:24:35.796+09:00 level=INFO msg=Tx.Commit conn_id=ADzZnA7LF2v5b3mP tx_id=vLGluRMv1qL1tBJV duration=4291
+time=2025-02-19T08:24:35.796+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-02-19T08:24:35.796+09:00 level=INFO msg=Conn.Close conn_id=ADzZnA7LF2v5b3mP duration=16083

@@ -1,0 +1,41 @@
+{"time":"2025-02-19T08:24:49.319057+09:00","level":"DEBUG","msg":"Open","driver":"postgres","dsn":"host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"}
+{"time":"2025-02-19T08:24:49.319365+09:00","level":"INFO","msg":"Open","driver":"postgres","dsn":"host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable","duration":51125}
+{"time":"2025-02-19T08:24:49.319385+09:00","level":"DEBUG","msg":"Connector.Connect"}
+{"time":"2025-02-19T08:24:49.31939+09:00","level":"DEBUG","msg":"Driver.Open","dsn":"host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"}
+{"time":"2025-02-19T08:24:49.320334+09:00","level":"ERROR","msg":"Driver.Open","dsn":"host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable","duration":933875,"error":"EOF"}
+{"time":"2025-02-19T08:24:49.320346+09:00","level":"ERROR","msg":"Connector.Connect","duration":955750,"error":"EOF"}
+{"time":"2025-02-19T08:24:51.32145+09:00","level":"DEBUG","msg":"Connector.Connect"}
+{"time":"2025-02-19T08:24:51.321759+09:00","level":"DEBUG","msg":"Driver.Open","dsn":"host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"}
+{"time":"2025-02-19T08:24:51.337042+09:00","level":"INFO","msg":"Driver.Open","dsn":"host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable","duration":15201500,"conn_id":"RxcviMP5EGYzSVUD"}
+{"time":"2025-02-19T08:24:51.337139+09:00","level":"INFO","msg":"Connector.Connect","duration":15421750}
+{"time":"2025-02-19T08:24:51.337199+09:00","level":"VERBOSE","msg":"Conn.Ping","conn_id":"RxcviMP5EGYzSVUD"}
+{"time":"2025-02-19T08:24:51.337884+09:00","level":"TRACE","msg":"Conn.Ping","conn_id":"RxcviMP5EGYzSVUD","duration":652000}
+{"time":"2025-02-19T08:24:51.33795+09:00","level":"VERBOSE","msg":"Conn.ResetSession","conn_id":"RxcviMP5EGYzSVUD"}
+{"time":"2025-02-19T08:24:51.337977+09:00","level":"TRACE","msg":"Conn.ResetSession","conn_id":"RxcviMP5EGYzSVUD","duration":917}
+{"time":"2025-02-19T08:24:51.338012+09:00","level":"DEBUG","msg":"Conn.ExecContext","conn_id":"RxcviMP5EGYzSVUD","query":"CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))","args":"[]"}
+{"time":"2025-02-19T08:24:51.342165+09:00","level":"INFO","msg":"Conn.ExecContext","conn_id":"RxcviMP5EGYzSVUD","query":"CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))","args":"[]","duration":4128250}
+{"time":"2025-02-19T08:24:51.342231+09:00","level":"VERBOSE","msg":"Conn.ResetSession","conn_id":"RxcviMP5EGYzSVUD"}
+{"time":"2025-02-19T08:24:51.34226+09:00","level":"TRACE","msg":"Conn.ResetSession","conn_id":"RxcviMP5EGYzSVUD","duration":500}
+{"time":"2025-02-19T08:24:51.342281+09:00","level":"VERBOSE","msg":"Conn.Ping","conn_id":"RxcviMP5EGYzSVUD"}
+{"time":"2025-02-19T08:24:51.342862+09:00","level":"TRACE","msg":"Conn.Ping","conn_id":"RxcviMP5EGYzSVUD","duration":558833}
+{"time":"2025-02-19T08:24:51.342922+09:00","level":"VERBOSE","msg":"Conn.ResetSession","conn_id":"RxcviMP5EGYzSVUD"}
+{"time":"2025-02-19T08:24:51.342951+09:00","level":"TRACE","msg":"Conn.ResetSession","conn_id":"RxcviMP5EGYzSVUD","duration":250}
+{"time":"2025-02-19T08:24:51.342979+09:00","level":"DEBUG","msg":"Conn.BeginTx","conn_id":"RxcviMP5EGYzSVUD"}
+{"time":"2025-02-19T08:24:51.343504+09:00","level":"INFO","msg":"Conn.BeginTx","conn_id":"RxcviMP5EGYzSVUD","duration":503167,"tx_id":"7qMOih0egKGVtZbB"}
+{"time":"2025-02-19T08:24:51.343633+09:00","level":"DEBUG","msg":"Conn.ExecContext","conn_id":"RxcviMP5EGYzSVUD","query":"INSERT INTO test1 (id, name) VALUES ($1,$2);","args":"[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]"}
+{"time":"2025-02-19T08:24:51.345108+09:00","level":"INFO","msg":"Conn.ExecContext","conn_id":"RxcviMP5EGYzSVUD","query":"INSERT INTO test1 (id, name) VALUES ($1,$2);","args":"[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]","duration":1439166}
+{"time":"2025-02-19T08:24:51.345176+09:00","level":"DEBUG","msg":"Tx.Commit","conn_id":"RxcviMP5EGYzSVUD","tx_id":"7qMOih0egKGVtZbB"}
+{"time":"2025-02-19T08:24:51.346176+09:00","level":"INFO","msg":"Tx.Commit","conn_id":"RxcviMP5EGYzSVUD","tx_id":"7qMOih0egKGVtZbB","duration":962458}
+{"time":"2025-02-19T08:24:51.346279+09:00","level":"VERBOSE","msg":"Conn.ResetSession","conn_id":"RxcviMP5EGYzSVUD"}
+{"time":"2025-02-19T08:24:51.346303+09:00","level":"TRACE","msg":"Conn.ResetSession","conn_id":"RxcviMP5EGYzSVUD","duration":208}
+{"time":"2025-02-19T08:24:51.346326+09:00","level":"TRACE","msg":"Conn.QueryContext","conn_id":"RxcviMP5EGYzSVUD","query":"SELECT * FROM test1","args":"[]"}
+{"time":"2025-02-19T08:24:51.346978+09:00","level":"DEBUG","msg":"Conn.QueryContext","conn_id":"RxcviMP5EGYzSVUD","query":"SELECT * FROM test1","args":"[]","duration":633834}
+{"time":"2025-02-19T08:24:51.34704+09:00","level":"TRACE","msg":"Rows.Next","conn_id":"RxcviMP5EGYzSVUD"}
+{"time":"2025-02-19T08:24:51.347071+09:00","level":"DEBUG","msg":"Rows.Next","conn_id":"RxcviMP5EGYzSVUD","duration":3125,"eof":false}
+{"time":"2025-02-19T08:24:51.347136+09:00","level":"INFO","msg":"Record","id":1,"name":"Alice"}
+{"time":"2025-02-19T08:24:51.347161+09:00","level":"TRACE","msg":"Rows.Next","conn_id":"RxcviMP5EGYzSVUD"}
+{"time":"2025-02-19T08:24:51.347177+09:00","level":"DEBUG","msg":"Rows.Next","conn_id":"RxcviMP5EGYzSVUD","duration":1208,"eof":true}
+{"time":"2025-02-19T08:24:51.347195+09:00","level":"TRACE","msg":"Rows.Close","conn_id":"RxcviMP5EGYzSVUD"}
+{"time":"2025-02-19T08:24:51.347209+09:00","level":"DEBUG","msg":"Rows.Close","conn_id":"RxcviMP5EGYzSVUD","duration":209}
+{"time":"2025-02-19T08:24:51.347229+09:00","level":"DEBUG","msg":"Conn.Close","conn_id":"RxcviMP5EGYzSVUD"}
+{"time":"2025-02-19T08:24:51.34732+09:00","level":"INFO","msg":"Conn.Close","conn_id":"RxcviMP5EGYzSVUD","duration":74625}

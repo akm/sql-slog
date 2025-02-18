@@ -1,22 +1,21 @@
-go run . debug text
-time=2025-02-19T07:59:51.443+09:00 level=DEBUG msg=Open driver=sqlite3 dsn="file::memory:?cache=shared"
-time=2025-02-19T07:59:51.444+09:00 level=INFO msg=Open driver=sqlite3 dsn="file::memory:?cache=shared" duration=44333
-time=2025-02-19T07:59:51.444+09:00 level=DEBUG msg=Connector.Connect
-time=2025-02-19T07:59:51.444+09:00 level=DEBUG msg=Driver.Open dsn="file::memory:?cache=shared"
-time=2025-02-19T07:59:51.444+09:00 level=INFO msg=Driver.Open dsn="file::memory:?cache=shared" duration=762708 conn_id=Gvpx9jSceOrGjuoM
-time=2025-02-19T07:59:51.444+09:00 level=INFO msg=Connector.Connect duration=777958
-time=2025-02-19T07:59:51.444+09:00 level=DEBUG msg=Conn.ExecContext conn_id=Gvpx9jSceOrGjuoM query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[]
-time=2025-02-19T07:59:51.445+09:00 level=INFO msg=Conn.ExecContext conn_id=Gvpx9jSceOrGjuoM query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=91458
-time=2025-02-19T07:59:51.445+09:00 level=DEBUG msg=Conn.BeginTx conn_id=Gvpx9jSceOrGjuoM
-time=2025-02-19T07:59:51.445+09:00 level=INFO msg=Conn.BeginTx conn_id=Gvpx9jSceOrGjuoM duration=3875 tx_id=70EIAt3JiGnwEoJH
-time=2025-02-19T07:59:51.445+09:00 level=DEBUG msg=Conn.ExecContext conn_id=Gvpx9jSceOrGjuoM query="INSERT INTO test1 (name) VALUES (?)" args="[{Name: Ordinal:1 Value:Alice}]"
-time=2025-02-19T07:59:51.445+09:00 level=INFO msg=Conn.ExecContext conn_id=Gvpx9jSceOrGjuoM query="INSERT INTO test1 (name) VALUES (?)" args="[{Name: Ordinal:1 Value:Alice}]" duration=11084
-time=2025-02-19T07:59:51.445+09:00 level=DEBUG msg=Tx.Commit conn_id=Gvpx9jSceOrGjuoM tx_id=70EIAt3JiGnwEoJH
-time=2025-02-19T07:59:51.445+09:00 level=INFO msg=Tx.Commit conn_id=Gvpx9jSceOrGjuoM tx_id=70EIAt3JiGnwEoJH duration=3958
-time=2025-02-19T07:59:51.445+09:00 level=DEBUG msg=Conn.QueryContext conn_id=Gvpx9jSceOrGjuoM query="SELECT * FROM test1" args=[] duration=6125
-time=2025-02-19T07:59:51.445+09:00 level=DEBUG msg=Rows.Next conn_id=Gvpx9jSceOrGjuoM duration=3625 eof=false
-time=2025-02-19T07:59:51.445+09:00 level=INFO msg=Record id=1 name=Alice
-time=2025-02-19T07:59:51.445+09:00 level=DEBUG msg=Rows.Next conn_id=Gvpx9jSceOrGjuoM duration=1209 eof=true
-time=2025-02-19T07:59:51.445+09:00 level=DEBUG msg=Rows.Close conn_id=Gvpx9jSceOrGjuoM duration=625
-time=2025-02-19T07:59:51.445+09:00 level=DEBUG msg=Conn.Close conn_id=Gvpx9jSceOrGjuoM
-time=2025-02-19T07:59:51.445+09:00 level=INFO msg=Conn.Close conn_id=Gvpx9jSceOrGjuoM duration=14208
+time=2025-02-19T08:24:36.126+09:00 level=DEBUG msg=Open driver=sqlite3 dsn="file::memory:?cache=shared"
+time=2025-02-19T08:24:36.126+09:00 level=INFO msg=Open driver=sqlite3 dsn="file::memory:?cache=shared" duration=39584
+time=2025-02-19T08:24:36.126+09:00 level=DEBUG msg=Connector.Connect
+time=2025-02-19T08:24:36.126+09:00 level=DEBUG msg=Driver.Open dsn="file::memory:?cache=shared"
+time=2025-02-19T08:24:36.127+09:00 level=INFO msg=Driver.Open dsn="file::memory:?cache=shared" duration=663833 conn_id=v87XIbB1VCtfz8ug
+time=2025-02-19T08:24:36.127+09:00 level=INFO msg=Connector.Connect duration=678334
+time=2025-02-19T08:24:36.127+09:00 level=DEBUG msg=Conn.ExecContext conn_id=v87XIbB1VCtfz8ug query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[]
+time=2025-02-19T08:24:36.127+09:00 level=INFO msg=Conn.ExecContext conn_id=v87XIbB1VCtfz8ug query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=82166
+time=2025-02-19T08:24:36.127+09:00 level=DEBUG msg=Conn.BeginTx conn_id=v87XIbB1VCtfz8ug
+time=2025-02-19T08:24:36.127+09:00 level=INFO msg=Conn.BeginTx conn_id=v87XIbB1VCtfz8ug duration=3416 tx_id=_VTpZnAgatTSPBfT
+time=2025-02-19T08:24:36.127+09:00 level=DEBUG msg=Conn.ExecContext conn_id=v87XIbB1VCtfz8ug query="INSERT INTO test1 (name) VALUES (?)" args="[{Name: Ordinal:1 Value:Alice}]"
+time=2025-02-19T08:24:36.127+09:00 level=INFO msg=Conn.ExecContext conn_id=v87XIbB1VCtfz8ug query="INSERT INTO test1 (name) VALUES (?)" args="[{Name: Ordinal:1 Value:Alice}]" duration=8750
+time=2025-02-19T08:24:36.127+09:00 level=DEBUG msg=Tx.Commit conn_id=v87XIbB1VCtfz8ug tx_id=_VTpZnAgatTSPBfT
+time=2025-02-19T08:24:36.127+09:00 level=INFO msg=Tx.Commit conn_id=v87XIbB1VCtfz8ug tx_id=_VTpZnAgatTSPBfT duration=3583
+time=2025-02-19T08:24:36.127+09:00 level=DEBUG msg=Conn.QueryContext conn_id=v87XIbB1VCtfz8ug query="SELECT * FROM test1" args=[] duration=5333
+time=2025-02-19T08:24:36.127+09:00 level=DEBUG msg=Rows.Next conn_id=v87XIbB1VCtfz8ug duration=3083 eof=false
+time=2025-02-19T08:24:36.127+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-02-19T08:24:36.127+09:00 level=DEBUG msg=Rows.Next conn_id=v87XIbB1VCtfz8ug duration=1084 eof=true
+time=2025-02-19T08:24:36.127+09:00 level=DEBUG msg=Rows.Close conn_id=v87XIbB1VCtfz8ug duration=667
+time=2025-02-19T08:24:36.127+09:00 level=DEBUG msg=Conn.Close conn_id=v87XIbB1VCtfz8ug
+time=2025-02-19T08:24:36.127+09:00 level=INFO msg=Conn.Close conn_id=v87XIbB1VCtfz8ug duration=13083
