@@ -42,3 +42,86 @@ func TestLevelString(t *testing.T) {
 		})
 	}
 }
+
+func TestParseLevel(t *testing.T) {
+	t.Parallel()
+	t.Run("Valid case", func(t *testing.T) {
+		t.Parallel()
+		tests := []struct {
+			name string
+			in   string
+			want Level
+		}{
+			{name: "LevelVerbose", in: "VERBOSE", want: LevelVerbose},
+			{name: "LevelTrace", in: "TRACE", want: LevelTrace},
+			{name: "LevelDebug", in: "DEBUG", want: LevelDebug},
+			{name: "LevelInfo", in: "INFO", want: LevelInfo},
+			{name: "LevelWarn", in: "WARN", want: LevelWarn},
+			{name: "LevelError", in: "ERROR", want: LevelError},
+		}
+		for _, tt := range tests {
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				if got, err := ParseLevel(tt.in); err != nil || got != tt.want {
+					t.Errorf("ParseLevel() = %v, %v, want %v, true", got, err, tt.want)
+				}
+			})
+		}
+	})
+	t.Run("Unknown level", func(t *testing.T) {
+		t.Parallel()
+		tests := []string{"", "UNKNOWN", "TRACE+", "TRACE-1", "TRACE+1", "TRACE+1+1"}
+		for _, in := range tests {
+			t.Run(in, func(t *testing.T) {
+				t.Parallel()
+				lv, err := ParseLevel(in)
+				if err == nil {
+					t.Fatal("Expected non-nil")
+				}
+				if lv != 0 {
+					t.Fatalf("Expected 0, got %v", lv)
+				}
+			})
+		}
+	})
+}
+
+func TestParseLevelWithDefault(t *testing.T) {
+	t.Parallel()
+	t.Run("Valid case", func(t *testing.T) {
+		t.Parallel()
+		tests := []struct {
+			name string
+			in   string
+			want Level
+		}{
+			{name: "LevelVerbose", in: "VERBOSE", want: LevelVerbose},
+			{name: "LevelTrace", in: "TRACE", want: LevelTrace},
+			{name: "LevelDebug", in: "DEBUG", want: LevelDebug},
+			{name: "LevelInfo", in: "INFO", want: LevelInfo},
+			{name: "LevelWarn", in: "WARN", want: LevelWarn},
+			{name: "LevelError", in: "ERROR", want: LevelError},
+		}
+		for _, tt := range tests {
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				if got := ParseLevelWithDefault(tt.in, LevelError); got != tt.want {
+					t.Errorf("ParseLevelWithDefault() = %v, want %v", got, tt.want)
+				}
+			})
+		}
+	})
+	t.Run("Unknown level", func(t *testing.T) {
+		t.Parallel()
+		tests := []string{"", "UNKNOWN", "TRACE+", "TRACE-1", "TRACE+1", "TRACE+1+1"}
+		for _, in := range tests {
+			t.Run(in, func(t *testing.T) {
+				t.Parallel()
+				lv := ParseLevelWithDefault(in, LevelError)
+				if lv != LevelError {
+					t.Fatalf("Expected LevelError, got %v", lv)
+				}
+			})
+		}
+	})
+}
