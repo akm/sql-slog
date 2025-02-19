@@ -23,7 +23,6 @@ func ExampleOpen_withLevel() {
 	dsn := "file::memory:?cache=shared"
 	ctx := context.TODO()
 	db, _, _ := sqlslog.Open(ctx, "sqlite3", dsn,
-		sqlslog.HandlerFunc(sqlslog.NewJSONHandler),
 		sqlslog.LogLevel(sqlslog.LevelTrace),
 	)
 	defer db.Close()
@@ -33,7 +32,6 @@ func ExampleOpen_withStmtQueryContext() {
 	dsn := "file::memory:?cache=shared"
 	ctx := context.TODO()
 	db, _, _ := sqlslog.Open(ctx, "sqlite3", dsn,
-		sqlslog.HandlerFunc(sqlslog.NewJSONHandler),
 		sqlslog.LogLevel(sqlslog.LevelTrace),
 		sqlslog.StmtQueryContext(func(o *sqlslog.StepOptions) {
 			o.SetLevel(sqlslog.LevelDebug)
