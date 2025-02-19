@@ -2,28 +2,36 @@ package sqlslog_test
 
 import (
 	"context"
-	"log/slog"
-	"os"
 
 	sqlslog "github.com/akm/sql-slog"
 	// _ "github.com/mattn/go-sqlite3"
 )
 
-func ExampleLogger() {
+func ExampleHandlerFunc() {
 	dsn := "file::memory:?cache=shared"
 	ctx := context.TODO()
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	db, _ := sqlslog.Open(ctx, "sqlite3", dsn, sqlslog.Logger(logger))
+	db, logger, _ := sqlslog.Open(ctx, "sqlite3", dsn,
+		sqlslog.HandlerFunc(sqlslog.NewJSONHandler),
+	)
 	defer db.Close()
+	logger.InfoContext(ctx, "Hello, World!")
 }
 
 func ExampleSetStepEventMsgBuilder() {
 	sqlslog.SetStepEventMsgBuilder(func(step sqlslog.Step, event sqlslog.Event) string {
-		return step.String() + "/" + event.String()
+		return "PRFIX:" + step.String() + "/" + event.String() + ":SUFFIX"
 	})
-	dsn := "file::memory:?cache=shared"
+	defer sqlslog.SetStepEventMsgBuilder(sqlslog.StepEventMsgWithoutEventName)
+
+	dsn := "dummy-dsn"
 	ctx := context.TODO()
-	logger := slog.New(sqlslog.NewJSONHandler(os.Stdout, nil))
-	db, _ := sqlslog.Open(ctx, "sqlite3", dsn, sqlslog.Logger(logger))
+	db, logger, _ := sqlslog.Open(ctx, "mock", dsn,
+		sqlslog.LogReplaceAttr(removeTimeAndDuration), // for testing
+	)
 	defer db.Close()
+	logger.InfoContext(ctx, "Hello, World!")
+
+	// Output:
+	// level=INFO msg=PRFIX:Open/Complete:SUFFIX driver=mock dsn=dummy-dsn
+	// level=INFO msg="Hello, World!"
 }

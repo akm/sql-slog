@@ -3,7 +3,6 @@ package main_test
 import (
 	"bytes"
 	"context"
-	"log/slog"
 	"os"
 	"strings"
 	"testing"
@@ -88,11 +87,12 @@ func TestDuration(t *testing.T) {
 		t.Run(tc.durationKey, func(t *testing.T) {
 			buf := bytes.NewBuffer(nil)
 			logs := testhelper.NewLogAssertion(buf)
-			logger := slog.New(sqlslog.NewJSONHandler(buf, &slog.HandlerOptions{Level: sqlslog.LevelVerbose}))
-			db, err := sqlslog.Open(ctx, "sqlite3", dsn,
+			db, _, err := sqlslog.Open(ctx, "sqlite3", dsn,
 				append(
 					testhelper.StepEventMsgOptions,
-					sqlslog.Logger(logger),
+					sqlslog.HandlerFunc(sqlslog.NewJSONHandler),
+					sqlslog.LogWriter(buf),
+					sqlslog.LogLevel(sqlslog.LevelVerbose),
 					sqlslog.DurationKey(tc.durationKey),
 					sqlslog.Duration(tc.durationType),
 				)...,

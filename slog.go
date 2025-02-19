@@ -3,19 +3,84 @@ package sqlslog
 import (
 	"io"
 	"log/slog"
+	"os"
 )
+
+type slogOptions struct {
+	slog.HandlerOptions
+	handler     slog.Handler
+	handlerFunc func(io.Writer, *slog.HandlerOptions) slog.Handler
+	logWriter   io.Writer
+}
+
+func defaultSlogOptions() *slogOptions {
+	return &slogOptions{
+		handlerFunc:    NewTextHandler,
+		logWriter:      os.Stdout,
+		HandlerOptions: slog.HandlerOptions{},
+	}
+}
+
+// Handler sets the slog.Handler to be used.
+// If not set, the default is created by HandlerFunc, Writer, SlogOptions.
+// If you set this option, HandlerFunc, Writer, SlogOptions will be ignored.
+// WARNING: If given handler is created without ReplaceAttr options,
+// LevelTrace and LevelVerbose will be logged as DEBUG-4 and DEBUG-8.
+func Handler(handler slog.Handler) Option {
+	return func(o *options) { o.SlogOptions.handler = handler }
+}
+
+// HandlerFunc sets the function to create the slog.Handler.
+// If not set, the default is [NewTextHandler].
+// WARNING: Unless given handlerFunc considers ReplaceAttr options like [NewJSONHandler] or [NewTextHandler] of sqlslog package,
+// LevelTrace and LevelVerbose will be logged as DEBUG-4 and DEBUG-8.
+func HandlerFunc(handlerFunc func(io.Writer, *slog.HandlerOptions) slog.Handler) Option {
+	return func(o *options) { o.SlogOptions.handlerFunc = handlerFunc }
+}
+
+// LogWriter sets the writer to be used for the slog.Handler.
+// If not set, the default is os.Stdout.
+func LogWriter(w io.Writer) Option {
+	return func(o *options) { o.SlogOptions.logWriter = w }
+}
+
+// HandlerOptions sets the options to be used for the slog.Handler.
+// If not set, the default is an empty [slog.HandlerOptions].
+func HandlerOptions(opts *slog.HandlerOptions) Option {
+	return func(o *options) {
+		if opts == nil {
+			opts = &slog.HandlerOptions{}
+		}
+		o.SlogOptions.HandlerOptions = *opts
+	}
+}
+
+// AddSource sets whether to add the source to the log.
+func AddSource(v bool) Option {
+	return func(o *options) { o.SlogOptions.AddSource = v }
+}
+
+// LogLevel sets the log level to be used.
+func LogLevel(v slog.Leveler) Option {
+	return func(o *options) { o.SlogOptions.Level = v }
+}
+
+// ReplaceAttr sets the function to replace the attributes.
+func LogReplaceAttr(f func([]string, slog.Attr) slog.Attr) Option {
+	return func(o *options) { o.SlogOptions.ReplaceAttr = f }
+}
 
 // NewJSONHandler returns a new JSON handler using [slog.NewJSONHandler]
 // with custom options for sqlslog.
 // See [WrapHandlerOptions] for details on the options.
-func NewJSONHandler(w io.Writer, opts *slog.HandlerOptions) *slog.JSONHandler {
+func NewJSONHandler(w io.Writer, opts *slog.HandlerOptions) slog.Handler {
 	return slog.NewJSONHandler(w, WrapHandlerOptions(opts))
 }
 
 // NewTextHandler returns a new Text handler using [slog.NewTextHandler]
 // with custom options for sqlslog.
 // See [WrapHandlerOptions] for details on the options.
-func NewTextHandler(w io.Writer, opts *slog.HandlerOptions) *slog.TextHandler {
+func NewTextHandler(w io.Writer, opts *slog.HandlerOptions) slog.Handler {
 	return slog.NewTextHandler(w, WrapHandlerOptions(opts))
 }
 

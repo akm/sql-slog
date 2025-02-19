@@ -3,22 +3,8 @@ package sqlslog
 import (
 	"context"
 	"database/sql"
-	"database/sql/driver"
 	"log/slog"
 )
-
-type sqlslogOptions struct {
-	Open          StepOptions
-	DriverOptions *driverOptions
-}
-
-func defaultSqlslogOptions(driverName string, msgb StepEventMsgBuilder) *sqlslogOptions {
-	driverOptions := defaultDriverOptions(driverName, msgb)
-	return &sqlslogOptions{
-		Open:          *defaultStepOptions(msgb, StepSqlslogOpen, LevelInfo),
-		DriverOptions: driverOptions,
-	}
-}
 
 /*
 Open opens a database specified by its driver name and a driver-specific data source name,
@@ -41,59 +27,11 @@ See the following example for usage:
 
 [sql.Open]: https://pkg.go.dev/database/sql#Open
 */
-func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB, error) { // nolint:funlen
-	options := newOptions(driverName, opts...)
-	logger := newStepLogger(&stepLoggerOptions{
-		logger:       options.logger,
-		durationKey:  options.durationKey,
-		durationType: options.durationType,
-	})
-
-	return open(ctx, driverName, dsn, logger, &options.sqlslogOptions)
-}
-
-func open(ctx context.Context, driverName, dsn string, logger *stepLogger, options *sqlslogOptions) (*sql.DB, error) {
-	lg := logger.With(
-		slog.String("driver", driverName),
-		slog.String("dsn", dsn),
-	)
-
-	var db *sql.DB
-	err := ignoreAttr(lg.Step(ctx, &options.Open, func() (*slog.Attr, error) {
-		var err error
-		db, err = openWithDriver(driverName, dsn, logger, options.DriverOptions)
-		return nil, err
-	}))
+func Open(ctx context.Context, driverName, dsn string, opts ...Option) (*sql.DB, *slog.Logger, error) { // nolint:funlen
+	factory := New(driverName, dsn, opts...)
+	db, err := factory.Open(ctx)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	return db, nil
-}
-
-func openWithDriver(driverName, dsn string, logger *stepLogger, driverOptions *driverOptions) (*sql.DB, error) {
-	db, err := sql.Open(driverName, dsn)
-	if err != nil {
-		return nil, err
-	}
-	// This db is not used directly, but it is used to get the driver.
-
-	drv := wrapDriver(db.Driver(), logger, driverOptions)
-
-	return openWithWrappedDriver(drv, dsn, logger, driverOptions)
-}
-
-func openWithWrappedDriver(drv driver.Driver, dsn string, logger *stepLogger, driverOptions *driverOptions) (*sql.DB, error) {
-	var origConnector driver.Connector
-
-	if dc, ok := drv.(driver.DriverContext); ok {
-		connector, err := dc.OpenConnector(dsn)
-		if err != nil {
-			return nil, err
-		}
-		origConnector = connector
-	} else {
-		origConnector = &dsnConnector{dsn: dsn, driver: drv}
-	}
-
-	return sql.OpenDB(wrapConnector(origConnector, logger, driverOptions.ConnectorOptions)), nil
+	return db, factory.Logger(), nil
 }

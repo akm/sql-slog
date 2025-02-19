@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"io"
 	"log/slog"
 	"os"
 	"os/exec"
@@ -14,26 +15,14 @@ import (
 )
 
 func main() {
-	var logLevel sqlslog.Level
-	if slices.Contains(os.Args, "debug") {
-		logLevel = sqlslog.LevelDebug
-	} else if slices.Contains(os.Args, "trace") {
-		logLevel = sqlslog.LevelTrace
-	} else if slices.Contains(os.Args, "verbose") {
-		logLevel = sqlslog.LevelVerbose
-	} else {
-		logLevel = sqlslog.LevelInfo
-	}
-	opts := &slog.HandlerOptions{Level: logLevel}
+	logLevel := sqlslog.ParseLevelWithDefault(os.Args[1], sqlslog.LevelInfo)
 
-	var handler slog.Handler
+	var handlerFunc func(io.Writer, *slog.HandlerOptions) slog.Handler
 	if slices.Contains(os.Args, "json") {
-		handler = sqlslog.NewJSONHandler(os.Stdout, opts)
+		handlerFunc = sqlslog.NewJSONHandler
 	} else {
-		handler = sqlslog.NewTextHandler(os.Stdout, opts)
+		handlerFunc = sqlslog.NewTextHandler
 	}
-	logger := slog.New(handler)
-
 	dbName := "app1"
 	dbPort := 5432
 	dsn := fmt.Sprintf("host=127.0.0.1 port=%d user=root password=password dbname=%s sslmode=disable", dbPort, dbName)
@@ -52,8 +41,9 @@ func main() {
 	ctx := context.Background()
 
 	// Open a database
-	db, err := sqlslog.Open(ctx, "postgres", dsn,
-		sqlslog.Logger(logger),
+	db, logger, err := sqlslog.Open(ctx, "postgres", dsn,
+		sqlslog.LogLevel(logLevel),
+		sqlslog.HandlerFunc(handlerFunc),
 		sqlslog.ConnQueryContext(func(o *sqlslog.StepOptions) {
 			o.SetLevel(sqlslog.LevelDebug)
 		}),

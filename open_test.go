@@ -1,7 +1,6 @@
 package sqlslog
 
 import (
-	"bytes"
 	"context"
 	"database/sql/driver"
 	"errors"
@@ -12,10 +11,8 @@ import (
 func TestOpen(t *testing.T) {
 	t.Parallel()
 	ctx := context.TODO()
-	buf := bytes.NewBuffer(nil)
-	logger := slog.New(slog.NewJSONHandler(buf, &slog.HandlerOptions{Level: slog.LevelDebug}))
 
-	db, err := Open(ctx, "invalid-driver", "", Logger(logger))
+	db, _, err := Open(ctx, "invalid-driver", "")
 	if err == nil {
 		t.Fatal("Expected error")
 	}
@@ -56,7 +53,7 @@ func TestOpenWithDriver(t *testing.T) {
 		t.Parallel()
 		t.Run("DriverContext", func(t *testing.T) {
 			drv := newErrorDriverContext(errors.New("unknown error"))
-			stepLogger := newStepLogger(newStepLoggerOptions(slog.New(slog.NewJSONHandler(nil, nil))))
+			stepLogger := newStepLogger(slog.New(slog.NewJSONHandler(nil, nil)), defaultStepLoggerOptions())
 			if _, err := openWithWrappedDriver(drv, "invalid-dsn", stepLogger, nil); err == nil {
 				t.Fatal("Expected error")
 			}

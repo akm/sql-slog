@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"log/slog"
 	"os"
 	"os/exec"
 	"testing"
@@ -35,17 +34,18 @@ func TestLowLevelWithContext(t *testing.T) {
 
 	buf := bytes.NewBuffer(nil)
 	logs := testhelper.NewLogAssertion(buf)
-	logger := slog.New(sqlslog.NewJSONHandler(buf, &slog.HandlerOptions{Level: sqlslog.LevelVerbose}))
 
 	seqIdGen := testhelper.NewSeqIDGenerator()
 	connIDKey := "conn_id"
 	stmtIDKey := "stmt_id"
 	txIDKey := "tx_id"
 
-	db, err := sqlslog.Open(ctx, "postgres", dsn,
+	db, _, err := sqlslog.Open(ctx, "postgres", dsn,
 		append(
 			testhelper.StepEventMsgOptions,
-			sqlslog.Logger(logger),
+			sqlslog.HandlerFunc(sqlslog.NewJSONHandler),
+			sqlslog.LogWriter(buf),
+			sqlslog.LogLevel(sqlslog.LevelVerbose),
 			sqlslog.IDGenerator(seqIdGen.Generate),
 			sqlslog.ConnIDKey(connIDKey),
 			sqlslog.StmtIDKey(stmtIDKey),

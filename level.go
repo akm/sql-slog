@@ -1,8 +1,10 @@
 package sqlslog
 
 import (
+	"errors"
 	"fmt"
 	"log/slog"
+	"strings"
 )
 
 // Level is the log level for sqlslog.
@@ -47,6 +49,33 @@ func (l Level) String() string {
 // Level returns the slog.Level.
 func (l Level) Level() slog.Level {
 	return slog.Level(l)
+}
+
+var stringToLevel = map[string]Level{
+	"VERBOSE": LevelVerbose,
+	"TRACE":   LevelTrace,
+	"DEBUG":   LevelDebug,
+	"INFO":    LevelInfo,
+	"WARN":    LevelWarn,
+	"ERROR":   LevelError,
+}
+
+var ErrUnknownLevel = errors.New("unknown level")
+
+func ParseLevel(s string) (Level, error) {
+	lv, ok := stringToLevel[strings.ToUpper(s)]
+	if !ok {
+		return 0, fmt.Errorf("%w: %q", ErrUnknownLevel, s)
+	}
+	return lv, nil
+}
+
+func ParseLevelWithDefault(s string, def Level) Level {
+	lv, err := ParseLevel(s)
+	if err != nil {
+		return def
+	}
+	return lv
 }
 
 // ReplaceLevelAttr replaces the log level as sqlslog.Level with its string representation.

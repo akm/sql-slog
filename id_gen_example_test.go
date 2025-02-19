@@ -3,9 +3,7 @@ package sqlslog_test
 import (
 	"context"
 	cryptorand "crypto/rand"
-	"log/slog"
 	mathrandv2 "math/rand/v2"
-	"os"
 
 	sqlslog "github.com/akm/sql-slog"
 	// _ "github.com/mattn/go-sqlite3"
@@ -18,9 +16,8 @@ func ExampleIDGenerator() {
 		8,
 	)
 
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	db, _ := sqlslog.Open(context.TODO(), "sqlite3", "file::memory:?cache=shared",
-		sqlslog.Logger(logger),
+	db, _, _ := sqlslog.Open(context.TODO(), "sqlite3", "file::memory:?cache=shared",
+		sqlslog.HandlerFunc(sqlslog.NewJSONHandler),
 		sqlslog.IDGenerator(idGen),
 	)
 	defer db.Close()
@@ -33,9 +30,8 @@ func ExampleRandIntIDGenerator() {
 		8,
 	)
 
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	db, _ := sqlslog.Open(context.TODO(), "sqlite3", "file::memory:?cache=shared",
-		sqlslog.Logger(logger),
+	db, _, _ := sqlslog.Open(context.TODO(), "sqlite3", "file::memory:?cache=shared",
+		sqlslog.HandlerFunc(sqlslog.NewJSONHandler),
 		sqlslog.IDGenerator(idGen),
 	)
 	defer db.Close()
@@ -51,9 +47,8 @@ func ExampleIDGenErrorSuppressor() {
 		func(error) string { return "recovered" },
 	)
 
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	db, _ := sqlslog.Open(context.TODO(), "sqlite3", "file::memory:?cache=shared",
-		sqlslog.Logger(logger),
+	db, _, _ := sqlslog.Open(context.TODO(), "sqlite3", "file::memory:?cache=shared",
+		sqlslog.HandlerFunc(sqlslog.NewJSONHandler),
 		sqlslog.IDGenerator(idGen),
 	)
 	defer db.Close()

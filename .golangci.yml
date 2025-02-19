@@ -91,7 +91,7 @@ linters:
     - stylecheck
     - tagalign
     - tagliatelle
-    - tenv
+    # - tenv # The linter 'tenv' is deprecated (since v1.64.0) due to: Duplicate feature another linter. Replaced by usetesting.
     # - testableexamples
     - testifylint
     # - testpackage
@@ -101,6 +101,7 @@ linters:
     - unparam
     - unused
     - usestdlibvars
+    - usetesting
     # - varnamelen
     - wastedassign
     - whitespace
@@ -115,6 +116,7 @@ issues:
     - path: _test\.go
       linters:
         - err113
+        - forcetypeassert
         - funlen
 linters-settings:
   cyclop:

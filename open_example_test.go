@@ -2,8 +2,6 @@ package sqlslog_test
 
 import (
 	"context"
-	"log/slog"
-	"os"
 
 	sqlslog "github.com/akm/sql-slog"
 	// _ "github.com/mattn/go-sqlite3"
@@ -12,32 +10,29 @@ import (
 func ExampleOpen() {
 	dsn := "file::memory:?cache=shared"
 	ctx := context.TODO()
-	db, err := sqlslog.Open(ctx, "sqlite3", dsn)
+	db, logger, err := sqlslog.Open(ctx, "sqlite3", dsn)
 	if err != nil {
 		// Handle error
 	}
 	defer db.Close()
 	// Use db as a regular *sql.DB
+	logger.InfoContext(ctx, "Hello, World!")
 }
 
 func ExampleOpen_withLevel() {
 	dsn := "file::memory:?cache=shared"
 	ctx := context.TODO()
-	logger := slog.New(sqlslog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
-		Level: sqlslog.LevelTrace,
-	}))
-	db, _ := sqlslog.Open(ctx, "sqlite3", dsn, sqlslog.Logger(logger))
+	db, _, _ := sqlslog.Open(ctx, "sqlite3", dsn,
+		sqlslog.LogLevel(sqlslog.LevelTrace),
+	)
 	defer db.Close()
 }
 
 func ExampleOpen_withStmtQueryContext() {
 	dsn := "file::memory:?cache=shared"
 	ctx := context.TODO()
-	logger := slog.New(sqlslog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
-		Level: sqlslog.LevelTrace,
-	}))
-	db, _ := sqlslog.Open(ctx, "sqlite3", dsn,
-		sqlslog.Logger(logger),
+	db, _, _ := sqlslog.Open(ctx, "sqlite3", dsn,
+		sqlslog.LogLevel(sqlslog.LevelTrace),
 		sqlslog.StmtQueryContext(func(o *sqlslog.StepOptions) {
 			o.SetLevel(sqlslog.LevelDebug)
 		}),

@@ -1,12 +1,11 @@
-go run . info text
-time=2025-02-06T22:15:27.392+09:00 level=INFO msg=Open driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=102000
-time=2025-02-06T22:15:27.394+09:00 level=ERROR msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=822959 error=EOF
-time=2025-02-06T22:15:27.394+09:00 level=ERROR msg=Connector.Connect duration=859208 error=EOF
-time=2025-02-06T22:15:29.411+09:00 level=INFO msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=16854084 conn_id=5Z8wiX13YeXGtYjH
-time=2025-02-06T22:15:29.411+09:00 level=INFO msg=Connector.Connect duration=17112584
-time=2025-02-06T22:15:29.419+09:00 level=INFO msg=Conn.ExecContext conn_id=5Z8wiX13YeXGtYjH query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=5069750
-time=2025-02-06T22:15:29.420+09:00 level=INFO msg=Conn.BeginTx conn_id=5Z8wiX13YeXGtYjH duration=658083 tx_id=ritk44td4g2Hzuvn
-time=2025-02-06T22:15:29.423+09:00 level=INFO msg=Conn.ExecContext conn_id=5Z8wiX13YeXGtYjH query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=2012750
-time=2025-02-06T22:15:29.424+09:00 level=INFO msg=Tx.Commit conn_id=5Z8wiX13YeXGtYjH tx_id=ritk44td4g2Hzuvn duration=1352125
-time=2025-02-06T22:15:29.425+09:00 level=INFO msg=Record id=1 name=Alice
-time=2025-02-06T22:15:29.425+09:00 level=INFO msg=Conn.Close conn_id=5Z8wiX13YeXGtYjH duration=87958
+time=2025-02-19T08:24:37.992+09:00 level=INFO msg=Open driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=88917
+time=2025-02-19T08:24:37.994+09:00 level=ERROR msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=1106584 error=EOF
+time=2025-02-19T08:24:37.994+09:00 level=ERROR msg=Connector.Connect duration=1177042 error=EOF
+time=2025-02-19T08:24:40.012+09:00 level=INFO msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=17772500 conn_id=VIccjsFjsJV7w21h
+time=2025-02-19T08:24:40.012+09:00 level=INFO msg=Connector.Connect duration=18083208
+time=2025-02-19T08:24:40.018+09:00 level=INFO msg=Conn.ExecContext conn_id=VIccjsFjsJV7w21h query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=4805208
+time=2025-02-19T08:24:40.019+09:00 level=INFO msg=Conn.BeginTx conn_id=VIccjsFjsJV7w21h duration=579334 tx_id=zPkm6sD1QPNBnYWX
+time=2025-02-19T08:24:40.021+09:00 level=INFO msg=Conn.ExecContext conn_id=VIccjsFjsJV7w21h query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=1652042
+time=2025-02-19T08:24:40.023+09:00 level=INFO msg=Tx.Commit conn_id=VIccjsFjsJV7w21h tx_id=zPkm6sD1QPNBnYWX duration=1187791
+time=2025-02-19T08:24:40.023+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-02-19T08:24:40.023+09:00 level=INFO msg=Conn.Close conn_id=VIccjsFjsJV7w21h duration=66042
