@@ -19,12 +19,19 @@ func ExampleHandlerFunc() {
 
 func ExampleSetStepEventMsgBuilder() {
 	sqlslog.SetStepEventMsgBuilder(func(step sqlslog.Step, event sqlslog.Event) string {
-		return step.String() + "/" + event.String()
+		return "PRFIX:" + step.String() + "/" + event.String() + ":SUFFIX"
 	})
-	dsn := "file::memory:?cache=shared"
+	defer sqlslog.SetStepEventMsgBuilder(sqlslog.StepEventMsgWithoutEventName)
+
+	dsn := "dummy-dsn"
 	ctx := context.TODO()
-	db, _, _ := sqlslog.Open(ctx, "sqlite3", dsn,
-		sqlslog.HandlerFunc(sqlslog.NewJSONHandler),
+	db, logger, _ := sqlslog.Open(ctx, "mock", dsn,
+		sqlslog.LogReplaceAttr(removeTimeAndDuration), // for testing
 	)
 	defer db.Close()
+	logger.InfoContext(ctx, "Hello, World!")
+
+	// Output:
+	// level=INFO msg=PRFIX:Open/Complete:SUFFIX driver=mock dsn=dummy-dsn
+	// level=INFO msg="Hello, World!"
 }
