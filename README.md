@@ -45,25 +45,16 @@ When using sqlslog, you can use it like this:
 
 ```golang
 ctx := context.TODO() // or a context.Context
-db, err := sqlslog.Open(ctx, "mysql", dsn)
+db, logger, err := sqlslog.Open(ctx, "mysql", dsn)
 ```
 
-1. Replace `sql.Open` with `sqlslog.Open`.
-2. Insert a `context.Context` as the first argument.
+See [godoc examples](https://pkg.go.dev/github.com/akm/sql-slog#example-Open) for more details.
 
 ## Features
 
 ### Additional Log Levels
 
 sqlslog provides additional log levels `LevelTrace` and `LevelVerbose` as [sqlslog.Level](https://pkg.go.dev/github.com/akm/sql-slog#Level).
-
-To display the log levels correctly, the logger handler must be customized. You can create a handler using [sqlslog.NewJSONHandler](https://pkg.go.dev/github.com/akm/sql-slog#NewJSONHandler) and [sqlslog.NewTextHandler](https://pkg.go.dev/github.com/akm/sql-slog#NewTextHandler).
-
-Pass an [sqlslog.Option](https://pkg.go.dev/github.com/akm/sql-slog#Option) created by [sqlslog.Logger](https://pkg.go.dev/github.com/akm/sql-slog#Logger) to [sqlslog.Open](https://pkg.go.dev/github.com/akm/sql-slog#Open) to use them.
-
-```golang
-db, err := sqlslog.Open(ctx, "sqlite3", dsn, sqlslog.Logger(yourLogger))
-```
 
 ### Configurable Log Messages and Log Levels for Each Step
 
@@ -74,6 +65,11 @@ A step has three events: start, error, and complete.
 sqlslog provides a way to customize the log message and log level for each step event.
 
 You can customize them using functions that take [StepOptions](https://pkg.go.dev/github.com/akm/sql-slog#StepOptions) and return [Option](https://pkg.go.dev/github.com/akm/sql-slog#Option), like [ConnPrepareContext](https://pkg.go.dev/github.com/akm/sql-slog#ConnPrepareContext) or [StmtQueryContext](https://pkg.go.dev/github.com/akm/sql-slog#StmtQueryContext).
+
+### Trackable log output
+
+sqlslog generates ID strings for connections, transactions and prepared statements.
+You can customize ID generator by using [IDGenerator](https://pkg.go.dev/github.com/akm/sql-slog#IDGenerator).
 
 ### Tests
 
