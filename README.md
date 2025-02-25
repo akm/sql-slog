@@ -2,10 +2,10 @@
 
 [![CI](https://github.com/akm/sql-slog/actions/workflows/ci.yml/badge.svg)](https://github.com/akm/sql-slog/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/github/akm/sql-slog/graph/badge.svg?token=9BcanbSLut)](https://codecov.io/github/akm/sql-slog)
-[![Enabled Linters](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fakm%2Fsql-slog%2Frefs%2Fheads%2Fmain%2F.project.yaml&query=%24.linters&label=enabled%20linters&color=%2317AFC2)](.golangci.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/akm/sql-slog)](https://goreportcard.com/report/github.com/akm/sql-slog)
+[![Enabled Linters](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fakm%2Fsql-slog%2Frefs%2Fheads%2Fmain%2F.project.yaml&query=%24.linters&label=enabled%20linters&color=%2317AFC2)](.golangci.yml)
 [![Documentation](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/akm/sql-slog)
-![license](https://img.shields.io/github/license/akm/sql-slog)
+[![license](https://img.shields.io/github/license/akm/sql-slog)](./LICENSE)
 
 A logger for Go SQL database drivers without modifying existing `*sql.DB` stdlib usage.
 
@@ -29,41 +29,39 @@ A logger for Go SQL database drivers without modifying existing `*sql.DB` stdlib
 
 ## INSTALL
 
+To install sql-slog, use the following command:
+
 ```sh
 go get -u github.com/akm/sql-slog
 ```
 
 ## USAGE
 
-This is a simple example of how to use `sql.Open`:
+To use sql-slog, you can open a database connection with logging enabled as follows:
+
+```golang
+db, logger, err := sqlslog.Open(ctx, "mysql", dsn)
+```
+
+This is the easiest way to use sqlslog. It's similar to the usage of `Open` from `database/sql` like this:
 
 ```golang
 db, err := sql.Open("mysql", dsn)
 ```
 
-When using sqlslog, you can use it like this:
+The differences are:
 
-```golang
-ctx := context.TODO() // or a context.Context
-db, err := sqlslog.Open(ctx, "mysql", dsn)
-```
+1. Pass `context.Context` as the first argument.
+2. `*slog.Logger` is returned as the second argument.
+3. `sqlslog.Open` can take a lot of [Option](https://pkg.go.dev/github.com/akm/sql-slog#Option).
 
-1. Replace `sql.Open` with `sqlslog.Open`.
-2. Insert a `context.Context` as the first argument.
+See [godoc examples](https://pkg.go.dev/github.com/akm/sql-slog#example-Open) for more details.
 
 ## Features
 
 ### Additional Log Levels
 
 sqlslog provides additional log levels `LevelTrace` and `LevelVerbose` as [sqlslog.Level](https://pkg.go.dev/github.com/akm/sql-slog#Level).
-
-To display the log levels correctly, the logger handler must be customized. You can create a handler using [sqlslog.NewJSONHandler](https://pkg.go.dev/github.com/akm/sql-slog#NewJSONHandler) and [sqlslog.NewTextHandler](https://pkg.go.dev/github.com/akm/sql-slog#NewTextHandler).
-
-Pass an [sqlslog.Option](https://pkg.go.dev/github.com/akm/sql-slog#Option) created by [sqlslog.Logger](https://pkg.go.dev/github.com/akm/sql-slog#Logger) to [sqlslog.Open](https://pkg.go.dev/github.com/akm/sql-slog#Open) to use them.
-
-```golang
-db, err := sqlslog.Open(ctx, "sqlite3", dsn, sqlslog.Logger(yourLogger))
-```
 
 ### Configurable Log Messages and Log Levels for Each Step
 
@@ -74,6 +72,11 @@ A step has three events: start, error, and complete.
 sqlslog provides a way to customize the log message and log level for each step event.
 
 You can customize them using functions that take [StepOptions](https://pkg.go.dev/github.com/akm/sql-slog#StepOptions) and return [Option](https://pkg.go.dev/github.com/akm/sql-slog#Option), like [ConnPrepareContext](https://pkg.go.dev/github.com/akm/sql-slog#ConnPrepareContext) or [StmtQueryContext](https://pkg.go.dev/github.com/akm/sql-slog#StmtQueryContext).
+
+### Trackable log output
+
+sqlslog generates ID strings for connections, transactions and prepared statements.
+You can customize ID generator by using [IDGenerator](https://pkg.go.dev/github.com/akm/sql-slog#IDGenerator).
 
 ### Tests
 
