@@ -29,11 +29,15 @@ A logger for Go SQL database drivers without modifying existing `*sql.DB` stdlib
 
 ## INSTALL
 
+To install sql-slog, use the following command:
+
 ```sh
 go get -u github.com/akm/sql-slog
 ```
 
 ## USAGE
+
+To use sql-slog, you can open a database connection with logging enabled as follows:
 
 ```golang
 db, logger, err := sqlslog.Open(ctx, "mysql", dsn)
@@ -45,11 +49,11 @@ This is the easiest way to use sqlslog. It's similar to the usage of `Open` from
 db, err := sql.Open("mysql", dsn)
 ```
 
-The differences are
+The differences are:
 
-1. Pass context.Context as the first argument
-2. \*slog.Logger is returned as 2nd
-3. sqlslog.Open can take a lot of [Option](https://pkg.go.dev/github.com/akm/sql-slog#Option)
+1. Pass `context.Context` as the first argument.
+2. `*slog.Logger` is returned as the second argument.
+3. `sqlslog.Open` can take a lot of [Option](https://pkg.go.dev/github.com/akm/sql-slog#Option).
 
 See [godoc examples](https://pkg.go.dev/github.com/akm/sql-slog#example-Open) for more details.
 
