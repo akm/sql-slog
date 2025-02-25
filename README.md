@@ -35,18 +35,21 @@ go get -u github.com/akm/sql-slog
 
 ## USAGE
 
-This is a simple example of how to use `sql.Open`:
+```golang
+db, logger, err := sqlslog.Open(ctx, "mysql", dsn)
+```
+
+This is the easiest way to use sqlslog. It's similar to the usage of `Open` from `database/sql` like this:
 
 ```golang
 db, err := sql.Open("mysql", dsn)
 ```
 
-When using sqlslog, you can use it like this:
+The differences are
 
-```golang
-ctx := context.TODO() // or a context.Context
-db, logger, err := sqlslog.Open(ctx, "mysql", dsn)
-```
+1. Pass context.Context as the first argument
+2. \*slog.Logger is returned as 2nd
+3. sqlslog.Open can take a lot of [Option](https://pkg.go.dev/github.com/akm/sql-slog#Option)
 
 See [godoc examples](https://pkg.go.dev/github.com/akm/sql-slog#example-Open) for more details.
 
