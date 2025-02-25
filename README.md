@@ -5,7 +5,7 @@
 [![Enabled Linters](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fakm%2Fsql-slog%2Frefs%2Fheads%2Fmain%2F.project.yaml&query=%24.linters&label=enabled%20linters&color=%2317AFC2)](.golangci.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/akm/sql-slog)](https://goreportcard.com/report/github.com/akm/sql-slog)
 [![Documentation](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/akm/sql-slog)
-![license](https://img.shields.io/github/license/akm/sql-slog)
+[![license](https://img.shields.io/github/license/akm/sql-slog)](./LICENSE)
 
 A logger for Go SQL database drivers without modifying existing `*sql.DB` stdlib usage.
 
