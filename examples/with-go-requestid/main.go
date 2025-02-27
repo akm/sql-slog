@@ -54,7 +54,7 @@ func createTable(ctx context.Context) {
 		title TEXT,
 		status TEXT
 	);`
-	_, err := db.Exec(query)
+	_, err := db.ExecContext(ctx, query)
 	if err != nil {
 		slog.ErrorContext(ctx, "Failed to create table", "error", err)
 		return
@@ -67,7 +67,7 @@ func getTodos(w http.ResponseWriter, r *http.Request) {
 	slog.InfoContext(ctx, "getTodos handler started")
 	defer slog.InfoContext(ctx, "getTodos handler ended")
 
-	rows, err := db.Query("SELECT id, title, status FROM todos")
+	rows, err := db.QueryContext(ctx, "SELECT id, title, status FROM todos")
 	if err != nil {
 		slog.ErrorContext(ctx, "Error querying todos", "error", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -102,7 +102,7 @@ func createTodo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, err := db.Exec("INSERT INTO todos (title, status) VALUES (?, ?)", todo.Title, todo.Status)
+	result, err := db.ExecContext(ctx, "INSERT INTO todos (title, status) VALUES (?, ?)", todo.Title, todo.Status)
 	if err != nil {
 		slog.ErrorContext(ctx, "Error inserting todo", "error", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -135,7 +135,7 @@ func getTodoByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var todo Todo
-	if err := db.QueryRow("SELECT id, title, status FROM todos WHERE id = ?", id).Scan(&todo.ID, &todo.Title, &todo.Status); err != nil {
+	if err := db.QueryRowContext(ctx, "SELECT id, title, status FROM todos WHERE id = ?", id).Scan(&todo.ID, &todo.Title, &todo.Status); err != nil {
 		if err == sql.ErrNoRows {
 			slog.InfoContext(ctx, "Todo not found")
 			http.Error(w, "Todo not found", http.StatusNotFound)
@@ -170,7 +170,7 @@ func updateTodoByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if _, err := db.Exec("UPDATE todos SET title = ?, status = ? WHERE id = ?", todo.Title, todo.Status, id); err != nil {
+	if _, err := db.ExecContext(ctx, "UPDATE todos SET title = ?, status = ? WHERE id = ?", todo.Title, todo.Status, id); err != nil {
 		slog.ErrorContext(ctx, "Error updating todo", "error", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -194,7 +194,7 @@ func deleteTodoByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if _, err := db.Exec("DELETE FROM todos WHERE id = ?", id); err != nil {
+	if _, err := db.ExecContext(ctx, "DELETE FROM todos WHERE id = ?", id); err != nil {
 		slog.ErrorContext(ctx, "Error deleting todo", "error", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
