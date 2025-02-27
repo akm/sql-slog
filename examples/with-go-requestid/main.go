@@ -28,8 +28,11 @@ func main() {
 
 	createTable()
 
-	http.HandleFunc("/todos", todosHandler)
-	http.HandleFunc("/todos/", todoHandler)
+	http.HandleFunc("GET /todos", getTodos)
+	http.HandleFunc("POST /todos", createTodo)
+	http.HandleFunc("GET /todos/{id}", getTodoByID)
+	http.HandleFunc("PUT /todos/{id}", updateTodoByID)
+	http.HandleFunc("DELETE /todos/{id}", deleteTodoByID)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
@@ -44,36 +47,6 @@ func createTable() {
 	_, err := db.Exec(query)
 	if err != nil {
 		log.Fatal(err)
-	}
-}
-
-func todosHandler(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case "GET":
-		getTodos(w, r)
-	case "POST":
-		createTodo(w, r)
-	default:
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	}
-}
-
-func todoHandler(w http.ResponseWriter, r *http.Request) {
-	id, err := strconv.Atoi(r.URL.Path[len("/todos/"):])
-	if err != nil {
-		http.Error(w, "Invalid ID", http.StatusBadRequest)
-		return
-	}
-
-	switch r.Method {
-	case "GET":
-		getTodoByID(w, r, id)
-	case "PUT":
-		updateTodoByID(w, r, id)
-	case "DELETE":
-		deleteTodoByID(w, r, id)
-	default:
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
 }
 
@@ -123,10 +96,16 @@ func createTodo(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(todo)
 }
 
-func getTodoByID(w http.ResponseWriter, r *http.Request, id int) {
-	var todo Todo
-	err := db.QueryRow("SELECT id, title, status FROM todos WHERE id = ?", id).Scan(&todo.ID, &todo.Title, &todo.Status)
+func getTodoByID(w http.ResponseWriter, r *http.Request) {
+	idStr := r.PathValue("id")
+	id, err := strconv.Atoi(idStr)
 	if err != nil {
+		http.Error(w, "Invalid ID", http.StatusNotFound)
+		return
+	}
+
+	var todo Todo
+	if err := db.QueryRow("SELECT id, title, status FROM todos WHERE id = ?", id).Scan(&todo.ID, &todo.Title, &todo.Status); err != nil {
 		if err == sql.ErrNoRows {
 			http.Error(w, "Todo not found", http.StatusNotFound)
 		} else {
@@ -139,15 +118,21 @@ func getTodoByID(w http.ResponseWriter, r *http.Request, id int) {
 	json.NewEncoder(w).Encode(todo)
 }
 
-func updateTodoByID(w http.ResponseWriter, r *http.Request, id int) {
+func updateTodoByID(w http.ResponseWriter, r *http.Request) {
+	idStr := r.PathValue("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, "Invalid ID", http.StatusNotFound)
+		return
+	}
+
 	var todo Todo
 	if err := json.NewDecoder(r.Body).Decode(&todo); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	_, err := db.Exec("UPDATE todos SET title = ?, status = ? WHERE id = ?", todo.Title, todo.Status, id)
-	if err != nil {
+	if _, err := db.Exec("UPDATE todos SET title = ?, status = ? WHERE id = ?", todo.Title, todo.Status, id); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -157,9 +142,15 @@ func updateTodoByID(w http.ResponseWriter, r *http.Request, id int) {
 	json.NewEncoder(w).Encode(todo)
 }
 
-func deleteTodoByID(w http.ResponseWriter, r *http.Request, id int) {
-	_, err := db.Exec("DELETE FROM todos WHERE id = ?", id)
+func deleteTodoByID(w http.ResponseWriter, r *http.Request) {
+	idStr := r.PathValue("id")
+	id, err := strconv.Atoi(idStr)
 	if err != nil {
+		http.Error(w, "Invalid ID", http.StatusNotFound)
+		return
+	}
+
+	if _, err := db.Exec("DELETE FROM todos WHERE id = ?", id); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
