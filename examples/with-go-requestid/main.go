@@ -4,11 +4,13 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"io"
 	"net/http"
 	"strconv"
 
 	"log/slog"
 
+	requestid "github.com/akm/go-requestid"
 	sqlslog "github.com/akm/sql-slog"
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -22,17 +24,24 @@ type Todo struct {
 }
 
 func main() {
+	sqlslogMiddleware := sqlslog.New("sqlite3", ":memory:",
+		sqlslog.LogLevel(sqlslog.LevelTrace),
+		sqlslog.HandlerFunc(func(w io.Writer, opts *slog.HandlerOptions) slog.Handler {
+			return requestid.WrapSlogHandler(sqlslog.NewTextHandler(w, opts))
+		}),
+	)
+
 	ctx := context.Background()
 
 	var err error
-	var logger *slog.Logger
-	db, logger, err = sqlslog.Open(ctx, "sqlite3", ":memory:")
+	db, err = sqlslogMiddleware.Open(ctx)
 	if err != nil {
 		slog.ErrorContext(ctx, "Failed to open database", "error", err)
 		return
 	}
 	defer db.Close()
-	slog.SetDefault(logger)
+
+	slog.SetDefault(sqlslogMiddleware.Logger())
 
 	createTable(ctx)
 
@@ -44,7 +53,7 @@ func main() {
 	mux.HandleFunc("DELETE /todos/{id}", deleteTodoByID)
 
 	slog.InfoContext(ctx, "Starting server on :8080")
-	slog.ErrorContext(ctx, http.ListenAndServe(":8080", mux).Error())
+	slog.ErrorContext(ctx, http.ListenAndServe(":8080", requestid.Wrap(mux)).Error())
 }
 
 func createTable(ctx context.Context) {
