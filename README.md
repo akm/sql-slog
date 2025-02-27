@@ -3,8 +3,10 @@
 [![CI](https://github.com/akm/sql-slog/actions/workflows/ci.yml/badge.svg)](https://github.com/akm/sql-slog/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/github/akm/sql-slog/graph/badge.svg?token=9BcanbSLut)](https://codecov.io/github/akm/sql-slog)
 [![Go Report Card](https://goreportcard.com/badge/github.com/akm/sql-slog)](https://goreportcard.com/report/github.com/akm/sql-slog)
+[![Go project version](https://badge.fury.io/go/github.com%2Fakm%2Fsql-slog.svg)](https://badge.fury.io/go/github.com%2Fakm%2Fsql-slog)
 [![Enabled Linters](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fakm%2Fsql-slog%2Frefs%2Fheads%2Fmain%2F.project.yaml&query=%24.linters&label=enabled%20linters&color=%2317AFC2)](.golangci.yml)
 [![Documentation](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/akm/sql-slog)
+[![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/akm/sql-slog)](./go.mod)
 [![license](https://img.shields.io/github/license/akm/sql-slog)](./LICENSE)
 
 A logger for Go SQL database drivers without modifying existing `*sql.DB` stdlib usage.
@@ -23,9 +25,8 @@ A logger for Go SQL database drivers without modifying existing `*sql.DB` stdlib
 - Leveled, detailed and configurable logging.
 - Duration
 - Trackable log output
-  - conn_id
-  - tx_id
-  - stmt_id
+
+See [godoc](https://pkg.go.dev/github.com/akm/sql-slog) for more details.
 
 ## INSTALL
 
@@ -57,32 +58,11 @@ The differences are:
 
 See [godoc examples](https://pkg.go.dev/github.com/akm/sql-slog#example-Open) for more details.
 
-## Features
+## TEST
 
-### Additional Log Levels
-
-sqlslog provides additional log levels `LevelTrace` and `LevelVerbose` as [sqlslog.Level](https://pkg.go.dev/github.com/akm/sql-slog#Level).
-
-### Configurable Log Messages and Log Levels for Each Step
-
-In sqlslog terms, a step is a logical operation in the database driver, such as a query, a ping, a prepare, etc.
-
-A step has three events: start, error, and complete.
-
-sqlslog provides a way to customize the log message and log level for each step event.
-
-You can customize them using functions that take [StepOptions](https://pkg.go.dev/github.com/akm/sql-slog#StepOptions) and return [Option](https://pkg.go.dev/github.com/akm/sql-slog#Option), like [ConnPrepareContext](https://pkg.go.dev/github.com/akm/sql-slog#ConnPrepareContext) or [StmtQueryContext](https://pkg.go.dev/github.com/akm/sql-slog#StmtQueryContext).
-
-### Trackable log output
-
-sqlslog generates ID strings for connections, transactions and prepared statements.
-You can customize ID generator by using [IDGenerator](https://pkg.go.dev/github.com/akm/sql-slog#IDGenerator).
-
-### Tests
-
-- [Test for MySQL](https://github.com/akm/sql-slog/blob/3f72cc68aefa9ac05b031d865dbdaec8a361c2c9/tests/mysql/low_level_with_context_test.go) for more details.
-- [Test for PostgreSQL](https://github.com/akm/sql-slog/blob/3f72cc68aefa9ac05b031d865dbdaec8a361c2c9/tests/postgres/low_level_with_context_test.go) for more details.
-- [Test for SQLite3](https://github.com/akm/sql-slog/blob/3f72cc68aefa9ac05b031d865dbdaec8a361c2c9/tests/sqlite3/low_level_without_context_test.go) for more details.
+- [For MySQL](https://github.com/akm/sql-slog/blob/3f72cc68aefa9ac05b031d865dbdaec8a361c2c9/tests/mysql/low_level_with_context_test.go) for more details.
+- [For PostgreSQL](https://github.com/akm/sql-slog/blob/3f72cc68aefa9ac05b031d865dbdaec8a361c2c9/tests/postgres/low_level_with_context_test.go) for more details.
+- [For SQLite3](https://github.com/akm/sql-slog/blob/3f72cc68aefa9ac05b031d865dbdaec8a361c2c9/tests/sqlite3/low_level_without_context_test.go) for more details.
 
 ## MOTIVATION
 
