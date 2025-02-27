@@ -4,6 +4,7 @@ import (
 	"context"
 	"io"
 	"net/http"
+	"os"
 
 	"log/slog"
 
@@ -41,6 +42,6 @@ func main() {
 	mux.HandleFunc("PUT /todos/{id}", updateTodoByID)
 	mux.HandleFunc("DELETE /todos/{id}", deleteTodoByID)
 
-	slog.InfoContext(ctx, "Starting server on :8080")
+	slog.InfoContext(ctx, "Starting server on :8080", slog.Int("pid", os.Getpid()))
 	slog.ErrorContext(ctx, http.ListenAndServe(":8080", requestid.Wrap(mux)).Error())
 }
