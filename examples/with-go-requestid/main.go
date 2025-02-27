@@ -28,13 +28,14 @@ func main() {
 
 	createTable()
 
-	http.HandleFunc("GET /todos", getTodos)
-	http.HandleFunc("POST /todos", createTodo)
-	http.HandleFunc("GET /todos/{id}", getTodoByID)
-	http.HandleFunc("PUT /todos/{id}", updateTodoByID)
-	http.HandleFunc("DELETE /todos/{id}", deleteTodoByID)
+	mux := http.NewServeMux()
+	mux.HandleFunc("GET /todos", getTodos)
+	mux.HandleFunc("POST /todos", createTodo)
+	mux.HandleFunc("GET /todos/{id}", getTodoByID)
+	mux.HandleFunc("PUT /todos/{id}", updateTodoByID)
+	mux.HandleFunc("DELETE /todos/{id}", deleteTodoByID)
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":8080", mux))
 }
 
 func createTable() {
