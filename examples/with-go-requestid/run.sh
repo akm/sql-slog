@@ -3,7 +3,7 @@
 set -x
 
 go build -o testsrv .
-./testsrv &
+./testsrv > server-logs.txt &
 
 SERVER_PID=$!
 ps -ef | grep $SERVER_PID
