@@ -9,6 +9,7 @@ import (
 
 	"log/slog"
 
+	sqlslog "github.com/akm/sql-slog"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -24,12 +25,14 @@ func main() {
 	ctx := context.Background()
 
 	var err error
-	db, err = sql.Open("sqlite3", ":memory:")
+	var logger *slog.Logger
+	db, logger, err = sqlslog.Open(ctx, "sqlite3", ":memory:")
 	if err != nil {
 		slog.ErrorContext(ctx, "Failed to open database", "error", err)
 		return
 	}
 	defer db.Close()
+	slog.SetDefault(logger)
 
 	createTable(ctx)
 
