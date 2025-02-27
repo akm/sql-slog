@@ -13,9 +13,9 @@ A logger for Go SQL database drivers without modifying existing `*sql.DB` stdlib
 
 ## LOG EXAMPLES
 
-- [mysql](./examples/logs-mysql/results)
-- [postgres](./examples/logs-postgres/results)
 - [sqlite3](./examples/logs-sqlite3/results)
+- [postgres](./examples/logs-postgres/results)
+- [mysql](./examples/logs-mysql/results)
 
 ## FEATURES
 
