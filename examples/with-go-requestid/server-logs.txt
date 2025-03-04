@@ -1,0 +1,66 @@
+time=2025-02-27T23:53:47.267+09:00 level=DEBUG msg=Open driver=sqlite3 dsn=:memory:
+time=2025-02-27T23:53:47.268+09:00 level=INFO msg=Open driver=sqlite3 dsn=:memory: duration=87167
+time=2025-02-27T23:53:47.268+09:00 level=DEBUG msg=Connector.Connect
+time=2025-02-27T23:53:47.268+09:00 level=DEBUG msg=Driver.Open dsn=:memory:
+time=2025-02-27T23:53:47.269+09:00 level=INFO msg=Driver.Open dsn=:memory: duration=944834 conn_id=L1snTUaknlmsin8b
+time=2025-02-27T23:53:47.269+09:00 level=INFO msg=Connector.Connect duration=1029083
+time=2025-02-27T23:53:47.269+09:00 level=DEBUG msg=Conn.ExecContext conn_id=L1snTUaknlmsin8b query="\n\tCREATE TABLE todos (\n\t\tid INTEGER PRIMARY KEY AUTOINCREMENT,\n\t\ttitle TEXT,\n\t\tstatus TEXT\n\t);" args=[]
+time=2025-02-27T23:53:47.269+09:00 level=INFO msg=Conn.ExecContext conn_id=L1snTUaknlmsin8b query="\n\tCREATE TABLE todos (\n\t\tid INTEGER PRIMARY KEY AUTOINCREMENT,\n\t\ttitle TEXT,\n\t\tstatus TEXT\n\t);" args=[] duration=185375
+time=2025-02-27T23:53:47.269+09:00 level=INFO msg="Table created successfully"
+time=2025-02-27T23:53:47.269+09:00 level=INFO msg="Starting server on :8080" pid=39031
+time=2025-02-27T23:53:48.967+09:00 level=INFO msg="createTodo handler started" req_id=23H1P1cwfoyxz539
+time=2025-02-27T23:53:48.967+09:00 level=TRACE msg=Conn.ResetSession conn_id=L1snTUaknlmsin8b duration=1042 req_id=23H1P1cwfoyxz539
+time=2025-02-27T23:53:48.968+09:00 level=DEBUG msg=Conn.ExecContext conn_id=L1snTUaknlmsin8b query="INSERT INTO todos (title, status) VALUES (?, ?)" args="[{Name: Ordinal:1 Value:List up} {Name: Ordinal:2 Value:done}]" req_id=23H1P1cwfoyxz539
+time=2025-02-27T23:53:48.968+09:00 level=INFO msg=Conn.ExecContext conn_id=L1snTUaknlmsin8b query="INSERT INTO todos (title, status) VALUES (?, ?)" args="[{Name: Ordinal:1 Value:List up} {Name: Ordinal:2 Value:done}]" duration=82667 req_id=23H1P1cwfoyxz539
+time=2025-02-27T23:53:48.968+09:00 level=INFO msg="createTodo handler ended" req_id=23H1P1cwfoyxz539
+time=2025-02-27T23:53:48.975+09:00 level=INFO msg="createTodo handler started" req_id=9PdFqEMN0cSaE6WL
+time=2025-02-27T23:53:48.975+09:00 level=TRACE msg=Conn.ResetSession conn_id=L1snTUaknlmsin8b duration=459 req_id=9PdFqEMN0cSaE6WL
+time=2025-02-27T23:53:48.975+09:00 level=DEBUG msg=Conn.ExecContext conn_id=L1snTUaknlmsin8b query="INSERT INTO todos (title, status) VALUES (?, ?)" args="[{Name: Ordinal:1 Value:Go shopping} {Name: Ordinal:2 Value:pending}]" req_id=9PdFqEMN0cSaE6WL
+time=2025-02-27T23:53:48.975+09:00 level=INFO msg=Conn.ExecContext conn_id=L1snTUaknlmsin8b query="INSERT INTO todos (title, status) VALUES (?, ?)" args="[{Name: Ordinal:1 Value:Go shopping} {Name: Ordinal:2 Value:pending}]" duration=99625 req_id=9PdFqEMN0cSaE6WL
+time=2025-02-27T23:53:48.975+09:00 level=INFO msg="createTodo handler ended" req_id=9PdFqEMN0cSaE6WL
+time=2025-02-27T23:53:48.982+09:00 level=INFO msg="getTodos handler started" req_id=0JKGwDLjw77BjBnf
+time=2025-02-27T23:53:48.982+09:00 level=TRACE msg=Conn.ResetSession conn_id=L1snTUaknlmsin8b duration=208 req_id=0JKGwDLjw77BjBnf
+time=2025-02-27T23:53:48.982+09:00 level=DEBUG msg=Conn.QueryContext conn_id=L1snTUaknlmsin8b query="SELECT id, title, status FROM todos" args=[] req_id=0JKGwDLjw77BjBnf
+time=2025-02-27T23:53:48.983+09:00 level=INFO msg=Conn.QueryContext conn_id=L1snTUaknlmsin8b query="SELECT id, title, status FROM todos" args=[] duration=23584 req_id=0JKGwDLjw77BjBnf
+time=2025-02-27T23:53:48.983+09:00 level=TRACE msg=Rows.Next conn_id=L1snTUaknlmsin8b
+time=2025-02-27T23:53:48.983+09:00 level=DEBUG msg=Rows.Next conn_id=L1snTUaknlmsin8b duration=12209 eof=false
+time=2025-02-27T23:53:48.983+09:00 level=TRACE msg=Rows.Next conn_id=L1snTUaknlmsin8b
+time=2025-02-27T23:53:48.983+09:00 level=DEBUG msg=Rows.Next conn_id=L1snTUaknlmsin8b duration=4583 eof=false
+time=2025-02-27T23:53:48.983+09:00 level=TRACE msg=Rows.Next conn_id=L1snTUaknlmsin8b
+time=2025-02-27T23:53:48.983+09:00 level=DEBUG msg=Rows.Next conn_id=L1snTUaknlmsin8b duration=5625 eof=true
+time=2025-02-27T23:53:48.983+09:00 level=TRACE msg=Rows.Close conn_id=L1snTUaknlmsin8b
+time=2025-02-27T23:53:48.983+09:00 level=DEBUG msg=Rows.Close conn_id=L1snTUaknlmsin8b duration=1583
+time=2025-02-27T23:53:48.983+09:00 level=INFO msg="getTodos handler ended" req_id=0JKGwDLjw77BjBnf
+time=2025-02-27T23:53:48.989+09:00 level=INFO msg="getTodoByID handler started" req_id=wO6Odv2XzPEfZZ2v
+time=2025-02-27T23:53:48.989+09:00 level=TRACE msg=Conn.ResetSession conn_id=L1snTUaknlmsin8b duration=459 req_id=wO6Odv2XzPEfZZ2v
+time=2025-02-27T23:53:48.989+09:00 level=DEBUG msg=Conn.QueryContext conn_id=L1snTUaknlmsin8b query="SELECT id, title, status FROM todos WHERE id = ?" args="[{Name: Ordinal:1 Value:1}]" req_id=wO6Odv2XzPEfZZ2v
+time=2025-02-27T23:53:48.989+09:00 level=INFO msg=Conn.QueryContext conn_id=L1snTUaknlmsin8b query="SELECT id, title, status FROM todos WHERE id = ?" args="[{Name: Ordinal:1 Value:1}]" duration=23792 req_id=wO6Odv2XzPEfZZ2v
+time=2025-02-27T23:53:48.989+09:00 level=TRACE msg=Rows.Next conn_id=L1snTUaknlmsin8b
+time=2025-02-27T23:53:48.989+09:00 level=DEBUG msg=Rows.Next conn_id=L1snTUaknlmsin8b duration=11167 eof=true
+time=2025-02-27T23:53:48.989+09:00 level=TRACE msg=Rows.Close conn_id=L1snTUaknlmsin8b
+time=2025-02-27T23:53:48.989+09:00 level=DEBUG msg=Rows.Close conn_id=L1snTUaknlmsin8b duration=1333
+time=2025-02-27T23:53:48.989+09:00 level=INFO msg="Todo not found" req_id=wO6Odv2XzPEfZZ2v
+time=2025-02-27T23:53:48.989+09:00 level=INFO msg="getTodoByID handler ended" req_id=wO6Odv2XzPEfZZ2v
+time=2025-02-27T23:53:48.995+09:00 level=INFO msg="updateTodoByID handler started" req_id=bIQZai_ojs1UMMc2
+time=2025-02-27T23:53:48.995+09:00 level=TRACE msg=Conn.ResetSession conn_id=L1snTUaknlmsin8b duration=125 req_id=bIQZai_ojs1UMMc2
+time=2025-02-27T23:53:48.995+09:00 level=DEBUG msg=Conn.ExecContext conn_id=L1snTUaknlmsin8b query="UPDATE todos SET title = ?, status = ? WHERE id = ?" args="[{Name: Ordinal:1 Value:Go shopping} {Name: Ordinal:2 Value:done} {Name: Ordinal:3 Value:2}]" req_id=bIQZai_ojs1UMMc2
+time=2025-02-27T23:53:48.995+09:00 level=INFO msg=Conn.ExecContext conn_id=L1snTUaknlmsin8b query="UPDATE todos SET title = ?, status = ? WHERE id = ?" args="[{Name: Ordinal:1 Value:Go shopping} {Name: Ordinal:2 Value:done} {Name: Ordinal:3 Value:2}]" duration=34041 req_id=bIQZai_ojs1UMMc2
+time=2025-02-27T23:53:48.995+09:00 level=INFO msg="updateTodoByID handler ended" req_id=bIQZai_ojs1UMMc2
+time=2025-02-27T23:53:49.001+09:00 level=INFO msg="deleteTodoByID handler started" req_id=VXdUcvpnzmm3ixXp
+time=2025-02-27T23:53:49.001+09:00 level=TRACE msg=Conn.ResetSession conn_id=L1snTUaknlmsin8b duration=334 req_id=VXdUcvpnzmm3ixXp
+time=2025-02-27T23:53:49.001+09:00 level=DEBUG msg=Conn.ExecContext conn_id=L1snTUaknlmsin8b query="DELETE FROM todos WHERE id = ?" args="[{Name: Ordinal:1 Value:1}]" req_id=VXdUcvpnzmm3ixXp
+time=2025-02-27T23:53:49.001+09:00 level=INFO msg=Conn.ExecContext conn_id=L1snTUaknlmsin8b query="DELETE FROM todos WHERE id = ?" args="[{Name: Ordinal:1 Value:1}]" duration=32541 req_id=VXdUcvpnzmm3ixXp
+time=2025-02-27T23:53:49.001+09:00 level=INFO msg="deleteTodoByID handler ended" req_id=VXdUcvpnzmm3ixXp
+time=2025-02-27T23:53:49.007+09:00 level=INFO msg="getTodos handler started" req_id=7LwDvGBRMst7GSQp
+time=2025-02-27T23:53:49.007+09:00 level=TRACE msg=Conn.ResetSession conn_id=L1snTUaknlmsin8b duration=208 req_id=7LwDvGBRMst7GSQp
+time=2025-02-27T23:53:49.007+09:00 level=DEBUG msg=Conn.QueryContext conn_id=L1snTUaknlmsin8b query="SELECT id, title, status FROM todos" args=[] req_id=7LwDvGBRMst7GSQp
+time=2025-02-27T23:53:49.007+09:00 level=INFO msg=Conn.QueryContext conn_id=L1snTUaknlmsin8b query="SELECT id, title, status FROM todos" args=[] duration=45834 req_id=7LwDvGBRMst7GSQp
+time=2025-02-27T23:53:49.007+09:00 level=TRACE msg=Rows.Next conn_id=L1snTUaknlmsin8b
+time=2025-02-27T23:53:49.007+09:00 level=DEBUG msg=Rows.Next conn_id=L1snTUaknlmsin8b duration=12542 eof=false
+time=2025-02-27T23:53:49.007+09:00 level=TRACE msg=Rows.Next conn_id=L1snTUaknlmsin8b
+time=2025-02-27T23:53:49.007+09:00 level=DEBUG msg=Rows.Next conn_id=L1snTUaknlmsin8b duration=3500 eof=false
+time=2025-02-27T23:53:49.007+09:00 level=TRACE msg=Rows.Next conn_id=L1snTUaknlmsin8b
+time=2025-02-27T23:53:49.007+09:00 level=DEBUG msg=Rows.Next conn_id=L1snTUaknlmsin8b duration=3958 eof=true
+time=2025-02-27T23:53:49.007+09:00 level=TRACE msg=Rows.Close conn_id=L1snTUaknlmsin8b
+time=2025-02-27T23:53:49.007+09:00 level=DEBUG msg=Rows.Close conn_id=L1snTUaknlmsin8b duration=1333
+time=2025-02-27T23:53:49.007+09:00 level=INFO msg="getTodos handler ended" req_id=7LwDvGBRMst7GSQp

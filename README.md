@@ -13,9 +13,9 @@ A logger for Go SQL database drivers without modifying existing `*sql.DB` stdlib
 
 ## LOG EXAMPLES
 
-- [mysql](./examples/logs-mysql/results)
-- [postgres](./examples/logs-postgres/results)
 - [sqlite3](./examples/logs-sqlite3/results)
+- [postgres](./examples/logs-postgres/results)
+- [mysql](./examples/logs-mysql/results)
 
 ## FEATURES
 
@@ -57,6 +57,22 @@ The differences are:
 3. `sqlslog.Open` can take a lot of [Option](https://pkg.go.dev/github.com/akm/sql-slog#Option).
 
 See [godoc examples](https://pkg.go.dev/github.com/akm/sql-slog#example-Open) for more details.
+
+## EXAMPLES
+
+### [examples/with-go-requestid](./examples/with-go-requestid/)
+
+An example sql-slog works with [go-requestid](https://github.com/akm/go-requestid).
+You can see DB query log with request ID in same log. See [server-logs.txt](./examples/with-go-requestid/server-logs.txt) and [main.go](./examples/with-go-requestid/main.go) for more details.
+
+An example showing how sql-slog works with [go-requestid](https://github.com/akm/go-requestid).
+You can see DB query logs with request IDs in the same log like the following:
+
+> time=2025-02-27T23:53:48.982+09:00 level=DEBUG msg=Conn.QueryContext conn_id=L1snTUaknlmsin8b query="SELECT id, title, status FROM todos" args=[] req_id=0JKGwDLjw77BjBnf
+
+`conn_id` is a tracking ID for DB connection by sql-slog, and `req_id` is a tracking ID for HTTP request by go-requestid.
+
+See [server-logs.txt](./examples/with-go-requestid/server-logs.txt) and [main.go](./examples/with-go-requestid/main.go) for more details.
 
 ## TEST
 
