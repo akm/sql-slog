@@ -62,9 +62,6 @@ See [godoc examples](https://pkg.go.dev/github.com/akm/sql-slog#example-Open) fo
 
 ### [examples/with-go-requestid](./examples/with-go-requestid/)
 
-An example sql-slog works with [go-requestid](https://github.com/akm/go-requestid).
-You can see DB query log with request ID in same log. See [server-logs.txt](./examples/with-go-requestid/server-logs.txt) and [main.go](./examples/with-go-requestid/main.go) for more details.
-
 An example showing how sql-slog works with [go-requestid](https://github.com/akm/go-requestid).
 You can see DB query logs with request IDs in the same log like the following:
 
