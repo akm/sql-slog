@@ -80,10 +80,14 @@ test-coverage: test-coverage-profile
 	go tool cover -html=$(GO_COVERAGE_PROFILE) -o $(GO_COVERAGE_HTML)
 	@command -v open && open $(GO_COVERAGE_HTML) || echo "open $(GO_COVERAGE_HTML)"
 
+.PHONY: linters-enabled
+linters-enabled:
+	@golangci-lint linters | awk '/^Enabled by your configuration linters:$$/{flag=1;next}/^Disabled by your configuration linters:$$/{flag=0}flag{print}'
+
 METADATA_YAML=.project.yaml
 $(METADATA_YAML): metadata-gen
 
-METADATA_LINTERS=$(shell cat .golangci.yml | yq '... comments="" | .linters.enable | length')
+METADATA_LINTERS=$(strip $(shell $(MAKE) linters-enabled --no-print-directory 2>/dev/null | grep . | wc -l))
 .PHONY: metadata-gen
 metadata-gen: 
 	@echo "linters: $(METADATA_LINTERS)" > $(METADATA_YAML)
