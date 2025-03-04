@@ -10,6 +10,8 @@ GOLANGCI_LINT_CLI_VERSION?=latest
 GOLANGCI_LINT_CLI_MODULE=github.com/golangci/golangci-lint/cmd/golangci-lint
 GOLANGCI_LINT_CLI=$(GOLANG_TOOL_PATH_TO_BIN)/bin/golangci-lint
 $(GOLANGCI_LINT_CLI):
+	$(MAKE) golangci-lint-cli-install
+golangci-lint-cli-install:
 	go install $(GOLANGCI_LINT_CLI_MODULE)@$(GOLANGCI_LINT_CLI_VERSION)
 
 .PHONY: lint
@@ -21,6 +23,8 @@ GODOC_CLI_VERSION=latest
 GODOC_CLI_MODULE=golang.org/x/tools/cmd/godoc
 GODOC_CLI=$(GOLANG_TOOL_PATH_TO_BIN)/bin/godoc
 $(GODOC_CLI):
+	$(MAKE) godoc-cli-install
+godoc-cli-install:
 	go install $(GODOC_CLI_MODULE)@$(GODOC_CLI_VERSION)
 
 .PHONY: godoc
