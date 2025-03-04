@@ -10,6 +10,8 @@ GOLANGCI_LINT_CLI_VERSION?=latest
 GOLANGCI_LINT_CLI_MODULE=github.com/golangci/golangci-lint/cmd/golangci-lint
 GOLANGCI_LINT_CLI=$(GOLANG_TOOL_PATH_TO_BIN)/bin/golangci-lint
 $(GOLANGCI_LINT_CLI):
+	$(MAKE) golangci-lint-cli-install
+golangci-lint-cli-install:
 	go install $(GOLANGCI_LINT_CLI_MODULE)@$(GOLANGCI_LINT_CLI_VERSION)
 
 .PHONY: lint
@@ -21,6 +23,8 @@ GODOC_CLI_VERSION=latest
 GODOC_CLI_MODULE=golang.org/x/tools/cmd/godoc
 GODOC_CLI=$(GOLANG_TOOL_PATH_TO_BIN)/bin/godoc
 $(GODOC_CLI):
+	$(MAKE) godoc-cli-install
+godoc-cli-install:
 	go install $(GODOC_CLI_MODULE)@$(GODOC_CLI_VERSION)
 
 .PHONY: godoc
@@ -76,10 +80,14 @@ test-coverage: test-coverage-profile
 	go tool cover -html=$(GO_COVERAGE_PROFILE) -o $(GO_COVERAGE_HTML)
 	@command -v open && open $(GO_COVERAGE_HTML) || echo "open $(GO_COVERAGE_HTML)"
 
+.PHONY: linters-enabled
+linters-enabled:
+	@golangci-lint linters | awk '/^Enabled by your configuration linters:$$/{flag=1;next}/^Disabled by your configuration linters:$$/{flag=0}flag{print}'
+
 METADATA_YAML=.project.yaml
 $(METADATA_YAML): metadata-gen
 
-METADATA_LINTERS=$(shell cat .golangci.yml | yq '... comments="" | .linters.enable | length')
+METADATA_LINTERS=$(strip $(shell $(MAKE) linters-enabled --no-print-directory 2>/dev/null | grep . | wc -l))
 .PHONY: metadata-gen
 metadata-gen: 
 	@echo "linters: $(METADATA_LINTERS)" > $(METADATA_YAML)
