@@ -9,24 +9,25 @@
 [![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/akm/sql-slog)](./go.mod)
 [![license](https://img.shields.io/github/license/akm/sql-slog)](./LICENSE)
 
-A logger for Go SQL database drivers without modifying existing `*sql.DB` stdlib usage.
+A logger for Go SQL database drivers with [log/slog](https://pkg.go.dev/log/slog) without modifying existing `*sql.DB` stdlib usage.
+
+## FEATURES
+
+- [x] Keep using (or re-use existing) `*sql.DB` as is.
+- [x] No logger adapters. Just use [log/slog](https://pkg.go.dev/log/slog)
+- [x] No dependencies
+- [x] Leveled, detailed, and configurable logging.
+- [x] Duration tracking
+- [x] Trackable log output
+- [x] 100% test coverage
+
+See [godoc](https://pkg.go.dev/github.com/akm/sql-slog) for more details.
 
 ## LOG EXAMPLES
 
 - [sqlite3](./examples/logs-sqlite3/results)
 - [postgres](./examples/logs-postgres/results)
 - [mysql](./examples/logs-mysql/results)
-
-## FEATURES
-
-- Keep using (or re-use existing) `*sql.DB` as is.
-- No logger adapters. Just use [log/slog](https://pkg.go.dev/log/slog)
-- No dependencies except stdlib.
-- Leveled, detailed and configurable logging.
-- Duration
-- Trackable log output
-
-See [godoc](https://pkg.go.dev/github.com/akm/sql-slog) for more details.
 
 ## INSTALL
 
@@ -54,7 +55,7 @@ The differences are:
 
 1. Pass `context.Context` as the first argument.
 2. `*slog.Logger` is returned as the second argument.
-3. `sqlslog.Open` can take a lot of [Option](https://pkg.go.dev/github.com/akm/sql-slog#Option).
+3. `sqlslog.Open` can take a lot of [Option](https://pkg.go.dev/github.com/akm/sql-slog#Option) s.
 
 See [godoc examples](https://pkg.go.dev/github.com/akm/sql-slog#example-Open) for more details.
 
