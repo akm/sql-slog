@@ -9,24 +9,25 @@
 [![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/akm/sql-slog)](./go.mod)
 [![license](https://img.shields.io/github/license/akm/sql-slog)](./LICENSE)
 
-A logger for Go SQL database drivers without modifying existing `*sql.DB` stdlib usage.
+A logger for Go SQL database drivers with [log/slog](https://pkg.go.dev/log/slog) without modifying existing `*sql.DB` stdlib usage.
+
+## FEATURES
+
+- [x] Keep using (or re-use existing) `*sql.DB` as is.
+- [x] No logger adapters. Just use [log/slog](https://pkg.go.dev/log/slog)
+- [x] No dependencies
+- [x] Leveled, detailed and configurable logging.
+- [x] Duration
+- [x] Trackable log output
+- [x] Coverage 100%
+
+See [godoc](https://pkg.go.dev/github.com/akm/sql-slog) for more details.
 
 ## LOG EXAMPLES
 
 - [sqlite3](./examples/logs-sqlite3/results)
 - [postgres](./examples/logs-postgres/results)
 - [mysql](./examples/logs-mysql/results)
-
-## FEATURES
-
-- Keep using (or re-use existing) `*sql.DB` as is.
-- No logger adapters. Just use [log/slog](https://pkg.go.dev/log/slog)
-- No dependencies except stdlib.
-- Leveled, detailed and configurable logging.
-- Duration
-- Trackable log output
-
-See [godoc](https://pkg.go.dev/github.com/akm/sql-slog) for more details.
 
 ## INSTALL
 
