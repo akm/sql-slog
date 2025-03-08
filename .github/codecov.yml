@@ -6,4 +6,4 @@ coverage:
   status:
     project:
       default:   # default is the status check's name, not default settings
-        target: 90%
+        target: 100%
