@@ -16,10 +16,10 @@ A logger for Go SQL database drivers with [log/slog](https://pkg.go.dev/log/slog
 - [x] Keep using (or re-use existing) `*sql.DB` as is.
 - [x] No logger adapters. Just use [log/slog](https://pkg.go.dev/log/slog)
 - [x] No dependencies
-- [x] Leveled, detailed and configurable logging.
-- [x] Duration
+- [x] Leveled, detailed, and configurable logging.
+- [x] Duration tracking
 - [x] Trackable log output
-- [x] Coverage 100%
+- [x] 100% test coverage
 
 See [godoc](https://pkg.go.dev/github.com/akm/sql-slog) for more details.
 
@@ -55,7 +55,7 @@ The differences are:
 
 1. Pass `context.Context` as the first argument.
 2. `*slog.Logger` is returned as the second argument.
-3. `sqlslog.Open` can take a lot of [Option](https://pkg.go.dev/github.com/akm/sql-slog#Option).
+3. `sqlslog.Open` can take a lot of [Option](https://pkg.go.dev/github.com/akm/sql-slog#Option) s.
 
 See [godoc examples](https://pkg.go.dev/github.com/akm/sql-slog#example-Open) for more details.
 
