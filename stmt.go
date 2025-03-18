@@ -64,13 +64,12 @@ func wrapStmt(original driver.Stmt, logger *stepLogger, options *stmtOptions) dr
 	// 		stmtQueryContextWrapperImpl: stmtQueryContextWrapperImpl{original: stmtQuery, logger: logger},
 	// 	}
 	// }
-
-	if nvc, ok := original.(driver.NamedValueChecker); ok {
-		return &stmtNvcWrapper{
-			stmtWrapper:       stmtWrapper,
-			NamedValueChecker: nvc,
-		}
-	}
+	// if nvc, ok := original.(driver.NamedValueChecker); ok {
+	// 	return &stmtNvcWrapper{
+	// 		stmtWrapper:       stmtWrapper,
+	// 		NamedValueChecker: nvc,
+	// 	}
+	// }
 	return &stmtWrapper
 }
 
