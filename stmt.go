@@ -37,11 +37,18 @@ func wrapStmt(original driver.Stmt, logger *stepLogger, options *stmtOptions) dr
 	stmtExec, withExecContext := original.(driver.StmtExecContext)
 	stmtQuery, withQueryContext := original.(driver.StmtQueryContext)
 	if withExecContext && withQueryContext {
-		return &stmtContextWrapper{
+		stmtCtxW := &stmtContextWrapper{
 			stmtWrapper:                 stmtWrapper,
 			stmtExecContextWrapperImpl:  stmtExecContextWrapperImpl{original: stmtExec, logger: logger, options: options},
 			stmtQueryContextWrapperImpl: stmtQueryContextWrapperImpl{original: stmtQuery, logger: logger, options: options},
 		}
+		if nvc, ok := original.(driver.NamedValueChecker); ok {
+			return &stmtContextNvcWrapper{
+				stmtContextWrapper: *stmtCtxW,
+				NamedValueChecker:  nvc,
+			}
+		}
+		return stmtCtxW
 	}
 	// Commented out because the original implementation does not have this check.
 	//
@@ -57,6 +64,13 @@ func wrapStmt(original driver.Stmt, logger *stepLogger, options *stmtOptions) dr
 	// 		stmtQueryContextWrapperImpl: stmtQueryContextWrapperImpl{original: stmtQuery, logger: logger},
 	// 	}
 	// }
+
+	if nvc, ok := original.(driver.NamedValueChecker); ok {
+		return &stmtNvcWrapper{
+			stmtWrapper:       stmtWrapper,
+			NamedValueChecker: nvc,
+		}
+	}
 	return &stmtWrapper
 }
 
@@ -184,4 +198,50 @@ var (
 	_ driver.Stmt             = (*stmtContextWrapper)(nil)
 	_ driver.StmtExecContext  = (*stmtContextWrapper)(nil)
 	_ driver.StmtQueryContext = (*stmtContextWrapper)(nil)
+)
+
+// With driver.NamedValueChecker
+
+type stmtNvcWrapper struct {
+	stmtWrapper
+	driver.NamedValueChecker
+}
+
+var (
+	_ driver.Stmt              = (*stmtNvcWrapper)(nil)
+	_ driver.NamedValueChecker = (*stmtNvcWrapper)(nil)
+)
+
+type stmtExecContextNvcWrapper struct {
+	stmtExecContextWrapper
+	driver.NamedValueChecker
+}
+
+var (
+	_ driver.Stmt              = (*stmtExecContextNvcWrapper)(nil)
+	_ driver.StmtExecContext   = (*stmtExecContextNvcWrapper)(nil)
+	_ driver.NamedValueChecker = (*stmtExecContextNvcWrapper)(nil)
+)
+
+type stmtQueryContextNvcWrapper struct {
+	stmtQueryContextWrapper
+	driver.NamedValueChecker
+}
+
+var (
+	_ driver.Stmt              = (*stmtQueryContextNvcWrapper)(nil)
+	_ driver.StmtQueryContext  = (*stmtQueryContextNvcWrapper)(nil)
+	_ driver.NamedValueChecker = (*stmtQueryContextNvcWrapper)(nil)
+)
+
+type stmtContextNvcWrapper struct {
+	stmtContextWrapper
+	driver.NamedValueChecker
+}
+
+var (
+	_ driver.Stmt              = (*stmtContextNvcWrapper)(nil)
+	_ driver.StmtExecContext   = (*stmtContextNvcWrapper)(nil)
+	_ driver.StmtQueryContext  = (*stmtContextNvcWrapper)(nil)
+	_ driver.NamedValueChecker = (*stmtContextNvcWrapper)(nil)
 )
