@@ -7,6 +7,7 @@ import (
 	"log"
 	"reflect"
 
+	sqlslog "github.com/akm/sql-slog"
 	_ "modernc.org/sqlite"
 
 	"tutorial.sqlc.dev/app/tutorial"
@@ -18,7 +19,7 @@ var ddl string
 func run() error {
 	ctx := context.Background()
 
-	db, err := sql.Open("sqlite", ":memory:")
+	db, _, err := sqlslog.Open(ctx, "sqlite", ":memory:")
 	if err != nil {
 		return err
 	}
