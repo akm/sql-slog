@@ -15,3 +15,5 @@ require (
 	modernc.org/memory v1.8.2 // indirect
 	modernc.org/sqlite v1.36.1 // indirect
 )
+
+replace github.com/akm/sql-slog => ../..
