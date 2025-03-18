@@ -71,7 +71,11 @@ func wrapConn(original driver.Conn, logger *stepLogger, options *connOptions) dr
 
 	connWrapper := connWrapper{original: original, logger: logger, options: options}
 	if cwc, ok := original.(connWithContext); ok {
-		return &connWithContextWrapper{connWrapper, cwc}
+		connWithContextWrapper := &connWithContextWrapper{connWrapper, cwc}
+		if nvc, ok := original.(driver.NamedValueChecker); ok {
+			return &connNvcWithContextWrapper{*connWithContextWrapper, nvc}
+		}
+		return connWithContextWrapper
 	}
 
 	// Commented out because it's not used.
@@ -108,11 +112,6 @@ var (
 	_ driver.Conn      = (*connWrapper)(nil)
 	_ driver.Validator = (*connWrapper)(nil)
 )
-
-// To support custom data types, implement NamedValueChecker.
-// NamedValueChecker also allows queries to accept per-query
-// options as a parameter by returning ErrRemoveArgument from CheckNamedValue.
-var _ driver.NamedValueChecker = (*connWrapper)(nil)
 
 // Begin implements driver.Conn.
 func (c *connWrapper) Begin() (driver.Tx, error) {
@@ -170,14 +169,6 @@ func (c *connWrapper) IsValid() bool {
 		return v.IsValid()
 	}
 	return true
-}
-
-// CheckNamedValue implements driver.NamedValueChecker.
-func (c *connWrapper) CheckNamedValue(namedValue *driver.NamedValue) error {
-	if v, ok := c.original.(driver.NamedValueChecker); ok {
-		return v.CheckNamedValue(namedValue)
-	}
-	return nil
 }
 
 type connWithContext interface {
@@ -349,3 +340,23 @@ func ConnQueryContextErrorHandler(driverName string) func(err error) (bool, []sl
 		return nil
 	}
 }
+
+type connNvcWrapper struct {
+	connWrapper
+	driver.NamedValueChecker
+}
+
+var (
+	_ driver.Conn              = (*connNvcWrapper)(nil)
+	_ driver.NamedValueChecker = (*connNvcWrapper)(nil)
+)
+
+type connNvcWithContextWrapper struct {
+	connWithContextWrapper
+	driver.NamedValueChecker
+}
+
+var (
+	_ driver.Conn              = (*connNvcWithContextWrapper)(nil)
+	_ driver.NamedValueChecker = (*connNvcWithContextWrapper)(nil)
+)
