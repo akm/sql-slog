@@ -61,6 +61,44 @@ See [godoc examples](https://pkg.go.dev/github.com/akm/sql-slog#example-Open) fo
 
 ## EXAMPLES
 
+### [examples/with-sqlc](./examples/with-sqlc/)
+
+An example showing how sql-slog works with [sqlc](https://sqlc.dev/).
+This example is almost same as [Getting started with SQLite](https://docs.sqlc.dev/en/latest/tutorials/getting-started-sqlite.html) but uses [sqlslog.Open](https://pkg.go.dev/github.com/akm/sql-slog#Open) instead of [sql.Open](https://pkg.go.dev/database/sql#Open).
+
+<details><summary> Stdout with sqlslog package </summary>
+
+```
+$ make -C examples/with-sqlc run
+go build ./...
+go run .
+time=2025-03-19T21:23:36.992+09:00 level=INFO msg=Open driver=sqlite dsn=:memory: duration=22083
+time=2025-03-19T21:23:36.992+09:00 level=INFO msg=Driver.Open dsn=:memory: duration=274042 conn_id=_hMZDi7TQfEgBKN_
+time=2025-03-19T21:23:36.992+09:00 level=INFO msg=Connector.Connect duration=294292
+time=2025-03-19T21:23:36.993+09:00 level=INFO msg=Conn.ExecContext conn_id=_hMZDi7TQfEgBKN_ query="CREATE TABLE authors (\n  id   INTEGER PRIMARY KEY,\n  name text    NOT NULL,\n  bio  text\n);\n" args=[] duration=537125
+time=2025-03-19T21:23:36.993+09:00 level=INFO msg=Conn.QueryContext conn_id=_hMZDi7TQfEgBKN_ query="-- name: ListAuthors :many\nSELECT id, name, bio FROM authors\nORDER BY name\n" args=[] duration=23250
+2025/03/19 21:23:36 []
+time=2025-03-19T21:23:36.993+09:00 level=INFO msg=Conn.QueryContext conn_id=_hMZDi7TQfEgBKN_ query="-- name: CreateAuthor :one\nINSERT INTO authors (\n  name, bio\n) VALUES (\n  ?, ?\n)\nRETURNING id, name, bio\n" args="[{Name: Ordinal:1 Value:Brian Kernighan} {Name: Ordinal:2 Value:Co-author of The C Programming Language and The Go Programming Language}]" duration=20375
+2025/03/19 21:23:36 {1 Brian Kernighan {Co-author of The C Programming Language and The Go Programming Language true}}
+time=2025-03-19T21:23:36.993+09:00 level=INFO msg=Conn.QueryContext conn_id=_hMZDi7TQfEgBKN_ query="-- name: GetAuthor :one\nSELECT id, name, bio FROM authors\nWHERE id = ? LIMIT 1\n" args="[{Name: Ordinal:1 Value:1}]" duration=8083
+2025/03/19 21:23:36 true
+```
+
+</details>
+
+<details><summary> Stdout without sqlslog package </summary>
+
+```
+$ SKIP_SQLSLOG=1 make -C examples/with-sqlc run
+go build ./...
+go run .
+2025/03/19 21:23:19 []
+2025/03/19 21:23:19 {1 Brian Kernighan {Co-author of The C Programming Language and The Go Programming Language true}}
+2025/03/19 21:23:19 true
+```
+
+</details>
+
 ### [examples/with-go-requestid](./examples/with-go-requestid/)
 
 An example showing how sql-slog works with [go-requestid](https://github.com/akm/go-requestid).
