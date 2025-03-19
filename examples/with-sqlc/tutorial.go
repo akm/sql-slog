@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	_ "embed"
 	"log"
+	"os"
 	"reflect"
 
 	sqlslog "github.com/akm/sql-slog"
@@ -19,7 +20,13 @@ var ddl string
 func run() error {
 	ctx := context.Background()
 
-	db, _, err := sqlslog.Open(ctx, "sqlite", ":memory:")
+	var db *sql.DB
+	var err error
+	if os.Getenv("SKIP_SQLSLOG") != "" {
+		db, err = sql.Open("sqlite", ":memory:")
+	} else {
+		db, _, err = sqlslog.Open(ctx, "sqlite", ":memory:")
+	}
 	if err != nil {
 		return err
 	}
