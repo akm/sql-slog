@@ -44,6 +44,13 @@ func TestWrapConn(t *testing.T) {
 		if conn == nil {
 			t.Fatal("Expected non-nil")
 		}
+
+		t.Run("skip wrapped driver.Conn object", func(t *testing.T) {
+			res := wrapConn(conn, logger, connOptions)
+			if res != conn {
+				t.Fatal("Expected same object")
+			}
+		})
 	})
 }
 
