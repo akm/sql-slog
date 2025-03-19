@@ -65,17 +65,24 @@ func wrapConn(original driver.Conn, logger *stepLogger, options *connOptions) dr
 	if original == nil {
 		return nil
 	}
-	if _, ok := original.(*connWithContextWrapper); ok {
+	switch original.(type) {
+	case *connWrapper:
+		return original
+	// case *connNvcWrapper:
+	// 	return original
+	case *connWithContextWrapper:
+		return original
+	case *connNvcWithContextWrapper:
 		return original
 	}
 
 	connWrapper := connWrapper{original: original, logger: logger, options: options}
 	if cwc, ok := original.(connWithContext); ok {
-		connWithContextWrapper := &connWithContextWrapper{connWrapper, cwc}
+		connWrapper2 := connWithContextWrapper{connWrapper, cwc}
 		if nvc, ok := original.(driver.NamedValueChecker); ok {
-			return &connNvcWithContextWrapper{*connWithContextWrapper, nvc}
+			return &connNvcWithContextWrapper{connWrapper2, nvc}
 		}
-		return connWithContextWrapper
+		return &connWrapper2
 	}
 
 	// Commented out because it's not used.
