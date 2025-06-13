@@ -5,7 +5,7 @@ go 1.23.2
 require (
 	github.com/akm/sql-slog v0.1.3
 	github.com/akm/sql-slog/tests/testhelper v0.0.0-00010101000000-000000000000
-	github.com/go-sql-driver/mysql v1.9.2
+	github.com/go-sql-driver/mysql v1.9.3
 	github.com/stretchr/testify v1.10.0
 )
 
