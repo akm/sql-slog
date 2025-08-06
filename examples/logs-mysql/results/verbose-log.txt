@@ -1,81 +1,81 @@
-time=2025-02-19T08:25:14.804+09:00 level=DEBUG msg=Open driver=mysql dsn=root@tcp(localhost:3306)/app1
-time=2025-02-19T08:25:14.805+09:00 level=DEBUG msg=Driver.OpenConnector dsn=root@tcp(localhost:3306)/app1
-time=2025-02-19T08:25:14.805+09:00 level=INFO msg=Driver.OpenConnector dsn=root@tcp(localhost:3306)/app1 duration=3250 conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:14.805+09:00 level=INFO msg=Open driver=mysql dsn=root@tcp(localhost:3306)/app1 duration=185541
-time=2025-02-19T08:25:14.805+09:00 level=DEBUG msg=Connector.Connect
-time=2025-02-19T08:25:14.805+09:00 level=DEBUG msg=Connector.Connect conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:14.808+09:00 level=ERROR msg=Connector.Connect conn_id=SU8sW4BPEzVZjdTJ duration=3073750 error="driver: bad connection"
-time=2025-02-19T08:25:14.808+09:00 level=ERROR msg=Connector.Connect duration=3108791 error="driver: bad connection"
-time=2025-02-19T08:25:14.808+09:00 level=DEBUG msg=Connector.Connect
-time=2025-02-19T08:25:14.808+09:00 level=DEBUG msg=Connector.Connect conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:14.808+09:00 level=ERROR msg=Connector.Connect conn_id=SU8sW4BPEzVZjdTJ duration=542333 error="driver: bad connection"
-time=2025-02-19T08:25:14.808+09:00 level=ERROR msg=Connector.Connect duration=559166 error="driver: bad connection"
-time=2025-02-19T08:25:14.808+09:00 level=DEBUG msg=Connector.Connect
-time=2025-02-19T08:25:14.808+09:00 level=DEBUG msg=Connector.Connect conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:14.809+09:00 level=ERROR msg=Connector.Connect conn_id=SU8sW4BPEzVZjdTJ duration=497000 error="driver: bad connection"
-time=2025-02-19T08:25:14.809+09:00 level=ERROR msg=Connector.Connect duration=507250 error="driver: bad connection"
-time=2025-02-19T08:25:16.810+09:00 level=DEBUG msg=Connector.Connect
-time=2025-02-19T08:25:16.810+09:00 level=DEBUG msg=Connector.Connect conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:16.813+09:00 level=ERROR msg=Connector.Connect conn_id=SU8sW4BPEzVZjdTJ duration=2465250 error="driver: bad connection"
-time=2025-02-19T08:25:16.813+09:00 level=ERROR msg=Connector.Connect duration=2670667 error="driver: bad connection"
-time=2025-02-19T08:25:16.813+09:00 level=DEBUG msg=Connector.Connect
-time=2025-02-19T08:25:16.813+09:00 level=DEBUG msg=Connector.Connect conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:16.814+09:00 level=ERROR msg=Connector.Connect conn_id=SU8sW4BPEzVZjdTJ duration=1436375 error="driver: bad connection"
-time=2025-02-19T08:25:16.815+09:00 level=ERROR msg=Connector.Connect duration=1563333 error="driver: bad connection"
-time=2025-02-19T08:25:16.815+09:00 level=DEBUG msg=Connector.Connect
-time=2025-02-19T08:25:16.815+09:00 level=DEBUG msg=Connector.Connect conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:16.815+09:00 level=ERROR msg=Connector.Connect conn_id=SU8sW4BPEzVZjdTJ duration=900250 error="driver: bad connection"
-time=2025-02-19T08:25:16.816+09:00 level=ERROR msg=Connector.Connect duration=978042 error="driver: bad connection"
-time=2025-02-19T08:25:18.817+09:00 level=DEBUG msg=Connector.Connect
-time=2025-02-19T08:25:18.817+09:00 level=DEBUG msg=Connector.Connect conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:18.819+09:00 level=ERROR msg=Connector.Connect conn_id=SU8sW4BPEzVZjdTJ duration=2300125 error="driver: bad connection"
-time=2025-02-19T08:25:18.819+09:00 level=ERROR msg=Connector.Connect duration=2415375 error="driver: bad connection"
-time=2025-02-19T08:25:18.819+09:00 level=DEBUG msg=Connector.Connect
-time=2025-02-19T08:25:18.819+09:00 level=DEBUG msg=Connector.Connect conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:18.820+09:00 level=ERROR msg=Connector.Connect conn_id=SU8sW4BPEzVZjdTJ duration=1187042 error="driver: bad connection"
-time=2025-02-19T08:25:18.821+09:00 level=ERROR msg=Connector.Connect duration=1267417 error="driver: bad connection"
-time=2025-02-19T08:25:18.821+09:00 level=DEBUG msg=Connector.Connect
-time=2025-02-19T08:25:18.821+09:00 level=DEBUG msg=Connector.Connect conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:18.822+09:00 level=ERROR msg=Connector.Connect conn_id=SU8sW4BPEzVZjdTJ duration=1109000 error="driver: bad connection"
-time=2025-02-19T08:25:18.822+09:00 level=ERROR msg=Connector.Connect duration=1237666 error="driver: bad connection"
-time=2025-02-19T08:25:20.823+09:00 level=DEBUG msg=Connector.Connect
-time=2025-02-19T08:25:20.823+09:00 level=DEBUG msg=Connector.Connect conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:20.827+09:00 level=INFO msg=Connector.Connect conn_id=SU8sW4BPEzVZjdTJ duration=4345958
-time=2025-02-19T08:25:20.827+09:00 level=INFO msg=Connector.Connect duration=4394167
-time=2025-02-19T08:25:20.827+09:00 level=VERBOSE msg=Conn.Ping conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:20.828+09:00 level=TRACE msg=Conn.Ping conn_id=SU8sW4BPEzVZjdTJ duration=461959
-time=2025-02-19T08:25:20.828+09:00 level=VERBOSE msg=Conn.ResetSession conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:20.828+09:00 level=TRACE msg=Conn.ResetSession conn_id=SU8sW4BPEzVZjdTJ duration=3250
-time=2025-02-19T08:25:20.828+09:00 level=DEBUG msg=Conn.ExecContext conn_id=SU8sW4BPEzVZjdTJ query="CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))" args=[]
-time=2025-02-19T08:25:20.842+09:00 level=INFO msg=Conn.ExecContext conn_id=SU8sW4BPEzVZjdTJ query="CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))" args=[] duration=13984875
-time=2025-02-19T08:25:20.842+09:00 level=VERBOSE msg=Conn.ResetSession conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:20.842+09:00 level=TRACE msg=Conn.ResetSession conn_id=SU8sW4BPEzVZjdTJ duration=1500
-time=2025-02-19T08:25:20.842+09:00 level=VERBOSE msg=Conn.Ping conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:20.842+09:00 level=TRACE msg=Conn.Ping conn_id=SU8sW4BPEzVZjdTJ duration=439083
-time=2025-02-19T08:25:20.842+09:00 level=VERBOSE msg=Conn.ResetSession conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:20.842+09:00 level=TRACE msg=Conn.ResetSession conn_id=SU8sW4BPEzVZjdTJ duration=1208
-time=2025-02-19T08:25:20.842+09:00 level=DEBUG msg=Conn.BeginTx conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:20.843+09:00 level=INFO msg=Conn.BeginTx conn_id=SU8sW4BPEzVZjdTJ duration=424916 tx_id=dIFS6F1jIefQfKX7
-time=2025-02-19T08:25:20.843+09:00 level=DEBUG msg=Conn.ExecContext conn_id=SU8sW4BPEzVZjdTJ query="INSERT INTO test1 (id, name) VALUES (?, ?)" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]"
-time=2025-02-19T08:25:20.843+09:00 level=INFO msg=Conn.ExecContext conn_id=SU8sW4BPEzVZjdTJ query="INSERT INTO test1 (id, name) VALUES (?, ?)" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=459 skip=true
-time=2025-02-19T08:25:20.843+09:00 level=DEBUG msg=Conn.PrepareContext conn_id=SU8sW4BPEzVZjdTJ query="INSERT INTO test1 (id, name) VALUES (?, ?)"
-time=2025-02-19T08:25:20.845+09:00 level=INFO msg=Conn.PrepareContext conn_id=SU8sW4BPEzVZjdTJ query="INSERT INTO test1 (id, name) VALUES (?, ?)" duration=2325417 stmt_id=QINlqBJWBcghK4E1
-time=2025-02-19T08:25:20.845+09:00 level=DEBUG msg=Stmt.ExecContext conn_id=SU8sW4BPEzVZjdTJ stmt_id=QINlqBJWBcghK4E1 args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]"
-time=2025-02-19T08:25:20.846+09:00 level=INFO msg=Stmt.ExecContext conn_id=SU8sW4BPEzVZjdTJ stmt_id=QINlqBJWBcghK4E1 args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=503416
-time=2025-02-19T08:25:20.846+09:00 level=DEBUG msg=Stmt.Close conn_id=SU8sW4BPEzVZjdTJ stmt_id=QINlqBJWBcghK4E1
-time=2025-02-19T08:25:20.846+09:00 level=INFO msg=Stmt.Close conn_id=SU8sW4BPEzVZjdTJ stmt_id=QINlqBJWBcghK4E1 duration=7500
-time=2025-02-19T08:25:20.846+09:00 level=DEBUG msg=Tx.Commit conn_id=SU8sW4BPEzVZjdTJ tx_id=dIFS6F1jIefQfKX7
-time=2025-02-19T08:25:20.847+09:00 level=INFO msg=Tx.Commit conn_id=SU8sW4BPEzVZjdTJ tx_id=dIFS6F1jIefQfKX7 duration=1531459
-time=2025-02-19T08:25:20.847+09:00 level=VERBOSE msg=Conn.ResetSession conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:20.847+09:00 level=TRACE msg=Conn.ResetSession conn_id=SU8sW4BPEzVZjdTJ duration=1416
-time=2025-02-19T08:25:20.847+09:00 level=TRACE msg=Conn.QueryContext conn_id=SU8sW4BPEzVZjdTJ query="SELECT * FROM test1" args=[]
-time=2025-02-19T08:25:20.848+09:00 level=DEBUG msg=Conn.QueryContext conn_id=SU8sW4BPEzVZjdTJ query="SELECT * FROM test1" args=[] duration=552500
-time=2025-02-19T08:25:20.848+09:00 level=TRACE msg=Rows.Next conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:20.848+09:00 level=DEBUG msg=Rows.Next conn_id=SU8sW4BPEzVZjdTJ duration=19875 eof=false
-time=2025-02-19T08:25:20.848+09:00 level=INFO msg=Record id=1 name=Alice
-time=2025-02-19T08:25:20.848+09:00 level=TRACE msg=Rows.Next conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:20.848+09:00 level=DEBUG msg=Rows.Next conn_id=SU8sW4BPEzVZjdTJ duration=250 eof=true
-time=2025-02-19T08:25:20.848+09:00 level=TRACE msg=Rows.Close conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:20.848+09:00 level=DEBUG msg=Rows.Close conn_id=SU8sW4BPEzVZjdTJ duration=333
-time=2025-02-19T08:25:20.848+09:00 level=DEBUG msg=Conn.Close conn_id=SU8sW4BPEzVZjdTJ
-time=2025-02-19T08:25:20.848+09:00 level=INFO msg=Conn.Close conn_id=SU8sW4BPEzVZjdTJ duration=20125
+time=2025-08-06T23:24:33.949+09:00 level=TRACE msg=Open driver=mysql dsn=root@tcp(localhost:3306)/app1
+time=2025-08-06T23:24:33.949+09:00 level=TRACE msg=Driver.OpenConnector dsn=root@tcp(localhost:3306)/app1
+time=2025-08-06T23:24:33.949+09:00 level=INFO msg=Driver.OpenConnector dsn=root@tcp(localhost:3306)/app1 duration=1792 conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:33.949+09:00 level=INFO msg=Open driver=mysql dsn=root@tcp(localhost:3306)/app1 duration=42583
+time=2025-08-06T23:24:33.949+09:00 level=TRACE msg=Connector.Connect
+time=2025-08-06T23:24:33.949+09:00 level=TRACE msg=Connector.Connect conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:33.952+09:00 level=ERROR msg=Connector.Connect conn_id=4a8TXRbcAWVHSvua duration=2480125 error="driver: bad connection"
+time=2025-08-06T23:24:33.952+09:00 level=ERROR msg=Connector.Connect duration=2506625 error="driver: bad connection"
+time=2025-08-06T23:24:33.952+09:00 level=TRACE msg=Connector.Connect
+time=2025-08-06T23:24:33.952+09:00 level=TRACE msg=Connector.Connect conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:33.952+09:00 level=ERROR msg=Connector.Connect conn_id=4a8TXRbcAWVHSvua duration=563084 error="driver: bad connection"
+time=2025-08-06T23:24:33.952+09:00 level=ERROR msg=Connector.Connect duration=582000 error="driver: bad connection"
+time=2025-08-06T23:24:33.952+09:00 level=TRACE msg=Connector.Connect
+time=2025-08-06T23:24:33.952+09:00 level=TRACE msg=Connector.Connect conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:33.953+09:00 level=ERROR msg=Connector.Connect conn_id=4a8TXRbcAWVHSvua duration=513250 error="driver: bad connection"
+time=2025-08-06T23:24:33.953+09:00 level=ERROR msg=Connector.Connect duration=540334 error="driver: bad connection"
+time=2025-08-06T23:24:35.954+09:00 level=TRACE msg=Connector.Connect
+time=2025-08-06T23:24:35.954+09:00 level=TRACE msg=Connector.Connect conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:35.955+09:00 level=ERROR msg=Connector.Connect conn_id=4a8TXRbcAWVHSvua duration=922667 error="driver: bad connection"
+time=2025-08-06T23:24:35.955+09:00 level=ERROR msg=Connector.Connect duration=1008291 error="driver: bad connection"
+time=2025-08-06T23:24:35.955+09:00 level=TRACE msg=Connector.Connect
+time=2025-08-06T23:24:35.955+09:00 level=TRACE msg=Connector.Connect conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:35.956+09:00 level=ERROR msg=Connector.Connect conn_id=4a8TXRbcAWVHSvua duration=707417 error="driver: bad connection"
+time=2025-08-06T23:24:35.956+09:00 level=ERROR msg=Connector.Connect duration=752917 error="driver: bad connection"
+time=2025-08-06T23:24:35.956+09:00 level=TRACE msg=Connector.Connect
+time=2025-08-06T23:24:35.956+09:00 level=TRACE msg=Connector.Connect conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:35.956+09:00 level=ERROR msg=Connector.Connect conn_id=4a8TXRbcAWVHSvua duration=480584 error="driver: bad connection"
+time=2025-08-06T23:24:35.956+09:00 level=ERROR msg=Connector.Connect duration=521292 error="driver: bad connection"
+time=2025-08-06T23:24:37.957+09:00 level=TRACE msg=Connector.Connect
+time=2025-08-06T23:24:37.957+09:00 level=TRACE msg=Connector.Connect conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:37.960+09:00 level=ERROR msg=Connector.Connect conn_id=4a8TXRbcAWVHSvua duration=2992167 error="driver: bad connection"
+time=2025-08-06T23:24:37.960+09:00 level=ERROR msg=Connector.Connect duration=3058083 error="driver: bad connection"
+time=2025-08-06T23:24:37.960+09:00 level=TRACE msg=Connector.Connect
+time=2025-08-06T23:24:37.960+09:00 level=TRACE msg=Connector.Connect conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:37.961+09:00 level=ERROR msg=Connector.Connect conn_id=4a8TXRbcAWVHSvua duration=1053416 error="driver: bad connection"
+time=2025-08-06T23:24:37.961+09:00 level=ERROR msg=Connector.Connect duration=1084000 error="driver: bad connection"
+time=2025-08-06T23:24:37.961+09:00 level=TRACE msg=Connector.Connect
+time=2025-08-06T23:24:37.961+09:00 level=TRACE msg=Connector.Connect conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:37.962+09:00 level=ERROR msg=Connector.Connect conn_id=4a8TXRbcAWVHSvua duration=466333 error="driver: bad connection"
+time=2025-08-06T23:24:37.962+09:00 level=ERROR msg=Connector.Connect duration=485625 error="driver: bad connection"
+time=2025-08-06T23:24:39.963+09:00 level=TRACE msg=Connector.Connect
+time=2025-08-06T23:24:39.963+09:00 level=TRACE msg=Connector.Connect conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:39.966+09:00 level=INFO msg=Connector.Connect conn_id=4a8TXRbcAWVHSvua duration=3371958
+time=2025-08-06T23:24:39.966+09:00 level=INFO msg=Connector.Connect duration=3437125
+time=2025-08-06T23:24:39.966+09:00 level=VERBOSE msg=Conn.Ping conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:39.967+09:00 level=TRACE msg=Conn.Ping conn_id=4a8TXRbcAWVHSvua duration=332417
+time=2025-08-06T23:24:39.967+09:00 level=VERBOSE msg=Conn.ResetSession conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:39.967+09:00 level=TRACE msg=Conn.ResetSession conn_id=4a8TXRbcAWVHSvua duration=3084
+time=2025-08-06T23:24:39.967+09:00 level=TRACE msg=Conn.ExecContext conn_id=4a8TXRbcAWVHSvua query="CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))" args=[]
+time=2025-08-06T23:24:39.983+09:00 level=INFO msg=Conn.ExecContext conn_id=4a8TXRbcAWVHSvua query="CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))" args=[] duration=16739166
+time=2025-08-06T23:24:39.983+09:00 level=VERBOSE msg=Conn.ResetSession conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:39.983+09:00 level=TRACE msg=Conn.ResetSession conn_id=4a8TXRbcAWVHSvua duration=2541
+time=2025-08-06T23:24:39.983+09:00 level=VERBOSE msg=Conn.Ping conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:39.984+09:00 level=TRACE msg=Conn.Ping conn_id=4a8TXRbcAWVHSvua duration=339666
+time=2025-08-06T23:24:39.984+09:00 level=VERBOSE msg=Conn.ResetSession conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:39.984+09:00 level=TRACE msg=Conn.ResetSession conn_id=4a8TXRbcAWVHSvua duration=1709
+time=2025-08-06T23:24:39.984+09:00 level=TRACE msg=Conn.BeginTx conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:39.984+09:00 level=INFO msg=Conn.BeginTx conn_id=4a8TXRbcAWVHSvua duration=345834 tx_id=XBXE_cuLi29Uelvm
+time=2025-08-06T23:24:39.984+09:00 level=TRACE msg=Conn.ExecContext conn_id=4a8TXRbcAWVHSvua query="INSERT INTO test1 (id, name) VALUES (?, ?)" args="[1,\"Alice\"]"
+time=2025-08-06T23:24:39.984+09:00 level=INFO msg=Conn.ExecContext conn_id=4a8TXRbcAWVHSvua query="INSERT INTO test1 (id, name) VALUES (?, ?)" args="[1,\"Alice\"]" duration=750 skip=true
+time=2025-08-06T23:24:39.984+09:00 level=VERBOSE msg=Conn.PrepareContext conn_id=4a8TXRbcAWVHSvua query="INSERT INTO test1 (id, name) VALUES (?, ?)"
+time=2025-08-06T23:24:39.989+09:00 level=TRACE msg=Conn.PrepareContext conn_id=4a8TXRbcAWVHSvua query="INSERT INTO test1 (id, name) VALUES (?, ?)" duration=5120166 stmt_id=k5sjvbiyBnPBBGl7
+time=2025-08-06T23:24:39.989+09:00 level=VERBOSE msg=Stmt.ExecContext conn_id=4a8TXRbcAWVHSvua stmt_id=k5sjvbiyBnPBBGl7 args="[1,\"Alice\"]"
+time=2025-08-06T23:24:39.990+09:00 level=DEBUG msg=Stmt.ExecContext conn_id=4a8TXRbcAWVHSvua stmt_id=k5sjvbiyBnPBBGl7 args="[1,\"Alice\"]" duration=339000
+time=2025-08-06T23:24:39.990+09:00 level=VERBOSE msg=Stmt.Close conn_id=4a8TXRbcAWVHSvua stmt_id=k5sjvbiyBnPBBGl7
+time=2025-08-06T23:24:39.990+09:00 level=DEBUG msg=Stmt.Close conn_id=4a8TXRbcAWVHSvua stmt_id=k5sjvbiyBnPBBGl7 duration=5709
+time=2025-08-06T23:24:39.990+09:00 level=TRACE msg=Tx.Commit conn_id=4a8TXRbcAWVHSvua tx_id=XBXE_cuLi29Uelvm
+time=2025-08-06T23:24:39.991+09:00 level=INFO msg=Tx.Commit conn_id=4a8TXRbcAWVHSvua tx_id=XBXE_cuLi29Uelvm duration=1433625
+time=2025-08-06T23:24:39.991+09:00 level=VERBOSE msg=Conn.ResetSession conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:39.991+09:00 level=TRACE msg=Conn.ResetSession conn_id=4a8TXRbcAWVHSvua duration=2792
+time=2025-08-06T23:24:39.991+09:00 level=TRACE msg=Conn.QueryContext conn_id=4a8TXRbcAWVHSvua query="SELECT * FROM test1" args=[]
+time=2025-08-06T23:24:39.992+09:00 level=DEBUG msg=Conn.QueryContext conn_id=4a8TXRbcAWVHSvua query="SELECT * FROM test1" args=[] duration=364875
+time=2025-08-06T23:24:39.992+09:00 level=VERBOSE msg=Rows.Next conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:39.992+09:00 level=DEBUG msg=Rows.Next conn_id=4a8TXRbcAWVHSvua duration=2458 eof=false
+time=2025-08-06T23:24:39.992+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-08-06T23:24:39.992+09:00 level=VERBOSE msg=Rows.Next conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:39.992+09:00 level=DEBUG msg=Rows.Next conn_id=4a8TXRbcAWVHSvua duration=208 eof=true
+time=2025-08-06T23:24:39.992+09:00 level=VERBOSE msg=Rows.Close conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:39.992+09:00 level=DEBUG msg=Rows.Close conn_id=4a8TXRbcAWVHSvua duration=208
+time=2025-08-06T23:24:39.992+09:00 level=TRACE msg=Conn.Close conn_id=4a8TXRbcAWVHSvua
+time=2025-08-06T23:24:39.992+09:00 level=INFO msg=Conn.Close conn_id=4a8TXRbcAWVHSvua duration=26541

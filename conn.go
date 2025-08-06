@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql/driver"
 	"errors"
-	"fmt"
 	"log/slog"
 )
 
@@ -47,7 +46,7 @@ func defaultConnOptions(driverName string, msgb StepEventMsgBuilder) *connOption
 		Close: *defaultStepOptions(msgb, StepConnClose, LevelInfo),
 
 		Prepare:        *defaultStepOptions(msgb, StepConnPrepare, LevelInfo),
-		PrepareContext: *defaultStepOptions(msgb, StepConnPrepareContext, LevelInfo),
+		PrepareContext: *defaultStepOptions(msgb, StepConnPrepareContext, LevelTrace),
 		StmtIDKey:      StmtIDKeyDefault,
 		StmtOptions:    stmtOptions,
 
@@ -235,7 +234,7 @@ func (c *connWithContextWrapper) ExecContext(ctx context.Context, query string, 
 	var result driver.Result
 	lg := c.logger.With(
 		slog.String("query", query),
-		slog.String("args", fmt.Sprintf("%+v", args)),
+		slog.String("args", formatNamedValues(args)),
 	)
 	err := ignoreAttr(lg.Step(ctx, &c.options.ExecContext, func() (*slog.Attr, error) {
 		var err error
@@ -253,7 +252,7 @@ func (c *connWithContextWrapper) QueryContext(ctx context.Context, query string,
 	var rows driver.Rows
 	lg := c.logger.With(
 		slog.String("query", query),
-		slog.String("args", fmt.Sprintf("%+v", args)),
+		slog.String("args", formatNamedValues(args)),
 	)
 	err := ignoreAttr(lg.Step(ctx, &c.options.QueryContext, func() (*slog.Attr, error) {
 		var err error

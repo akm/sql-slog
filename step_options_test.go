@@ -69,8 +69,8 @@ func TestDefaultStepOptions(t *testing.T) {
 	t.Run("LevelError", func(t *testing.T) {
 		t.Parallel()
 		o := defaultStepOptions(StepEventMsgWithoutEventName, Step("test"), LevelError)
-		if o.Start.Level != LevelInfo {
-			t.Errorf("Expected %v, but got %v", LevelInfo, o.Start.Level)
+		if o.Start.Level != LevelDebug {
+			t.Errorf("Expected %v, but got %v", LevelDebug, o.Start.Level)
 		}
 		if o.Complete.Level != LevelError {
 			t.Errorf("Expected %v, but got %v", LevelError, o.Complete.Level)

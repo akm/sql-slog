@@ -57,11 +57,11 @@ func defaultStepOptions(msgb StepEventMsgBuilder, step Step, completeLevel Level
 	var startLevel Level
 	switch completeLevel { // nolint:exhaustive
 	case LevelError:
-		startLevel = LevelInfo
-	case LevelInfo:
 		startLevel = LevelDebug
-	case LevelDebug:
+	case LevelInfo:
 		startLevel = LevelTrace
+	case LevelDebug:
+		startLevel = LevelVerbose
 	default:
 		startLevel = LevelVerbose
 	}

@@ -1,29 +1,29 @@
-{"time":"2025-02-19T08:24:37.096351+09:00","level":"DEBUG","msg":"Open","driver":"sqlite3","dsn":"file::memory:?cache=shared"}
-{"time":"2025-02-19T08:24:37.096656+09:00","level":"INFO","msg":"Open","driver":"sqlite3","dsn":"file::memory:?cache=shared","duration":47833}
-{"time":"2025-02-19T08:24:37.096698+09:00","level":"DEBUG","msg":"Connector.Connect"}
-{"time":"2025-02-19T08:24:37.096706+09:00","level":"DEBUG","msg":"Driver.Open","dsn":"file::memory:?cache=shared"}
-{"time":"2025-02-19T08:24:37.097456+09:00","level":"INFO","msg":"Driver.Open","dsn":"file::memory:?cache=shared","duration":740708,"conn_id":"Nx415q3F0RGRnLis"}
-{"time":"2025-02-19T08:24:37.097465+09:00","level":"INFO","msg":"Connector.Connect","duration":760959}
-{"time":"2025-02-19T08:24:37.097474+09:00","level":"DEBUG","msg":"Conn.ExecContext","conn_id":"Nx415q3F0RGRnLis","query":"CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))","args":"[]"}
-{"time":"2025-02-19T08:24:37.097572+09:00","level":"INFO","msg":"Conn.ExecContext","conn_id":"Nx415q3F0RGRnLis","query":"CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))","args":"[]","duration":91667}
-{"time":"2025-02-19T08:24:37.09758+09:00","level":"VERBOSE","msg":"Conn.ResetSession","conn_id":"Nx415q3F0RGRnLis"}
-{"time":"2025-02-19T08:24:37.097586+09:00","level":"TRACE","msg":"Conn.ResetSession","conn_id":"Nx415q3F0RGRnLis","duration":541}
-{"time":"2025-02-19T08:24:37.097591+09:00","level":"DEBUG","msg":"Conn.BeginTx","conn_id":"Nx415q3F0RGRnLis"}
-{"time":"2025-02-19T08:24:37.097599+09:00","level":"INFO","msg":"Conn.BeginTx","conn_id":"Nx415q3F0RGRnLis","duration":3541,"tx_id":"3ri_Ws3oiqkQuC81"}
-{"time":"2025-02-19T08:24:37.097635+09:00","level":"DEBUG","msg":"Conn.ExecContext","conn_id":"Nx415q3F0RGRnLis","query":"INSERT INTO test1 (name) VALUES (?)","args":"[{Name: Ordinal:1 Value:Alice}]"}
-{"time":"2025-02-19T08:24:37.097652+09:00","level":"INFO","msg":"Conn.ExecContext","conn_id":"Nx415q3F0RGRnLis","query":"INSERT INTO test1 (name) VALUES (?)","args":"[{Name: Ordinal:1 Value:Alice}]","duration":8916}
-{"time":"2025-02-19T08:24:37.097671+09:00","level":"DEBUG","msg":"Tx.Commit","conn_id":"Nx415q3F0RGRnLis","tx_id":"3ri_Ws3oiqkQuC81"}
-{"time":"2025-02-19T08:24:37.09768+09:00","level":"INFO","msg":"Tx.Commit","conn_id":"Nx415q3F0RGRnLis","tx_id":"3ri_Ws3oiqkQuC81","duration":3834}
-{"time":"2025-02-19T08:24:37.097685+09:00","level":"VERBOSE","msg":"Conn.ResetSession","conn_id":"Nx415q3F0RGRnLis"}
-{"time":"2025-02-19T08:24:37.09769+09:00","level":"TRACE","msg":"Conn.ResetSession","conn_id":"Nx415q3F0RGRnLis","duration":83}
-{"time":"2025-02-19T08:24:37.097696+09:00","level":"TRACE","msg":"Conn.QueryContext","conn_id":"Nx415q3F0RGRnLis","query":"SELECT * FROM test1","args":"[]"}
-{"time":"2025-02-19T08:24:37.097706+09:00","level":"DEBUG","msg":"Conn.QueryContext","conn_id":"Nx415q3F0RGRnLis","query":"SELECT * FROM test1","args":"[]","duration":5708}
-{"time":"2025-02-19T08:24:37.097713+09:00","level":"TRACE","msg":"Rows.Next","conn_id":"Nx415q3F0RGRnLis"}
-{"time":"2025-02-19T08:24:37.097722+09:00","level":"DEBUG","msg":"Rows.Next","conn_id":"Nx415q3F0RGRnLis","duration":3375,"eof":false}
-{"time":"2025-02-19T08:24:37.09774+09:00","level":"INFO","msg":"Record","id":1,"name":"Alice"}
-{"time":"2025-02-19T08:24:37.097745+09:00","level":"TRACE","msg":"Rows.Next","conn_id":"Nx415q3F0RGRnLis"}
-{"time":"2025-02-19T08:24:37.097752+09:00","level":"DEBUG","msg":"Rows.Next","conn_id":"Nx415q3F0RGRnLis","duration":1167,"eof":true}
-{"time":"2025-02-19T08:24:37.097757+09:00","level":"TRACE","msg":"Rows.Close","conn_id":"Nx415q3F0RGRnLis"}
-{"time":"2025-02-19T08:24:37.097762+09:00","level":"DEBUG","msg":"Rows.Close","conn_id":"Nx415q3F0RGRnLis","duration":708}
-{"time":"2025-02-19T08:24:37.097768+09:00","level":"DEBUG","msg":"Conn.Close","conn_id":"Nx415q3F0RGRnLis"}
-{"time":"2025-02-19T08:24:37.097787+09:00","level":"INFO","msg":"Conn.Close","conn_id":"Nx415q3F0RGRnLis","duration":14250}
+{"time":"2025-08-06T23:23:52.116283+09:00","level":"TRACE","msg":"Open","driver":"sqlite3","dsn":"file::memory:?cache=shared"}
+{"time":"2025-08-06T23:23:52.116387+09:00","level":"INFO","msg":"Open","driver":"sqlite3","dsn":"file::memory:?cache=shared","duration":9500}
+{"time":"2025-08-06T23:23:52.116395+09:00","level":"TRACE","msg":"Connector.Connect"}
+{"time":"2025-08-06T23:23:52.116399+09:00","level":"TRACE","msg":"Driver.Open","dsn":"file::memory:?cache=shared"}
+{"time":"2025-08-06T23:23:52.116534+09:00","level":"INFO","msg":"Driver.Open","dsn":"file::memory:?cache=shared","duration":130542,"conn_id":"SJ9moTag3YK8MQLF"}
+{"time":"2025-08-06T23:23:52.116544+09:00","level":"INFO","msg":"Connector.Connect","duration":144625}
+{"time":"2025-08-06T23:23:52.11655+09:00","level":"TRACE","msg":"Conn.ExecContext","conn_id":"SJ9moTag3YK8MQLF","query":"CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))","args":"[]"}
+{"time":"2025-08-06T23:23:52.116595+09:00","level":"INFO","msg":"Conn.ExecContext","conn_id":"SJ9moTag3YK8MQLF","query":"CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))","args":"[]","duration":40292}
+{"time":"2025-08-06T23:23:52.1166+09:00","level":"VERBOSE","msg":"Conn.ResetSession","conn_id":"SJ9moTag3YK8MQLF"}
+{"time":"2025-08-06T23:23:52.116603+09:00","level":"TRACE","msg":"Conn.ResetSession","conn_id":"SJ9moTag3YK8MQLF","duration":334}
+{"time":"2025-08-06T23:23:52.116606+09:00","level":"TRACE","msg":"Conn.BeginTx","conn_id":"SJ9moTag3YK8MQLF"}
+{"time":"2025-08-06T23:23:52.116614+09:00","level":"INFO","msg":"Conn.BeginTx","conn_id":"SJ9moTag3YK8MQLF","duration":5625,"tx_id":"eDDVDXHsbgT0oPqc"}
+{"time":"2025-08-06T23:23:52.116624+09:00","level":"TRACE","msg":"Conn.ExecContext","conn_id":"SJ9moTag3YK8MQLF","query":"INSERT INTO test1 (name) VALUES (?)","args":"[\"Alice\"]"}
+{"time":"2025-08-06T23:23:52.116639+09:00","level":"INFO","msg":"Conn.ExecContext","conn_id":"SJ9moTag3YK8MQLF","query":"INSERT INTO test1 (name) VALUES (?)","args":"[\"Alice\"]","duration":8958}
+{"time":"2025-08-06T23:23:52.116646+09:00","level":"TRACE","msg":"Tx.Commit","conn_id":"SJ9moTag3YK8MQLF","tx_id":"eDDVDXHsbgT0oPqc"}
+{"time":"2025-08-06T23:23:52.116651+09:00","level":"INFO","msg":"Tx.Commit","conn_id":"SJ9moTag3YK8MQLF","tx_id":"eDDVDXHsbgT0oPqc","duration":3167}
+{"time":"2025-08-06T23:23:52.116655+09:00","level":"VERBOSE","msg":"Conn.ResetSession","conn_id":"SJ9moTag3YK8MQLF"}
+{"time":"2025-08-06T23:23:52.116657+09:00","level":"TRACE","msg":"Conn.ResetSession","conn_id":"SJ9moTag3YK8MQLF","duration":0}
+{"time":"2025-08-06T23:23:52.11666+09:00","level":"TRACE","msg":"Conn.QueryContext","conn_id":"SJ9moTag3YK8MQLF","query":"SELECT * FROM test1","args":"[]"}
+{"time":"2025-08-06T23:23:52.116667+09:00","level":"DEBUG","msg":"Conn.QueryContext","conn_id":"SJ9moTag3YK8MQLF","query":"SELECT * FROM test1","args":"[]","duration":4292}
+{"time":"2025-08-06T23:23:52.116672+09:00","level":"VERBOSE","msg":"Rows.Next","conn_id":"SJ9moTag3YK8MQLF"}
+{"time":"2025-08-06T23:23:52.116678+09:00","level":"DEBUG","msg":"Rows.Next","conn_id":"SJ9moTag3YK8MQLF","duration":2833,"eof":false}
+{"time":"2025-08-06T23:23:52.116686+09:00","level":"INFO","msg":"Record","id":1,"name":"Alice"}
+{"time":"2025-08-06T23:23:52.116688+09:00","level":"VERBOSE","msg":"Rows.Next","conn_id":"SJ9moTag3YK8MQLF"}
+{"time":"2025-08-06T23:23:52.116692+09:00","level":"DEBUG","msg":"Rows.Next","conn_id":"SJ9moTag3YK8MQLF","duration":916,"eof":true}
+{"time":"2025-08-06T23:23:52.116695+09:00","level":"VERBOSE","msg":"Rows.Close","conn_id":"SJ9moTag3YK8MQLF"}
+{"time":"2025-08-06T23:23:52.116698+09:00","level":"DEBUG","msg":"Rows.Close","conn_id":"SJ9moTag3YK8MQLF","duration":458}
+{"time":"2025-08-06T23:23:52.116702+09:00","level":"TRACE","msg":"Conn.Close","conn_id":"SJ9moTag3YK8MQLF"}
+{"time":"2025-08-06T23:23:52.116715+09:00","level":"INFO","msg":"Conn.Close","conn_id":"SJ9moTag3YK8MQLF","duration":10333}

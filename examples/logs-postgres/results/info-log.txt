@@ -1,11 +1,11 @@
-time=2025-02-19T08:24:37.992+09:00 level=INFO msg=Open driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=88917
-time=2025-02-19T08:24:37.994+09:00 level=ERROR msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=1106584 error=EOF
-time=2025-02-19T08:24:37.994+09:00 level=ERROR msg=Connector.Connect duration=1177042 error=EOF
-time=2025-02-19T08:24:40.012+09:00 level=INFO msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=17772500 conn_id=VIccjsFjsJV7w21h
-time=2025-02-19T08:24:40.012+09:00 level=INFO msg=Connector.Connect duration=18083208
-time=2025-02-19T08:24:40.018+09:00 level=INFO msg=Conn.ExecContext conn_id=VIccjsFjsJV7w21h query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=4805208
-time=2025-02-19T08:24:40.019+09:00 level=INFO msg=Conn.BeginTx conn_id=VIccjsFjsJV7w21h duration=579334 tx_id=zPkm6sD1QPNBnYWX
-time=2025-02-19T08:24:40.021+09:00 level=INFO msg=Conn.ExecContext conn_id=VIccjsFjsJV7w21h query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[{Name: Ordinal:1 Value:1} {Name: Ordinal:2 Value:Alice}]" duration=1652042
-time=2025-02-19T08:24:40.023+09:00 level=INFO msg=Tx.Commit conn_id=VIccjsFjsJV7w21h tx_id=zPkm6sD1QPNBnYWX duration=1187791
-time=2025-02-19T08:24:40.023+09:00 level=INFO msg=Record id=1 name=Alice
-time=2025-02-19T08:24:40.023+09:00 level=INFO msg=Conn.Close conn_id=VIccjsFjsJV7w21h duration=66042
+time=2025-08-06T23:23:53.060+09:00 level=INFO msg=Open driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=76416
+time=2025-08-06T23:23:53.061+09:00 level=ERROR msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=605917 error="read tcp 127.0.0.1:61632->127.0.0.1:5432: read: connection reset by peer"
+time=2025-08-06T23:23:53.061+09:00 level=ERROR msg=Connector.Connect duration=635333 error="read tcp 127.0.0.1:61632->127.0.0.1:5432: read: connection reset by peer"
+time=2025-08-06T23:23:55.081+09:00 level=INFO msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=18800167 conn_id=DND7Y_XZmy77URni
+time=2025-08-06T23:23:55.081+09:00 level=INFO msg=Connector.Connect duration=19007083
+time=2025-08-06T23:23:55.085+09:00 level=INFO msg=Conn.ExecContext conn_id=DND7Y_XZmy77URni query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=3010292
+time=2025-08-06T23:23:55.086+09:00 level=INFO msg=Conn.BeginTx conn_id=DND7Y_XZmy77URni duration=297875 tx_id=W2A2VLIfqrhlDGJG
+time=2025-08-06T23:23:55.087+09:00 level=INFO msg=Conn.ExecContext conn_id=DND7Y_XZmy77URni query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[1,\"Alice\"]" duration=1336083
+time=2025-08-06T23:23:55.088+09:00 level=INFO msg=Tx.Commit conn_id=DND7Y_XZmy77URni tx_id=W2A2VLIfqrhlDGJG duration=682875
+time=2025-08-06T23:23:55.088+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-08-06T23:23:55.088+09:00 level=INFO msg=Conn.Close conn_id=DND7Y_XZmy77URni duration=17250
