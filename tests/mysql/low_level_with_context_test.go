@@ -150,7 +150,7 @@ func TestLowLevelWithContext(t *testing.T) {
 			t.Run("insert "+name, func(t *testing.T) {
 				stmtIDExpected := seqIdGen.Next()
 				query := "INSERT INTO test1 (id, name) VALUES (?, ?)"
-				args := fmt.Sprintf("[{Name: Ordinal:1 Value:%d} {Name: Ordinal:2 Value:%s}]", i+1, name)
+				args := fmt.Sprintf("[%d,%q]", i+1, name)
 				logs.Start()
 				result, err := db.ExecContext(ctx, query, i+1, name)
 				assert.NoError(t, err)
@@ -186,7 +186,7 @@ func TestLowLevelWithContext(t *testing.T) {
 				assert.NoError(t, rows.Close())
 				logs.AssertEmpty(t) // Rows.Close and Stmt.Close are called from rows.Next when EOF
 			}()
-			args := "[{Name: Ordinal:1 Value:ba%}]"
+			args := "[\"ba%\"]"
 			logs.Assert(t, []map[string]interface{}{
 				{"level": "VERBOSE", "msg": "Conn.ResetSession Start", connIDKey: connIDExpected},
 				{"level": "TRACE", "msg": "Conn.ResetSession Complete", connIDKey: connIDExpected},
@@ -322,8 +322,8 @@ func TestLowLevelWithContext(t *testing.T) {
 				logs.Assert(t, []map[string]interface{}{
 					{"level": "VERBOSE", "msg": "Conn.ResetSession Start", connIDKey: connIDExpected},
 					{"level": "TRACE", "msg": "Conn.ResetSession Complete", connIDKey: connIDExpected},
-					{"level": "TRACE", "msg": "Stmt.QueryContext Start", "args": "[{Name: Ordinal:1 Value:1}]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
-					{"level": "INFO", "msg": "Stmt.QueryContext Complete", "args": "[{Name: Ordinal:1 Value:1}]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+					{"level": "TRACE", "msg": "Stmt.QueryContext Start", "args": "[1]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+					{"level": "INFO", "msg": "Stmt.QueryContext Complete", "args": "[1]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 					{"level": "VERBOSE", "msg": "Rows.Next Start", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 					{"level": "DEBUG", "msg": "Rows.Next Complete", "eof": false, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 					{"level": "VERBOSE", "msg": "Rows.Close Start", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
@@ -362,8 +362,8 @@ func TestLowLevelWithContext(t *testing.T) {
 				logs.Assert(t, []map[string]interface{}{
 					{"level": "VERBOSE", "msg": "Conn.ResetSession Start", connIDKey: connIDExpected},
 					{"level": "TRACE", "msg": "Conn.ResetSession Complete", connIDKey: connIDExpected},
-					{"level": "TRACE", "msg": "Stmt.ExecContext Start", "args": "[{Name: Ordinal:1 Value:4} {Name: Ordinal:2 Value:qux}]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
-					{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": "[{Name: Ordinal:1 Value:4} {Name: Ordinal:2 Value:qux}]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+					{"level": "TRACE", "msg": "Stmt.ExecContext Start", "args": "[4,\"qux\"]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+					{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": "[4,\"qux\"]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 				})
 				rowsAffected, err := result.RowsAffected()
 				assert.NoError(t, err)
@@ -390,7 +390,7 @@ func TestLowLevelWithContext(t *testing.T) {
 				query := "UPDATE test1 SET name = ? WHERE id = ?"
 				logs.Start()
 				r, err := tx.ExecContext(ctx, query, "qux", 3)
-				args := "[{Name: Ordinal:1 Value:qux} {Name: Ordinal:2 Value:3}]"
+				args := "[\"qux\",3]"
 				assert.NoError(t, err)
 				logs.Assert(t, []map[string]interface{}{
 					{"level": "TRACE", "msg": "Conn.ExecContext Start", "query": query, "args": args, connIDKey: connIDExpected},
@@ -434,7 +434,7 @@ func TestLowLevelWithContext(t *testing.T) {
 				query := "UPDATE test1 SET name = ? WHERE id = ?"
 				logs.Start()
 				r, err := tx.ExecContext(ctx, query, "quux", 3)
-				args := "[{Name: Ordinal:1 Value:quux} {Name: Ordinal:2 Value:3}]"
+				args := "[\"quux\",3]"
 				assert.NoError(t, err)
 				logs.Assert(t, []map[string]interface{}{
 					{"level": "TRACE", "msg": "Conn.ExecContext Start", "query": query, "args": args, connIDKey: connIDExpected},

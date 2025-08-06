@@ -137,7 +137,7 @@ func TestLowLevelWithoutContext(t *testing.T) {
 		for i, name := range testData {
 			t.Run("insert "+name, func(t *testing.T) {
 				query := "INSERT INTO test1 (id, name) VALUES (?, ?)"
-				args := fmt.Sprintf("[{Name: Ordinal:1 Value:%d} {Name: Ordinal:2 Value:%s}]", i+1, name)
+				args := fmt.Sprintf("[%d,\"%s\"]", i+1, name)
 				buf.Reset()
 				result, err := db.Exec(query, i+1, name)
 				assert.NoError(t, err)
@@ -210,7 +210,7 @@ func TestLowLevelWithoutContext(t *testing.T) {
 					// {"level": "DEBUG", "msg": "Rows.Close Complete"},
 				})
 			}()
-			args := "[{Name: Ordinal:1 Value:ba%}]"
+			args := "[\"ba%\"]"
 			logs.Assert(t, []map[string]interface{}{
 				{"level": "VERBOSE", "msg": "Conn.ResetSession Start", connIDKey: connIDExpected},
 				{"level": "TRACE", "msg": "Conn.ResetSession Complete", connIDKey: connIDExpected},
@@ -338,8 +338,8 @@ func TestLowLevelWithoutContext(t *testing.T) {
 				logs.Assert(t, []map[string]interface{}{
 					{"level": "VERBOSE", "msg": "Conn.ResetSession Start", connIDKey: connIDExpected},
 					{"level": "TRACE", "msg": "Conn.ResetSession Complete", connIDKey: connIDExpected},
-					{"level": "TRACE", "msg": "Stmt.QueryContext Start", "args": "[{Name: Ordinal:1 Value:1}]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
-					{"level": "INFO", "msg": "Stmt.QueryContext Complete", "args": "[{Name: Ordinal:1 Value:1}]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+					{"level": "TRACE", "msg": "Stmt.QueryContext Start", "args": "[1]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+					{"level": "INFO", "msg": "Stmt.QueryContext Complete", "args": "[1]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 					{"level": "VERBOSE", "msg": "Rows.Next Start", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 					{"level": "DEBUG", "msg": "Rows.Next Complete", "eof": false, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 					{"level": "VERBOSE", "msg": "Rows.Close Start", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
@@ -379,8 +379,8 @@ func TestLowLevelWithoutContext(t *testing.T) {
 				logs.Assert(t, []map[string]interface{}{
 					{"level": "VERBOSE", "msg": "Conn.ResetSession Start", connIDKey: connIDExpected},
 					{"level": "TRACE", "msg": "Conn.ResetSession Complete", connIDKey: connIDExpected},
-					{"level": "TRACE", "msg": "Stmt.ExecContext Start", "args": "[{Name: Ordinal:1 Value:4} {Name: Ordinal:2 Value:qux}]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
-					{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": "[{Name: Ordinal:1 Value:4} {Name: Ordinal:2 Value:qux}]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+					{"level": "TRACE", "msg": "Stmt.ExecContext Start", "args": "[4,\"qux\"]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+					{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": "[4,\"qux\"]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 				})
 				rowsAffected, err := result.RowsAffected()
 				assert.NoError(t, err)
@@ -406,7 +406,7 @@ func TestLowLevelWithoutContext(t *testing.T) {
 				query := "UPDATE test1 SET name = ? WHERE id = ?"
 				buf.Reset()
 				r, err := tx.Exec(query, "qux", int64(3))
-				args := "[{Name: Ordinal:1 Value:qux} {Name: Ordinal:2 Value:3}]"
+				args := "[\"qux\",3]"
 				assert.NoError(t, err)
 				logs.Assert(t, []map[string]interface{}{
 					{"level": "TRACE", "msg": "Conn.ExecContext Start", "query": query, "args": args, connIDKey: connIDExpected},
@@ -443,7 +443,7 @@ func TestLowLevelWithoutContext(t *testing.T) {
 				query := "UPDATE test1 SET name = ? WHERE id = ?"
 				buf.Reset()
 				r, err := tx.Exec(query, "quux", int64(3))
-				args := "[{Name: Ordinal:1 Value:quux} {Name: Ordinal:2 Value:3}]"
+				args := "[\"quux\",3]"
 				assert.NoError(t, err)
 				logs.Assert(t, []map[string]interface{}{
 					{"level": "TRACE", "msg": "Conn.ExecContext Start", "query": query, "args": args, connIDKey: connIDExpected},
