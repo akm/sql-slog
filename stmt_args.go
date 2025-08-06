@@ -16,33 +16,45 @@ func formatNamedValues(args []driver.NamedValue) string {
 		return "[]"
 	}
 	if !slices.ContainsFunc(args, func(arg driver.NamedValue) bool { return arg.Name == "" }) {
-		var b strings.Builder
-		b.WriteString("{")
-		for i, arg := range args {
-			if i > 0 {
-				b.WriteString(",")
-			}
-			fmt.Fprintf(&b, "%s:", arg.Name)
-			b.WriteString(formatValue(arg.Value))
-		}
-		b.WriteString("}")
-		return b.String()
+		return formatNamedValuesWithNames(args)
 	}
 	if !slices.ContainsFunc(args, func(arg driver.NamedValue) bool { return arg.Name != "" }) {
-		if !slices.IsSortedFunc(args, cmpNamedValueByOrdinal) {
-			slices.SortFunc(args, cmpNamedValueByOrdinal)
-		}
-		var b strings.Builder
-		b.WriteString("[")
-		for i, arg := range args {
-			if i > 0 {
-				b.WriteString(",")
-			}
-			b.WriteString(formatValue(arg.Value))
-		}
-		b.WriteString("]")
-		return b.String()
+		return formatNamedValuesWithoutNames(args)
 	}
+	return formatNamedValuesWithMixedNames(args)
+}
+
+func formatNamedValuesWithNames(args []driver.NamedValue) string {
+	var b strings.Builder
+	b.WriteString("{")
+	for i, arg := range args {
+		if i > 0 {
+			b.WriteString(",")
+		}
+		fmt.Fprintf(&b, "%s:", arg.Name)
+		b.WriteString(formatValue(arg.Value))
+	}
+	b.WriteString("}")
+	return b.String()
+}
+
+func formatNamedValuesWithoutNames(args []driver.NamedValue) string {
+	if !slices.IsSortedFunc(args, cmpNamedValueByOrdinal) {
+		slices.SortFunc(args, cmpNamedValueByOrdinal)
+	}
+	var b strings.Builder
+	b.WriteString("[")
+	for i, arg := range args {
+		if i > 0 {
+			b.WriteString(",")
+		}
+		b.WriteString(formatValue(arg.Value))
+	}
+	b.WriteString("]")
+	return b.String()
+}
+
+func formatNamedValuesWithMixedNames(args []driver.NamedValue) string {
 	var b strings.Builder
 	b.WriteString("[")
 	for i, arg := range args {
