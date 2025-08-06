@@ -3,7 +3,6 @@ package sqlslog
 import (
 	"context"
 	"database/sql/driver"
-	"fmt"
 	"log/slog"
 )
 
@@ -88,7 +87,7 @@ func (s *stmtWrapper) Close() error {
 
 // Exec implements driver.Stmt.
 func (s *stmtWrapper) Exec(args []driver.Value) (driver.Result, error) {
-	lg := s.logger.With(slog.String("args", fmt.Sprintf("%+v", args)))
+	lg := s.logger.With(slog.String("args", formatValues(args)))
 	var result driver.Result
 	err := ignoreAttr(lg.StepWithoutContext(&s.options.Exec, func() (*slog.Attr, error) {
 		var err error
@@ -108,7 +107,7 @@ func (s *stmtWrapper) NumInput() int {
 
 // Query implements driver.Stmt.
 func (s *stmtWrapper) Query(args []driver.Value) (driver.Rows, error) {
-	lg := s.logger.With(slog.String("args", fmt.Sprintf("%+v", args)))
+	lg := s.logger.With(slog.String("args", formatValues(args)))
 	var rows driver.Rows
 	err := ignoreAttr(lg.StepWithoutContext(&s.options.Query, func() (*slog.Attr, error) {
 		var err error
@@ -131,7 +130,7 @@ var _ driver.StmtExecContext = (*stmtExecContextWrapperImpl)(nil)
 
 // ExecContext implements driver.StmtExecContext.
 func (s *stmtExecContextWrapperImpl) ExecContext(ctx context.Context, args []driver.NamedValue) (driver.Result, error) {
-	lg := s.logger.With(slog.String("args", fmt.Sprintf("%+v", args)))
+	lg := s.logger.With(slog.String("args", formatNamedValues(args)))
 	var result driver.Result
 	err := ignoreAttr(lg.Step(ctx, &s.options.ExecContext, func() (*slog.Attr, error) {
 		var err error
@@ -154,7 +153,7 @@ var _ driver.StmtQueryContext = (*stmtQueryContextWrapperImpl)(nil)
 
 // QueryContext implements driver.StmtQueryContext.
 func (s *stmtQueryContextWrapperImpl) QueryContext(ctx context.Context, args []driver.NamedValue) (driver.Rows, error) {
-	lg := s.logger.With(slog.String("args", fmt.Sprintf("%+v", args)))
+	lg := s.logger.With(slog.String("args", formatNamedValues(args)))
 	var rows driver.Rows
 	err := ignoreAttr(lg.Step(ctx, &s.options.QueryContext, func() (*slog.Attr, error) {
 		var err error
