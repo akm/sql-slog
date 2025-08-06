@@ -52,6 +52,7 @@ func TestFormatNamedValues(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			got := formatNamedValues(tt.args)
 			if got != tt.want {
 				t.Errorf("formatNamedValues() = %v, want %v", got, tt.want)
