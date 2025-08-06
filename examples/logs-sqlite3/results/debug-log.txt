@@ -1,13 +1,13 @@
-time=2025-08-06T22:40:20.216+09:00 level=INFO msg=Open driver=sqlite3 dsn="file::memory:?cache=shared" duration=13875
-time=2025-08-06T22:40:20.216+09:00 level=INFO msg=Driver.Open dsn="file::memory:?cache=shared" duration=121583 conn_id=QT2zNrs9NoJk9sin
-time=2025-08-06T22:40:20.216+09:00 level=INFO msg=Connector.Connect duration=130541
-time=2025-08-06T22:40:20.216+09:00 level=INFO msg=Conn.ExecContext conn_id=QT2zNrs9NoJk9sin query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=37542
-time=2025-08-06T22:40:20.216+09:00 level=INFO msg=Conn.BeginTx conn_id=QT2zNrs9NoJk9sin duration=2334 tx_id=0waYiZhjBs845sni
-time=2025-08-06T22:40:20.216+09:00 level=INFO msg=Conn.ExecContext conn_id=QT2zNrs9NoJk9sin query="INSERT INTO test1 (name) VALUES (?)" args="[\"Alice\"]" duration=8333
-time=2025-08-06T22:40:20.216+09:00 level=INFO msg=Tx.Commit conn_id=QT2zNrs9NoJk9sin tx_id=0waYiZhjBs845sni duration=3458
-time=2025-08-06T22:40:20.216+09:00 level=DEBUG msg=Conn.QueryContext conn_id=QT2zNrs9NoJk9sin query="SELECT * FROM test1" args=[] duration=4292
-time=2025-08-06T22:40:20.216+09:00 level=DEBUG msg=Rows.Next conn_id=QT2zNrs9NoJk9sin duration=2458 eof=false
-time=2025-08-06T22:40:20.216+09:00 level=INFO msg=Record id=1 name=Alice
-time=2025-08-06T22:40:20.216+09:00 level=DEBUG msg=Rows.Next conn_id=QT2zNrs9NoJk9sin duration=875 eof=true
-time=2025-08-06T22:40:20.216+09:00 level=DEBUG msg=Rows.Close conn_id=QT2zNrs9NoJk9sin duration=417
-time=2025-08-06T22:40:20.216+09:00 level=INFO msg=Conn.Close conn_id=QT2zNrs9NoJk9sin duration=8750
+time=2025-08-06T23:23:51.824+09:00 level=INFO msg=Open driver=sqlite3 dsn="file::memory:?cache=shared" duration=45709
+time=2025-08-06T23:23:51.825+09:00 level=INFO msg=Driver.Open dsn="file::memory:?cache=shared" duration=546334 conn_id=BmDho0jLHtC3vspy
+time=2025-08-06T23:23:51.825+09:00 level=INFO msg=Connector.Connect duration=557875
+time=2025-08-06T23:23:51.825+09:00 level=INFO msg=Conn.ExecContext conn_id=BmDho0jLHtC3vspy query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=58417
+time=2025-08-06T23:23:51.825+09:00 level=INFO msg=Conn.BeginTx conn_id=BmDho0jLHtC3vspy duration=2209 tx_id=UefG6gyYqvfm45nQ
+time=2025-08-06T23:23:51.825+09:00 level=INFO msg=Conn.ExecContext conn_id=BmDho0jLHtC3vspy query="INSERT INTO test1 (name) VALUES (?)" args="[\"Alice\"]" duration=7375
+time=2025-08-06T23:23:51.825+09:00 level=INFO msg=Tx.Commit conn_id=BmDho0jLHtC3vspy tx_id=UefG6gyYqvfm45nQ duration=3125
+time=2025-08-06T23:23:51.825+09:00 level=DEBUG msg=Conn.QueryContext conn_id=BmDho0jLHtC3vspy query="SELECT * FROM test1" args=[] duration=3958
+time=2025-08-06T23:23:51.825+09:00 level=DEBUG msg=Rows.Next conn_id=BmDho0jLHtC3vspy duration=2292 eof=false
+time=2025-08-06T23:23:51.825+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-08-06T23:23:51.825+09:00 level=DEBUG msg=Rows.Next conn_id=BmDho0jLHtC3vspy duration=833 eof=true
+time=2025-08-06T23:23:51.825+09:00 level=DEBUG msg=Rows.Close conn_id=BmDho0jLHtC3vspy duration=375
+time=2025-08-06T23:23:51.825+09:00 level=INFO msg=Conn.Close conn_id=BmDho0jLHtC3vspy duration=9208

@@ -1,41 +1,41 @@
-time=2025-08-06T22:40:33.195+09:00 level=TRACE msg=Open driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
-time=2025-08-06T22:40:33.195+09:00 level=INFO msg=Open driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=15292
-time=2025-08-06T22:40:33.195+09:00 level=TRACE msg=Connector.Connect
-time=2025-08-06T22:40:33.195+09:00 level=TRACE msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
-time=2025-08-06T22:40:33.197+09:00 level=ERROR msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=1542000 error="read tcp 127.0.0.1:60345->127.0.0.1:5432: read: connection reset by peer"
-time=2025-08-06T22:40:33.197+09:00 level=ERROR msg=Connector.Connect duration=1590708 error="read tcp 127.0.0.1:60345->127.0.0.1:5432: read: connection reset by peer"
-time=2025-08-06T22:40:35.198+09:00 level=TRACE msg=Connector.Connect
-time=2025-08-06T22:40:35.198+09:00 level=TRACE msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
-time=2025-08-06T22:40:35.206+09:00 level=INFO msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=7551083 conn_id=a585Q3ZDe7vga5RV
-time=2025-08-06T22:40:35.206+09:00 level=INFO msg=Connector.Connect duration=7620959
-time=2025-08-06T22:40:35.206+09:00 level=VERBOSE msg=Conn.Ping conn_id=a585Q3ZDe7vga5RV
-time=2025-08-06T22:40:35.206+09:00 level=TRACE msg=Conn.Ping conn_id=a585Q3ZDe7vga5RV duration=257542
-time=2025-08-06T22:40:35.206+09:00 level=VERBOSE msg=Conn.ResetSession conn_id=a585Q3ZDe7vga5RV
-time=2025-08-06T22:40:35.206+09:00 level=TRACE msg=Conn.ResetSession conn_id=a585Q3ZDe7vga5RV duration=625
-time=2025-08-06T22:40:35.206+09:00 level=TRACE msg=Conn.ExecContext conn_id=a585Q3ZDe7vga5RV query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[]
-time=2025-08-06T22:40:35.210+09:00 level=INFO msg=Conn.ExecContext conn_id=a585Q3ZDe7vga5RV query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=4340292
-time=2025-08-06T22:40:35.210+09:00 level=VERBOSE msg=Conn.ResetSession conn_id=a585Q3ZDe7vga5RV
-time=2025-08-06T22:40:35.210+09:00 level=TRACE msg=Conn.ResetSession conn_id=a585Q3ZDe7vga5RV duration=292
-time=2025-08-06T22:40:35.210+09:00 level=VERBOSE msg=Conn.Ping conn_id=a585Q3ZDe7vga5RV
-time=2025-08-06T22:40:35.211+09:00 level=TRACE msg=Conn.Ping conn_id=a585Q3ZDe7vga5RV duration=264083
-time=2025-08-06T22:40:35.211+09:00 level=VERBOSE msg=Conn.ResetSession conn_id=a585Q3ZDe7vga5RV
-time=2025-08-06T22:40:35.211+09:00 level=TRACE msg=Conn.ResetSession conn_id=a585Q3ZDe7vga5RV duration=208
-time=2025-08-06T22:40:35.211+09:00 level=TRACE msg=Conn.BeginTx conn_id=a585Q3ZDe7vga5RV
-time=2025-08-06T22:40:35.211+09:00 level=INFO msg=Conn.BeginTx conn_id=a585Q3ZDe7vga5RV duration=214208 tx_id=rj3Frb9Lcjoq1emJ
-time=2025-08-06T22:40:35.211+09:00 level=TRACE msg=Conn.ExecContext conn_id=a585Q3ZDe7vga5RV query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[1,\"Alice\"]"
-time=2025-08-06T22:40:35.212+09:00 level=INFO msg=Conn.ExecContext conn_id=a585Q3ZDe7vga5RV query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[1,\"Alice\"]" duration=668417
-time=2025-08-06T22:40:35.212+09:00 level=TRACE msg=Tx.Commit conn_id=a585Q3ZDe7vga5RV tx_id=rj3Frb9Lcjoq1emJ
-time=2025-08-06T22:40:35.212+09:00 level=INFO msg=Tx.Commit conn_id=a585Q3ZDe7vga5RV tx_id=rj3Frb9Lcjoq1emJ duration=371959
-time=2025-08-06T22:40:35.212+09:00 level=VERBOSE msg=Conn.ResetSession conn_id=a585Q3ZDe7vga5RV
-time=2025-08-06T22:40:35.212+09:00 level=TRACE msg=Conn.ResetSession conn_id=a585Q3ZDe7vga5RV duration=166
-time=2025-08-06T22:40:35.212+09:00 level=TRACE msg=Conn.QueryContext conn_id=a585Q3ZDe7vga5RV query="SELECT * FROM test1" args=[]
-time=2025-08-06T22:40:35.212+09:00 level=DEBUG msg=Conn.QueryContext conn_id=a585Q3ZDe7vga5RV query="SELECT * FROM test1" args=[] duration=316625
-time=2025-08-06T22:40:35.212+09:00 level=VERBOSE msg=Rows.Next conn_id=a585Q3ZDe7vga5RV
-time=2025-08-06T22:40:35.212+09:00 level=DEBUG msg=Rows.Next conn_id=a585Q3ZDe7vga5RV duration=4125 eof=false
-time=2025-08-06T22:40:35.212+09:00 level=INFO msg=Record id=1 name=Alice
-time=2025-08-06T22:40:35.212+09:00 level=VERBOSE msg=Rows.Next conn_id=a585Q3ZDe7vga5RV
-time=2025-08-06T22:40:35.212+09:00 level=DEBUG msg=Rows.Next conn_id=a585Q3ZDe7vga5RV duration=750 eof=true
-time=2025-08-06T22:40:35.212+09:00 level=VERBOSE msg=Rows.Close conn_id=a585Q3ZDe7vga5RV
-time=2025-08-06T22:40:35.212+09:00 level=DEBUG msg=Rows.Close conn_id=a585Q3ZDe7vga5RV duration=125
-time=2025-08-06T22:40:35.213+09:00 level=TRACE msg=Conn.Close conn_id=a585Q3ZDe7vga5RV
-time=2025-08-06T22:40:35.213+09:00 level=INFO msg=Conn.Close conn_id=a585Q3ZDe7vga5RV duration=19959
+time=2025-08-06T23:24:01.733+09:00 level=TRACE msg=Open driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
+time=2025-08-06T23:24:01.734+09:00 level=INFO msg=Open driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=24667
+time=2025-08-06T23:24:01.734+09:00 level=TRACE msg=Connector.Connect
+time=2025-08-06T23:24:01.734+09:00 level=TRACE msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
+time=2025-08-06T23:24:01.734+09:00 level=ERROR msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=755542 error="read tcp 127.0.0.1:61643->127.0.0.1:5432: read: connection reset by peer"
+time=2025-08-06T23:24:01.734+09:00 level=ERROR msg=Connector.Connect duration=787042 error="read tcp 127.0.0.1:61643->127.0.0.1:5432: read: connection reset by peer"
+time=2025-08-06T23:24:03.736+09:00 level=TRACE msg=Connector.Connect
+time=2025-08-06T23:24:03.736+09:00 level=TRACE msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable"
+time=2025-08-06T23:24:03.752+09:00 level=INFO msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=15959208 conn_id=giWcNRXi0haxjgDO
+time=2025-08-06T23:24:03.752+09:00 level=INFO msg=Connector.Connect duration=16194208
+time=2025-08-06T23:24:03.752+09:00 level=VERBOSE msg=Conn.Ping conn_id=giWcNRXi0haxjgDO
+time=2025-08-06T23:24:03.753+09:00 level=TRACE msg=Conn.Ping conn_id=giWcNRXi0haxjgDO duration=839084
+time=2025-08-06T23:24:03.753+09:00 level=VERBOSE msg=Conn.ResetSession conn_id=giWcNRXi0haxjgDO
+time=2025-08-06T23:24:03.753+09:00 level=TRACE msg=Conn.ResetSession conn_id=giWcNRXi0haxjgDO duration=1458
+time=2025-08-06T23:24:03.753+09:00 level=TRACE msg=Conn.ExecContext conn_id=giWcNRXi0haxjgDO query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[]
+time=2025-08-06T23:24:03.758+09:00 level=INFO msg=Conn.ExecContext conn_id=giWcNRXi0haxjgDO query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=4599667
+time=2025-08-06T23:24:03.758+09:00 level=VERBOSE msg=Conn.ResetSession conn_id=giWcNRXi0haxjgDO
+time=2025-08-06T23:24:03.758+09:00 level=TRACE msg=Conn.ResetSession conn_id=giWcNRXi0haxjgDO duration=667
+time=2025-08-06T23:24:03.758+09:00 level=VERBOSE msg=Conn.Ping conn_id=giWcNRXi0haxjgDO
+time=2025-08-06T23:24:03.759+09:00 level=TRACE msg=Conn.Ping conn_id=giWcNRXi0haxjgDO duration=958542
+time=2025-08-06T23:24:03.759+09:00 level=VERBOSE msg=Conn.ResetSession conn_id=giWcNRXi0haxjgDO
+time=2025-08-06T23:24:03.759+09:00 level=TRACE msg=Conn.ResetSession conn_id=giWcNRXi0haxjgDO duration=334
+time=2025-08-06T23:24:03.759+09:00 level=TRACE msg=Conn.BeginTx conn_id=giWcNRXi0haxjgDO
+time=2025-08-06T23:24:03.760+09:00 level=INFO msg=Conn.BeginTx conn_id=giWcNRXi0haxjgDO duration=493125 tx_id=_0Hz9N_J4DB8AcoZ
+time=2025-08-06T23:24:03.760+09:00 level=TRACE msg=Conn.ExecContext conn_id=giWcNRXi0haxjgDO query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[1,\"Alice\"]"
+time=2025-08-06T23:24:03.761+09:00 level=INFO msg=Conn.ExecContext conn_id=giWcNRXi0haxjgDO query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[1,\"Alice\"]" duration=1293791
+time=2025-08-06T23:24:03.761+09:00 level=TRACE msg=Tx.Commit conn_id=giWcNRXi0haxjgDO tx_id=_0Hz9N_J4DB8AcoZ
+time=2025-08-06T23:24:03.762+09:00 level=INFO msg=Tx.Commit conn_id=giWcNRXi0haxjgDO tx_id=_0Hz9N_J4DB8AcoZ duration=1052833
+time=2025-08-06T23:24:03.762+09:00 level=VERBOSE msg=Conn.ResetSession conn_id=giWcNRXi0haxjgDO
+time=2025-08-06T23:24:03.762+09:00 level=TRACE msg=Conn.ResetSession conn_id=giWcNRXi0haxjgDO duration=375
+time=2025-08-06T23:24:03.762+09:00 level=TRACE msg=Conn.QueryContext conn_id=giWcNRXi0haxjgDO query="SELECT * FROM test1" args=[]
+time=2025-08-06T23:24:03.763+09:00 level=DEBUG msg=Conn.QueryContext conn_id=giWcNRXi0haxjgDO query="SELECT * FROM test1" args=[] duration=645417
+time=2025-08-06T23:24:03.763+09:00 level=VERBOSE msg=Rows.Next conn_id=giWcNRXi0haxjgDO
+time=2025-08-06T23:24:03.763+09:00 level=DEBUG msg=Rows.Next conn_id=giWcNRXi0haxjgDO duration=2625 eof=false
+time=2025-08-06T23:24:03.763+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-08-06T23:24:03.763+09:00 level=VERBOSE msg=Rows.Next conn_id=giWcNRXi0haxjgDO
+time=2025-08-06T23:24:03.763+09:00 level=DEBUG msg=Rows.Next conn_id=giWcNRXi0haxjgDO duration=1584 eof=true
+time=2025-08-06T23:24:03.763+09:00 level=VERBOSE msg=Rows.Close conn_id=giWcNRXi0haxjgDO
+time=2025-08-06T23:24:03.763+09:00 level=DEBUG msg=Rows.Close conn_id=giWcNRXi0haxjgDO duration=292
+time=2025-08-06T23:24:03.763+09:00 level=TRACE msg=Conn.Close conn_id=giWcNRXi0haxjgDO
+time=2025-08-06T23:24:03.763+09:00 level=INFO msg=Conn.Close conn_id=giWcNRXi0haxjgDO duration=70833

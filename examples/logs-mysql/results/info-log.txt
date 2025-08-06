@@ -1,37 +1,34 @@
-time=2025-08-06T22:40:38.842+09:00 level=INFO msg=Driver.OpenConnector dsn=root@tcp(localhost:3306)/app1 duration=11334 conn_id=A6FXYv78lOwZ8y9n
-time=2025-08-06T22:40:38.842+09:00 level=INFO msg=Open driver=mysql dsn=root@tcp(localhost:3306)/app1 duration=1543167
-time=2025-08-06T22:40:38.844+09:00 level=ERROR msg=Connector.Connect conn_id=A6FXYv78lOwZ8y9n duration=2394084 error="driver: bad connection"
-time=2025-08-06T22:40:38.844+09:00 level=ERROR msg=Connector.Connect duration=2410333 error="driver: bad connection"
-time=2025-08-06T22:40:38.845+09:00 level=ERROR msg=Connector.Connect conn_id=A6FXYv78lOwZ8y9n duration=506417 error="driver: bad connection"
-time=2025-08-06T22:40:38.845+09:00 level=ERROR msg=Connector.Connect duration=519667 error="driver: bad connection"
-time=2025-08-06T22:40:38.845+09:00 level=ERROR msg=Connector.Connect conn_id=A6FXYv78lOwZ8y9n duration=362417 error="driver: bad connection"
-time=2025-08-06T22:40:38.845+09:00 level=ERROR msg=Connector.Connect duration=371083 error="driver: bad connection"
-time=2025-08-06T22:40:40.849+09:00 level=ERROR msg=Connector.Connect conn_id=A6FXYv78lOwZ8y9n duration=2862208 error="driver: bad connection"
-time=2025-08-06T22:40:40.849+09:00 level=ERROR msg=Connector.Connect duration=3024167 error="driver: bad connection"
-time=2025-08-06T22:40:40.852+09:00 level=ERROR msg=Connector.Connect conn_id=A6FXYv78lOwZ8y9n duration=2618458 error="driver: bad connection"
-time=2025-08-06T22:40:40.852+09:00 level=ERROR msg=Connector.Connect duration=2717125 error="driver: bad connection"
-time=2025-08-06T22:40:40.854+09:00 level=ERROR msg=Connector.Connect conn_id=A6FXYv78lOwZ8y9n duration=1869042 error="driver: bad connection"
-time=2025-08-06T22:40:40.854+09:00 level=ERROR msg=Connector.Connect duration=2062375 error="driver: bad connection"
-time=2025-08-06T22:40:42.857+09:00 level=ERROR msg=Connector.Connect conn_id=A6FXYv78lOwZ8y9n duration=1294625 error="driver: bad connection"
-time=2025-08-06T22:40:42.857+09:00 level=ERROR msg=Connector.Connect duration=1344917 error="driver: bad connection"
-time=2025-08-06T22:40:42.857+09:00 level=ERROR msg=Connector.Connect conn_id=A6FXYv78lOwZ8y9n duration=461791 error="driver: bad connection"
-time=2025-08-06T22:40:42.857+09:00 level=ERROR msg=Connector.Connect duration=485417 error="driver: bad connection"
-time=2025-08-06T22:40:42.857+09:00 level=ERROR msg=Connector.Connect conn_id=A6FXYv78lOwZ8y9n duration=369500 error="driver: bad connection"
-time=2025-08-06T22:40:42.857+09:00 level=ERROR msg=Connector.Connect duration=390000 error="driver: bad connection"
-time=2025-08-06T22:40:44.861+09:00 level=ERROR msg=Connector.Connect conn_id=A6FXYv78lOwZ8y9n duration=2671958 error="driver: bad connection"
-time=2025-08-06T22:40:44.861+09:00 level=ERROR msg=Connector.Connect duration=2859000 error="driver: bad connection"
-time=2025-08-06T22:40:44.863+09:00 level=ERROR msg=Connector.Connect conn_id=A6FXYv78lOwZ8y9n duration=1390583 error="driver: bad connection"
-time=2025-08-06T22:40:44.863+09:00 level=ERROR msg=Connector.Connect duration=1446709 error="driver: bad connection"
-time=2025-08-06T22:40:44.865+09:00 level=ERROR msg=Connector.Connect conn_id=A6FXYv78lOwZ8y9n duration=1884375 error="driver: bad connection"
-time=2025-08-06T22:40:44.865+09:00 level=ERROR msg=Connector.Connect duration=1914500 error="driver: bad connection"
-time=2025-08-06T22:40:46.869+09:00 level=INFO msg=Connector.Connect conn_id=A6FXYv78lOwZ8y9n duration=3110583
-time=2025-08-06T22:40:46.870+09:00 level=INFO msg=Connector.Connect duration=3959167
-time=2025-08-06T22:40:46.886+09:00 level=INFO msg=Conn.ExecContext conn_id=A6FXYv78lOwZ8y9n query="CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))" args=[] duration=15618125
-time=2025-08-06T22:40:46.887+09:00 level=INFO msg=Conn.BeginTx conn_id=A6FXYv78lOwZ8y9n duration=258333 tx_id=MIZHAmY0QXNBxX4l
-time=2025-08-06T22:40:46.887+09:00 level=INFO msg=Conn.ExecContext conn_id=A6FXYv78lOwZ8y9n query="INSERT INTO test1 (id, name) VALUES (?, ?)" args="[1,\"Alice\"]" duration=667 skip=true
-time=2025-08-06T22:40:46.892+09:00 level=INFO msg=Conn.PrepareContext conn_id=A6FXYv78lOwZ8y9n query="INSERT INTO test1 (id, name) VALUES (?, ?)" duration=4744791 stmt_id=3annGcQ7kutRe7kw
-time=2025-08-06T22:40:46.893+09:00 level=INFO msg=Stmt.ExecContext conn_id=A6FXYv78lOwZ8y9n stmt_id=3annGcQ7kutRe7kw args="[1,\"Alice\"]" duration=503333
-time=2025-08-06T22:40:46.893+09:00 level=INFO msg=Stmt.Close conn_id=A6FXYv78lOwZ8y9n stmt_id=3annGcQ7kutRe7kw duration=8875
-time=2025-08-06T22:40:46.894+09:00 level=INFO msg=Tx.Commit conn_id=A6FXYv78lOwZ8y9n tx_id=MIZHAmY0QXNBxX4l duration=1582416
-time=2025-08-06T22:40:46.895+09:00 level=INFO msg=Record id=1 name=Alice
-time=2025-08-06T22:40:46.895+09:00 level=INFO msg=Conn.Close conn_id=A6FXYv78lOwZ8y9n duration=27375
+time=2025-08-06T23:24:08.002+09:00 level=INFO msg=Driver.OpenConnector dsn=root@tcp(localhost:3306)/app1 duration=20000 conn_id=DfU15vIYYze23D37
+time=2025-08-06T23:24:08.002+09:00 level=INFO msg=Open driver=mysql dsn=root@tcp(localhost:3306)/app1 duration=1456250
+time=2025-08-06T23:24:08.005+09:00 level=ERROR msg=Connector.Connect conn_id=DfU15vIYYze23D37 duration=3119500 error="driver: bad connection"
+time=2025-08-06T23:24:08.005+09:00 level=ERROR msg=Connector.Connect duration=3177541 error="driver: bad connection"
+time=2025-08-06T23:24:08.006+09:00 level=ERROR msg=Connector.Connect conn_id=DfU15vIYYze23D37 duration=700125 error="driver: bad connection"
+time=2025-08-06T23:24:08.006+09:00 level=ERROR msg=Connector.Connect duration=746833 error="driver: bad connection"
+time=2025-08-06T23:24:08.006+09:00 level=ERROR msg=Connector.Connect conn_id=DfU15vIYYze23D37 duration=515250 error="driver: bad connection"
+time=2025-08-06T23:24:08.006+09:00 level=ERROR msg=Connector.Connect duration=556833 error="driver: bad connection"
+time=2025-08-06T23:24:10.009+09:00 level=ERROR msg=Connector.Connect conn_id=DfU15vIYYze23D37 duration=1850209 error="driver: bad connection"
+time=2025-08-06T23:24:10.009+09:00 level=ERROR msg=Connector.Connect duration=1957167 error="driver: bad connection"
+time=2025-08-06T23:24:10.010+09:00 level=ERROR msg=Connector.Connect conn_id=DfU15vIYYze23D37 duration=1011375 error="driver: bad connection"
+time=2025-08-06T23:24:10.010+09:00 level=ERROR msg=Connector.Connect duration=1046458 error="driver: bad connection"
+time=2025-08-06T23:24:10.011+09:00 level=ERROR msg=Connector.Connect conn_id=DfU15vIYYze23D37 duration=605875 error="driver: bad connection"
+time=2025-08-06T23:24:10.011+09:00 level=ERROR msg=Connector.Connect duration=615958 error="driver: bad connection"
+time=2025-08-06T23:24:12.013+09:00 level=ERROR msg=Connector.Connect conn_id=DfU15vIYYze23D37 duration=1167709 error="driver: bad connection"
+time=2025-08-06T23:24:12.013+09:00 level=ERROR msg=Connector.Connect duration=1237792 error="driver: bad connection"
+time=2025-08-06T23:24:12.014+09:00 level=ERROR msg=Connector.Connect conn_id=DfU15vIYYze23D37 duration=778959 error="driver: bad connection"
+time=2025-08-06T23:24:12.014+09:00 level=ERROR msg=Connector.Connect duration=828834 error="driver: bad connection"
+time=2025-08-06T23:24:12.014+09:00 level=ERROR msg=Connector.Connect conn_id=DfU15vIYYze23D37 duration=622583 error="driver: bad connection"
+time=2025-08-06T23:24:12.014+09:00 level=ERROR msg=Connector.Connect duration=686917 error="driver: bad connection"
+time=2025-08-06T23:24:14.020+09:00 level=ERROR msg=Connector.Connect conn_id=DfU15vIYYze23D37 duration=4834000 error="driver: bad connection"
+time=2025-08-06T23:24:14.021+09:00 level=ERROR msg=Connector.Connect duration=5222417 error="driver: bad connection"
+time=2025-08-06T23:24:14.023+09:00 level=ERROR msg=Connector.Connect conn_id=DfU15vIYYze23D37 duration=1818292 error="driver: bad connection"
+time=2025-08-06T23:24:14.023+09:00 level=ERROR msg=Connector.Connect duration=1909917 error="driver: bad connection"
+time=2025-08-06T23:24:14.024+09:00 level=ERROR msg=Connector.Connect conn_id=DfU15vIYYze23D37 duration=1358083 error="driver: bad connection"
+time=2025-08-06T23:24:14.024+09:00 level=ERROR msg=Connector.Connect duration=1482167 error="driver: bad connection"
+time=2025-08-06T23:24:16.028+09:00 level=INFO msg=Connector.Connect conn_id=DfU15vIYYze23D37 duration=2883875
+time=2025-08-06T23:24:16.028+09:00 level=INFO msg=Connector.Connect duration=2958417
+time=2025-08-06T23:24:16.043+09:00 level=INFO msg=Conn.ExecContext conn_id=DfU15vIYYze23D37 query="CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))" args=[] duration=14629041
+time=2025-08-06T23:24:16.043+09:00 level=INFO msg=Conn.BeginTx conn_id=DfU15vIYYze23D37 duration=367084 tx_id=NxCr1kqGEs0dOBQz
+time=2025-08-06T23:24:16.043+09:00 level=INFO msg=Conn.ExecContext conn_id=DfU15vIYYze23D37 query="INSERT INTO test1 (id, name) VALUES (?, ?)" args="[1,\"Alice\"]" duration=500 skip=true
+time=2025-08-06T23:24:16.049+09:00 level=INFO msg=Tx.Commit conn_id=DfU15vIYYze23D37 tx_id=NxCr1kqGEs0dOBQz duration=1386458
+time=2025-08-06T23:24:16.049+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-08-06T23:24:16.049+09:00 level=INFO msg=Conn.Close conn_id=DfU15vIYYze23D37 duration=27667

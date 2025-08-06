@@ -1,93 +1,81 @@
-{"time":"2025-08-06T22:41:16.839039+09:00","level":"TRACE","msg":"Open","driver":"mysql","dsn":"root@tcp(localhost:3306)/app1"}
-{"time":"2025-08-06T22:41:16.839214+09:00","level":"TRACE","msg":"Driver.OpenConnector","dsn":"root@tcp(localhost:3306)/app1"}
-{"time":"2025-08-06T22:41:16.839221+09:00","level":"INFO","msg":"Driver.OpenConnector","dsn":"root@tcp(localhost:3306)/app1","duration":1584,"conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:16.839225+09:00","level":"INFO","msg":"Open","driver":"mysql","dsn":"root@tcp(localhost:3306)/app1","duration":41916}
-{"time":"2025-08-06T22:41:16.839231+09:00","level":"TRACE","msg":"Connector.Connect"}
-{"time":"2025-08-06T22:41:16.839234+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:16.841579+09:00","level":"ERROR","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a","duration":2339042,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:16.841593+09:00","level":"ERROR","msg":"Connector.Connect","duration":2358667,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:16.841599+09:00","level":"TRACE","msg":"Connector.Connect"}
-{"time":"2025-08-06T22:41:16.841602+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:16.84241+09:00","level":"ERROR","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a","duration":794500,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:16.842443+09:00","level":"ERROR","msg":"Connector.Connect","duration":839541,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:16.842455+09:00","level":"TRACE","msg":"Connector.Connect"}
-{"time":"2025-08-06T22:41:16.842461+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:16.843073+09:00","level":"ERROR","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a","duration":605000,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:16.843083+09:00","level":"ERROR","msg":"Connector.Connect","duration":621500,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:18.844242+09:00","level":"TRACE","msg":"Connector.Connect"}
-{"time":"2025-08-06T22:41:18.84438+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:18.848667+09:00","level":"ERROR","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a","duration":4176791,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:18.848851+09:00","level":"ERROR","msg":"Connector.Connect","duration":4464750,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:18.848926+09:00","level":"TRACE","msg":"Connector.Connect"}
-{"time":"2025-08-06T22:41:18.848962+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:18.851853+09:00","level":"ERROR","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a","duration":2856167,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:18.851949+09:00","level":"ERROR","msg":"Connector.Connect","duration":2983709,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:18.852+09:00","level":"TRACE","msg":"Connector.Connect"}
-{"time":"2025-08-06T22:41:18.852035+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:18.85834+09:00","level":"ERROR","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a","duration":6260625,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:18.858435+09:00","level":"ERROR","msg":"Connector.Connect","duration":6396541,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:20.859537+09:00","level":"TRACE","msg":"Connector.Connect"}
-{"time":"2025-08-06T22:41:20.859558+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:20.860372+09:00","level":"ERROR","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a","duration":805083,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:20.860382+09:00","level":"ERROR","msg":"Connector.Connect","duration":822709,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:20.860393+09:00","level":"TRACE","msg":"Connector.Connect"}
-{"time":"2025-08-06T22:41:20.860396+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:20.860785+09:00","level":"ERROR","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a","duration":383250,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:20.860792+09:00","level":"ERROR","msg":"Connector.Connect","duration":395125,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:20.860796+09:00","level":"TRACE","msg":"Connector.Connect"}
-{"time":"2025-08-06T22:41:20.860799+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:20.861176+09:00","level":"ERROR","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a","duration":372667,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:20.861185+09:00","level":"ERROR","msg":"Connector.Connect","duration":384459,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:22.862308+09:00","level":"TRACE","msg":"Connector.Connect"}
-{"time":"2025-08-06T22:41:22.862505+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:22.86696+09:00","level":"ERROR","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a","duration":4369750,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:22.867109+09:00","level":"ERROR","msg":"Connector.Connect","duration":4595209,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:22.867173+09:00","level":"TRACE","msg":"Connector.Connect"}
-{"time":"2025-08-06T22:41:22.867211+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:22.869814+09:00","level":"ERROR","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a","duration":2553458,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:22.869995+09:00","level":"ERROR","msg":"Connector.Connect","duration":2774250,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:22.870057+09:00","level":"TRACE","msg":"Connector.Connect"}
-{"time":"2025-08-06T22:41:22.870092+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:22.874422+09:00","level":"ERROR","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a","duration":4293708,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:22.874533+09:00","level":"ERROR","msg":"Connector.Connect","duration":4436334,"error":"driver: bad connection"}
-{"time":"2025-08-06T22:41:24.875716+09:00","level":"TRACE","msg":"Connector.Connect"}
-{"time":"2025-08-06T22:41:24.875863+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:24.882783+09:00","level":"INFO","msg":"Connector.Connect","conn_id":"qt39X5RgR8WwzW8a","duration":6851459}
-{"time":"2025-08-06T22:41:24.882904+09:00","level":"INFO","msg":"Connector.Connect","duration":7038458}
-{"time":"2025-08-06T22:41:24.882953+09:00","level":"VERBOSE","msg":"Conn.Ping","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:24.883969+09:00","level":"TRACE","msg":"Conn.Ping","conn_id":"qt39X5RgR8WwzW8a","duration":975375}
-{"time":"2025-08-06T22:41:24.88406+09:00","level":"VERBOSE","msg":"Conn.ResetSession","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:24.88411+09:00","level":"TRACE","msg":"Conn.ResetSession","conn_id":"qt39X5RgR8WwzW8a","duration":10583}
-{"time":"2025-08-06T22:41:24.884148+09:00","level":"TRACE","msg":"Conn.ExecContext","conn_id":"qt39X5RgR8WwzW8a","query":"CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))","args":"[]"}
-{"time":"2025-08-06T22:41:24.906928+09:00","level":"INFO","msg":"Conn.ExecContext","conn_id":"qt39X5RgR8WwzW8a","query":"CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))","args":"[]","duration":22720708}
-{"time":"2025-08-06T22:41:24.906999+09:00","level":"VERBOSE","msg":"Conn.ResetSession","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:24.907031+09:00","level":"TRACE","msg":"Conn.ResetSession","conn_id":"qt39X5RgR8WwzW8a","duration":7042}
-{"time":"2025-08-06T22:41:24.907081+09:00","level":"VERBOSE","msg":"Conn.Ping","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:24.907484+09:00","level":"TRACE","msg":"Conn.Ping","conn_id":"qt39X5RgR8WwzW8a","duration":381375}
-{"time":"2025-08-06T22:41:24.907521+09:00","level":"VERBOSE","msg":"Conn.ResetSession","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:24.907544+09:00","level":"TRACE","msg":"Conn.ResetSession","conn_id":"qt39X5RgR8WwzW8a","duration":3958}
-{"time":"2025-08-06T22:41:24.907564+09:00","level":"TRACE","msg":"Conn.BeginTx","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:24.907901+09:00","level":"INFO","msg":"Conn.BeginTx","conn_id":"qt39X5RgR8WwzW8a","duration":318916,"tx_id":"NtCOAzYZWvhnrpwP"}
-{"time":"2025-08-06T22:41:24.907963+09:00","level":"TRACE","msg":"Conn.ExecContext","conn_id":"qt39X5RgR8WwzW8a","query":"INSERT INTO test1 (id, name) VALUES (?, ?)","args":"[1,\"Alice\"]"}
-{"time":"2025-08-06T22:41:24.908004+09:00","level":"INFO","msg":"Conn.ExecContext","conn_id":"qt39X5RgR8WwzW8a","query":"INSERT INTO test1 (id, name) VALUES (?, ?)","args":"[1,\"Alice\"]","duration":1125,"skip":true}
-{"time":"2025-08-06T22:41:24.908022+09:00","level":"TRACE","msg":"Conn.PrepareContext","conn_id":"qt39X5RgR8WwzW8a","query":"INSERT INTO test1 (id, name) VALUES (?, ?)"}
-{"time":"2025-08-06T22:41:24.910059+09:00","level":"INFO","msg":"Conn.PrepareContext","conn_id":"qt39X5RgR8WwzW8a","query":"INSERT INTO test1 (id, name) VALUES (?, ?)","duration":1987417,"stmt_id":"0dizLBDA5tePFJsI"}
-{"time":"2025-08-06T22:41:24.910119+09:00","level":"TRACE","msg":"Stmt.ExecContext","conn_id":"qt39X5RgR8WwzW8a","stmt_id":"0dizLBDA5tePFJsI","args":"[1,\"Alice\"]"}
-{"time":"2025-08-06T22:41:24.91054+09:00","level":"INFO","msg":"Stmt.ExecContext","conn_id":"qt39X5RgR8WwzW8a","stmt_id":"0dizLBDA5tePFJsI","args":"[1,\"Alice\"]","duration":394833}
-{"time":"2025-08-06T22:41:24.910588+09:00","level":"TRACE","msg":"Stmt.Close","conn_id":"qt39X5RgR8WwzW8a","stmt_id":"0dizLBDA5tePFJsI"}
-{"time":"2025-08-06T22:41:24.91064+09:00","level":"INFO","msg":"Stmt.Close","conn_id":"qt39X5RgR8WwzW8a","stmt_id":"0dizLBDA5tePFJsI","duration":25000}
-{"time":"2025-08-06T22:41:24.910674+09:00","level":"TRACE","msg":"Tx.Commit","conn_id":"qt39X5RgR8WwzW8a","tx_id":"NtCOAzYZWvhnrpwP"}
-{"time":"2025-08-06T22:41:24.912286+09:00","level":"INFO","msg":"Tx.Commit","conn_id":"qt39X5RgR8WwzW8a","tx_id":"NtCOAzYZWvhnrpwP","duration":1573458}
-{"time":"2025-08-06T22:41:24.912342+09:00","level":"VERBOSE","msg":"Conn.ResetSession","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:24.91236+09:00","level":"TRACE","msg":"Conn.ResetSession","conn_id":"qt39X5RgR8WwzW8a","duration":3917}
-{"time":"2025-08-06T22:41:24.912406+09:00","level":"TRACE","msg":"Conn.QueryContext","conn_id":"qt39X5RgR8WwzW8a","query":"SELECT * FROM test1","args":"[]"}
-{"time":"2025-08-06T22:41:24.912819+09:00","level":"DEBUG","msg":"Conn.QueryContext","conn_id":"qt39X5RgR8WwzW8a","query":"SELECT * FROM test1","args":"[]","duration":396583}
-{"time":"2025-08-06T22:41:24.912844+09:00","level":"VERBOSE","msg":"Rows.Next","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:24.912867+09:00","level":"DEBUG","msg":"Rows.Next","conn_id":"qt39X5RgR8WwzW8a","duration":3500,"eof":false}
-{"time":"2025-08-06T22:41:24.912906+09:00","level":"INFO","msg":"Record","id":1,"name":"Alice"}
-{"time":"2025-08-06T22:41:24.912918+09:00","level":"VERBOSE","msg":"Rows.Next","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:24.912932+09:00","level":"DEBUG","msg":"Rows.Next","conn_id":"qt39X5RgR8WwzW8a","duration":209,"eof":true}
-{"time":"2025-08-06T22:41:24.912944+09:00","level":"VERBOSE","msg":"Rows.Close","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:24.912956+09:00","level":"DEBUG","msg":"Rows.Close","conn_id":"qt39X5RgR8WwzW8a","duration":541}
-{"time":"2025-08-06T22:41:24.912977+09:00","level":"TRACE","msg":"Conn.Close","conn_id":"qt39X5RgR8WwzW8a"}
-{"time":"2025-08-06T22:41:24.91305+09:00","level":"INFO","msg":"Conn.Close","conn_id":"qt39X5RgR8WwzW8a","duration":59625}
+{"time":"2025-08-06T23:24:41.877871+09:00","level":"TRACE","msg":"Open","driver":"mysql","dsn":"root@tcp(localhost:3306)/app1"}
+{"time":"2025-08-06T23:24:41.878054+09:00","level":"TRACE","msg":"Driver.OpenConnector","dsn":"root@tcp(localhost:3306)/app1"}
+{"time":"2025-08-06T23:24:41.878062+09:00","level":"INFO","msg":"Driver.OpenConnector","dsn":"root@tcp(localhost:3306)/app1","duration":1625,"conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:41.878069+09:00","level":"INFO","msg":"Open","driver":"mysql","dsn":"root@tcp(localhost:3306)/app1","duration":51667}
+{"time":"2025-08-06T23:24:41.878075+09:00","level":"TRACE","msg":"Connector.Connect"}
+{"time":"2025-08-06T23:24:41.878078+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:41.88049+09:00","level":"ERROR","msg":"Connector.Connect","conn_id":"6ZZBD2D3aDGwhNkE","duration":2403750,"error":"driver: bad connection"}
+{"time":"2025-08-06T23:24:41.880506+09:00","level":"ERROR","msg":"Connector.Connect","duration":2427583,"error":"driver: bad connection"}
+{"time":"2025-08-06T23:24:41.880511+09:00","level":"TRACE","msg":"Connector.Connect"}
+{"time":"2025-08-06T23:24:41.880514+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:41.881278+09:00","level":"ERROR","msg":"Connector.Connect","conn_id":"6ZZBD2D3aDGwhNkE","duration":758459,"error":"driver: bad connection"}
+{"time":"2025-08-06T23:24:41.881302+09:00","level":"ERROR","msg":"Connector.Connect","duration":785333,"error":"driver: bad connection"}
+{"time":"2025-08-06T23:24:41.881309+09:00","level":"TRACE","msg":"Connector.Connect"}
+{"time":"2025-08-06T23:24:41.881312+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:41.881832+09:00","level":"ERROR","msg":"Connector.Connect","conn_id":"6ZZBD2D3aDGwhNkE","duration":516208,"error":"driver: bad connection"}
+{"time":"2025-08-06T23:24:41.881837+09:00","level":"ERROR","msg":"Connector.Connect","duration":524291,"error":"driver: bad connection"}
+{"time":"2025-08-06T23:24:43.882888+09:00","level":"TRACE","msg":"Connector.Connect"}
+{"time":"2025-08-06T23:24:43.882953+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:43.884604+09:00","level":"ERROR","msg":"Connector.Connect","conn_id":"6ZZBD2D3aDGwhNkE","duration":1634041,"error":"driver: bad connection"}
+{"time":"2025-08-06T23:24:43.884625+09:00","level":"ERROR","msg":"Connector.Connect","duration":1670791,"error":"driver: bad connection"}
+{"time":"2025-08-06T23:24:43.884632+09:00","level":"TRACE","msg":"Connector.Connect"}
+{"time":"2025-08-06T23:24:43.884636+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:43.885634+09:00","level":"ERROR","msg":"Connector.Connect","conn_id":"6ZZBD2D3aDGwhNkE","duration":985250,"error":"driver: bad connection"}
+{"time":"2025-08-06T23:24:43.88847+09:00","level":"ERROR","msg":"Connector.Connect","duration":3826875,"error":"driver: bad connection"}
+{"time":"2025-08-06T23:24:43.888487+09:00","level":"TRACE","msg":"Connector.Connect"}
+{"time":"2025-08-06T23:24:43.888491+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:43.890238+09:00","level":"ERROR","msg":"Connector.Connect","conn_id":"6ZZBD2D3aDGwhNkE","duration":1740291,"error":"driver: bad connection"}
+{"time":"2025-08-06T23:24:43.890255+09:00","level":"ERROR","msg":"Connector.Connect","duration":1763125,"error":"driver: bad connection"}
+{"time":"2025-08-06T23:24:45.891645+09:00","level":"TRACE","msg":"Connector.Connect"}
+{"time":"2025-08-06T23:24:45.891735+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:45.893756+09:00","level":"ERROR","msg":"Connector.Connect","conn_id":"6ZZBD2D3aDGwhNkE","duration":1995291,"error":"driver: bad connection"}
+{"time":"2025-08-06T23:24:45.893782+09:00","level":"ERROR","msg":"Connector.Connect","duration":2048167,"error":"driver: bad connection"}
+{"time":"2025-08-06T23:24:45.893799+09:00","level":"TRACE","msg":"Connector.Connect"}
+{"time":"2025-08-06T23:24:45.893803+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:45.894784+09:00","level":"ERROR","msg":"Connector.Connect","conn_id":"6ZZBD2D3aDGwhNkE","duration":964333,"error":"driver: bad connection"}
+{"time":"2025-08-06T23:24:45.894797+09:00","level":"ERROR","msg":"Connector.Connect","duration":994042,"error":"driver: bad connection"}
+{"time":"2025-08-06T23:24:45.894801+09:00","level":"TRACE","msg":"Connector.Connect"}
+{"time":"2025-08-06T23:24:45.894803+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:45.895773+09:00","level":"ERROR","msg":"Connector.Connect","conn_id":"6ZZBD2D3aDGwhNkE","duration":957667,"error":"driver: bad connection"}
+{"time":"2025-08-06T23:24:45.89581+09:00","level":"ERROR","msg":"Connector.Connect","duration":1004625,"error":"driver: bad connection"}
+{"time":"2025-08-06T23:24:47.896942+09:00","level":"TRACE","msg":"Connector.Connect"}
+{"time":"2025-08-06T23:24:47.897868+09:00","level":"TRACE","msg":"Connector.Connect","conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:47.901816+09:00","level":"INFO","msg":"Connector.Connect","conn_id":"6ZZBD2D3aDGwhNkE","duration":3911083}
+{"time":"2025-08-06T23:24:47.901851+09:00","level":"INFO","msg":"Connector.Connect","duration":3982666}
+{"time":"2025-08-06T23:24:47.901865+09:00","level":"VERBOSE","msg":"Conn.Ping","conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:47.902186+09:00","level":"TRACE","msg":"Conn.Ping","conn_id":"6ZZBD2D3aDGwhNkE","duration":309292}
+{"time":"2025-08-06T23:24:47.902205+09:00","level":"VERBOSE","msg":"Conn.ResetSession","conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:47.902218+09:00","level":"TRACE","msg":"Conn.ResetSession","conn_id":"6ZZBD2D3aDGwhNkE","duration":3667}
+{"time":"2025-08-06T23:24:47.902228+09:00","level":"TRACE","msg":"Conn.ExecContext","conn_id":"6ZZBD2D3aDGwhNkE","query":"CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))","args":"[]"}
+{"time":"2025-08-06T23:24:47.915704+09:00","level":"INFO","msg":"Conn.ExecContext","conn_id":"6ZZBD2D3aDGwhNkE","query":"CREATE TABLE IF NOT EXISTS test1 (id INT PRIMARY KEY, name VARCHAR(255))","args":"[]","duration":13452750}
+{"time":"2025-08-06T23:24:47.915743+09:00","level":"VERBOSE","msg":"Conn.ResetSession","conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:47.915755+09:00","level":"TRACE","msg":"Conn.ResetSession","conn_id":"6ZZBD2D3aDGwhNkE","duration":3625}
+{"time":"2025-08-06T23:24:47.915762+09:00","level":"VERBOSE","msg":"Conn.Ping","conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:47.916125+09:00","level":"TRACE","msg":"Conn.Ping","conn_id":"6ZZBD2D3aDGwhNkE","duration":355458}
+{"time":"2025-08-06T23:24:47.916137+09:00","level":"VERBOSE","msg":"Conn.ResetSession","conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:47.916144+09:00","level":"TRACE","msg":"Conn.ResetSession","conn_id":"6ZZBD2D3aDGwhNkE","duration":1083}
+{"time":"2025-08-06T23:24:47.916151+09:00","level":"TRACE","msg":"Conn.BeginTx","conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:47.916831+09:00","level":"INFO","msg":"Conn.BeginTx","conn_id":"6ZZBD2D3aDGwhNkE","duration":672666,"tx_id":"Bl9m5Xa70tXlAuwe"}
+{"time":"2025-08-06T23:24:47.916863+09:00","level":"TRACE","msg":"Conn.ExecContext","conn_id":"6ZZBD2D3aDGwhNkE","query":"INSERT INTO test1 (id, name) VALUES (?, ?)","args":"[1,\"Alice\"]"}
+{"time":"2025-08-06T23:24:47.916879+09:00","level":"INFO","msg":"Conn.ExecContext","conn_id":"6ZZBD2D3aDGwhNkE","query":"INSERT INTO test1 (id, name) VALUES (?, ?)","args":"[1,\"Alice\"]","duration":459,"skip":true}
+{"time":"2025-08-06T23:24:47.916886+09:00","level":"VERBOSE","msg":"Conn.PrepareContext","conn_id":"6ZZBD2D3aDGwhNkE","query":"INSERT INTO test1 (id, name) VALUES (?, ?)"}
+{"time":"2025-08-06T23:24:47.919917+09:00","level":"TRACE","msg":"Conn.PrepareContext","conn_id":"6ZZBD2D3aDGwhNkE","query":"INSERT INTO test1 (id, name) VALUES (?, ?)","duration":3011083,"stmt_id":"_FmR8mX4J88SSrAb"}
+{"time":"2025-08-06T23:24:47.919969+09:00","level":"VERBOSE","msg":"Stmt.ExecContext","conn_id":"6ZZBD2D3aDGwhNkE","stmt_id":"_FmR8mX4J88SSrAb","args":"[1,\"Alice\"]"}
+{"time":"2025-08-06T23:24:47.920364+09:00","level":"DEBUG","msg":"Stmt.ExecContext","conn_id":"6ZZBD2D3aDGwhNkE","stmt_id":"_FmR8mX4J88SSrAb","args":"[1,\"Alice\"]","duration":389042}
+{"time":"2025-08-06T23:24:47.920377+09:00","level":"VERBOSE","msg":"Stmt.Close","conn_id":"6ZZBD2D3aDGwhNkE","stmt_id":"_FmR8mX4J88SSrAb"}
+{"time":"2025-08-06T23:24:47.920389+09:00","level":"DEBUG","msg":"Stmt.Close","conn_id":"6ZZBD2D3aDGwhNkE","stmt_id":"_FmR8mX4J88SSrAb","duration":6333}
+{"time":"2025-08-06T23:24:47.9204+09:00","level":"TRACE","msg":"Tx.Commit","conn_id":"6ZZBD2D3aDGwhNkE","tx_id":"Bl9m5Xa70tXlAuwe"}
+{"time":"2025-08-06T23:24:47.923121+09:00","level":"INFO","msg":"Tx.Commit","conn_id":"6ZZBD2D3aDGwhNkE","tx_id":"Bl9m5Xa70tXlAuwe","duration":2710542}
+{"time":"2025-08-06T23:24:47.923133+09:00","level":"VERBOSE","msg":"Conn.ResetSession","conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:47.923141+09:00","level":"TRACE","msg":"Conn.ResetSession","conn_id":"6ZZBD2D3aDGwhNkE","duration":2583}
+{"time":"2025-08-06T23:24:47.923152+09:00","level":"TRACE","msg":"Conn.QueryContext","conn_id":"6ZZBD2D3aDGwhNkE","query":"SELECT * FROM test1","args":"[]"}
+{"time":"2025-08-06T23:24:47.923444+09:00","level":"DEBUG","msg":"Conn.QueryContext","conn_id":"6ZZBD2D3aDGwhNkE","query":"SELECT * FROM test1","args":"[]","duration":285291}
+{"time":"2025-08-06T23:24:47.923455+09:00","level":"VERBOSE","msg":"Rows.Next","conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:47.923464+09:00","level":"DEBUG","msg":"Rows.Next","conn_id":"6ZZBD2D3aDGwhNkE","duration":1250,"eof":false}
+{"time":"2025-08-06T23:24:47.923478+09:00","level":"INFO","msg":"Record","id":1,"name":"Alice"}
+{"time":"2025-08-06T23:24:47.923483+09:00","level":"VERBOSE","msg":"Rows.Next","conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:47.923487+09:00","level":"DEBUG","msg":"Rows.Next","conn_id":"6ZZBD2D3aDGwhNkE","duration":84,"eof":true}
+{"time":"2025-08-06T23:24:47.92349+09:00","level":"VERBOSE","msg":"Rows.Close","conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:47.923494+09:00","level":"DEBUG","msg":"Rows.Close","conn_id":"6ZZBD2D3aDGwhNkE","duration":291}
+{"time":"2025-08-06T23:24:47.9235+09:00","level":"TRACE","msg":"Conn.Close","conn_id":"6ZZBD2D3aDGwhNkE"}
+{"time":"2025-08-06T23:24:47.923519+09:00","level":"INFO","msg":"Conn.Close","conn_id":"6ZZBD2D3aDGwhNkE","duration":15875}

@@ -1,11 +1,11 @@
-time=2025-08-06T22:40:24.644+09:00 level=INFO msg=Open driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=229875
-time=2025-08-06T22:40:24.646+09:00 level=ERROR msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=842917 error="read tcp 127.0.0.1:60337->127.0.0.1:5432: read: connection reset by peer"
-time=2025-08-06T22:40:24.646+09:00 level=ERROR msg=Connector.Connect duration=893667 error="read tcp 127.0.0.1:60337->127.0.0.1:5432: read: connection reset by peer"
-time=2025-08-06T22:40:26.663+09:00 level=INFO msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=16437167 conn_id=U4NQPudl0qNw06Hz
-time=2025-08-06T22:40:26.663+09:00 level=INFO msg=Connector.Connect duration=16707208
-time=2025-08-06T22:40:26.671+09:00 level=INFO msg=Conn.ExecContext conn_id=U4NQPudl0qNw06Hz query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=5529125
-time=2025-08-06T22:40:26.672+09:00 level=INFO msg=Conn.BeginTx conn_id=U4NQPudl0qNw06Hz duration=381042 tx_id=yerAEJXh4rijpBsd
-time=2025-08-06T22:40:26.673+09:00 level=INFO msg=Conn.ExecContext conn_id=U4NQPudl0qNw06Hz query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[1,\"Alice\"]" duration=1354875
-time=2025-08-06T22:40:26.674+09:00 level=INFO msg=Tx.Commit conn_id=U4NQPudl0qNw06Hz tx_id=yerAEJXh4rijpBsd duration=775292
-time=2025-08-06T22:40:26.675+09:00 level=INFO msg=Record id=1 name=Alice
-time=2025-08-06T22:40:26.675+09:00 level=INFO msg=Conn.Close conn_id=U4NQPudl0qNw06Hz duration=28042
+time=2025-08-06T23:23:53.060+09:00 level=INFO msg=Open driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=76416
+time=2025-08-06T23:23:53.061+09:00 level=ERROR msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=605917 error="read tcp 127.0.0.1:61632->127.0.0.1:5432: read: connection reset by peer"
+time=2025-08-06T23:23:53.061+09:00 level=ERROR msg=Connector.Connect duration=635333 error="read tcp 127.0.0.1:61632->127.0.0.1:5432: read: connection reset by peer"
+time=2025-08-06T23:23:55.081+09:00 level=INFO msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=18800167 conn_id=DND7Y_XZmy77URni
+time=2025-08-06T23:23:55.081+09:00 level=INFO msg=Connector.Connect duration=19007083
+time=2025-08-06T23:23:55.085+09:00 level=INFO msg=Conn.ExecContext conn_id=DND7Y_XZmy77URni query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=3010292
+time=2025-08-06T23:23:55.086+09:00 level=INFO msg=Conn.BeginTx conn_id=DND7Y_XZmy77URni duration=297875 tx_id=W2A2VLIfqrhlDGJG
+time=2025-08-06T23:23:55.087+09:00 level=INFO msg=Conn.ExecContext conn_id=DND7Y_XZmy77URni query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[1,\"Alice\"]" duration=1336083
+time=2025-08-06T23:23:55.088+09:00 level=INFO msg=Tx.Commit conn_id=DND7Y_XZmy77URni tx_id=W2A2VLIfqrhlDGJG duration=682875
+time=2025-08-06T23:23:55.088+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-08-06T23:23:55.088+09:00 level=INFO msg=Conn.Close conn_id=DND7Y_XZmy77URni duration=17250

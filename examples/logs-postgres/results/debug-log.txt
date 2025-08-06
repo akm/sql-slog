@@ -1,15 +1,15 @@
-time=2025-08-06T22:40:27.499+09:00 level=INFO msg=Open driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=23458
-time=2025-08-06T22:40:27.500+09:00 level=ERROR msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=852166 error="read tcp 127.0.0.1:60341->127.0.0.1:5432: read: connection reset by peer"
-time=2025-08-06T22:40:27.500+09:00 level=ERROR msg=Connector.Connect duration=884416 error="read tcp 127.0.0.1:60341->127.0.0.1:5432: read: connection reset by peer"
-time=2025-08-06T22:40:29.515+09:00 level=INFO msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=13052417 conn_id=ZFcUurxb9Qs5tU0L
-time=2025-08-06T22:40:29.515+09:00 level=INFO msg=Connector.Connect duration=13224792
-time=2025-08-06T22:40:29.520+09:00 level=INFO msg=Conn.ExecContext conn_id=ZFcUurxb9Qs5tU0L query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=5166416
-time=2025-08-06T22:40:29.521+09:00 level=INFO msg=Conn.BeginTx conn_id=ZFcUurxb9Qs5tU0L duration=270792 tx_id=Lz1tuNPUCXsPMUbn
-time=2025-08-06T22:40:29.522+09:00 level=INFO msg=Conn.ExecContext conn_id=ZFcUurxb9Qs5tU0L query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[1,\"Alice\"]" duration=1217792
-time=2025-08-06T22:40:29.523+09:00 level=INFO msg=Tx.Commit conn_id=ZFcUurxb9Qs5tU0L tx_id=Lz1tuNPUCXsPMUbn duration=702792
-time=2025-08-06T22:40:29.524+09:00 level=DEBUG msg=Conn.QueryContext conn_id=ZFcUurxb9Qs5tU0L query="SELECT * FROM test1" args=[] duration=378208
-time=2025-08-06T22:40:29.524+09:00 level=DEBUG msg=Rows.Next conn_id=ZFcUurxb9Qs5tU0L duration=1917 eof=false
-time=2025-08-06T22:40:29.524+09:00 level=INFO msg=Record id=1 name=Alice
-time=2025-08-06T22:40:29.524+09:00 level=DEBUG msg=Rows.Next conn_id=ZFcUurxb9Qs5tU0L duration=1208 eof=true
-time=2025-08-06T22:40:29.524+09:00 level=DEBUG msg=Rows.Close conn_id=ZFcUurxb9Qs5tU0L duration=292
-time=2025-08-06T22:40:29.524+09:00 level=INFO msg=Conn.Close conn_id=ZFcUurxb9Qs5tU0L duration=26709
+time=2025-08-06T23:23:56.128+09:00 level=INFO msg=Open driver=postgres dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=68750
+time=2025-08-06T23:23:56.129+09:00 level=ERROR msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=788500 error="read tcp 127.0.0.1:61635->127.0.0.1:5432: read: connection reset by peer"
+time=2025-08-06T23:23:56.129+09:00 level=ERROR msg=Connector.Connect duration=819625 error="read tcp 127.0.0.1:61635->127.0.0.1:5432: read: connection reset by peer"
+time=2025-08-06T23:23:58.139+09:00 level=INFO msg=Driver.Open dsn="host=127.0.0.1 port=5432 user=root password=password dbname=app1 sslmode=disable" duration=9617292 conn_id=R7iQY28Osd_CJyuz
+time=2025-08-06T23:23:58.139+09:00 level=INFO msg=Connector.Connect duration=9788167
+time=2025-08-06T23:23:58.144+09:00 level=INFO msg=Conn.ExecContext conn_id=R7iQY28Osd_CJyuz query="CREATE TABLE IF NOT EXISTS test1 (id INTEGER PRIMARY KEY, name VARCHAR(255))" args=[] duration=3789375
+time=2025-08-06T23:23:58.144+09:00 level=INFO msg=Conn.BeginTx conn_id=R7iQY28Osd_CJyuz duration=288792 tx_id=ACeDDgjkccTVtwMr
+time=2025-08-06T23:23:58.145+09:00 level=INFO msg=Conn.ExecContext conn_id=R7iQY28Osd_CJyuz query="INSERT INTO test1 (id, name) VALUES ($1,$2);" args="[1,\"Alice\"]" duration=1136667
+time=2025-08-06T23:23:58.146+09:00 level=INFO msg=Tx.Commit conn_id=R7iQY28Osd_CJyuz tx_id=ACeDDgjkccTVtwMr duration=774750
+time=2025-08-06T23:23:58.147+09:00 level=DEBUG msg=Conn.QueryContext conn_id=R7iQY28Osd_CJyuz query="SELECT * FROM test1" args=[] duration=392292
+time=2025-08-06T23:23:58.147+09:00 level=DEBUG msg=Rows.Next conn_id=R7iQY28Osd_CJyuz duration=1584 eof=false
+time=2025-08-06T23:23:58.147+09:00 level=INFO msg=Record id=1 name=Alice
+time=2025-08-06T23:23:58.147+09:00 level=DEBUG msg=Rows.Next conn_id=R7iQY28Osd_CJyuz duration=583 eof=true
+time=2025-08-06T23:23:58.147+09:00 level=DEBUG msg=Rows.Close conn_id=R7iQY28Osd_CJyuz duration=42
+time=2025-08-06T23:23:58.147+09:00 level=INFO msg=Conn.Close conn_id=R7iQY28Osd_CJyuz duration=17459
