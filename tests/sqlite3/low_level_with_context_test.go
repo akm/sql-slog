@@ -104,8 +104,8 @@ func TestLowLevelWithContext(t *testing.T) {
 		logs.Assert(t, []map[string]interface{}{
 			{"level": "VERBOSE", "msg": "Conn.ResetSession Start", connIDKey: connIDExpected},
 			{"level": "TRACE", "msg": "Conn.ResetSession Complete", connIDKey: connIDExpected},
-			{"level": "TRACE", "msg": "Conn.PrepareContext Start", "query": query, connIDKey: connIDExpected},
-			{"level": "INFO", "msg": "Conn.PrepareContext Complete", "query": query, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+			{"level": "VERBOSE", "msg": "Conn.PrepareContext Start", "query": query, connIDKey: connIDExpected},
+			{"level": "TRACE", "msg": "Conn.PrepareContext Complete", "query": query, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 		})
 
 		logs.Start()
@@ -114,8 +114,8 @@ func TestLowLevelWithContext(t *testing.T) {
 		logs.Assert(t, []map[string]interface{}{
 			{"level": "VERBOSE", "msg": "Conn.ResetSession Start", connIDKey: connIDExpected},
 			{"level": "TRACE", "msg": "Conn.ResetSession Complete", connIDKey: connIDExpected},
-			{"level": "TRACE", "msg": "Stmt.ExecContext Start", "args": "[]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
-			{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": "[]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+			{"level": "VERBOSE", "msg": "Stmt.ExecContext Start", "args": "[]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+			{"level": "DEBUG", "msg": "Stmt.ExecContext Complete", "args": "[]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 		})
 
 		logs.Start()
@@ -127,8 +127,8 @@ func TestLowLevelWithContext(t *testing.T) {
 		logs.Start()
 		stmt.Close()
 		logs.Assert(t, []map[string]interface{}{
-			{"level": "TRACE", "msg": "Stmt.Close Start", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
-			{"level": "INFO", "msg": "Stmt.Close Complete", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+			{"level": "VERBOSE", "msg": "Stmt.Close Start", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+			{"level": "DEBUG", "msg": "Stmt.Close Complete", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 		})
 	})
 
@@ -317,16 +317,16 @@ func TestLowLevelWithContext(t *testing.T) {
 			logs.Assert(t, []map[string]interface{}{
 				{"level": "VERBOSE", "msg": "Conn.ResetSession Start", connIDKey: connIDExpected},
 				{"level": "TRACE", "msg": "Conn.ResetSession Complete", connIDKey: connIDExpected},
-				{"level": "TRACE", "msg": "Conn.PrepareContext Start", "query": query, connIDKey: connIDExpected},
-				{"level": "INFO", "msg": "Conn.PrepareContext Complete", "query": query, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+				{"level": "VERBOSE", "msg": "Conn.PrepareContext Start", "query": query, connIDKey: connIDExpected},
+				{"level": "TRACE", "msg": "Conn.PrepareContext Complete", "query": query, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 			})
 
 			defer func() {
 				logs.Start()
 				assert.NoError(t, stmt.Close())
 				logs.Assert(t, []map[string]interface{}{
-					{"level": "TRACE", "msg": "Stmt.Close Start", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
-					{"level": "INFO", "msg": "Stmt.Close Complete", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+					{"level": "VERBOSE", "msg": "Stmt.Close Start", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+					{"level": "DEBUG", "msg": "Stmt.Close Complete", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 				})
 			}()
 
@@ -338,8 +338,8 @@ func TestLowLevelWithContext(t *testing.T) {
 				logs.Assert(t, []map[string]interface{}{
 					{"level": "VERBOSE", "msg": "Conn.ResetSession Start", connIDKey: connIDExpected},
 					{"level": "TRACE", "msg": "Conn.ResetSession Complete", connIDKey: connIDExpected},
-					{"level": "TRACE", "msg": "Stmt.QueryContext Start", "args": "[1]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
-					{"level": "INFO", "msg": "Stmt.QueryContext Complete", "args": "[1]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+					{"level": "VERBOSE", "msg": "Stmt.QueryContext Start", "args": "[1]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+					{"level": "DEBUG", "msg": "Stmt.QueryContext Complete", "args": "[1]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 					{"level": "VERBOSE", "msg": "Rows.Next Start", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 					{"level": "DEBUG", "msg": "Rows.Next Complete", "eof": false, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 					{"level": "VERBOSE", "msg": "Rows.Close Start", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
@@ -357,7 +357,7 @@ func TestLowLevelWithContext(t *testing.T) {
 			logs.Assert(t, []map[string]interface{}{
 				{"level": "VERBOSE", "msg": "Conn.ResetSession Start", connIDKey: connIDExpected},
 				{"level": "TRACE", "msg": "Conn.ResetSession Complete", connIDKey: connIDExpected},
-				{"level": "TRACE", "msg": "Conn.PrepareContext Start", "query": query, connIDKey: connIDExpected},
+				{"level": "VERBOSE", "msg": "Conn.PrepareContext Start", "query": query, connIDKey: connIDExpected},
 				{"level": "ERROR", "msg": "Conn.PrepareContext Error", "query": query, "error": "near \"invalid\": syntax error", connIDKey: connIDExpected},
 			})
 		})
@@ -371,16 +371,16 @@ func TestLowLevelWithContext(t *testing.T) {
 			logs.Assert(t, []map[string]interface{}{
 				{"level": "VERBOSE", "msg": "Conn.ResetSession Start", connIDKey: connIDExpected},
 				{"level": "TRACE", "msg": "Conn.ResetSession Complete", connIDKey: connIDExpected},
-				{"level": "TRACE", "msg": "Conn.PrepareContext Start", "query": query, connIDKey: connIDExpected},
-				{"level": "INFO", "msg": "Conn.PrepareContext Complete", "query": query, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+				{"level": "VERBOSE", "msg": "Conn.PrepareContext Start", "query": query, connIDKey: connIDExpected},
+				{"level": "TRACE", "msg": "Conn.PrepareContext Complete", "query": query, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 			})
 
 			defer func() {
 				logs.Start()
 				assert.NoError(t, stmt.Close())
 				logs.Assert(t, []map[string]interface{}{
-					{"level": "TRACE", "msg": "Stmt.Close Start", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
-					{"level": "INFO", "msg": "Stmt.Close Complete", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+					{"level": "VERBOSE", "msg": "Stmt.Close Start", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+					{"level": "DEBUG", "msg": "Stmt.Close Complete", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 				})
 			}()
 
@@ -392,8 +392,8 @@ func TestLowLevelWithContext(t *testing.T) {
 					logs.Assert(t, []map[string]interface{}{
 						{"level": "VERBOSE", "msg": "Conn.ResetSession Start", connIDKey: connIDExpected},
 						{"level": "TRACE", "msg": "Conn.ResetSession Complete", connIDKey: connIDExpected},
-						{"level": "TRACE", "msg": "Stmt.ExecContext Start", "args": "[4,\"qux\"]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
-						{"level": "INFO", "msg": "Stmt.ExecContext Complete", "args": "[4,\"qux\"]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+						{"level": "VERBOSE", "msg": "Stmt.ExecContext Start", "args": "[4,\"qux\"]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+						{"level": "DEBUG", "msg": "Stmt.ExecContext Complete", "args": "[4,\"qux\"]", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 					})
 					rowsAffected, err := result.RowsAffected()
 					assert.NoError(t, err)
@@ -407,7 +407,7 @@ func TestLowLevelWithContext(t *testing.T) {
 					logs.Assert(t, []map[string]interface{}{
 						{"level": "VERBOSE", "msg": "Conn.ResetSession Start", connIDKey: connIDExpected},
 						{"level": "TRACE", "msg": "Conn.ResetSession Complete", connIDKey: connIDExpected},
-						{"level": "TRACE", "msg": "Stmt.ExecContext Start", "args": args, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+						{"level": "VERBOSE", "msg": "Stmt.ExecContext Start", "args": args, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 						{"level": "ERROR", "msg": "Stmt.ExecContext Error", "args": args, "error": "datatype mismatch", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 					})
 				})
@@ -545,8 +545,8 @@ func TestLowLevelWithContext(t *testing.T) {
 							logs.Start()
 							stmt.Close()
 							logs.Assert(t, []map[string]interface{}{
-								{"level": "TRACE", "msg": "Stmt.Close Start", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
-								{"level": "INFO", "msg": "Stmt.Close Complete", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+								{"level": "VERBOSE", "msg": "Stmt.Close Start", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+								{"level": "DEBUG", "msg": "Stmt.Close Complete", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 							})
 						}()
 
@@ -573,8 +573,8 @@ func TestLowLevelWithContext(t *testing.T) {
 								assert.NoError(t, err)
 								args := "[4,\"qux\"]"
 								logs.Assert(t, []map[string]interface{}{
-									{"level": "TRACE", "msg": "Stmt.Exec Start", "args": args, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
-									{"level": "INFO", "msg": "Stmt.Exec Complete", "args": args, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+									{"level": "VERBOSE", "msg": "Stmt.Exec Start", "args": args, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+									{"level": "DEBUG", "msg": "Stmt.Exec Complete", "args": args, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 								})
 								rowsAffected, err := result.RowsAffected()
 								assert.NoError(t, err)
@@ -586,7 +586,7 @@ func TestLowLevelWithContext(t *testing.T) {
 								assert.Error(t, err)
 								args := "[\"abc\",\"qux\"]"
 								logs.Assert(t, []map[string]interface{}{
-									{"level": "TRACE", "msg": "Stmt.Exec Start", "args": args, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
+									{"level": "VERBOSE", "msg": "Stmt.Exec Start", "args": args, connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 									{"level": "ERROR", "msg": "Stmt.Exec Error", "args": args, "error": "datatype mismatch", connIDKey: connIDExpected, stmtIDKey: stmtIDExpected},
 								})
 							})
