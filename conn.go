@@ -46,7 +46,7 @@ func defaultConnOptions(driverName string, msgb StepEventMsgBuilder) *connOption
 		Close: *defaultStepOptions(msgb, StepConnClose, LevelInfo),
 
 		Prepare:        *defaultStepOptions(msgb, StepConnPrepare, LevelInfo),
-		PrepareContext: *defaultStepOptions(msgb, StepConnPrepareContext, LevelInfo),
+		PrepareContext: *defaultStepOptions(msgb, StepConnPrepareContext, LevelTrace),
 		StmtIDKey:      StmtIDKeyDefault,
 		StmtOptions:    stmtOptions,
 

@@ -18,11 +18,11 @@ type stmtOptions struct {
 
 func defaultStmtOptions(msgb StepEventMsgBuilder) *stmtOptions {
 	return &stmtOptions{
-		Close:        *defaultStepOptions(msgb, StepStmtClose, LevelInfo),
-		Exec:         *defaultStepOptions(msgb, StepStmtExec, LevelInfo),
-		Query:        *defaultStepOptions(msgb, StepStmtQuery, LevelInfo),
-		ExecContext:  *defaultStepOptions(msgb, StepStmtExecContext, LevelInfo),
-		QueryContext: *defaultStepOptions(msgb, StepStmtQueryContext, LevelInfo),
+		Close:        *defaultStepOptions(msgb, StepStmtClose, LevelDebug),
+		Exec:         *defaultStepOptions(msgb, StepStmtExec, LevelDebug),
+		Query:        *defaultStepOptions(msgb, StepStmtQuery, LevelDebug),
+		ExecContext:  *defaultStepOptions(msgb, StepStmtExecContext, LevelDebug),
+		QueryContext: *defaultStepOptions(msgb, StepStmtQueryContext, LevelDebug),
 		Rows:         defaultRowsOptions(msgb),
 	}
 }
