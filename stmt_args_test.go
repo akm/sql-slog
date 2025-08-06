@@ -3,6 +3,7 @@ package sqlslog
 import (
 	"database/sql/driver"
 	"testing"
+	"time"
 )
 
 func TestFormatNamedValues(t *testing.T) {
@@ -56,6 +57,37 @@ func TestFormatNamedValues(t *testing.T) {
 			got := formatNamedValues(tt.args)
 			if got != tt.want {
 				t.Errorf("formatNamedValues() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestFormatValue(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		value driver.Value
+		want  string
+	}{
+		{value: nil, want: "<nil>"},
+		{value: true, want: "true"},
+		{value: false, want: "false"},
+		{value: 123, want: "123"},
+		{value: 1.23, want: "1.23"},
+		{value: "test", want: "\"test\""},
+		{value: []byte("bytes"), want: "\"bytes\""},
+		{value: []int{1, 2, 3}, want: "[1 2 3]"},
+		{value: map[string]int{"a": 1, "b": 2}, want: "map[a:1 b:2]"},
+		{value: struct{ A int }{A: 1}, want: "{1}"},
+		{value: time.Date(2023, 10, 1, 12, 0, 0, 0, time.UTC), want: "2023-10-01 12:00:00 +0000 UTC"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.want, func(t *testing.T) {
+			t.Parallel()
+			got := formatValue(tt.value)
+			if got != tt.want {
+				t.Errorf("formatValue(%v) = %v, want %v", tt.value, got, tt.want)
 			}
 		})
 	}
